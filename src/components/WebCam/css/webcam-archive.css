@@ -1,0 +1,17 @@
+.webcam-container {
+	position: relative;
+	max-width: 724px;
+	margin: auto;
+}
+  
+.center_webcam{
+	text-align : center;
+    margin: 0 auto;
+	background : black;
+	color: white;
+}
+
+.archive_cam img{
+	width: 100%;
+	max-width: 724px;
+}

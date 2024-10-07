@@ -1,0 +1,13 @@
+.slide-show{
+    margin-top: 12px;
+    margin: auto;
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.slide-show:hover {
+    color: white;
+}

@@ -1,0 +1,12 @@
+.text {
+    text-align: justify;
+    padding: 1vw 2vw 2vw 2vw;
+    background: #FF9933;
+    color: black;
+}
+
+.img-float-left {
+    float: left;
+    margin: 0 1rem 1rem 0;
+    border: 1px solid black;
+}

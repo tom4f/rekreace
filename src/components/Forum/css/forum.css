@@ -1,0 +1,10 @@
+.kniha-main-page {
+    background-color: white;
+    color: black;
+    font-size: 12px;
+    padding: 5px;
+  }
+  
+  .kniha-main-page li {
+    list-style: none;
+  }

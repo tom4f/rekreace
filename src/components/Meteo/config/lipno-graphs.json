@@ -1,0 +1,63 @@
+[
+    {
+        "data" : [ { "dummy": "dummy" } ],
+        "common": {
+            "index": 0,
+            "dateField": "datum",
+            "isAllDownloaded": false,
+            "url": "pdo_read_pocasi_by_date.php",
+            "title": "Meteostanice Frymburk",
+            "navName" : "Frymburk"
+        },
+        "specific": [
+            [
+                {
+                    "sourceField": "pritok",
+                    "color": "lime",
+                    "style": "line",
+                    "width": 2,
+                    "header": "pritok [m³/s]",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "hladina",
+                    "color": "red",
+                    "style": "line",
+                    "width": 2,
+                    "header": "hladina [m n.m.]",
+                    "group": 2,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "odtok",
+                    "color": "white",
+                    "style": "line",
+                    "width": 2,
+                    "header": "odtok [m³/s]",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ],[
+                {
+                    "sourceField": "voda",
+                    "color": "white",
+                    "style": "line",
+                    "width": 2,
+                    "header": "voda [°C]",
+                    "group": 1,
+                    "lineStyle": []
+                },
+                {
+                    "sourceField": "vzduch",
+                    "color": "lime",
+                    "style": "line",
+                    "width": 2,
+                    "header": "vzduch ráno [°C]",
+                    "group": 1,
+                    "lineStyle": []
+                }
+            ]
+        ]
+    }
+]
