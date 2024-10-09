@@ -1,7 +1,7 @@
-let setAntispam = undefined
-let formResultAlert = undefined
-let sendEmail = undefined
-let form = undefined
+var setAntispam = undefined
+var formResultAlert = undefined
+var sendEmail = undefined
+var form = undefined
 // create new antispam code
 setAntispam = () => {
     // create new antipam number

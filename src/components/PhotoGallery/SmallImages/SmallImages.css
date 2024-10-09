@@ -1,0 +1,13 @@
+.imgs {
+    display: flex;
+    justify-content: center;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.imgs > div {
+    width: 12.5%;
+    margin: 1px;
+    height: 75px;
+    background-size: cover;
+}
