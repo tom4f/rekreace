@@ -3,11 +3,7 @@ import { apiPath, commonPath } from '../components/Meteo/api/apiPath'
 const fotoGalleryOwner =
     window.location.search.split('?fotoGalleryOwner=')[1] || '_ubytovani'
 
-const dev = process.env.NODE_ENV !== 'production'
-
-export const imgFolder = dev
-    ? `${commonPath}/rekreace/fotogalerie${fotoGalleryOwner}`
-    : `./fotogalerie${fotoGalleryOwner}`
+export const imgFolder = `${commonPath}/rekreace/fotogalerie${fotoGalleryOwner}`
 
 export const loadPicturesfromMySQL = fetch(
     `${apiPath}/pdo_read_foto.php?fotoGalleryOwner=${fotoGalleryOwner}`

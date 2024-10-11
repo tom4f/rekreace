@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import GoogleAd from '../GoogleAd'
+import { GoogleAd } from '../GoogleAd'
 import mainImg from './../../images/main.jpg'
 import './css/top.css'
 
@@ -12,22 +12,22 @@ export const Top = () => {
                     Start
                 </NavLink>{' '}
                 |
-                <NavLink className="menu" to="/apartments">
+                <NavLink className="menu" to="/apartmany">
                     {' '}
                     Apartmány
                 </NavLink>{' '}
                 |
-                <NavLink className="menu" to="/booking-form">
+                <NavLink className="menu" to="/objednavka">
                     {' '}
                     Objednávka
                 </NavLink>{' '}
                 |
-                <NavLink className="menu" to="/prices">
+                <NavLink className="menu" to="/ceny">
                     {' '}
                     Ceny
                 </NavLink>{' '}
                 |
-                <NavLink className="menu" to="/contact">
+                <NavLink className="menu" to="/kontakt">
                     {' '}
                     Kontakt
                 </NavLink>{' '}
@@ -49,7 +49,7 @@ export const Top = () => {
             </div>
 
             <div className="header">
-                <NavLink className="menu" to="/meteo">
+                <NavLink className="menu" to="/meteostanice">
                     {' '}
                     Meteostanice
                 </NavLink>{' '}
@@ -59,7 +59,7 @@ export const Top = () => {
                     Fórum
                 </NavLink>{' '}
                 |
-                <NavLink className="menu" to="/photo-gallery">
+                <NavLink className="menu" to="/fotogalerie">
                     {' '}
                     Fotogalerie
                 </NavLink>{' '}

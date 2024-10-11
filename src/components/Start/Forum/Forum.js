@@ -57,7 +57,7 @@ export const Forum = () => {
     return (
         <>
             <div className="header">
-                <NavLink className="menu" to="forum/">
+                <NavLink className="menu" to="/forum">
                     LIPNO FÓRUM
                 </NavLink>
             </div>

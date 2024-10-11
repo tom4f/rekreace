@@ -41,7 +41,7 @@
   color: white;
 }
 
-.address_and_formular .formular .form_result_alert {
+.address_and_formular .formular .contact_result_alert {
   position: absolute;
   width: 80%;
   height: 60%;
@@ -54,7 +54,7 @@
   text-decoration: none;
 }
 
-.address_and_formular .formular .form_result_alert ul {
+.address_and_formular .formular .contact_result_alert ul {
   list-style: none;
 }
 

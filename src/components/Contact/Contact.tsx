@@ -60,7 +60,7 @@ export const Contact = () => {
                         </div>
 
                         <div
-                            className="form_result_alert"
+                            className="contact_result_alert"
                             id="form_result_alert"
                         />
 

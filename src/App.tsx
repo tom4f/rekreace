@@ -15,7 +15,8 @@ import './css/main.css'
 
 export const App = () => {
     const { pathname } = useLocation()
-    const isPhotoGalleryPage = pathname === '/photo-gallery'
+    const isPhotoGalleryPage = pathname === '/fotogalerie'
+    console.log(pathname)
     return (
         <div
             className="top_container"
@@ -24,15 +25,14 @@ export const App = () => {
             {!isPhotoGalleryPage && <Top />}
             <Routes>
                 <Route path="/" element={<Start />} />
-                <Route path="/apartments/*" element={<Apartments />} />
-                <Route path="/booking-form/*" element={<BookingForm />} />
-                <Route path="/apartments/*" element={<Apartments />} />
-                <Route path="/prices/*" element={<Prices />} />
-                <Route path="/contact/*" element={<Contact />} />
+                <Route path="/apartmany/*" element={<Apartments />} />
+                <Route path="/objednavka/*" element={<BookingForm />} />
+                <Route path="/ceny/*" element={<Prices />} />
+                <Route path="/kontakt/*" element={<Contact />} />
                 <Route path="/frymburk/*" element={<Frymburk />} />
-                <Route path="/meteo/*" element={<Meteo />} />
+                <Route path="/meteostanice/*" element={<Meteo />} />
                 <Route path="/forum/*" element={<Forum />} />
-                <Route path="/photo-gallery/*" element={<PhotoGallery />} />
+                <Route path="/fotogalerie/*" element={<PhotoGallery />} />
             </Routes>
             {!isPhotoGalleryPage && <Bottom />}
         </div>

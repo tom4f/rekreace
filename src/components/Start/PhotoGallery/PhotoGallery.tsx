@@ -50,7 +50,7 @@ export default function PhotoGallery() {
     return (
         <div className="container">
             <div className="header">
-                <NavLink className="menu" to="photo-gallery/">
+                <NavLink className="menu" to="/fotogalerie">
                     Fotogalerie
                 </NavLink>
             </div>

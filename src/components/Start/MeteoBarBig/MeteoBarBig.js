@@ -192,7 +192,7 @@ export const MeteoBarBig = () => {
     return (
         <>
             <div className="header">
-                <NavLink className="menu" to="meteo/">
+                <NavLink className="menu" to="/meteostanice">
                     METEOSTANICE dnes
                 </NavLink>
             </div>
