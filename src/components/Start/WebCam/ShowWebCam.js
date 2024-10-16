@@ -41,7 +41,11 @@ export const ShowWebCam = ({ state: { day, hour, minute, isLiveImg } }) => {
                     href={`${commonPath}/kamera/archive/ip_kamera_full_hd_${imgDateText}.jpg`}
                 >
                     {isLiveImg ? (
-                        <img src={liveImgSrc} alt="WebCam" />
+                        // <img src={liveImgSrc} alt="WebCam" />
+                        <img
+                            src={`${commonPath}/kamera/archive/lipnonet_full_hd_00001.jpg`}
+                            alt="WebCam"
+                        />
                     ) : (
                         <img
                             src={`${commonPath}/kamera/archive/ip_kamera_${imgDateText}.jpg`}

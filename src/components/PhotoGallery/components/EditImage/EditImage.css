@@ -1,38 +1,40 @@
-::-webkit-input-placeholder { 
+/* formular.php */
+::-webkit-input-placeholder { /* Edge */
 	color: white;
-	background-color: transparent;
 }
-:placeholder-shown {
-	background-color: transparent;
-}
-:-ms-input-placeholder { 
+:-ms-input-placeholder { /* Internet Explorer */
 	color: white;
 }
 ::placeholder {
 	color: white;
-	background-color: transparent;
 }
 
-.booking_form {
+.form_booking{
+    width: 90%;
+	max-width: 500px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	background: url("./../images/604b.jpg");
-	width: 100%;
+	/*background: url("./../images/604b.jpg");*/
+    background-color:rgba(0, 0, 0, 0.6);
     padding: 0px;
     color: white;
 	text-align: left;
-	margin: auto;
+
 	border-radius: 5px;
 	border: 1px solid #555;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
 	margin-top: 0rem;
 	margin-bottom: 0rem;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
-	position: relative;
+	position: absolute;
+	z-index: 3
 }
 
-.booking_form .form_result_alert{
+.form_result_alert{
 	position: absolute;
 	width: 80%;
 	height: 80%;
@@ -45,49 +47,49 @@
 	text-decoration: none;
 }
 
-.booking_form .form_result_alert ul {
+.form_result_alert ul {
 	list-style: none;
 }
 
-.booking_form input,
-.booking_form select,
-.booking_form textarea {
+.form_booking input,
+.form_booking select,
+.form_booking textarea {
     font-size: 1.0rem;;
 	width: 100%;
 	background-color: transparent;
 	border: none;
 	margin: 2px 5px;
 	transition: none;
-	color: rgb(233, 233, 233);
+	color: white;
 	letter-spacing: 0.1rem;
 }
 
-.booking_form input[type=text]:focus,
-.booking_form input[type=email]:focus,
-.booking_form input[type=tel]:focus,
-.booking_form input[type=date]:focus,
-.booking_form input[type=hi]:focus,
-.booking_form textarea:focus,
-.booking_form select:focus {
+.form_booking input[type=text]:focus,
+.form_booking input[type=email]:focus,
+.form_booking input[type=tel]:focus,
+.form_booking input[type=date]:focus,
+.form_booking input[type=hi]:focus,
+.form_booking textarea:focus,
+.form_booking select:focus {
 	border: none;
 	outline: none;
   }
 
   
-.booking_form .input_booking{
+.input_booking{
 	background-color:rgba(0, 0, 0, 0.4);
-	width: 45%;
+	width: 100%;
 	border-radius: 5px;
 	border: 1px solid white;
 	padding: 2px;
 	margin: 5px;
 }
 
-.booking_form .input_booking:hover{
+.input_booking:hover{
 	border: 1px solid black;
 }
 
-.booking_form .input_booking label{
+.input_booking label{
 	font-size: 0.7rem;
 	color: white;
 	font-weight: bold;
@@ -95,7 +97,7 @@
 	margin: 2px 5px;
 }
 
-.booking_form .input_booking option{
+.input_booking option{
 	background-color:rgba(0, 0, 0, 0.5);
 }
 
@@ -104,9 +106,8 @@
 http://stackoverflow.com/questions/26573346/ios-safari-messes-up-input-type-date
 */
 
-.booking_form .input_booking input[type="date"]
+.input_booking input[type="date"]
 {
-	background-color:rgba(0, 0, 0, 0.5);
     display:block;
   
     /* Solution 1 */
@@ -118,21 +119,45 @@ http://stackoverflow.com/questions/26573346/ios-safari-messes-up-input-type-date
 	/* min-width: 96%; */
 }
 
-.booking_form .submit_booking{
+.submit_booking{
 	border-radius: 5px;
 	border: 1px solid white;
 	padding: 0;
 	margin: 5px;
 	text-align: left;
-	background-color:rgba(0, 256, 0, 0.4);
-	width: 40%;
+	width: 25%;
 }
 
-.booking_form .submit_booking:hover{
+.green{
+	background-color:rgba(0, 256, 0, 0.4);
+}
+
+.blue{
+	background-color:rgba(0, 0, 256, 0.4);
+}
+
+.red{
+	background-color:rgba(256, 0, 0, 0.4);
+}
+
+.green input:focus{
+	background-color:rgba(0, 256, 0, 0.5);
+}
+
+.blue input:focus{
+	background-color:rgba(0, 0, 256, 0.5);
+}
+
+.red input:focus{
+	background-color:rgba(256, 0, 0, 0.5);
+}
+
+
+.submit_booking:hover{
 	border: 1px solid black;
 }
 
-.booking_form .submit_booking input{
+.submit_booking input{
 	width: 100%;
 	margin: 0;
 	padding: 20px;
@@ -141,6 +166,7 @@ http://stackoverflow.com/questions/26573346/ios-safari-messes-up-input-type-date
 	border-radius: 5px;
 }
 
-.booking_form .submit_booking input:focus{
-	background-color:rgba(0, 256, 0, 0.5);
+.isLoading{
+	background-color: lime;
+	color: black;
 }

@@ -16,7 +16,6 @@ import './css/main.css'
 export const App = () => {
     const { pathname } = useLocation()
     const isPhotoGalleryPage = pathname === '/fotogalerie'
-    console.log(pathname)
     return (
         <div
             className="top_container"

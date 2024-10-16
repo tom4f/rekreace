@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import { loadPicturesfromMySQL } from './api/read'
-import { BigImage } from './BigImage/BigImage'
-//import './css/App.css'
-import { SmallImages } from './SmallImages'
-import { allPhotoType, categoryObjType } from './types/TypeDefinition'
+import { BigImage } from './components/BigImage/BigImage'
+import { SmallImages } from './components/SmallImages'
+import './css/App.css'
+import { allPhotoType, categoryObjType } from './TypeDefinition'
 
 export function PhotoGallery() {
+    const { pathname } = useLocation()
     const [allPhoto, setAllPhoto] = useState<allPhotoType[]>([])
     const [imgPosition, setImgPosition] = useState({
         smallImgStart: 0,
@@ -19,7 +21,7 @@ export function PhotoGallery() {
         ;(async () => setAllPhoto(await loadPicturesfromMySQL()))()
     }, [imgPosition.reload])
 
-    const arrindexfromimgid = (clickedImgId: number): number =>
+    const arrIndexFromImgId = (clickedImgId: number): number =>
         filteredPhoto.findIndex((img) => +img['id'] === clickedImgId)
 
     const filteredPhoto =
@@ -46,11 +48,22 @@ export function PhotoGallery() {
 
     return (
         <div className="container">
+            <div className="header">
+                {pathname === '/' ? (
+                    <NavLink className="menu" to="/fotogalerie">
+                        Fotogalerie
+                    </NavLink>
+                ) : (
+                    <NavLink className="menu" to="/">
+                        Start
+                    </NavLink>
+                )}
+            </div>
             <SmallImages
                 imgPosition={imgPosition}
                 setImgPosition={setImgPosition}
                 eightPhoto={eightPhoto}
-                arrindexfromimgid={arrindexfromimgid}
+                arrIndexFromImgId={arrIndexFromImgId}
             />
             <BigImage
                 imgPosition={imgPosition}

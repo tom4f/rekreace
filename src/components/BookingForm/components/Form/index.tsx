@@ -60,7 +60,7 @@ export const Form = () => {
                 <div className="header">
                     <b>Závazná objednávka ubytování</b>
                 </div>
-                <div className="form_booking">
+                <div className="booking_form">
                     <div className="form_result_alert" style={result.style}>
                         {result.html}
                     </div>

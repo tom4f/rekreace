@@ -1,16 +1,29 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { commonPathMeteoFromFile } from '../../Meteo/api/apiPath'
 import './css/MeteoBarSmall.css'
 
 export const MeteoBarSmall = () => {
-
     const [meteoText, setMetoText] = useState('')
-    const [cssTransitionOut, setCssTransitionOut] = useState('meteo_box_transition_out')
+    const [cssTransitionOut, setCssTransitionOut] = useState(
+        'meteo_box_transition_out'
+    )
 
     const meteoBox = (meteoText) => {
-
         if (!meteoText) return
 
-        const [, date, time, temp, huminidy, presure, wind, dir, , dewPoint, windChill] = meteoText.split('|')
+        const [
+            ,
+            date,
+            time,
+            temp,
+            huminidy,
+            presure,
+            wind,
+            dir,
+            ,
+            dewPoint,
+            windChill,
+        ] = meteoText.split('|')
 
         return (
             <>
@@ -51,11 +64,13 @@ export const MeteoBarSmall = () => {
     }
 
     const asyncFunction = async () => {
-        const getTxt = await fetch(`./../davis/lipnonet_meteo.txt`)
-            .then(response => response.text())
-            .catch(err => console.log({ err }))
+        const getTxt = await fetch(
+            `${commonPathMeteoFromFile}/davis/lipnonet_meteo.txt`
+        )
+            .then((response) => response.text())
+            .catch((err) => console.log({ err }))
 
-        setMetoText(old => {
+        setMetoText((old) => {
             if (old !== getTxt) {
                 setCssTransitionOut('meteo_box_transition_out')
                 //setTimeout( () => setCssTransitionOut(''), 2000 )
@@ -76,6 +91,8 @@ export const MeteoBarSmall = () => {
     }, [cssTransitionOut])
 
     return (
-        <div className={`meteo_box ${cssTransitionOut}`}>{meteoBox(meteoText)}</div>
+        <div className={`meteo_box ${cssTransitionOut}`}>
+            {meteoBox(meteoText)}
+        </div>
     )
 }
