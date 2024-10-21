@@ -38,6 +38,5 @@ export const addCategoryLogic: addCategoryLogicType = async (
     setCategoryName
 ) => {
     event.preventDefault()
-    console.log(event)
     setCategoryName((orig) => ({ ...orig, 10: 'value' }))
 }

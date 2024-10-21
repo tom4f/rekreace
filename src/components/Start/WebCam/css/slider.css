@@ -69,19 +69,3 @@ background: #ffffff;
 cursor: pointer;
 opacity: 0.7;
 }
-
-.slider-day::-webkit-slider-thumb:hover {
-    opacity: 1;
-}
-
-.slider-day::-moz-range-thumb:hover {
-    opacity: 1;
-}
-
-.slider-hour::-webkit-slider-thumb:hover {
-    opacity: 1;
-}
-
-.slider-hour::-moz-range-thumb:hover {
-    opacity: 1;
-} 

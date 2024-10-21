@@ -1,9 +1,16 @@
 import { useEffect } from 'react'
-import './AlertBox.css'
+
+interface AlertBoxProps {
+    alert: {
+        header: string
+        text: string
+        color?: string
+    }
+}
 
 export const AlertBox = ({
     alert: { header = '', text = '', color = 'red' },
-}) => {
+}: AlertBoxProps) => {
     return header ? (
         <article className="alert" style={{ color }}>
             <header className="header">{`${header}`}</header>

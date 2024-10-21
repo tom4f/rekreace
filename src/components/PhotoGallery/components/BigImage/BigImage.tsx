@@ -34,12 +34,10 @@ export const BigImage = ({
                 .getComputedStyle(mainRef.current, '::after')
                 .getPropertyValue('background-image')
                 .slice(5, -2)
-            console.log(url)
 
             //const url = mainRef.current.style.backgroundImage.split('"')[1]
             const img = new Image()
             img.src = url
-            console.log(img)
             img.onload = () => {
                 if (!mainRef.current) return
                 const mainWidth = mainRef.current.offsetWidth
@@ -52,15 +50,6 @@ export const BigImage = ({
     }
 
     useEffect(() => {
-        var element = mainRef.current
-        console.log(element)
-        if (element) {
-            var prop = window
-                .getComputedStyle(element)
-                .getPropertyValue('background-image')
-            console.log(prop)
-        }
-
         setFadeIn(true)
         const timeout = setTimeout(() => setFadeIn(false), 500)
         isEdit && setEditPhoto(bigPhoto)

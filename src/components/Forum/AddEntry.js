@@ -28,15 +28,11 @@ class AddEntry extends Component {
     mySubmitHandler = (event) => {
         event.preventDefault()
         const data = new FormData(event.target)
-        console.log(
-            this.state.antispam + ' = ' + Number(data.get('antispamForm'))
-        )
         if (this.state.antispam === Number(data.get('antispamForm'))) {
             //axios.post('http://localhost/lipnonet/rekreace/api/pdo_create_forum.php', this.state)
             axios
                 .post(`${apiPath}/pdo_create_forum.php`, this.state)
                 .then((response) => {
-                    //console.log(response);
                     this.setState({
                         formVisible: false,
                         alert: 'ok',

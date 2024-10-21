@@ -64,10 +64,10 @@ export const Top = () => {
                     Fotogalerie
                 </NavLink>{' '}
                 |
-                <a className="menu" href="./windsms/" target="_top">
+                <NavLink className="menu" to="/meteoalarm">
                     {' '}
                     MeteoAlarm
-                </a>{' '}
+                </NavLink>{' '}
                 |
                 <a className="menu" href="./kaliste.php" target="_top">
                     {' '}
