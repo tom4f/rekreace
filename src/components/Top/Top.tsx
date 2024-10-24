@@ -39,13 +39,13 @@ export const Top = () => {
             </div>
 
             <div className="mainpictures">
-                <a href="rekreace.php">
+                <NavLink className="menu" to="/">
                     <img
                         className="img"
                         src={mainImg}
                         alt="Ubytování u Kučerů ve Frymburku - zima"
                     />
-                </a>
+                </NavLink>
             </div>
 
             <div className="header">
