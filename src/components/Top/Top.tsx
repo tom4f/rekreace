@@ -69,10 +69,10 @@ export const Top = () => {
                     MeteoAlarm
                 </NavLink>{' '}
                 |
-                <a className="menu" href="./kaliste.php" target="_top">
+                <NavLink className="menu" to="/kaliste">
                     {' '}
                     Kaliště
-                </a>{' '}
+                </NavLink>{' '}
                 |
                 <a className="menu" href="../4f/" target="_top">
                     {' '}

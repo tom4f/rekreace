@@ -6,14 +6,14 @@ import { SmallImages } from './components/SmallImages'
 import './css/App.css'
 import { allPhotoType, categoryObjType } from './TypeDefinition'
 
-export function PhotoGallery() {
+export function PhotoGallery({ category }: { category?: number }) {
     const { pathname } = useLocation()
     const [allPhoto, setAllPhoto] = useState<allPhotoType[]>([])
     const [imgPosition, setImgPosition] = useState({
         smallImgStart: 0,
         smallImgsSize: 8,
         current: 0,
-        category: 99999,
+        category: category || 99999,
         reload: 0,
     })
 
@@ -49,7 +49,7 @@ export function PhotoGallery() {
     return (
         <div className="container">
             <div className="header">
-                {pathname === '/' ? (
+                {pathname === '/' || pathname === '/kaliste' ? (
                     <NavLink className="menu" to="/fotogalerie">
                         Fotogalerie
                     </NavLink>

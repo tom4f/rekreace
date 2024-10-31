@@ -6,6 +6,7 @@ import { Bottom } from './components/Bottom/Bottom'
 import { Contact } from './components/Contact/Contact'
 import { Forum } from './components/Forum'
 import { Frymburk } from './components/Frymburk/Frymburk'
+import { Kaliste } from './components/Kaliste/Kaliste'
 import { Meteo } from './components/Meteo'
 import { MeteoAlarm } from './components/MeteoAlarm/MeteoAlarm'
 import { PhotoGallery } from './components/PhotoGallery/PhotoGallery'
@@ -61,6 +62,7 @@ export const App = () => {
                     <Route path="/forum/*" element={<Forum />} />
                     <Route path="/fotogalerie/*" element={<PhotoGallery />} />
                     <Route path="/meteoalarm/*" element={<MeteoAlarm />} />
+                    <Route path="/kaliste/*" element={<Kaliste />} />
                 </Routes>
                 {!hideTopBottom && <Bottom />}
             </div>

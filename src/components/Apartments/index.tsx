@@ -230,7 +230,7 @@ export const Apartments = () => {
                 je možnost parkování třech automobilů přímo na naší zahradě.
                 Dále můžete využívat
                 <b>
-                    &nbsp;<a href="zahrada">příjemné posezení</a>&nbsp;
+                    &nbsp;<a href="#zahrada">příjemné posezení</a>&nbsp;
                 </b>
                 na zahradě, nebo v zahradním altánku. Ubytování poskytujeme od
                 roku 1992 a naši hosté se k nám rádi vracejí.

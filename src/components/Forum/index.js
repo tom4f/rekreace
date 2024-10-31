@@ -40,8 +40,6 @@ export class Forum extends Component {
                 ? 'WHERE typ = 8'
                 : 'WHERE (typ < 4) OR (typ = 8)'
         axios
-            //.get('http://localhost/lipnonet/rekreace/api/pdo_read_forum.php', {
-            //.get('https://frymburk.com/rekreace/api/pdo_read_forum.php', {
             .post(
                 `${apiPath}/pdo_read_forum.php`,
                 { searchCriteria: searchCriteria },
@@ -87,7 +85,7 @@ export class Forum extends Component {
         const filteredEntriesCalculate = (searchText, selectedCategory) => {
             // select category
             const filteredEntriesByCategory =
-                selectedCategory === '999999'
+                selectedCategory === 999999
                     ? allEntries
                     : allEntries.filter((one) => one.typ === selectedCategory)
             this.setState({

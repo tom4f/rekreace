@@ -3,8 +3,23 @@ import { NavLink } from 'react-router-dom'
 import { apiPath } from '../../Meteo/api/apiPath'
 import './css/forum.css'
 
-export const Forum = () => {
-    const [items, setItems] = useState([])
+type Item = {
+    id: number
+    datum: string
+    text: string
+    jmeno: string
+    email?: string
+    typ: number
+}
+
+export const Forum = ({
+    searchCriteria = '',
+    showHeader = true,
+}: {
+    searchCriteria?: string
+    showHeader?: boolean
+}) => {
+    const [items, setItems] = useState<Item[]>([])
 
     const loadForumShort = () => {
         let xhr = new XMLHttpRequest()
@@ -21,16 +36,16 @@ export const Forum = () => {
             JSON.stringify({
                 start: 0,
                 limit: 5,
-                searchCriteria: '',
+                searchCriteria,
             })
         )
     }
 
     const showForum = () => {
-        let knihaUL = []
+        let knihaUL: any[] = []
         items.forEach((item) => {
             const { id, datum, text, jmeno, email } = item
-            const [year, month, day] = datum.split(' ')[0].split('-')
+            const [year, month, day] = datum?.split(' ')[0].split('-')
             const mailto = `mailto:${email}`
             knihaUL.push(
                 <li key={id}>
@@ -56,11 +71,13 @@ export const Forum = () => {
 
     return (
         <>
-            <div className="header">
-                <NavLink className="menu" to="/forum">
-                    LIPNO FÓRUM
-                </NavLink>
-            </div>
+            {showHeader && (
+                <div className="header">
+                    <NavLink className="menu" to="/forum?category=8">
+                        LIPNO FÓRUM
+                    </NavLink>
+                </div>
+            )}
 
             <section className="kniha-main-page">
                 <ul>{showForum()}</ul>
