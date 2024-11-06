@@ -1,5 +1,4 @@
-import { apiPath } from '../../../../Meteo/api/apiPath'
-import { fotoGalleryOwner } from '../../../api/read'
+import { apiPath, fotoGalleryOwner } from '../../../../Meteo/api/apiPath'
 import { editLogicType } from './../../../TypeDefinition'
 
 export const editLogic: editLogicType = async (

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { editStatus } from '../../api/read'
+import { editStatus } from '../../../Meteo/api/apiPath'
 import { BigImageType } from '../../TypeDefinition'
 import { EditImage } from './../EditImage/EditImage'
 import './BigImages.css'

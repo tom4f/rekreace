@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { AlertBox, Delay } from '../../../AlertBox/AlertBox'
 import { readCategoryName } from '../../api/read'
 import {
     AlertType,
@@ -7,7 +8,6 @@ import {
     formularType,
 } from './../../TypeDefinition'
 import './../BigImage/CategoryListEdit.css'
-import { AlertBox, Delay } from './AlertBox'
 import { EditCategory } from './EditCategory'
 import { ImageChange } from './ImageChange'
 import { editLogic } from './logic/editLogic'

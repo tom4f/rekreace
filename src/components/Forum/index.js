@@ -87,7 +87,7 @@ export class Forum extends Component {
             const filteredEntriesByCategory =
                 selectedCategory === 999999
                     ? allEntries
-                    : allEntries.filter((one) => one.typ === selectedCategory)
+                    : allEntries.filter((one) => +one.typ === selectedCategory)
             this.setState({
                 selectedCategory: selectedCategory,
                 filteredEntriesByCategory: filteredEntriesByCategory,

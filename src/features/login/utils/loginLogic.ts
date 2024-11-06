@@ -1,6 +1,8 @@
-import { apiPath } from '../../../../Meteo/api/apiPath'
-import { fotoGalleryOwner } from './../../../api/read'
-import { loginLogicType } from './../../../TypeDefinition'
+import {
+    apiPath,
+    fotoGalleryOwner,
+} from '../../../components/Meteo/api/apiPath'
+import { loginLogicType } from '../../../components/PhotoGallery/TypeDefinition'
 
 export const loginLogic: loginLogicType = async (
     event,

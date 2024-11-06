@@ -1,15 +1,19 @@
 import { useEffect } from 'react'
-import './AlertBox.css'
 
 export const AlertBox = ({
     alert: { header = '', text = '', color = 'red' },
 }) => {
     return header ? (
-        <article className="alert" style={{ color }}>
-            <header className="header">{`${header}`}</header>
-            <header className="text"> {`${text}`}</header>
+        <article
+            className="alert"
+            style={{ color, textAlign: 'center', margin: '0' }}
+        >
+            <header style={{ fontSize: '30px' }}>{`${header}`}</header>
+            <header style={{ fontSize: '20px' }}>{text}</header>
         </article>
-    ) : null
+    ) : (
+        <></>
+    )
 }
 
 export const Delay = (

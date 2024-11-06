@@ -1,36 +1,29 @@
-import { useState, useEffect } from 'react'
+import { Login, useLoginStatus } from '../../../../features/login'
 import { editImage } from '../../TypeDefinition'
-import { Login } from './Login'
-import { Formular } from './Formular'
-import { fotoGalleryOwner } from '../../api/read'
 import './EditImage.css'
+import { Formular } from './Formular'
 
-export const EditImage = ( { editPhoto, setEditPhoto, setImgPosition, categoryObj }: editImage ) => {
-   
-    const [ loginData, setLoginData ]   = useState({
-        isLogged : false,
-        webToken : 'error',
-        webAccess: 'error',
-        webUser  : 'error'
-    })
+export const EditImage = ({
+    editPhoto,
+    setEditPhoto,
+    setImgPosition,
+    categoryObj,
+}: editImage) => {
+    const { loginData, setLoginData } = useLoginStatus()
 
-    const applySessionStorageLoginData = (): void => {
-        const clientJSON = sessionStorage.getItem('client')
-        if ( !clientJSON ) return
-        const clientObj = JSON.parse( clientJSON );
-        (fotoGalleryOwner === clientObj.webAccess) && setLoginData( clientObj )   
-    }
-
-    useEffect( () => applySessionStorageLoginData() , [] )
-  
     return (
         <>
-            { loginData.isLogged
-                ? <Formular editPhoto={editPhoto} setEditPhoto={setEditPhoto}
-                            loginData={loginData}
-                            setImgPosition={setImgPosition} categoryObj={categoryObj} />
-                : <Login setLoginData={setLoginData}/>
-            }
+            {loginData.isLogged ? (
+                <Formular
+                    editPhoto={editPhoto}
+                    setEditPhoto={setEditPhoto}
+                    loginData={loginData}
+                    setImgPosition={setImgPosition}
+                    categoryObj={categoryObj}
+                />
+            ) : (
+                <Login setLoginData={setLoginData} />
+            )}
         </>
     )
 }

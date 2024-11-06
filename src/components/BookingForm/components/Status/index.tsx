@@ -7,6 +7,7 @@ export const Status = () => {
     type ArrOfObjType = { [key: string]: string }[] | null
     const [formResult, setFormResult] = useState<ArrOfObjType>(null)
     const [lastUpdate, setLastUpdate] = useState<string | null>(null)
+    const [refetchCount, setRefetchCount] = useState(0)
 
     const fetchRequests = async () => {
         const fetchResult: any = await fetch(
@@ -36,7 +37,7 @@ export const Status = () => {
 
     useEffect(() => {
         fetchRequests()
-    }, [])
+    }, [refetchCount])
 
     return (
         <>
@@ -48,7 +49,10 @@ export const Status = () => {
                     className="form_result_alert edit_alert"
                     id="form_edit_alert"
                 ></div>
-                <ShowTable formResult={formResult} />
+                <ShowTable
+                    formResult={formResult}
+                    setRefetchCount={setRefetchCount}
+                />
                 <div className="booking_info">
                     Poslední změna : {lastUpdate}
                     <span id="last_booking_update"></span>

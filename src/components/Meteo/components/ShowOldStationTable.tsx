@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { apiPath } from '../api/apiPath'
-import TableStyle from './../css/Table.module.scss'
+import TableStyle from './../css/Table.module.css'
 import { DateContext } from './DateContext'
 import { oldPocasiType, rgbCssType } from './TypeDefinition'
 

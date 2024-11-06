@@ -130,14 +130,3 @@ export type loginLogicType = (
     setAlert: React.Dispatch<React.SetStateAction<AlertType>>,
     setLoginData: any
 ) => Promise<void>
-
-export type LoginType = {
-    setLoginData: React.Dispatch<
-        React.SetStateAction<{
-            isLogged: boolean
-            webToken: string
-            webAccess: string
-            webUser: string
-        }>
-    >
-}

@@ -1,16 +1,45 @@
 import { ReactNode } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-const StyledDiv = styled.div`
+type CustomStyle = {
+    [key: string]: string
+}
+
+export const Modal = ({
+    setIsVisible,
+    children,
+    customStyle,
+}: {
+    setIsVisible: (status: boolean) => void
+    children: ReactNode
+    customStyle?: CustomStyle
+}) => {
+    return (
+        <StyledDiv customStyle={customStyle}>
+            <CloseDiv onClick={() => setIsVisible(false)}>X&nbsp;</CloseDiv>
+            <>{children}</>
+        </StyledDiv>
+    )
+}
+
+const StyledDiv = styled.div<{
+    customStyle?: CustomStyle
+}>`
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    width: 100%;
-    height: 100%;
     z-index: 2;
     background-color: rgba(50, 50, 50, 0.8);
+    width: 100%;
+    height: 100%;
+
+    ${({ customStyle }) =>
+        customStyle &&
+        css`
+            ${customStyle}
+        `}
 `
 
 const CloseDiv = styled.div`
@@ -18,20 +47,5 @@ const CloseDiv = styled.div`
     text-align: right;
     cursor: pointer;
     background-color: rgba(50, 50, 50, 0.8);
-    height: 20px;
+    height: 25px;
 `
-
-export const Modal = ({
-    setIsVisible,
-    children,
-}: {
-    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
-    children: ReactNode
-}) => {
-    return (
-        <StyledDiv>
-            <CloseDiv onClick={() => setIsVisible(false)}>X&nbsp;</CloseDiv>
-            <>{children}</>
-        </StyledDiv>
-    )
-}

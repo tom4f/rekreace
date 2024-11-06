@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { apiPath } from '../api/apiPath'
-import FormularStyle from './../css/Formular.module.scss'
-import ModifyPocasiStyle from './../css/ModifyPocasi.module.scss'
+import FormularStyle from './../css/Formular.module.css'
+import ModifyPocasiStyle from './../css/ModifyPocasi.module.css'
 import { AddPocasiType } from './TypeDefinition'
 
 export const AddPocasi = ({
