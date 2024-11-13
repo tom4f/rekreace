@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { apiPath } from '../../Meteo/api/apiPath'
+import { apiPath } from '../../../api/paths'
 import './css/forum.css'
 
 type Item = {

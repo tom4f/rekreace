@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { commonPath } from '../../Meteo/api/apiPath'
+import { commonPath } from '../../../api/paths'
 import './css/MeteoBarBig.css'
 
 export const MeteoBarBig = () => {

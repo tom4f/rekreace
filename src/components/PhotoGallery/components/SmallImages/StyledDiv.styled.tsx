@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { imgFolder } from '../../../../api/photoGalleryPath'
+import { imgFolder } from '../../../../api/paths'
 import { imgPositionType } from '../../TypeDefinition'
 
 interface StyledDivTypes {

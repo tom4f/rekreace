@@ -1,4 +1,5 @@
-import { apiPath, fotoGalleryOwner } from '../../Meteo/api/apiPath'
+// import { apiPath, fotoGalleryOwner } from '../../../api/photoGalleryPath'
+import { apiPath, fotoGalleryOwner } from '../../../api/paths'
 
 export const loadPicturesfromMySQL = () =>
     fetch(`${apiPath}/pdo_read_foto.php?fotoGalleryOwner=${fotoGalleryOwner}`)

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Component } from 'react'
-import { apiPath } from '../Meteo/api/apiPath'
+import { apiPath } from '../../api/paths'
 import AddEntry from './AddEntry'
 import './css/forum.css'
 import Message from './Forum'

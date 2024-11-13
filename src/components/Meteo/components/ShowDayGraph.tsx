@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { commonPath } from '../api/apiPath'
+import { commonPath } from '../../../api/paths'
 import ShowDayGraphStyle from './../css/ShowDayGraph.module.css'
 import { ChangeDate } from './ChangeDate'
 import { DateContext } from './DateContext'

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 
-import { apiPath } from '../../Meteo/api/apiPath'
+import { apiPath } from '../../../api/paths'
 import { AlertBox, Delay } from './AlertBox'
 
 const ForgetPassword: React.FC = (): React.ReactElement => {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { apiPath } from '../../../Meteo/api/apiPath'
+import { apiPath } from '../../../../api/paths'
 import './css/formular.css'
 import { formResultAlert } from './formResultAlert'
 

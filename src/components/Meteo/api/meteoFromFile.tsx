@@ -1,5 +1,5 @@
+import { commonPathMeteoFromFile } from '../../../api/paths'
 import { loadDataFunctionType, pureData } from '../components/TypeDefinition'
-import { commonPathMeteoFromFile } from './apiPath'
 
 export const loadPocasiAsync: loadDataFunctionType = async (
     start,

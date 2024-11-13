@@ -1,7 +1,4 @@
-import {
-    apiPath,
-    fotoGalleryOwner,
-} from '../../../components/Meteo/api/apiPath'
+import { apiPath, fotoGalleryOwner } from '../../../api/paths'
 import { loginLogicType } from '../../../components/PhotoGallery/TypeDefinition'
 
 export const loginLogic: loginLogicType = async (

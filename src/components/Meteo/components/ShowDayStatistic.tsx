@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { commonPathMeteoFromFile } from '../api/apiPath'
+import { commonPathMeteoFromFile } from '../../../api/paths'
 import StatisticStyle from './../css/Statistic.module.css'
 import { ChangeDate } from './ChangeDate'
 import { DateContext } from './DateContext'

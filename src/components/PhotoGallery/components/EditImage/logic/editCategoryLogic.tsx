@@ -1,4 +1,4 @@
-import { apiPath, fotoGalleryOwner } from '../../../../Meteo/api/apiPath'
+import { apiPath, fotoGalleryOwner } from '../../../../../api/paths'
 import {
     addCategoryLogicType,
     editCategoryLogicType,

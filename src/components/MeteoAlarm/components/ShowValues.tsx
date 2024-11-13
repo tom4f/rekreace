@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 
-import { apiPath } from '../../Meteo/api/apiPath'
+import { apiPath } from '../../../api/paths'
 import { AlertBox, Delay } from './AlertBox'
 import { ShowRainConfig } from './ShowRainConfig'
 import { ShowTodayRainLimit } from './ShowTodayRainLimit'

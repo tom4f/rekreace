@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
-import { apiPath } from '../api/apiPath'
+import { apiPath } from '../../../api/paths'
 import TableStyle from './../css/Table.module.css'
 import { DateContext } from './DateContext'
 import { davisType } from './TypeDefinition'

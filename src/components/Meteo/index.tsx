@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { editStatus } from './api/apiPath'
+import { editStatus } from '../../api/paths'
 import { DateProvider } from './components/DateContext'
 import { DavisGraphs } from './components/DavisGraphs'
 import { DavisGraphsDay } from './components/DavisGraphsDay'

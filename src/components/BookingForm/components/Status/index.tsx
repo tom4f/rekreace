@@ -1,57 +1,51 @@
-import { useEffect, useState } from 'react'
-import { apiPath } from '../../../Meteo/api/apiPath'
+import { useGetBooking } from '../../../../features/booking/hooks'
+import { useLoginStatus } from '../../../../features/login'
 import './css/status.css'
 import { ShowTable } from './ShowTable'
 
 export const Status = () => {
-    type ArrOfObjType = { [key: string]: string }[] | null
-    const [formResult, setFormResult] = useState<ArrOfObjType>(null)
-    const [lastUpdate, setLastUpdate] = useState<string | null>(null)
-    const [refetchCount, setRefetchCount] = useState(0)
+    const {
+        loginData: { isLogged, webUser },
+    } = useLoginStatus()
+    const { isLoading, isSuccess, isError, data: formResult } = useGetBooking()
+    let lastUpdate = ''
+    if (isSuccess) {
+        const lastUpdateLong = formResult.reduce(
+            (total, { lastUpdate: currentLastUpdate }) => {
+                return total.localeCompare(currentLastUpdate) > 0
+                    ? total
+                    : currentLastUpdate
+            },
+            '0000-01-01 00:00:00'
+        )
 
-    const fetchRequests = async () => {
-        const fetchResult: any = await fetch(
-            `${apiPath}/pdo_read_booking.php`
-        ).then((response) => response.json())
-
-        if (Array.isArray(fetchResult)) {
-            const lastUpdateLong = fetchResult.reduce(
-                (total, { lastUpdate: currentLastUpdate }) => {
-                    return total.localeCompare(currentLastUpdate) > 0
-                        ? total
-                        : currentLastUpdate
-                },
-                '0000-01-01 00:00:00'
-            )
-
-            const lastUpdateShort = lastUpdateLong
-                .slice(0, 10)
-                .split('-')
-                .reverse()
-                .join('.')
-
-            setLastUpdate(lastUpdateShort)
-            setFormResult(fetchResult)
-        }
+        lastUpdate = lastUpdateLong.slice(0, 10).split('-').reverse().join('.')
     }
 
-    useEffect(() => {
-        fetchRequests()
-    }, [refetchCount])
+    const skeletonFormResult = Array.from({ length: 53 }, (_, index) => ({
+        week: index + 1,
+        g1_status: 0,
+        g1_text: '',
+        g2_status: 0,
+        g2_text: '',
+        g3_status: 0,
+        g3_text: '',
+        lastUpdate: '',
+    }))
 
     return (
         <>
             <div className="header" id="user-logged-in">
-                <b>Aktuální obsazenost</b>
+                Aktuální obsazenost - {isLogged && `Uživatel: ${webUser}`}
             </div>
             <div className="booking_status">
                 <div
                     className="form_result_alert edit_alert"
                     id="form_edit_alert"
                 ></div>
+                {isError && <>Něco se pokazilo, zkuste to prosím později.</>}
                 <ShowTable
-                    formResult={formResult}
-                    setRefetchCount={setRefetchCount}
+                    formResult={isSuccess ? formResult : skeletonFormResult}
                 />
                 <div className="booking_info">
                     Poslední změna : {lastUpdate}
@@ -83,3 +77,63 @@ export const Status = () => {
         </>
     )
 }
+
+/* 
+UPDATE `obsazenost` SET `week` = '53' WHERE `obsazenost`.`week` = 52;
+UPDATE `obsazenost` SET `week` = '52' WHERE `obsazenost`.`week` = 51;
+UPDATE `obsazenost` SET `week` = '51' WHERE `obsazenost`.`week` = 50;
+
+UPDATE `obsazenost` SET `week` = '50' WHERE `obsazenost`.`week` = 49;
+UPDATE `obsazenost` SET `week` = '49' WHERE `obsazenost`.`week` = 48;
+UPDATE `obsazenost` SET `week` = '48' WHERE `obsazenost`.`week` = 47;
+UPDATE `obsazenost` SET `week` = '47' WHERE `obsazenost`.`week` = 46;
+UPDATE `obsazenost` SET `week` = '46' WHERE `obsazenost`.`week` = 45;
+UPDATE `obsazenost` SET `week` = '45' WHERE `obsazenost`.`week` = 44;
+UPDATE `obsazenost` SET `week` = '44' WHERE `obsazenost`.`week` = 43;
+UPDATE `obsazenost` SET `week` = '43' WHERE `obsazenost`.`week` = 42;
+UPDATE `obsazenost` SET `week` = '42' WHERE `obsazenost`.`week` = 41;
+UPDATE `obsazenost` SET `week` = '41' WHERE `obsazenost`.`week` = 40;
+
+UPDATE `obsazenost` SET `week` = '40' WHERE `obsazenost`.`week` = 39;
+UPDATE `obsazenost` SET `week` = '39' WHERE `obsazenost`.`week` = 38;
+UPDATE `obsazenost` SET `week` = '38' WHERE `obsazenost`.`week` = 37;
+UPDATE `obsazenost` SET `week` = '37' WHERE `obsazenost`.`week` = 36;
+UPDATE `obsazenost` SET `week` = '36' WHERE `obsazenost`.`week` = 35;
+UPDATE `obsazenost` SET `week` = '35' WHERE `obsazenost`.`week` = 34;
+UPDATE `obsazenost` SET `week` = '34' WHERE `obsazenost`.`week` = 33;
+UPDATE `obsazenost` SET `week` = '33' WHERE `obsazenost`.`week` = 32;
+UPDATE `obsazenost` SET `week` = '32' WHERE `obsazenost`.`week` = 31;
+UPDATE `obsazenost` SET `week` = '31' WHERE `obsazenost`.`week` = 30;
+
+UPDATE `obsazenost` SET `week` = '30' WHERE `obsazenost`.`week` = 29;
+UPDATE `obsazenost` SET `week` = '29' WHERE `obsazenost`.`week` = 28;
+UPDATE `obsazenost` SET `week` = '28' WHERE `obsazenost`.`week` = 27;
+UPDATE `obsazenost` SET `week` = '27' WHERE `obsazenost`.`week` = 26;
+UPDATE `obsazenost` SET `week` = '26' WHERE `obsazenost`.`week` = 25;
+UPDATE `obsazenost` SET `week` = '25' WHERE `obsazenost`.`week` = 24;
+UPDATE `obsazenost` SET `week` = '24' WHERE `obsazenost`.`week` = 23;
+UPDATE `obsazenost` SET `week` = '23' WHERE `obsazenost`.`week` = 22;
+UPDATE `obsazenost` SET `week` = '22' WHERE `obsazenost`.`week` = 21;
+UPDATE `obsazenost` SET `week` = '21' WHERE `obsazenost`.`week` = 20;
+
+UPDATE `obsazenost` SET `week` = '20' WHERE `obsazenost`.`week` = 19;
+UPDATE `obsazenost` SET `week` = '19' WHERE `obsazenost`.`week` = 18;
+UPDATE `obsazenost` SET `week` = '18' WHERE `obsazenost`.`week` = 17;
+UPDATE `obsazenost` SET `week` = '17' WHERE `obsazenost`.`week` = 16;
+UPDATE `obsazenost` SET `week` = '16' WHERE `obsazenost`.`week` = 15;
+UPDATE `obsazenost` SET `week` = '15' WHERE `obsazenost`.`week` = 14;
+UPDATE `obsazenost` SET `week` = '14' WHERE `obsazenost`.`week` = 13;
+UPDATE `obsazenost` SET `week` = '13' WHERE `obsazenost`.`week` = 12;
+UPDATE `obsazenost` SET `week` = '12' WHERE `obsazenost`.`week` = 11;
+UPDATE `obsazenost` SET `week` = '11' WHERE `obsazenost`.`week` = 10;
+
+UPDATE `obsazenost` SET `week` = '10' WHERE `obsazenost`.`week` = 9;
+UPDATE `obsazenost` SET `week` = '9' WHERE `obsazenost`.`week` = 8;
+UPDATE `obsazenost` SET `week` = '8' WHERE `obsazenost`.`week` = 7;
+UPDATE `obsazenost` SET `week` = '7' WHERE `obsazenost`.`week` = 6;
+UPDATE `obsazenost` SET `week` = '6' WHERE `obsazenost`.`week` = 5;
+UPDATE `obsazenost` SET `week` = '5' WHERE `obsazenost`.`week` = 4;
+UPDATE `obsazenost` SET `week` = '4' WHERE `obsazenost`.`week` = 3;
+UPDATE `obsazenost` SET `week` = '3' WHERE `obsazenost`.`week` = 2;
+UPDATE `obsazenost` SET `week` = '2' WHERE `obsazenost`.`week` = 1;
+UPDATE `obsazenost` SET `week` = '1' WHERE `obsazenost`.`week` = 0; */

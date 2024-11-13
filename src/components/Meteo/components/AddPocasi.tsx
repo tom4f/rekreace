@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { apiPath } from '../api/apiPath'
+import { apiPath } from '../../../api/paths'
 import FormularStyle from './../css/Formular.module.css'
 import ModifyPocasiStyle from './../css/ModifyPocasi.module.css'
 import { AddPocasiType } from './TypeDefinition'

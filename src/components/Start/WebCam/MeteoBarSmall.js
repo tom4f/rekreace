@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { commonPathMeteoFromFile } from '../../Meteo/api/apiPath'
+import { commonPathMeteoFromFile } from '../../../api/paths'
 import './css/MeteoBarSmall.css'
 
 export const MeteoBarSmall = () => {

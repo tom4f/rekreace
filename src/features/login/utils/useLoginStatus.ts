@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { fotoGalleryOwner } from '../../../components/Meteo/api/apiPath'
+import { fotoGalleryOwner } from '../../../api/paths'
 
 export const useLoginStatus = () => {
-
     const [loginData, setLoginData] = useState({
         isLogged: false,
         webToken: 'error',
@@ -21,6 +20,6 @@ export const useLoginStatus = () => {
 
     return {
         loginData,
-        setLoginData
+        setLoginData,
     }
 }

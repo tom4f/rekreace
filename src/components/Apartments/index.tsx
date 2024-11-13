@@ -44,7 +44,7 @@ import z4b from './../../images/z4b.jpg'
 
 import { useState } from 'react'
 import styled from 'styled-components'
-import { imgFolder } from '../../api/photoGalleryPath'
+import { imgFolder } from '../../api/paths'
 import { Modal } from '../Modal/Modal'
 import garsonka1_planek from './../../images/garsonka1_planek.gif'
 import garsonka2_planek from './../../images/garsonka2_planek.gif'

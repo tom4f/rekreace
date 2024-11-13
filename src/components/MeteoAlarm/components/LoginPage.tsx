@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-import { apiPath, commonPathMeteoFromFile } from '../../Meteo/api/apiPath'
+import { apiPath, commonPathMeteoFromFile } from '../../../api/paths'
 import { AlertBox, Delay } from './AlertBox'
 
 type myItems = {

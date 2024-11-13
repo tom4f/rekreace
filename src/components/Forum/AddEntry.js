@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Component } from 'react'
-import { apiPath } from '../Meteo/api/apiPath'
+import { apiPath } from '../../api/paths'
 // test
 class AddEntry extends Component {
     constructor(props) {

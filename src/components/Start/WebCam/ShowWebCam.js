@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { commonPath } from '../../Meteo/api/apiPath'
+import { commonPath } from '../../../api/paths'
 
 export const ShowWebCam = ({ state: { day, hour, minute, isLiveImg } }) => {
     const [liveImgSrc, setLiveImgSrc] = useState(
