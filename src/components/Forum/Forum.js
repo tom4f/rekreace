@@ -11,7 +11,7 @@ const Message = ({ entries }) => {
         'Kaliště 993m n.m.',
     ]
 
-    return Object.keys(entries).map((key) => (
+    return entries ? Object.keys(entries).map((key) => (
         <div key={key} className="kniha_one_entry">
             <div className="kniha_datum">
                 {typText[entries[key].typ]} - {entries[key].datum.slice(0, 10)}
@@ -29,7 +29,7 @@ const Message = ({ entries }) => {
             </div>
             <div className="kniha_text">{entries[key].text}</div>
         </div>
-    ))
+    )) : <></>
 }
 
 export default Message

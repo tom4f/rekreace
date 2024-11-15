@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useAlert } from '../../../../features/alert/utils/useAlert'
 import {
-    GetBookingResponse,
     useEditBooking,
+    useGetBooking,
 } from '../../../../features/booking/hooks'
 import {
     StyledForm,
@@ -12,29 +12,25 @@ import {
     useLoginStatus,
 } from '../../../../features/login'
 import { AlertBox } from '../../../AlertBox/AlertBox'
-import { firstWeekStart } from '../Status/ShowTable'
+import { firstWeekStart, skeletonBookingData } from '../Status/ShowTable'
 
 type EditType = {
     week: number
     apartmentNr: 1 | 2 | 3
-    formResult: GetBookingResponse
     setIsEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const Edit = ({
-    formResult,
-    week,
-    apartmentNr,
-    setIsEdit,
-}: EditType) => {
+export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
+    const { isSuccess, data: bookingData } = useGetBooking()
     const weekArrIndex = week - 1
     const { mutate } = useEditBooking()
     const { alert, setAlert } = useAlert()
+    const data = isSuccess ? bookingData : skeletonBookingData
     const [gText, setGText] = useState(
-        formResult[weekArrIndex][`g${apartmentNr}_text`]
+        data[weekArrIndex][`g${apartmentNr}_text`]
     )
     const [gStatus, setGStatus] = useState(
-        formResult[weekArrIndex][`g${apartmentNr}_status`]
+        data[weekArrIndex][`g${apartmentNr}_status`]
     )
 
     const {
@@ -83,7 +79,7 @@ export const Edit = ({
         })
     }
 
-    if (formResult?.length && week && apartmentNr) {
+    if (data?.length && week && apartmentNr) {
         const SelectStatus = () => {
             let statusArr = [
                 'volno',

@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { Apartments } from './components/Apartments'
 import { BookingForm } from './components/BookingForm/BookingForm'
@@ -20,9 +20,10 @@ export const App = () => {
     const hideTopBottom =
         pathname === '/fotogalerie' || pathname === '/meteoalarm'
     return (
-        <div>
-            <Helmet>
-                <style type="text/css">{`
+        <HelmetProvider>
+            <div>
+                <Helmet>
+                    <style type="text/css">{`
                     body {
                         line-height: 1.6;
  
@@ -39,33 +40,36 @@ export const App = () => {
                                 ? 'BenchNine, Arial, Helvetica, sans-serif'
                                 : 'Verdana, Helvetica, sans-serif'
                         };
-        }
-
-    `}</style>
-            </Helmet>
-            <div
-                className="top_container"
-                style={{
-                    maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
-                    height: `${pathname === '/meteoalarm' ? '100vh' : 'unset'}`,
-                }}
-            >
-                {!hideTopBottom && <Top />}
-                <Routes>
-                    <Route path="/" element={<Start />} />
-                    <Route path="/apartmany/*" element={<Apartments />} />
-                    <Route path="/objednavka/*" element={<BookingForm />} />
-                    <Route path="/ceny/*" element={<Prices />} />
-                    <Route path="/kontakt/*" element={<Contact />} />
-                    <Route path="/frymburk/*" element={<Frymburk />} />
-                    <Route path="/meteostanice/*" element={<Meteo />} />
-                    <Route path="/forum/*" element={<Forum />} />
-                    <Route path="/fotogalerie/*" element={<PhotoGallery />} />
-                    <Route path="/meteoalarm/*" element={<MeteoAlarm />} />
-                    <Route path="/kaliste/*" element={<Kaliste />} />
-                </Routes>
-                {!hideTopBottom && <Bottom />}
+                    }
+                `}</style>
+                </Helmet>
+                <div
+                    className="top_container"
+                    style={{
+                        maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
+                        height: `${pathname === '/meteoalarm' ? '100vh' : 'unset'}`,
+                    }}
+                >
+                    {!hideTopBottom && <Top />}
+                    <Routes>
+                        <Route path="/" element={<Start />} />
+                        <Route path="/apartmany/*" element={<Apartments />} />
+                        <Route path="/objednavka/*" element={<BookingForm />} />
+                        <Route path="/ceny/*" element={<Prices />} />
+                        <Route path="/kontakt/*" element={<Contact />} />
+                        <Route path="/frymburk/*" element={<Frymburk />} />
+                        <Route path="/meteostanice/*" element={<Meteo />} />
+                        <Route path="/forum/*" element={<Forum />} />
+                        <Route
+                            path="/fotogalerie/*"
+                            element={<PhotoGallery />}
+                        />
+                        <Route path="/meteoalarm/*" element={<MeteoAlarm />} />
+                        <Route path="/kaliste/*" element={<Kaliste />} />
+                    </Routes>
+                    {!hideTopBottom && <Bottom />}
+                </div>
             </div>
-        </div>
+        </HelmetProvider>
     )
 }

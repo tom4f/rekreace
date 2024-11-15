@@ -1,13 +1,21 @@
 import { useState } from 'react'
-import { GetBookingResponse } from '../../../../features/booking/hooks'
+import { useLocation } from 'react-router-dom'
+import { useGetBooking } from '../../../../features/booking/hooks'
 import { useLoginStatus } from '../../../../features/login'
 import { Modal } from '../../../Modal/Modal'
 import { Edit } from '../Edit/Edit'
 import './css/showTable.css'
 
-type FormResultType = {
-    formResult: GetBookingResponse
-}
+export const skeletonBookingData = Array.from({ length: 53 }, (_, index) => ({
+    week: index + 1,
+    g1_status: 0,
+    g1_text: '',
+    g2_status: 0,
+    g2_text: '',
+    g3_status: 0,
+    g3_text: '',
+    lastUpdate: '',
+}))
 
 export const firstWeekStart = (week = 0) => {
     const year = new Date().getFullYear()
@@ -28,7 +36,9 @@ export const firstWeekStart = (week = 0) => {
     }
 }
 
-export const ShowTable = ({ formResult }: FormResultType) => {
+export const ShowTable = () => {
+    const { isSuccess, data: bookingData } = useGetBooking()
+    const { pathname } = useLocation()
     const [apartmentNr, setApartmentNr] = useState<1 | 2 | 3>()
     const [dbWeek, setDbWeek] = useState<number>()
     const [isEdit, setIsEdit] = useState(false)
@@ -36,6 +46,8 @@ export const ShowTable = ({ formResult }: FormResultType) => {
     const {
         loginData: { isLogged },
     } = useLoginStatus()
+
+    const data = isSuccess ? bookingData : skeletonBookingData
 
     const editTermin = (event: React.MouseEvent<HTMLTableCellElement>) => {
         if (!isLogged) return null
@@ -45,10 +57,13 @@ export const ShowTable = ({ formResult }: FormResultType) => {
         if (!childsTd) return null
         if (!clickedTd) return null
         let apartmentNr = clickedTd.cellIndex
-        // get clicked week from first column, e.g. 27 from (27) 27.06-04.07.2020
         const clickedWeek = childsTd[0].textContent?.match(/\((.*?)\)/)
 
-        if (apartmentNr && clickedWeek?.length) {
+        if (
+            apartmentNr &&
+            clickedWeek?.length &&
+            pathname === '/objednavka/edit'
+        ) {
             setApartmentNr(apartmentNr as 1 | 2 | 3)
             setDbWeek(+clickedWeek[1])
             setIsEdit(true)
@@ -64,10 +79,7 @@ export const ShowTable = ({ formResult }: FormResultType) => {
     ]
 
     const createTr = (week: number) => {
-        if (!formResult?.length) return <></>
-
-        const weekModified =
-            week < formResult.length ? week : week - formResult.length + 1
+        const weekModified = week < data.length ? week : week - data.length + 1
         const { date: dateStart, month: monthStart } = firstWeekStart(week - 1)
         const {
             date: dateEnd,
@@ -81,31 +93,30 @@ export const ShowTable = ({ formResult }: FormResultType) => {
                 <td>{termin}</td>
                 <td
                     onClick={(e) => editTermin(e)}
-                    style={bgColor[+formResult[weekArrIndex]['g1_status']]}
+                    style={bgColor[+data[weekArrIndex]['g1_status']]}
                 >
-                    {formResult[weekArrIndex]['g1_text']}
+                    {data[weekArrIndex]['g1_text']}
                 </td>
                 <td
                     onClick={editTermin}
-                    style={bgColor[+formResult[weekArrIndex]['g2_status']]}
+                    style={bgColor[+data[weekArrIndex]['g2_status']]}
                 >
-                    {formResult[weekArrIndex]['g2_text']}
+                    {data[weekArrIndex]['g2_text']}
                 </td>
                 <td
                     onClick={editTermin}
-                    style={bgColor[+formResult[weekArrIndex]['g3_status']]}
+                    style={bgColor[+data[weekArrIndex]['g3_status']]}
                 >
-                    {formResult[weekArrIndex]['g3_text']}
+                    {data[weekArrIndex]['g3_text']}
                 </td>
             </tr>
         )
     }
 
     const allTr: JSX.Element[] = []
-    if (!formResult?.length) return null
     for (
         let week = firstWeekStart(0).actualWeek;
-        week < firstWeekStart(0).actualWeek + formResult.length;
+        week < firstWeekStart(0).actualWeek + data.length;
         week++
     ) {
         allTr.push(createTr(week))
@@ -122,7 +133,6 @@ export const ShowTable = ({ formResult }: FormResultType) => {
                             <Edit
                                 week={dbWeek}
                                 apartmentNr={apartmentNr}
-                                formResult={formResult}
                                 setIsEdit={setIsEdit}
                             />
                         </>

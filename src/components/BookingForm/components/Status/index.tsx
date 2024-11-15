@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import { useGetBooking } from '../../../../features/booking/hooks'
 import { useLoginStatus } from '../../../../features/login'
 import './css/status.css'
@@ -7,36 +8,31 @@ export const Status = () => {
     const {
         loginData: { isLogged, webUser },
     } = useLoginStatus()
-    const { isLoading, isSuccess, isError, data: formResult } = useGetBooking()
-    let lastUpdate = ''
-    if (isSuccess) {
+    const { pathname } = useLocation()
+    const { isSuccess, isError, data: formResult } = useGetBooking()
+
+    const lastUpdate = () => {
+        if (!isSuccess) return '?'
+
         const lastUpdateLong = formResult.reduce(
-            (total, { lastUpdate: currentLastUpdate }) => {
-                return total.localeCompare(currentLastUpdate) > 0
-                    ? total
-                    : currentLastUpdate
+            (lastUpdateAccumulator, week) => {
+                return lastUpdateAccumulator.localeCompare(week.lastUpdate) > 0
+                    ? lastUpdateAccumulator
+                    : week.lastUpdate
             },
             '0000-01-01 00:00:00'
         )
 
-        lastUpdate = lastUpdateLong.slice(0, 10).split('-').reverse().join('.')
+        return lastUpdateLong.slice(0, 10).split('-').reverse().join('.')
     }
-
-    const skeletonFormResult = Array.from({ length: 53 }, (_, index) => ({
-        week: index + 1,
-        g1_status: 0,
-        g1_text: '',
-        g2_status: 0,
-        g2_text: '',
-        g3_status: 0,
-        g3_text: '',
-        lastUpdate: '',
-    }))
 
     return (
         <>
             <div className="header" id="user-logged-in">
-                Aktuální obsazenost - {isLogged && `Uživatel: ${webUser}`}
+                Aktuální obsazenost
+                {pathname === '/objednavka/edit' &&
+                    isLogged &&
+                    ` - Uživatel: ${webUser}`}
             </div>
             <div className="booking_status">
                 <div
@@ -44,11 +40,9 @@ export const Status = () => {
                     id="form_edit_alert"
                 ></div>
                 {isError && <>Něco se pokazilo, zkuste to prosím později.</>}
-                <ShowTable
-                    formResult={isSuccess ? formResult : skeletonFormResult}
-                />
+                <ShowTable />
                 <div className="booking_info">
-                    Poslední změna : {lastUpdate}
+                    Poslední změna : {lastUpdate()}
                     <span id="last_booking_update"></span>
                     <br />
                     Pro zamluvení termínu použijte

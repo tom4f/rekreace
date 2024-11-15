@@ -6,12 +6,13 @@ const PostsPerPage = ( {filteredEntriesBySearch, paginate} ) => {
         const postsPerPage =  Number(event.target.value);
         const begin = 0;
         const end = begin + postsPerPage - 1;
-        paginate({
+        paginate(old => ({
+            ...old,
             begin : 0,
             next : 0,
             postsPerPage: postsPerPage,
             entries : filteredEntriesBySearch.slice(begin, end)
-        });
+        }));
       }
 
     return (

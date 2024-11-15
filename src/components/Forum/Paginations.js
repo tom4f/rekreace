@@ -1,7 +1,7 @@
-import React from 'react';
+
 
 const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filteredEntriesBySearch, buttonText} ) => {
-    const lastPage = filteredEntriesBySearch.length;
+    const lastPage = filteredEntriesBySearch?.length;
     const pageButtonClick = (event) => {
         event.preventDefault();
         const buttonTextClicked = event.target.textContent || event.target.innerText;
@@ -33,11 +33,12 @@ const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filter
                 begin = postsPerPage * next;
             }
         }
-        paginate({
+        paginate(old => ({
+            ...old,
             begin : begin,
             next: next,
             buttonText : myButtonText
-        });
+        }));
     }
 
     // [UI] generate pagination button list 

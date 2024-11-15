@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { apiPath } from '../../../api/paths'
 import './css/forum.css'
@@ -21,7 +21,7 @@ export const Forum = ({
 }) => {
     const [items, setItems] = useState<Item[]>([])
 
-    const loadForumShort = () => {
+    const loadForumShort = useCallback(() => {
         let xhr = new XMLHttpRequest()
         xhr.open('POST', `${apiPath}/pdo_read_forum.php`, true)
         xhr.onload = function () {
@@ -39,7 +39,9 @@ export const Forum = ({
                 searchCriteria,
             })
         )
-    }
+    }, [searchCriteria])
+
+    useEffect(() => loadForumShort(), [loadForumShort])
 
     const showForum = () => {
         let knihaUL: any[] = []
@@ -66,8 +68,6 @@ export const Forum = ({
         })
         return knihaUL
     }
-
-    useEffect(loadForumShort, [])
 
     return (
         <>
