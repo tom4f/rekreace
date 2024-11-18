@@ -4,7 +4,7 @@ import { Apartments } from './components/Apartments'
 import { BookingForm } from './components/BookingForm/BookingForm'
 import { Bottom } from './components/Bottom/Bottom'
 import { Contact } from './components/Contact/Contact'
-import { Forum } from './components/Forum'
+import { Forum } from './components/Forum/Forum'
 import { Frymburk } from './components/Frymburk/Frymburk'
 import { Kaliste } from './components/Kaliste/Kaliste'
 import { Meteo } from './components/Meteo'
@@ -13,6 +13,7 @@ import { PhotoGallery } from './components/PhotoGallery/PhotoGallery'
 import { Prices } from './components/Prices/Prices'
 import { Start } from './components/Start/Start'
 import { Top } from './components/Top/Top'
+import { Windsurfing } from './components/Windsurfing/Windsurfing'
 import './css/main.css'
 
 export const App = () => {
@@ -66,6 +67,10 @@ export const App = () => {
                         />
                         <Route path="/meteoalarm/*" element={<MeteoAlarm />} />
                         <Route path="/kaliste/*" element={<Kaliste />} />
+                        <Route
+                            path="/windsurfing/*"
+                            element={<Windsurfing />}
+                        />
                     </Routes>
                     {!hideTopBottom && <Bottom />}
                 </div>

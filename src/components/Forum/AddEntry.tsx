@@ -1,7 +1,5 @@
-import axios from 'axios'
 import { useState } from 'react'
-import { ForumParams } from '.'
-import { apiPath } from '../../api/paths'
+import { useAddForum } from '../../features/forum/hooks'
 
 type AddEntryType = {
     paginate: (value: any) => void
@@ -16,19 +14,22 @@ export const AddEntry = ({
     begin,
     categoryFromUrl,
 }: AddEntryType) => {
+    const { mutate } = useAddForum()
+
     const [state, setState] = useState({
-        formVisible: false,
-        alert: 'off',
         jmeno: '',
         email: '',
-        typ: categoryFromUrl !== 8 ? '' : 8,
+        typ: categoryFromUrl !== 8 ? '' : '8',
         text: '',
         antispam: new Date().getMilliseconds(),
         antispamForm: '',
     })
 
+    const [formVisible, setFormVisible] = useState(false)
+    const [alert, setAlert] = useState('off')
+
     const showForum = () => {
-        setState((old) => ({ ...old, formVisible: true }))
+        setFormVisible(true)
     }
 
     const myChangeHandler = (
@@ -43,64 +44,29 @@ export const AddEntry = ({
         event.preventDefault()
         const data = new FormData(event.target as any)
         if (state.antispam === Number(data.get('antispamForm'))) {
-            axios
-                .post(`${apiPath}/pdo_create_forum.php`, state)
-                .then((response) => {
-                    setState((old) => ({
-                        ...old,
-                        formVisible: false,
-                        alert: 'ok',
-                    }))
+            mutate(state, {
+                onSuccess: () => {
+                    setFormVisible(false)
+                    setAlert('ok')
 
-                    setTimeout(
-                        () => setState((old) => ({ ...old, alert: 'off' })),
-                        5000
-                    )
-                    const searchCriteria =
-                        categoryFromUrl === 8
-                            ? 'WHERE typ = 8'
-                            : 'WHERE (typ < 4) OR (typ = 8)'
-                    axios
-                        .post(
-                            `${apiPath}/pdo_read_forum.php`,
-                            { searchCriteria: searchCriteria },
-                            { timeout: 5000 }
-                        )
-                        .then((res) => {
-                            const allForum = res.data
-                            const end = begin + postsPerPage - 1
-                            paginate((old: ForumParams) => ({
-                                ...old,
-                                entries: allForum.slice(begin, end),
-                                allEntries: allForum,
-                                filteredEntriesBySearch: allForum,
-                                begin: 0,
-                                refreshCounter: old.refreshCounter + 1,
-                            }))
-                        })
-                        .catch((err) => console.error(err))
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+                    setTimeout(() => {
+                        setAlert('off')
+                    }, 5000)
+                },
+                onError: () => console.log('error'),
+            })
         } else {
-            setState((old) => ({
-                ...old,
-                alert: 'antispamNotOk',
-            }))
-            setTimeout(
-                () => setState((old) => ({ ...old, alert: 'off' })),
-                5000
-            )
+            setAlert('antispamNotOk')
+            setTimeout(() => setAlert('off'), 5000)
         }
     }
 
     let button: any
-    let alert = null
-    alert =
-        state.alert === 'ok' ? (
+    let Alert = null
+    Alert =
+        alert === 'ok' ? (
             <h1>Záznam byl přidán !!!</h1>
-        ) : state.alert === 'antispamNotOk' ? (
+        ) : alert === 'antispamNotOk' ? (
             <h1>Záznam se nepodařilo odeslat !!!</h1>
         ) : null
     const optionList =
@@ -124,7 +90,7 @@ export const AddEntry = ({
                   </option>,
               ]
             : null
-    if (state.formVisible) {
+    if (formVisible) {
         button = (
             <form
                 onSubmit={(e) => mySubmitHandler(e)}
@@ -197,7 +163,7 @@ export const AddEntry = ({
     return (
         <div>
             {button}
-            {alert}
+            {Alert}
         </div>
     )
 }

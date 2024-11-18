@@ -37,29 +37,35 @@ export const loginLogic: loginLogicType = async (
         return
     }
 
-    const startLogin = await fetch(`${apiPath}/foto_login.php`, {
-        method: 'POST',
-        body: JSON.stringify(object),
-    })
+    try {
+        const startLogin = await fetch(`${apiPath}/foto_login.php`, {
+            method: 'POST',
+            body: JSON.stringify(object),
+        })
+        const respLogin = JSON.parse(await startLogin.text())
 
-    const respLogin = JSON.parse(await startLogin.text())
+        const [webToken, webAccess, webUser] = respLogin
 
-    const [webToken, webAccess, webUser] = respLogin
-
-    if (webToken.webToken === 'error') {
+        if (webToken.webToken === 'error') {
+            setAlert({
+                header: 'Přihlášení se nepovedlo !',
+                text: 'zkuste později...',
+            })
+            return
+        } else {
+            const respObj = {
+                ...webToken,
+                ...webAccess,
+                ...webUser,
+                isLogged: true,
+            }
+            setLoginData(respObj)
+            sessionStorage.setItem('client', JSON.stringify(respObj))
+        }
+    } catch {
         setAlert({
             header: 'Přihlášení se nepovedlo !',
             text: 'zkuste později...',
         })
-        return
-    } else {
-        const respObj = {
-            ...webToken,
-            ...webAccess,
-            ...webUser,
-            isLogged: true,
-        }
-        setLoginData(respObj)
-        sessionStorage.setItem('client', JSON.stringify(respObj))
     }
 }

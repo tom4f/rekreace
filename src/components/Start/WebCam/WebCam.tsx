@@ -33,7 +33,7 @@ export const WebCam = () => {
             <div className="header">
                 <b>
                     <a href="https://www.ipcamlive.com/62d9a9a2cb1ff">
-                        Testujeme živé video --&gt; klikněte zde!
+                        Live kamera --&gt; klikněte zde!
                     </a>
                 </b>
             </div>

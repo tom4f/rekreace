@@ -74,10 +74,10 @@ export const Top = () => {
                     Kaliště
                 </NavLink>{' '}
                 |
-                <a className="menu" href="../4f/" target="_top">
+                <NavLink className="menu" to="/windsurfing">
                     {' '}
                     Windsurfing
-                </a>
+                </NavLink>{' '}
             </div>
 
             <GoogleAd />

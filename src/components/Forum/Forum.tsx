@@ -1,28 +1,21 @@
-import axios from 'axios'
-import { useCallback, useEffect, useState } from 'react'
-import { apiPath } from '../../api/paths'
+import { useEffect, useState } from 'react'
+import {
+    ForumResponse,
+    useGetForum,
+} from '../../features/forum/hooks/useGetForum'
 import { AddEntry } from './AddEntry'
 import './css/forum.css'
-import Message from './Forum'
+import Messages from './Messages'
 import Paginations from './Paginations'
 import PostsPerPage from './PostsPerPage'
 import SearchForum from './SearchForum'
 import SelectForum from './SelectForum'
 import { SelectPaginate } from './SelectPaginate'
 
-type OneMessage = {
-    id: number
-    datum: string
-    text: string
-    jmeno: string
-    email?: string
-    typ: number
-}
-
 export type ForumParams = {
-    allEntries: OneMessage[]
-    filteredEntriesByCategory: OneMessage[]
-    filteredEntriesBySearch: OneMessage[]
+    allEntries: ForumResponse
+    filteredEntriesByCategory: ForumResponse
+    filteredEntriesBySearch: ForumResponse
     entries: any[]
     begin: number
     postsPerPage: number
@@ -32,7 +25,6 @@ export type ForumParams = {
     selectedCategory: number
     buttonText: string
     categoryFromUrl: number
-    refreshCounter: number
 }
 
 export const Forum = () => {
@@ -50,42 +42,33 @@ export const Forum = () => {
         selectedCategory: window.location.search === '?category=8' ? 8 : 999999,
         buttonText: '0',
         categoryFromUrl: window.location.search === '?category=8' ? 8 : 999999,
-        refreshCounter: 0,
     })
 
-    const fetchForum = useCallback(() => {
-        let allForum: OneMessage[] = []
-        const searchCriteria =
-            state.categoryFromUrl === 8
-                ? 'WHERE typ = 8'
-                : 'WHERE (typ < 4) OR (typ = 8)'
-        axios
-            .post(
-                `${apiPath}/pdo_read_forum.php`,
-                { searchCriteria: searchCriteria },
-                { timeout: 5000 }
-            )
-            .then((res) => {
-                // allForum = JSON.parse(res.data); --> for native xhr.onload
-                allForum = res.data
-                const end = state.begin + state.postsPerPage - 1
-                setState((orig) => ({
-                    ...orig,
-                    entries: allForum.slice(state.begin, end),
-                }))
-                setState((orig) => ({
-                    ...orig,
-                    allEntries: allForum,
-                    filteredEntriesByCategory: allForum,
-                    filteredEntriesBySearch: allForum,
-                }))
-            })
-            .catch((err) => console.error(err))
-    }, [state])
+    const searchCriteria =
+        state.categoryFromUrl === 8
+            ? 'WHERE typ = 8'
+            : 'WHERE (typ < 4) OR (typ = 8)'
 
-    useEffect(fetchForum, [fetchForum])
+    const { data: allForum, isSuccess } = useGetForum({
+        searchCriteria,
+        start: 0,
+        limit: 999999,
+    })
 
-    // descructing states, e.g. state.allEntrie -> allEntries
+    const end = state.begin + state.postsPerPage - 1
+
+    useEffect(() => {
+        if (isSuccess && allForum.length) {
+            setState((orig) => ({
+                ...orig,
+                allEntries: allForum,
+                filteredEntriesByCategory: allForum,
+                filteredEntriesBySearch: allForum,
+                entries: allForum.slice(state.begin, end),
+            }))
+        }
+    }, [isSuccess, allForum, end, state.begin])
+
     const {
         allEntries,
         filteredEntriesBySearch,
@@ -168,7 +151,7 @@ export const Forum = () => {
                     />
                 </div>
                 <div>Je vybráno {filteredEntriesBySearch?.length} záznamů.</div>
-                <Message
+                <Messages
                     entries={filteredEntriesBySearch?.slice(
                         begin,
                         begin + postsPerPage
@@ -193,9 +176,8 @@ export const Forum = () => {
                     />
                 </div>
                 <br />
-                <small>Build with React</small>
                 <br />
             </div>
         </div>
-    ) // return end
-} // render end
+    )
+}

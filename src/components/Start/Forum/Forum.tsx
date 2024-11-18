@@ -1,16 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { apiPath } from '../../../api/paths'
+import {
+    ForumResponse,
+    useGetForum,
+} from '../../../features/forum/hooks/useGetForum'
 import './css/forum.css'
-
-type Item = {
-    id: number
-    datum: string
-    text: string
-    jmeno: string
-    email?: string
-    typ: number
-}
 
 export const Forum = ({
     searchCriteria = '',
@@ -19,29 +13,19 @@ export const Forum = ({
     searchCriteria?: string
     showHeader?: boolean
 }) => {
-    const [items, setItems] = useState<Item[]>([])
+    const [items, setItems] = useState<ForumResponse>([])
 
-    const loadForumShort = useCallback(() => {
-        let xhr = new XMLHttpRequest()
-        xhr.open('POST', `${apiPath}/pdo_read_forum.php`, true)
-        xhr.onload = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                setItems(JSON.parse(this.responseText))
-            }
-        }
-        xhr.onerror = function () {
-            console.log(JSON.parse('{"status" : "ajax_failed"}'))
-        }
-        xhr.send(
-            JSON.stringify({
-                start: 0,
-                limit: 5,
-                searchCriteria,
-            })
-        )
-    }, [searchCriteria])
+    const { data, isSuccess } = useGetForum({
+        start: 0,
+        limit: 5,
+        searchCriteria,
+    })
 
-    useEffect(() => loadForumShort(), [loadForumShort])
+    useEffect(() => {
+        if (isSuccess && data.length) {
+            setItems(data)
+        }
+    }, [isSuccess, data])
 
     const showForum = () => {
         let knihaUL: any[] = []

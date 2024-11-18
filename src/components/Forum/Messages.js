@@ -1,4 +1,4 @@
-const Message = ({ entries }) => {
+const Messages = ({ entries }) => {
     const typText = [
         'Fórum',
         'Inzerce',
@@ -32,4 +32,4 @@ const Message = ({ entries }) => {
     )) : <></>
 }
 
-export default Message
+export default Messages

@@ -1,4 +1,4 @@
-import { ForumParams } from '.'
+import { ForumParams } from './Forum'
 
 export type Paginate = {
     paginate: (value: any) => void
