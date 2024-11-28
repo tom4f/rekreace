@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { apiPath } from '../../../api/paths'
 import { api } from '../../../api/utils'
 
-type OneMessage = {
+export type OneMessage = {
     id: number
     datum: string
     text: string

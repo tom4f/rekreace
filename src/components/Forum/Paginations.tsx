@@ -1,21 +1,33 @@
 
+import { ForumParams } from "./Forum";
+import { ForumResponse } from "../../features/forum/hooks";
 
-const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filteredEntriesBySearch, buttonText} ) => {
+type PaginationsType = {
+    begin: number
+    postsPerPage: number
+    paginate: React.Dispatch<React.SetStateAction<ForumParams>>
+    paginateSize: number
+    next: number
+    filteredEntriesBySearch: ForumResponse
+    buttonText: string
+}
+
+export const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filteredEntriesBySearch, buttonText}: PaginationsType ) => {
     const lastPage = filteredEntriesBySearch?.length;
-    const pageButtonClick = (event) => {
+    const pageButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
-        const buttonTextClicked = event.target.textContent || event.target.innerText;
-        let myButtonText;
-        // if pagina button clicked
-        if ( Number(buttonTextClicked ) >= 0 ){
-            begin =  Number(buttonTextClicked) * postsPerPage;
-            // get list of all buttons
-            const buttonsDom = event.target.parentElement.children;
-            // remove backgroud from previous button
+        const buttonTarget = event.target as HTMLButtonElement 
+        const buttonTextClicked = buttonTarget.textContent || buttonTarget.innerText;
+        let myButtonText: number;
+        const buttonsDom = buttonTarget.parentElement?.children;
+
+        if ( +buttonTextClicked >= 0 && buttonsDom){
+            begin =  +buttonTextClicked * postsPerPage;
+
             buttonsDom[Number(buttonText)].classList.remove('button_on');
-            // add background to clicked button
-            event.target.classList.add('button_on');
-            myButtonText = buttonTextClicked - next;
+
+            buttonTarget.classList.add('button_on');
+            myButtonText = +buttonTextClicked - next;
         }
         // if 'next' button clicked
         if (buttonTextClicked === 'next'){
@@ -33,17 +45,17 @@ const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filter
                 begin = postsPerPage * next;
             }
         }
-        paginate(old => ({
+        paginate((old: ForumParams) => ({
             ...old,
             begin : begin,
             next: next,
-            buttonText : myButtonText
+            buttonText: myButtonText.toString()
         }));
     }
 
     // [UI] generate pagination button list 
     const showPagination = () => {
-        let buttonPageList = [];
+        const buttonPageList = [];
         for( let i = next; i < lastPage / postsPerPage; i++ ){
             if( i < next + paginateSize ){
                 const buttonClass = `pagina ${i === next ? 'button_on' : null}`;
@@ -72,4 +84,3 @@ const Paginations = ( {begin, postsPerPage, paginate, paginateSize, next, filter
         </div>
     );
 }
-export default Paginations;
