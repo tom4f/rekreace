@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { commonPath } from "../../../api/paths";
 import ShowDayGraphStyle from "./../css/ShowDayGraph.module.css";
 import { ChangeDate } from "./ChangeDate";
 import { DateContext } from "./DateContext";
+import { Url } from "../../../api/paths";
 
 export const ShowDayGraph = () => {
   const {
@@ -18,8 +18,8 @@ export const ShowDayGraph = () => {
   const dayString = day < 10 ? `0${day}` : `${day}`;
 
   const imgUrl = (type: string) =>
-    `${commonPath}/davis/archive/${year}/${type}-${year}-${monthString}-${dayString}.gif`;
-  const imgBig = `${commonPath}/rekreace/aktuality_big_graph.php?width_graph=1480&year=${year}&id=${year}-${monthString}-${dayString}`;
+    `${Url.DAVIS}/archive/${year}/${type}-${year}-${monthString}-${dayString}.gif`;
+  const imgBig = `${Url.BIG_GRAPH}?width_graph=1480&year=${year}&id=${year}-${monthString}-${dayString}`;
 
   const setDate = (period: string, step: 1 | -1) => {
     reduceDate("daily", ChangeDate("daily", daily, period, step));

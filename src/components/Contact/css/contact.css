@@ -10,8 +10,6 @@
   width: 100%;
   color: white;
   margin: auto;
-  border-radius: 5px;
-  border: 1px solid #555;
   padding-top: 1rem;
   padding-bottom: 1rem;
   position: relative;
@@ -88,9 +86,11 @@
   transition: none;
   color: white;
   letter-spacing: 0.1rem;
+  font-family: Verdana, Helvetica, sans-serif;
 }
 
 .address_and_formular .formular input[type=email]:focus,
+.address_and_formular .formular input[type=text]:focus,
 .address_and_formular .formular textarea:focus {
   border: none;
   outline: none;
@@ -110,22 +110,27 @@
   margin: 5px;
   background-color: rgba(0, 255, 0, 0.4);
   width: 40%;
+  
+  &:hover {
+    border: 1px solid black;
+  }
+
+
+
+  input {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    border: 1px solid black;
+
+    &:focus {
+      border: 1px solid transparent;
+      background-color: rgba(0, 255, 0, 0.4);
+    }
+  }
 }
 
-.address_and_formular .formular .submit_booking:hover {
-  border: 1px solid black;
-}
 
-.address_and_formular .formular .submit_booking input {
-  width: 100%;
-  padding: 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-}
-
-.address_and_formular .formular .submit_booking input:focus {
-  background-color: rgba(0, 255, 0, 0.5);
-}
 
 .maps {
   background: url("/src/images/281b.jpg");

@@ -1,44 +1,26 @@
-const dev = process.env.NODE_ENV !== "production";
-
-export const commonPathMeteoFromFile = dev
-  ? "http://localhost:5173/rekreace"
-  : "./../../../..";
-export const commonPath = dev ? "http://localhost" : "./../../..";
-// export const commonPath = dev ? 'http://www.frymburk.com.local' : './../../..'
-// export const commonPath = dev ? 'https://www.frymburk.com' : './../../..'
-
-export const apiPath = `${commonPath}/rekreace/api`;
-
-export class urlParams {
-  static get getSearchObj() {
-    const search = window.location.search.substring(1);
-    const searchObj: { [key: string]: string } = {};
-    const searchArr = search.split("&");
-    !!searchArr[0] &&
-      searchArr.forEach((ittem) => {
-        const [key, value] = ittem.split("=");
-        searchObj[key] = value;
-      });
-    return {
-      fotoGalleryOwner: searchObj.fotoGalleryOwner || "_ubytovani",
-      editStatus: searchObj.edit === "yes" ? true : false,
-    };
-  }
+export enum Url {
+  DAVIS = '/davis',
+  KAMERA = '/kamera',
+  API = '/rekreace/api',
+  GRAPHS = '/rekreace/graphs',
+  FOTOGALERIE = '/rekreace/fotogalerie_ubytovani',
+  BIG_GRAPH = '/rekreace/aktuality_big_graph.php',
+  GET_IP_KAMERA = '/rekreace/get_ip_kamera.php',
 }
 
-export const { fotoGalleryOwner, editStatus } = urlParams.getSearchObj;
-
-export const imgFolder = `${commonPath}/rekreace/fotogalerie${fotoGalleryOwner}`;
+const urlParams = new URLSearchParams(new URL(document.URL).search);
+export const fotoGalleryOwner =
+  urlParams.get('fotoGalleryOwner') || '_ubytovani';
 
 export const categoryName: { [key: number]: string } = {
-  0: "Ubytování",
-  1: "Lipenská přehrada",
-  2: "Příroda",
-  3: "Obce",
-  4: "Historie",
-  5: "Sport",
-  6: "Ostatní",
-  10: "Kaliště - kniha",
-  11: "Kaliště",
-  99999: "Všechny",
+  0: 'Ubytování',
+  1: 'Lipenská přehrada',
+  2: 'Příroda',
+  3: 'Obce',
+  4: 'Historie',
+  5: 'Sport',
+  6: 'Ostatní',
+  10: 'Kaliště - kniha',
+  11: 'Kaliště',
+  99999: 'Všechny',
 };

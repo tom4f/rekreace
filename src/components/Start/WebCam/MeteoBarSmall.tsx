@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { commonPathMeteoFromFile } from "../../../api/paths";
 import "./css/MeteoBarSmall.css";
+import { Url } from "../../../api/paths";
 
 export const MeteoBarSmall = () => {
   const [meteoText, setMetoText] = useState("");
@@ -65,9 +65,7 @@ export const MeteoBarSmall = () => {
 
   const asyncFunction = async () => {
     try {
-      const response = await fetch(
-        `${commonPathMeteoFromFile}/davis/lipnonet_meteo.txt`
-      );
+      const response = await fetch(`${Url.DAVIS}/lipnonet_meteo.txt`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { commonPath } from "../../../api/paths";
+import { Url } from "../../../api/paths";
 
 type ShowWebCamState = {
   day: number;
@@ -11,16 +11,16 @@ type ShowWebCamState = {
 export const ShowWebCam = ({ state }: { state: ShowWebCamState }) => {
   const { day, hour, minute, isLiveImg } = state;
   const [liveImgSrc, setLiveImgSrc] = useState(
-    `${commonPath}/kamera/archive/ip_kamera.jpg`
+    `${Url.KAMERA}/archive/ip_kamera.jpg`
   );
   const [getCamera, setGetCamera] = useState(<></>);
 
   const updateImage = () => {
     const updateImgLogic = () => {
       const randomId = new Date().getTime();
-      const src = `${commonPath}/kamera/archive/ip_kamera.jpg?id=${randomId}`;
+      const src = `${Url.KAMERA}/archive/ip_kamera.jpg?id=${randomId}`;
       setLiveImgSrc(src);
-      const iFrame = `<iframe src='${commonPath}/rekreace/get_ip_kamera.php?id=${randomId}' />`;
+      const iFrame = `<iframe src='${Url.GET_IP_KAMERA}?id=${randomId}' />`;
       const iFrameDiv = (
         <div
           style={{ display: "none" }}
@@ -44,18 +44,16 @@ export const ShowWebCam = ({ state }: { state: ShowWebCamState }) => {
   return (
     <>
       <div className="archive_cam">
-        <a
-          href={`${commonPath}/kamera/archive/ip_kamera_full_hd_${imgDateText}.jpg`}
-        >
+        <a href={`${Url.KAMERA}/archive/ip_kamera_full_hd_${imgDateText}.jpg`}>
           {isLiveImg ? (
             <img src={liveImgSrc} alt="WebCam" />
           ) : (
             /*                         <img
-                            src={`${commonPath}/kamera/archive/lipnonet_full_hd_00001.jpg`}
+                            src={`${Url.KAMERA}/archive/lipnonet_full_hd_00001.jpg`}
                             alt="WebCam"
                         /> */
             <img
-              src={`${commonPath}/kamera/archive/ip_kamera_${imgDateText}.jpg`}
+              src={`${Url.KAMERA}/archive/ip_kamera_${imgDateText}.jpg`}
               alt="WebCam"
             />
           )}

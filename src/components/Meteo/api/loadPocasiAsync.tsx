@@ -1,5 +1,5 @@
-// import { apiPath } from '../../../api/photoGalleryPath'
-import { apiPath } from "../../../api/paths";
+// import { Url } from '../../../api/photoGalleryPath'
+import { Url } from "../../../api/paths";
 import { LoadDataFunctionType } from "../components/TypeDefinition";
 
 export const loadPocasiAsync: LoadDataFunctionType = async (
@@ -30,7 +30,7 @@ export const loadPocasiAsync: LoadDataFunctionType = async (
   });
 
   const fetchList = urlListFiltered.map((url) =>
-    fetch(`${apiPath}/${url.url}`, getOptions(url.dateField)).then((resp) =>
+    fetch(`${Url.API}/${url.url}`, getOptions(url.dateField)).then((resp) =>
       resp.json()
     )
   );

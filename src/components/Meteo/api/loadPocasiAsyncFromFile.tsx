@@ -1,8 +1,8 @@
-import { commonPathMeteoFromFile } from "../../../api/paths";
 import {
   LoadDataFromFileFunctionType,
   pureData,
 } from "../components/TypeDefinition";
+import { Url } from "../../../api/paths";
 
 export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
   graphsConfig
@@ -31,13 +31,10 @@ export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
     const dayOfWeekNow = new Date().getUTCDay();
     for (let day = dayOfWeekNow + 1; day < dayOfWeekNow + 6; day++) {
       const correctedDay = day > 6 ? day - 7 : day;
-      const meteoFile = `${commonPathMeteoFromFile}/davis/archive/downld02-${correctedDay}.txt`;
+      const meteoFile = `${Url.DAVIS}/archive/downld02-${correctedDay}.txt`;
       meteoFiles = [...meteoFiles, meteoFile];
     }
-    meteoFiles = [
-      ...meteoFiles,
-      `${commonPathMeteoFromFile}/davis/downld02.txt`,
-    ];
+    meteoFiles = [...meteoFiles, `${Url.DAVIS}/downld02.txt`];
 
     // create meteo array for all 7 days
     let mergedArr: string[] = [];
@@ -45,12 +42,6 @@ export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
     await Promise.all(myPromises).then((responses) =>
       responses.forEach((response) => (mergedArr = [...mergedArr, ...response]))
     );
-
-    // in react folder: /public/davis/downld02.txt
-
-    // create array of meteo data array
-    // one or more spaces for split
-    //const arrOfArr = arr.map( line => line.split(/  +/g) )
 
     const dirObj: { [key: string]: number } = {
       "---": 16,

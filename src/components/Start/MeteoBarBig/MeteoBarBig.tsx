@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { commonPath } from "../../../api/paths";
 import "./css/MeteoBarBig.css";
+import { Url } from "../../../api/paths";
 
 type DavisType = {
   date: string;
@@ -220,12 +220,12 @@ export const MeteoBarBig = () => {
 
   const fetchAllMeteo = async () => {
     const urlList = [
-      `/rekreace/api/pdo_read_davis.php`,
-      `/rekreace/api/pdo_read_pocasi.php`,
+      `${Url.API}/pdo_read_davis.php`,
+      `${Url.API}/pdo_read_pocasi.php`,
     ];
 
     const fetchList = urlList.map((url) =>
-      fetch(`${commonPath}${url}`).then((response) => response.json())
+      fetch(`${url}`).then((response) => response.json())
     );
 
     const [davisData, damData] = await Promise.all(fetchList);

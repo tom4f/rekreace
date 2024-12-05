@@ -19,7 +19,7 @@ export const DavisGraphsDay = () => {
   useEffect(() => {
     (async () => {
       const data1 = await loadPocasiAsyncCustomFromFile();
-      setGraphsData([{ ...graphsConfig[0], data: data1[0].data }]);
+      setGraphsData([{ ...graphsConfig[0], data: data1[0]?.data }]);
     })();
   }, []);
 
