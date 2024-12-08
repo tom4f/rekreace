@@ -5,7 +5,7 @@ export const AlertBox = ({
 }) => {
   return header ? (
     <article
-      className="alert"
+      className='alert'
       style={{ color, textAlign: 'center', margin: '0' }}
     >
       <header style={{ fontSize: '30px' }}>{header}</header>

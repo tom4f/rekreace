@@ -1,25 +1,22 @@
-import { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { SendMessageRequest } from "../../features/contact/hooks/useSendMessage";
-import { useSendMessage } from "../../features/contact/hooks/useSendMessage";
-import "./css/contact.css";
-import { AlertBox } from "../AlertBox/AlertBox";
-import { Modal } from "../Modal/Modal";
+import { useState, useEffect } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import {
+  SendMessageRequest,
+  useSendMessage,
+} from '../../features/contact/hooks/useSendMessage';
+import './css/contact.css';
+import { AlertBox } from '../AlertBox/AlertBox';
+import { Modal } from '../Modal/Modal';
 
 export const Contact_new = () => {
-  const {
-    mutateAsync,
-    isPending,
-    // isError,
-    // data: formResponse,
-  } = useSendMessage();
+  const { mutateAsync, isPending } = useSendMessage();
 
   const [isModal, setIsModal] = useState(false);
   const [currentTimestamp, setCurrentTimestamp] = useState(
     new Date().getMilliseconds()
   );
 
-  const [alert, setAlert] = useState({ header: "", text: "", color: "red" });
+  const [alert, setAlert] = useState({ header: '', text: '', color: 'red' });
 
   const {
     register,
@@ -29,32 +26,28 @@ export const Contact_new = () => {
   } = useForm<SendMessageRequest>();
 
   useEffect(
-    () => setValue("antispam_code_orig", currentTimestamp),
-    [currentTimestamp]
+    () => setValue('antispam_code_orig', currentTimestamp),
+    [currentTimestamp, setValue]
   );
 
   const onSubmit: SubmitHandler<SendMessageRequest> = (formObject) => {
     mutateAsync(formObject, {
       onSuccess: (succesResponse) => {
-        console.log(succesResponse);
-        // delay();
         setCurrentTimestamp(new Date().getMilliseconds());
-        setValue("antispam_code_orig", currentTimestamp);
+        setValue('antispam_code_orig', currentTimestamp);
         setIsModal(true);
         setAlert({
-          header: "V pořádku",
+          header: 'V pořádku',
           text: succesResponse.result,
-          color: "lime",
+          color: 'lime',
         });
-        // Delay(false, setIsModal);
       },
       onError: (errorResponse) => {
-        console.log(errorResponse);
         setIsModal(true);
         setAlert({
-          header: "Chyba",
+          header: 'Chyba',
           text: errorResponse.response?.data.result,
-          color: "red",
+          color: 'red',
         });
         setCurrentTimestamp(new Date().getMilliseconds());
       },
@@ -65,7 +58,7 @@ export const Contact_new = () => {
     <>
       {isModal && (
         <Modal
-          customStyle={{ width: "500px", height: "300px" }}
+          customStyle={{ width: '500px', height: '300px' }}
           setIsVisible={setIsModal}
           children={
             <>
@@ -74,18 +67,18 @@ export const Contact_new = () => {
           }
         />
       )}
-      <header className="header">
+      <header className='header'>
         <b>Kontaktní informace</b>
       </header>
-      <article className="address_and_formular">
+      <article className='address_and_formular'>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          id="form_kontakt"
-          name="form_kontakt"
-          autoComplete="off"
+          id='form_kontakt'
+          name='form_kontakt'
+          autoComplete='off'
         >
-          <section className="formular">
-            <div className="adresa">
+          <section className='formular'>
+            <div className='adresa'>
               <div>
                 Adresa :
                 <br />
@@ -99,7 +92,7 @@ export const Contact_new = () => {
                 Internet :
                 <br />
                 <b>
-                  <a href="http://www.LIPNOnet.cz/rekreace">
+                  <a href='http://www.LIPNOnet.cz/rekreace'>
                     www.LIPNOnet.cz/rekreace
                   </a>
                 </b>
@@ -107,7 +100,7 @@ export const Contact_new = () => {
                 E-mail :
                 <br />
                 <b>
-                  <a href="mailto:ubytovani@lipnonet.cz">
+                  <a href='mailto:ubytovani@lipnonet.cz'>
                     ubytovani@lipnonet.cz
                   </a>
                 </b>
@@ -123,84 +116,84 @@ export const Contact_new = () => {
               </div>
             </div>
 
-            <div className="input_booking">
-              <label htmlFor="emailova_adresa">
-                E-mail:{" "}
-                <span style={{ color: "red" }}>
+            <div className='input_booking'>
+              <label htmlFor='emailova_adresa'>
+                E-mail:{' '}
+                <span style={{ color: 'red' }}>
                   {errors.emailova_adresa && errors.emailova_adresa.message}
                 </span>
               </label>
               <input
-                placeholder="vyplňte svojí e-mailovou adresu"
-                id="emailova_adresa"
-                type="email"
-                {...register("emailova_adresa", {
-                  required: "je nutné vyplnit",
+                placeholder='vyplňte svojí e-mailovou adresu'
+                id='emailova_adresa'
+                type='email'
+                {...register('emailova_adresa', {
+                  required: 'je nutné vyplnit',
                 })}
               />
             </div>
 
-            <div className="input_booking">
-              <label htmlFor="text">
-                Text:{" "}
-                <span style={{ color: "red" }}>
+            <div className='input_booking'>
+              <label htmlFor='text'>
+                Text:{' '}
+                <span style={{ color: 'red' }}>
                   {errors.text && errors.text.message}
                 </span>
               </label>
               <textarea
                 rows={5}
                 cols={68}
-                placeholder="Pokud nám chcete cokoliv sdělit, sem múžete napsat zprávu..."
-                id="text"
-                {...register("text", { required: "je nutné vyplnit" })}
+                placeholder='Pokud nám chcete cokoliv sdělit, sem múžete napsat zprávu...'
+                id='text'
+                {...register('text', { required: 'je nutné vyplnit' })}
               />
             </div>
 
-            <div className="antispam_booking input_booking">
-              <label htmlFor="antispam_code">
-                Opište kód: {currentTimestamp.toString()}{" "}
-                <span style={{ color: "red" }}>
+            <div className='antispam_booking input_booking'>
+              <label htmlFor='antispam_code'>
+                Opište kód: {currentTimestamp.toString()}{' '}
+                <span style={{ color: 'red' }}>
                   {errors.antispam_code && errors.antispam_code.message}
                 </span>
               </label>
               <input
                 // required
-                id="antispam_code"
-                type="text"
-                placeholder="sem kód" // Set the placeholder to the current milliseconds
-                {...register("antispam_code", {
-                  required: "je nutné vyplnit",
+                id='antispam_code'
+                type='text'
+                placeholder='sem kód' // Set the placeholder to the current milliseconds
+                {...register('antispam_code', {
+                  required: 'je nutné vyplnit',
                   valueAsNumber: true,
                 })}
               />
             </div>
 
             <input
-              type="hidden"
-              {...register("antispam_code_orig", { valueAsNumber: true })}
+              type='hidden'
+              {...register('antispam_code_orig', { valueAsNumber: true })}
             />
 
-            <div className="submit_booking">
+            <div className='submit_booking'>
               <input
-                type="submit"
+                type='submit'
                 disabled={isPending}
-                value={isPending ? "Odesílám..." : "Odešli"}
+                value={isPending ? 'Odesílám...' : 'Odešli'}
               />
             </div>
           </section>
         </form>
       </article>
 
-      <header className="header">
+      <header className='header'>
         <b>Kudy k nám?</b>
       </header>
 
       <iframe
-        title="Kaliště"
-        style={{ border: 0, marginBottom: "-6px" }}
-        src="https://frame.mapy.cz/s/fehutedezu"
-        width="100%"
-        height="400px"
+        title='Kaliště'
+        style={{ border: 0, marginBottom: '-6px' }}
+        src='https://frame.mapy.cz/s/fehutedezu'
+        width='100%'
+        height='400px'
       ></iframe>
     </>
   );

@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Url } from "../../../api/paths";
-import FormularStyle from "./../css/Formular.module.css";
-import ModifyPocasiStyle from "./../css/ModifyPocasi.module.css";
-import { FDobjectType, ModifyPocasiType } from "./TypeDefinition";
+import { useState } from 'react';
+import { Url } from '../../../api/paths';
+import FormularStyle from './../css/Formular.module.css';
+import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
+import { FDobjectType, ModifyPocasiType } from './TypeDefinition';
 
 export const EditPocasi = ({
   editMeteo,
@@ -12,31 +12,31 @@ export const EditPocasi = ({
 }: ModifyPocasiType) => {
   const { editDate, editKey, editValue, refresh } = editMeteo;
 
-  let fotoGalleryOwner = "_ubytovani";
-  const [loginResp, setLoginResp] = useState("empty");
+  const fotoGalleryOwner = '_ubytovani';
+  const [loginResp, setLoginResp] = useState('empty');
 
   const updateMySQL = (e: React.FormEvent<HTMLFormElement>) => {
     // disable page reload-clear after submit
     e.preventDefault();
     // all form data to special object
-    const form = document.querySelector("#edit_form_pocasi") as HTMLFormElement;
+    const form = document.querySelector('#edit_form_pocasi') as HTMLFormElement;
     const FD = new FormData(form);
-    FD.append("fotoGalleryOwner", fotoGalleryOwner);
-    FD.append("webToken", webToken);
-    FD.append("webUser", user);
+    FD.append('fotoGalleryOwner', fotoGalleryOwner);
+    FD.append('webToken', webToken);
+    FD.append('webUser', user);
     // real object
-    let FDobject: FDobjectType = {};
+    const FDobject: FDobjectType = {};
     // fill form data ojbect
     FD.forEach((value, key) => (FDobject[key] = value));
     // AJAX
     {
-      let xhr = new XMLHttpRequest();
-      xhr.open("POST", `${Url.API}/pdo_update_pocasi.php`, true);
-      xhr.setRequestHeader("Content-type", "applic ation/json");
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${Url.API}/pdo_update_pocasi.php`, true);
+      xhr.setRequestHeader('Content-type', 'applic ation/json');
       xhr.onload = function () {
         if (this.readyState === 4 && this.status === 200) {
           const editResult = JSON.parse(this.responseText);
-          if (editResult.result === "pocasi_update_ok") {
+          if (editResult.result === 'pocasi_update_ok') {
             setEditMeteo({
               ...editMeteo,
               dispAdd: false,
@@ -45,12 +45,12 @@ export const EditPocasi = ({
               refresh: refresh + 1,
             });
           } else {
-            setLoginResp("error");
+            setLoginResp('error');
           }
         }
       };
       xhr.onerror = function () {
-        setLoginResp("error");
+        setLoginResp('error');
       };
       xhr.send(JSON.stringify(FDobject));
     }
@@ -64,23 +64,23 @@ export const EditPocasi = ({
       >
         <span>x</span>
       </div>
-      {loginResp === "error" ? <div> Někde nastala chyba :-(</div> : null}
+      {loginResp === 'error' ? <div> Někde nastala chyba :-(</div> : null}
       <h4>Upravujete datum {editDate} </h4>
       <form
         onSubmit={(e) => updateMySQL(e)}
-        autoComplete="off"
-        id="edit_form_pocasi"
-        name="edit_form_pocasi"
+        autoComplete='off'
+        id='edit_form_pocasi'
+        name='edit_form_pocasi'
       >
         <div className={FormularStyle.form_booking}>
-          <input type="hidden" name="datum" value={editDate} />
+          <input type='hidden' name='datum' value={editDate} />
           <div className={FormularStyle.input_booking}>
             <label>{editKey} :</label>
             <br />
-            <input type="hidden" name="key" value={editKey} />
+            <input type='hidden' name='key' value={editKey} />
             <input
-              type="text"
-              name="value"
+              type='text'
+              name='value'
               onChange={(e) =>
                 setEditMeteo({
                   ...editMeteo,
@@ -93,7 +93,7 @@ export const EditPocasi = ({
             />
           </div>
           <div className={FormularStyle.submit_booking}>
-            <input type="submit" name="odesli" value="Odeslat" />
+            <input type='submit' name='odesli' value='Odeslat' />
           </div>
         </div>
       </form>

@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { Url } from "../../../api/paths";
-import { api } from "../../../api/utils";
+import { useQuery } from '@tanstack/react-query';
+import { Url } from '../../../api/paths';
+import { api } from '../../../api/utils';
 
 export type GetBookingResponse = {
   week: number;
@@ -13,8 +13,8 @@ export type GetBookingResponse = {
   lastUpdate: string;
 }[];
 
-export const GET_BOOKING_ENDPOINT = `${Url.API}/pdo_read_booking.php`;
-export const GET_BOOKING_KEY = "getBooking";
+export const GET_BOOKING_ENDPOINT = `${Url.NEW_API}/booking/read.php`;
+export const GET_BOOKING_KEY = 'getBooking';
 
 const getBooking = async (): Promise<GetBookingResponse> => {
   const data = await api.get({

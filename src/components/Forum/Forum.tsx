@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   ForumResponse,
   useGetForum,
-} from "../../features/forum/hooks/useGetForum";
-import { AddEntry } from "./AddEntry";
-import "./css/forum.css";
-import { Messages } from "./Messages";
-import { Paginations } from "./Paginations";
-import { PostsPerPage } from "./PostsPerPage";
-import { SearchForum } from "./SearchForum";
-import { SelectForum } from "./SelectForum";
-import { SelectPaginate } from "./SelectPaginate";
-import { OneMessage } from "../../features/forum/hooks/useGetForum";
+} from '../../features/forum/hooks/useGetForum';
+import { AddEntry } from './AddEntry';
+import './css/forum.css';
+import { Messages } from './Messages';
+import { Paginations } from './Paginations';
+import { PostsPerPage } from './PostsPerPage';
+import { SearchForum } from './SearchForum';
+import { SelectForum } from './SelectForum';
+import { SelectPaginate } from './SelectPaginate';
+import { OneMessage } from '../../features/forum/hooks/useGetForum';
 
 export type ForumParams = {
   allEntries: ForumResponse;
@@ -38,17 +38,17 @@ export const Forum = () => {
     postsPerPage: 5,
     paginateSize: 10,
     next: 0,
-    searchText: "",
+    searchText: '',
     // filter based on url
-    selectedCategory: window.location.search === "?category=8" ? 8 : 999999,
-    buttonText: "0",
-    categoryFromUrl: window.location.search === "?category=8" ? 8 : 999999,
+    selectedCategory: window.location.search === '?category=8' ? 8 : 999999,
+    buttonText: '0',
+    categoryFromUrl: window.location.search === '?category=8' ? 8 : 999999,
   });
 
   const searchCriteria =
     state.categoryFromUrl === 8
-      ? "WHERE typ = 8"
-      : "WHERE (typ < 4) OR (typ = 8)";
+      ? 'WHERE typ = 8'
+      : 'WHERE (typ < 4) OR (typ = 8)';
 
   const { data: allForum, isSuccess } = useGetForum({
     searchCriteria,
@@ -103,7 +103,7 @@ export const Forum = () => {
     }));
     // search text
     const filteredForum = filteredEntriesByCategory.filter((alarm) => {
-      const regex = new RegExp(`${searchText}`, "gi");
+      const regex = new RegExp(`${searchText}`, 'gi');
       return alarm.text.match(regex) || alarm.jmeno.match(regex);
     });
     if (searchText.length === 0)
@@ -124,18 +124,18 @@ export const Forum = () => {
   };
 
   return (
-    <div className="top_container">
-      <div className="center">
-        <div className="header">
+    <div className='top_container'>
+      <div className='center'>
+        <div className='header'>
           <b>Lipenské fórum</b>
         </div>
         <br />
-        <div className="btn-group">
+        <div className='btn-group'>
           <AddEntry categoryFromUrl={categoryFromUrl} />
         </div>
-        <p style={{ clear: "both" }}></p>
+        <p style={{ clear: 'both' }}></p>
         <br />
-        <div className="fields">
+        <div className='fields'>
           <SearchForum
             filteredEntriesCalculate={filteredEntriesCalculate}
             selectedCategory={selectedCategory}
@@ -161,7 +161,7 @@ export const Forum = () => {
           buttonText={buttonText}
         />
         <br />
-        <div className="fields">
+        <div className='fields'>
           <SelectPaginate paginate={setState} />
           <PostsPerPage
             filteredEntriesBySearch={filteredEntriesBySearch}

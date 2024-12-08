@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { Url } from "../../../api/paths";
-import { api } from "../../../api/utils";
+import { useQuery } from '@tanstack/react-query';
+import { Url } from '../../../api/paths';
+import { api } from '../../../api/utils';
 
 export type OneMessage = {
   id: number;
@@ -19,17 +19,17 @@ type FormRequest = {
 
 export type ForumResponse = OneMessage[];
 
-export const GET_FORUM_ENDPOINT = `${Url.API}/pdo_read_forum.php?{searchCriteria}{start}{limit}`;
-export const GET_FORUM_KEY = "getForum";
+export const GET_FORUM_ENDPOINT = `${Url.NEW_API}/forum/read.php?{searchCriteria}{start}{limit}`;
+export const GET_FORUM_KEY = 'getForum';
 
 const getForum = async (request: FormRequest): Promise<ForumResponse> => {
   const data = await api.get({
     url: GET_FORUM_ENDPOINT.replace(
-      "{searchCriteria}",
+      '{searchCriteria}',
       `&searchCriteria=${request.searchCriteria}`
     )
-      .replace("{start}", `&start=${request.start.toString()}`)
-      .replace("{limit}", `&limit=${request.limit.toString()}`),
+      .replace('{start}', `&start=${request.start.toString()}`)
+      .replace('{limit}', `&limit=${request.limit.toString()}`),
   });
 
   return data;

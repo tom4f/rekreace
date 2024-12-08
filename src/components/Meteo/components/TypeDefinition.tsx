@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
-import { ParsedUrlQuery } from "querystring";
+import { ReactElement } from 'react';
+import { ParsedUrlQuery } from 'querystring';
 
 export interface urlQueryType extends ParsedUrlQuery {
   page: string;
@@ -107,8 +107,7 @@ export type LayoutType = {
 
 export type showGraphType = (
   canvas: HTMLCanvasElement,
-  canvas_pointer: HTMLCanvasElement,
-  graphHeight: number
+  canvas_pointer: HTMLCanvasElement
 ) => void;
 
 export interface isAllDownloaded {
@@ -129,7 +128,7 @@ export type CustomNavLinkType = ({
 }) => JSX.Element;
 
 export type dateType = {
-  [key in "daily" | "yearSum" | "davisStat" | "oldStation"]: Date;
+  [key in 'daily' | 'yearSum' | 'davisStat' | 'oldStation']: Date;
 };
 
 export type reducerActionType = {

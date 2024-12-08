@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { Url } from "../../../api/paths";
-import { api } from "../../../api/utils";
-import { GET_FORUM_KEY } from "./useGetForum";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { Url } from '../../../api/paths';
+import { api } from '../../../api/utils';
+import { GET_FORUM_KEY } from './useGetForum';
 
 type AddForumRequest = {
   jmeno: string;
@@ -21,8 +21,8 @@ export type AddForumErrorResponse = AxiosError & {
   data: { result: string };
 };
 
-export const ADD_FORUM_ENDPOINT = `${Url.API}/pdo_create_forum.php`;
-export const ADD_FORUM_KEY = "addForum";
+export const ADD_FORUM_ENDPOINT = `${Url.NEW_API}/forum/create.php`;
+export const ADD_FORUM_KEY = 'addForum';
 
 const postEditBooking = async (
   request: AddForumRequest

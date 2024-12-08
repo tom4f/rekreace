@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Url } from "../../../api/paths";
-import FormularStyle from "./../css/Formular.module.css";
-import ModifyPocasiStyle from "./../css/ModifyPocasi.module.css";
-import { AddPocasiType } from "./TypeDefinition";
+import { useState } from 'react';
+import { Url } from '../../../api/paths';
+import FormularStyle from './../css/Formular.module.css';
+import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
+import { AddPocasiType } from './TypeDefinition';
 
 export const AddPocasi = ({
   pocasi,
@@ -15,12 +15,12 @@ export const AddPocasi = ({
 
   const { hladina, pritok, odtok, voda, vzduch, pocasi: komentar } = pocasi[0];
 
-  let fotoGalleryOwner = "_ubytovani";
+  const fotoGalleryOwner = '_ubytovani';
 
   const today = (now: Date) => {
-    let day = now.getDate();
+    const day = now.getDate();
     const dayString = day < 10 ? `0${day}` : day;
-    let month = now.getMonth() + 1;
+    const month = now.getMonth() + 1;
     const monthString = month < 10 ? `0${month}` : month;
     const year = now.getFullYear();
     return `${year}-${monthString}-${dayString}`;
@@ -36,18 +36,18 @@ export const AddPocasi = ({
     pocasi: komentar,
   });
 
-  const [loginResp, setLoginResp] = useState("empty");
+  const [loginResp, setLoginResp] = useState('empty');
 
   const insert = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // AJAX
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", `${Url.API}/pdo_add_pocasi.php`, true);
-    xhr.setRequestHeader("Content-type", "application/json");
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${Url.API}/pdo_add_pocasi.php`, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = function () {
       if (this.readyState === 4 && this.status === 200) {
         const editResult = JSON.parse(this.responseText);
-        if (editResult.result === "pocasi_create_ok") {
+        if (editResult.result === 'pocasi_create_ok') {
           setEditMeteo({
             ...editMeteo,
             dispAdd: false,
@@ -56,12 +56,12 @@ export const AddPocasi = ({
             refresh: refresh + 1,
           });
         } else {
-          setLoginResp("error");
+          setLoginResp('error');
         }
       }
     };
     xhr.onerror = function () {
-      setLoginResp("error");
+      setLoginResp('error');
     };
     xhr.send(
       JSON.stringify({
@@ -90,21 +90,21 @@ export const AddPocasi = ({
         >
           <span>x</span>
         </div>
-        {loginResp === "error" ? <div> Někde nastala chyba :-(</div> : null}
+        {loginResp === 'error' ? <div> Někde nastala chyba :-(</div> : null}
         <h4>Nový záznam </h4>
         <form
           onSubmit={(e) => insert(e)}
-          autoComplete="off"
-          id="edit_form_pocasi"
-          name="edit_form_pocasi"
+          autoComplete='off'
+          id='edit_form_pocasi'
+          name='edit_form_pocasi'
         >
           <div className={FormularStyle.form_booking}>
             <div className={FormularStyle.input_booking}>
               <label>datum:</label>
               <br />
               <input
-                type="text"
-                name="datum"
+                type='text'
+                name='datum'
                 value={newValues.datum}
                 onChange={(e) => set(e)}
               />
@@ -113,8 +113,8 @@ export const AddPocasi = ({
               <label>voda:</label>
               <br />
               <input
-                type="text"
-                name="voda"
+                type='text'
+                name='voda'
                 value={newValues.voda}
                 onChange={(e) => set(e)}
               />
@@ -123,8 +123,8 @@ export const AddPocasi = ({
               <label>vzduch:</label>
               <br />
               <input
-                type="text"
-                name="vzduch"
+                type='text'
+                name='vzduch'
                 value={newValues.vzduch}
                 onChange={(e) => set(e)}
               />
@@ -133,8 +133,8 @@ export const AddPocasi = ({
               <label>hladina:</label>
               <br />
               <input
-                type="text"
-                name="hladina"
+                type='text'
+                name='hladina'
                 value={newValues.hladina}
                 onChange={(e) => set(e)}
               />
@@ -143,8 +143,8 @@ export const AddPocasi = ({
               <label>přítok:</label>
               <br />
               <input
-                type="text"
-                name="pritok"
+                type='text'
+                name='pritok'
                 value={newValues.pritok}
                 onChange={(e) => set(e)}
               />
@@ -153,8 +153,8 @@ export const AddPocasi = ({
               <label>odtok:</label>
               <br />
               <input
-                type="text"
-                name="odtok"
+                type='text'
+                name='odtok'
                 value={newValues.odtok}
                 onChange={(e) => set(e)}
               />
@@ -163,15 +163,15 @@ export const AddPocasi = ({
               <label>komentář:</label>
               <br />
               <input
-                type="text"
-                name="pocasi"
+                type='text'
+                name='pocasi'
                 value={newValues.pocasi}
                 onChange={(e) => set(e)}
               />
             </div>
 
             <div className={FormularStyle.submit_booking}>
-              <input type="submit" name="odesli" value="Odeslat" />
+              <input type='submit' name='odesli' value='Odeslat' />
             </div>
           </div>
         </form>

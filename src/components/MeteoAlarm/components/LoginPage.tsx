@@ -1,8 +1,8 @@
-import axios from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import axios from 'axios';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { Url } from "../../../api/paths";
-import { AlertBox, Delay } from "./AlertBox";
+import { Url } from '../../../api/paths';
+import { AlertBox, Delay } from './AlertBox';
 
 type myItems = {
   date: string;
@@ -33,8 +33,8 @@ const LoginPage = ({
     password: string;
   }
   const [loginParams, setLoginParams] = useState<loginParamsTypes>({
-    username: "",
-    password: "",
+    username: '',
+    password: '',
   });
 
   // alert definition
@@ -43,35 +43,35 @@ const LoginPage = ({
     text: string;
     color?: string;
   }
-  const [alert, setAlert] = useState<alertTypes>({ header: "", text: "" });
+  const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
   // if 'alert' changed - wait 5s and clear 'alert'
   Delay(alert, setAlert);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showOnPhone, setShowOnPhone] = useState("");
-  const [showRainOnPhone, setShowRainOnPhone] = useState("");
+  const [showOnPhone, setShowOnPhone] = useState('');
+  const [showRainOnPhone, setShowRainOnPhone] = useState('');
 
   const getData = () => {
     if (!loginParams.username || !loginParams.password) {
       setAlert({
-        header: "Uživatelské jméno / heslo",
-        text: "vyplňte údaje",
+        header: 'Uživatelské jméno / heslo',
+        text: 'vyplňte údaje',
       });
       return null;
     }
 
     if (!/^[a-zA-Z0-9\-_]{3,10}$/.test(loginParams.username)) {
       setAlert({
-        header: "Špatné jméno",
-        text: "zadejte 3 až 10 znaků (0-9 a..z A..Z - _ )",
+        header: 'Špatné jméno',
+        text: 'zadejte 3 až 10 znaků (0-9 a..z A..Z - _ )',
       });
       return null;
     }
 
     if (!/^[a-zA-Z0-9.\-_]{3,10}$/.test(loginParams.password)) {
       setAlert({
-        header: "Špatné heslo!",
-        text: "zadejte 3 až 10 znaků (0-9 a..z A..Z - . _ )",
+        header: 'Špatné heslo!',
+        text: 'zadejte 3 až 10 znaků (0-9 a..z A..Z - . _ )',
       });
       return null;
     }
@@ -83,17 +83,17 @@ const LoginPage = ({
         const resp = res.data[0] || res.data;
 
         // if error in response
-        if (typeof resp.sms_read === "string") {
-          resp.sms_read === "error" &&
+        if (typeof resp.sms_read === 'string') {
+          resp.sms_read === 'error' &&
             setAlert({
-              header: "Přihlášení se nepovedlo !",
-              text: "zkuste později...",
+              header: 'Přihlášení se nepovedlo !',
+              text: 'zkuste později...',
             });
           return null;
         }
 
         // if no user data
-        if (typeof resp.id === "string") {
+        if (typeof resp.id === 'string' || typeof resp.id === 'number') {
           // convert string from mySQL to number
           resp.days = +resp.days;
           resp.id = +resp.id;
@@ -106,32 +106,32 @@ const LoginPage = ({
           return null;
         }
 
-        console.log(res);
+        console.log(typeof resp.id);
         setAlert({
-          header: "Neznámá chyba !",
-          text: "zkuste později...",
+          header: 'Neznámá chyba !',
+          text: 'zkuste později...',
         });
       })
       .catch((err) => {
         if (err.response) {
           // client received an error response (5xx, 4xx)
           setAlert({
-            header: "Neznámá chyba !",
-            text: "error response (5xx, 4xx)",
+            header: 'Neznámá chyba !',
+            text: 'error response (5xx, 4xx)',
           });
           console.log(err.response);
         } else if (err.request) {
           // client never received a response, or request never left
           setAlert({
-            header: "Neznámá chyba !",
-            text: "never received a response, or request never left",
+            header: 'Neznámá chyba !',
+            text: 'never received a response, or request never left',
           });
           console.log(err.request);
         } else {
           // anything else
           setAlert({
-            header: "Neznámá chyba !",
-            text: "Error: anything else",
+            header: 'Neznámá chyba !',
+            text: 'Error: anything else',
           });
         }
       });
@@ -171,7 +171,7 @@ const LoginPage = ({
           // Select from string 'Vitr' included
           .split(/(?=Vitr)/)[1]
           // Till character '_'
-          .split("_")[0];
+          .split('_')[0];
         setShowOnPhone(limitedText);
       })
       .catch((error) => console.log(error));
@@ -196,22 +196,22 @@ const LoginPage = ({
   useEffect(getLastRainData, []);
 
   return (
-    <article className="container-login">
-      <header className="header-label">Přihlášení uživatele</header>
+    <article className='container-login'>
+      <header className='header-label'>Přihlášení uživatele</header>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           getData();
           //setLoginParams({ username: '', password: '' });
         }}
-        name="formular"
-        encType="multipart/form-data"
+        name='formular'
+        encType='multipart/form-data'
       >
-        <section className="input-section">
+        <section className='input-section'>
           <label>Zadejte uživatelské jméno</label>
           <input
-            type="text"
-            placeholder="Username or Email..."
+            type='text'
+            placeholder='Username or Email...'
             onChange={(e) =>
               setLoginParams((current) => ({
                 ...current,
@@ -221,12 +221,12 @@ const LoginPage = ({
             value={loginParams.username}
           />
         </section>
-        <section className="input-section password">
+        <section className='input-section password'>
           <label>Zadejte heslo</label>
           <br />
           <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password..."
+            type={showPassword ? 'text' : 'password'}
+            placeholder='Password...'
             onChange={(e) =>
               setLoginParams((current) => ({
                 ...current,
@@ -234,7 +234,7 @@ const LoginPage = ({
               }))
             }
             value={loginParams.password}
-            autoComplete="on"
+            autoComplete='on'
           />
           <span
             onMouseOver={() => setShowPassword(true)}
@@ -244,23 +244,23 @@ const LoginPage = ({
           </span>
         </section>
         {alert.header ? <AlertBox alert={alert} /> : null}
-        <section className="submit-section">
-          <input type="submit" name="odesli" value="Přihlásit" />
+        <section className='submit-section'>
+          <input type='submit' name='odesli' value='Přihlásit' />
         </section>
       </form>
-      <header className="header-counter">Počet uživatelů: {counter}</header>
-      <section className="input-section ">
+      <header className='header-counter'>Počet uživatelů: {counter}</header>
+      <section className='input-section '>
         <label>Zobrazení větru na mobilu / emailu:</label>
-        <span className="smsText">
+        <span className='smsText'>
           <br />
           From: 4f@lipno.net
           <br />
           Text: {showOnPhone}
         </span>
       </section>
-      <section className="input-section ">
+      <section className='input-section '>
         <label>Zobrazení deště na mobilu / emailu:</label>
-        <span className="smsText">
+        <span className='smsText'>
           <br />
           From: 4f@lipno.net
           <br />

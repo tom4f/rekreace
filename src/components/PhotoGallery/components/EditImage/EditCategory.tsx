@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { AlertBox, Delay } from "../../../AlertBox/AlertBox";
+import { useState } from 'react';
+import { AlertBox, Delay } from '../../../AlertBox/AlertBox';
 import {
   AlertType,
   EditCategoryType,
   categoryChangeType,
-} from "./../../TypeDefinition";
-import { addCategoryLogic, editCategoryLogic } from "./logic/editCategoryLogic";
+} from './../../TypeDefinition';
+import { addCategoryLogic, editCategoryLogic } from './logic/editCategoryLogic';
 
 export const EditCategory = ({
   categoryName,
@@ -14,13 +14,13 @@ export const EditCategory = ({
   setImgPosition,
   editCategory,
 }: EditCategoryType) => {
-  const [alert, setAlert] = useState<AlertType>({ header: "", text: "" });
+  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
   Delay(alert, setAlert);
 
   const categoryChange = (e: categoryChangeType) => {
     const { name, value } = e.target;
-    if (name.startsWith("name-")) {
-      const key = name.replace("name-", "");
+    if (name.startsWith('name-')) {
+      const key = name.replace('name-', '');
       setCategoryName((orig) => ({ ...orig, [key]: value }));
     }
   };
@@ -35,14 +35,14 @@ export const EditCategory = ({
         current: 0,
       }));
     category.push(
-      <div key={key} onClick={changeCategory} className="oneLine">
+      <div key={key} onClick={changeCategory} className='oneLine'>
         <article>index-{key}</article>
-        <div className="input_booking" style={{ width: "50%" }}>
+        <div className='input_booking' style={{ width: '50%' }}>
           <input
-            value={categoryName?.[+key] ?? ""}
+            value={categoryName?.[+key] ?? ''}
             onChange={categoryChange}
             name={`name-${key}`}
-            placeholder="text"
+            placeholder='text'
             size={10}
           />
         </div>
@@ -52,42 +52,42 @@ export const EditCategory = ({
   }
 
   return (
-    <form name="formularCategory">
-      <div className="form_booking">
+    <form name='formularCategory'>
+      <div className='form_booking'>
         {alert.header && <AlertBox alert={alert} />}
-        <div className="input_booking">
-          <section className="categoryListEdit">{category}</section>
+        <div className='input_booking'>
+          <section className='categoryListEdit'>{category}</section>
         </div>
         <div
-          className="submit_booking red"
-          style={{ backgroundColor: "rgba(256, 0, 256, 0.4)" }}
+          className='submit_booking red'
+          style={{ backgroundColor: 'rgba(256, 0, 256, 0.4)' }}
         >
           <input
-            type="Submit"
+            type='Submit'
             onClick={(event) => editCategory(event)}
-            defaultValue="Zpět Foto"
+            defaultValue='Zpět Foto'
           />
         </div>
         <div
-          className="submit_booking red"
-          style={{ backgroundColor: "rgba(0, 256, 0, 0.4)" }}
+          className='submit_booking red'
+          style={{ backgroundColor: 'rgba(0, 256, 0, 0.4)' }}
         >
           <input
-            type="Submit"
+            type='Submit'
             onClick={(event) =>
               editCategoryLogic(event, categoryName, setAlert)
             }
-            defaultValue="Uložit"
+            defaultValue='Uložit'
           />
         </div>
         <div
-          className="submit_booking red"
-          style={{ backgroundColor: "rgba(0, 0, 256, 0.4)" }}
+          className='submit_booking red'
+          style={{ backgroundColor: 'rgba(0, 0, 256, 0.4)' }}
         >
           <input
-            type="Submit"
+            type='Submit'
             onClick={(event) => addCategoryLogic(event, setCategoryName)}
-            defaultValue="Nová kat."
+            defaultValue='Nová kat.'
           />
         </div>
       </div>

@@ -1,15 +1,15 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { Url } from "../../../api/paths";
-import TableStyle from "./../css/Table.module.css";
-import { DateContext } from "./DateContext";
-import { oldPocasiType, rgbCssType } from "./TypeDefinition";
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Url } from '../../../api/paths';
+import TableStyle from './../css/Table.module.css';
+import { DateContext } from './DateContext';
+import { oldPocasiType, rgbCssType } from './TypeDefinition';
 
 export const ShowOldStationTable = () => {
   const { reduceDate } = useContext(DateContext);
 
   const [orderBy, setOrderBy] = useState({
-    value: "date",
-    order: "DESC",
+    value: 'date',
+    order: 'DESC',
   });
 
   // which lines requested from mySQL
@@ -20,20 +20,20 @@ export const ShowOldStationTable = () => {
     start: number,
     orderBy: { value: string; order: string }
   ) => {
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", `${Url.API}/pdo_read_old_station.php`, true);
-    xhr.setRequestHeader("Content-type", "application/json");
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${Url.API}/pdo_read_old_station.php`, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         const pdoResp = JSON.parse(xhr.responseText);
         setDavis(pdoResp);
-        const [year, month, day] = pdoResp[0].date.split("-");
+        const [year, month, day] = pdoResp[0].date.split('-');
         const clickedDate = new Date(year, month - 1, day);
-        reduceDate("daily", clickedDate);
+        reduceDate('daily', clickedDate);
       }
     };
     xhr.onerror = () =>
-      console.log("** An error occurred during the transaction");
+      console.log('** An error occurred during the transaction');
     xhr.send(
       JSON.stringify({
         start: start,
@@ -86,34 +86,34 @@ export const ShowOldStationTable = () => {
     const clickedName = (e.target as HTMLButtonElement).name;
     setOrderBy({
       value: clickedName,
-      order: orderBy.order === "DESC" ? "ASC" : "DESC",
+      order: orderBy.order === 'DESC' ? 'ASC' : 'DESC',
     });
   };
 
   return (
     <>
-      <header className="header">
+      <header className='header'>
         Historie : &nbsp;
         <button
           onClick={() => setStart(start <= 4045 - 365 ? start + 365 : start)}
         >
-          {" "}
-          &nbsp; {"<<"} &nbsp;{" "}
+          {' '}
+          &nbsp; {'<<'} &nbsp;{' '}
         </button>
         <button
           onClick={() => setStart(start <= 4045 - 30 ? start + 30 : start)}
         >
-          {" "}
-          &nbsp; {"<"} &nbsp;{" "}
+          {' '}
+          &nbsp; {'<'} &nbsp;{' '}
         </button>
         &nbsp; {start} &nbsp;
         <button onClick={() => setStart(start >= 30 ? start - 30 : start)}>
-          {" "}
-          &nbsp; {">"} &nbsp;{" "}
+          {' '}
+          &nbsp; {'>'} &nbsp;{' '}
         </button>
         <button onClick={() => setStart(start >= 365 ? start - 365 : start)}>
-          {" "}
-          &nbsp; {">>"} &nbsp;{" "}
+          {' '}
+          &nbsp; {'>>'} &nbsp;{' '}
         </button>
         &nbsp; dní
       </header>
@@ -128,59 +128,59 @@ export const ShowOldStationTable = () => {
             </tr>
             <tr>
               <th>
-                <button id="date" onClick={(e) => sort(e)}>
+                <button id='date' onClick={(e) => sort(e)}>
                   datum
                 </button>
               </th>
               <th>
-                <button id="wind3" onClick={(e) => sort(e)}>
-                  &gt;3<sub id="wind3">m/s</sub>
+                <button id='wind3' onClick={(e) => sort(e)}>
+                  &gt;3<sub id='wind3'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id="wind6" onClick={(e) => sort(e)}>
-                  &gt;6<sub id="wind6">m/s</sub>
+                <button id='wind6' onClick={(e) => sort(e)}>
+                  &gt;6<sub id='wind6'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id="wind9" onClick={(e) => sort(e)}>
-                  &gt;9<sub id="wind9">m/s</sub>
+                <button id='wind9' onClick={(e) => sort(e)}>
+                  &gt;9<sub id='wind9'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id="wind12" onClick={(e) => sort(e)}>
-                  &gt;12<sub id="wind12">m/s</sub>
+                <button id='wind12' onClick={(e) => sort(e)}>
+                  &gt;12<sub id='wind12'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id="windmax" onClick={(e) => sort(e)}>
+                <button id='windmax' onClick={(e) => sort(e)}>
                   max
                 </button>
               </th>
               <th>
-                <button id="direct" onClick={(e) => sort(e)}>
+                <button id='direct' onClick={(e) => sort(e)}>
                   směr
                 </button>
               </th>
 
               <th>
-                <button id="tempmin" onClick={(e) => sort(e)}>
+                <button id='tempmin' onClick={(e) => sort(e)}>
                   min
                 </button>
               </th>
               <th>
-                <button id="tempavg" onClick={(e) => sort(e)}>
+                <button id='tempavg' onClick={(e) => sort(e)}>
                   prů
                 </button>
               </th>
               <th>
-                <button id="tempmax" onClick={(e) => sort(e)}>
+                <button id='tempmax' onClick={(e) => sort(e)}>
                   max
                 </button>
               </th>
 
               <th>
-                <button id="rain" onClick={(e) => sort(e)}>
+                <button id='rain' onClick={(e) => sort(e)}>
                   celk
                 </button>
               </th>

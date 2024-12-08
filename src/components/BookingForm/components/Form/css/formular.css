@@ -1,146 +1,121 @@
-::-webkit-input-placeholder { 
-	color: white;
-	background-color: transparent;
+::-webkit-input-placeholder {
+  color: white;
+  background-color: transparent;
 }
 :placeholder-shown {
-	background-color: transparent;
+  background-color: transparent;
 }
-:-ms-input-placeholder { 
-	color: white;
+:-ms-input-placeholder {
+  color: white;
 }
 ::placeholder {
-	color: white;
-	background-color: transparent;
+  color: white;
+  background-color: transparent;
 }
 
 .booking_form {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	background: url("./../images/604b.jpg");
-	width: 100%;
-    padding: 0px;
-    color: white;
-	text-align: left;
-	margin: auto;
-	border-radius: 5px;
-	border: 1px solid #555;
-	margin-top: 0rem;
-	margin-bottom: 0rem;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	position: relative;
-}
-
-.booking_form .form_result_alert{
-	position: absolute;
-	width: 80%;
-	height: 80%;
-	top: 50px;
-	color: black;
-	border: 1px solid white;
-	border-radius: 5px;
-	text-align: center;
-	display: none;
-	text-decoration: none;
-}
-
-.booking_form .form_result_alert ul {
-	list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: url('./../images/604b.jpg');
+  width: 100%;
+  padding: 0px;
+  color: white;
+  text-align: left;
+  margin: auto;
+  border-radius: 5px;
+  border: 1px solid #555;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: relative;
 }
 
 .booking_form input,
 .booking_form select,
 .booking_form textarea {
-    font-size: 1.0rem;;
-	width: 100%;
-	background-color: transparent;
-	border: none;
-	margin: 2px 5px;
-	transition: none;
-	color: rgb(233, 233, 233);
-	letter-spacing: 0.1rem;
+  font-size: 1rem;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  margin: 2px 5px;
+  transition: none;
+  color: rgb(233, 233, 233);
+  letter-spacing: 0.1rem;
 }
 
-.booking_form input[type=text]:focus,
-.booking_form input[type=email]:focus,
-.booking_form input[type=tel]:focus,
-.booking_form input[type=date]:focus,
-.booking_form input[type=hi]:focus,
+.booking_form input:focus,
 .booking_form textarea:focus,
 .booking_form select:focus {
-	border: none;
-	outline: none;
-  }
-
-  
-.booking_form .input_booking{
-	background-color:rgba(0, 0, 0, 0.4);
-	width: 45%;
-	border-radius: 5px;
-	border: 1px solid white;
-	padding: 2px;
-	margin: 5px;
+  border: none;
+  outline: none;
 }
 
-.booking_form .input_booking:hover{
-	border: 1px solid black;
+.booking_form .input_booking {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 45%;
+  border-radius: 5px;
+  border: 1px solid white;
+  padding: 2px 12px 2px 2px;
+  margin: 5px;
 }
 
-.booking_form .input_booking label{
-	font-size: 0.7rem;
-	color: white;
-	font-weight: bold;
-	text-align: left;
-	margin: 2px 5px;
+.booking_form .input_booking:hover {
+  border: 1px solid black;
 }
 
-.booking_form .input_booking option{
-	background-color:rgba(0, 0, 0, 0.5);
+.booking_form .input_booking label {
+  font-size: 0.7rem;
+  color: white;
+  font-weight: bold;
+  text-align: left;
+  margin: 2px 5px;
 }
 
+.booking_form .input_booking option {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
 /* Original Solution found on Stackoverflow here:
 http://stackoverflow.com/questions/26573346/ios-safari-messes-up-input-type-date
 */
 
-.booking_form .input_booking input[type="date"]
-{
-	background-color:rgba(0, 0, 0, 0.5);
-    display:block;
-  
-    /* Solution 1 */
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-    min-height: 1.2em; 
-  
-    /* Solution 2 */
-	/* min-width: 96%; */
+.booking_form .input_booking input[type='date'] {
+  display: block;
+
+  /* Solution 1 */
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  min-height: 1.2em;
+
+  /* Solution 2 */
+  /* min-width: 96%; */
 }
 
-.booking_form .submit_booking{
-	border-radius: 5px;
-	border: 1px solid white;
-	padding: 0;
-	margin: 5px;
-	text-align: left;
-	background-color:rgba(0, 256, 0, 0.4);
-	width: 40%;
+.booking_form .submit_booking {
+  border-radius: 5px;
+  border: 1px solid white;
+  padding: 0;
+  margin: 5px;
+  text-align: left;
+  background-color: rgba(0, 256, 0, 0.4);
+  width: 45%;
 }
 
-.booking_form .submit_booking:hover{
-	border: 1px solid black;
+.booking_form .submit_booking:hover {
+  border: 1px solid black;
 }
 
-.booking_form .submit_booking input{
-	width: 100%;
-	margin: 0;
-	padding: 20px;
-	border: none;
-	font-size: 1rem;
-	border-radius: 5px;
+.booking_form .submit_booking input {
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 5px;
 }
 
-.booking_form .submit_booking input:focus{
-	background-color:rgba(0, 256, 0, 0.5);
+.booking_form .submit_booking input:focus {
+  background-color: rgba(0, 256, 0, 0.5);
 }

@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
-import { loadPocasiAsyncFromFile } from "../api/loadPocasiAsyncFromFile";
-import graphsConfig from "./../config/davis-day-graphs.json";
-import DavisGraphsDayStyle from "./../css/DavisGraphsDay.module.css";
-import { OnePage } from "./OnePage";
+import { useState, useEffect } from 'react';
+import { loadPocasiAsyncFromFile } from '../api/loadPocasiAsyncFromFile';
+import graphsConfig from './../config/davis-day-graphs.json';
+import DavisGraphsDayStyle from './../css/DavisGraphsDay.module.css';
+import { OnePage } from './OnePage';
+import { FullscreenHeader } from './FullscreenHeader';
 
 export const DavisGraphsDay = () => {
   const [isGraphLoading, setIsGraphLoading] = useState(true);
@@ -27,21 +28,21 @@ export const DavisGraphsDay = () => {
     return isGraphLoading ? (
       <div className={DavisGraphsDayStyle.isLoading}>
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="100"
-          height="100"
-          overflow="visible"
-          stroke="#FFF"
-          strokeWidth="1"
+          xmlns='http://www.w3.org/2000/svg'
+          width='100'
+          height='100'
+          overflow='visible'
+          stroke='#FFF'
+          strokeWidth='1'
         >
           <circle
-            pathLength="1"
-            cx="50"
-            cy="50"
-            r="40"
-            stroke="#ff0"
-            strokeWidth="20"
-            fill="#ff0"
+            pathLength='1'
+            cx='50'
+            cy='50'
+            r='40'
+            stroke='#ff0'
+            strokeWidth='20'
+            fill='#ff0'
           />
         </svg>
       </div>
@@ -50,12 +51,7 @@ export const DavisGraphsDay = () => {
 
   return (
     <>
-      <header className="header">
-        <a href="https://www.frymburk.com/projects/92_canvas_graph/day.html">
-          HISTORIE - dynamické grafy - na celou obrazovku &nbsp;
-          <i className="fas fa-expand-arrows-alt"></i>
-        </a>
-      </header>
+      <FullscreenHeader />
       <ShowLoading isGraphLoading={isGraphLoading} />
       <OnePage
         graphsData={graphsData}

@@ -1,23 +1,22 @@
 .allGraphs {
-    text-align: left;
-    background-color: black;
+  text-align: left;
+  background-color: black;
 
-    position: relative;
-    left: 0px;
-    height: 300px;
+  position: relative;
+  left: 0px;
 
-    .canvas {
-      background: black;
-      position: absolute;
-      z-index: 1;
-    }
-
-    .canvas_pointer {
-      background: transparent;
-      position: absolute;
-      z-index: 2;
-    }
+  .canvas {
+    background: black;
+    position: absolute;
+    z-index: 1;
   }
+
+  .canvas_pointer {
+    background: transparent;
+    position: absolute;
+    z-index: 2;
+  }
+}
 
 .pointerOn {
   cursor: crosshair;

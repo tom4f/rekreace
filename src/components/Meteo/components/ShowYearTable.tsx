@@ -1,22 +1,22 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { Url } from "../../../api/paths";
-import TableStyle from "./../css/Table.module.css";
-import { DateContext } from "./DateContext";
-import { rgbCssType, showYearTableType } from "./TypeDefinition";
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Url } from '../../../api/paths';
+import TableStyle from './../css/Table.module.css';
+import { DateContext } from './DateContext';
+import { rgbCssType, showYearTableType } from './TypeDefinition';
 
 export const ShowYearTable = ({
   pocasi,
   setPocasi,
   editMeteo,
-  user = "no-user",
-  webToken = "error",
+  user = 'no-user',
+  webToken = 'error',
 }: showYearTableType) => {
   const refresh = editMeteo?.refresh ?? 0;
   const { reduceDate } = useContext(DateContext);
 
   const [orderBy, setOrderBy] = useState({
-    value: "datum",
-    order: "DESC",
+    value: 'datum',
+    order: 'DESC',
   });
 
   const limit = 30;
@@ -28,22 +28,21 @@ export const ShowYearTable = ({
     orderBy: { value: string; order: string }
   ) => {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", `${Url.API}/pdo_read_pocasi.php`, true);
-    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.open('POST', `${Url.API}/pdo_read_pocasi.php`, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
     xhr.onload = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         const pdoResp = JSON.parse(xhr.responseText);
         if (pdoResp.length) {
           setPocasi(pdoResp);
-          const [year, month, day] = pdoResp[0].datum.split("-");
+          const [year, month, day] = pdoResp[0].datum.split('-');
           const clickedDate = new Date(year, month - 1, day);
-          reduceDate("yearSum", clickedDate);
+          reduceDate('yearSum', clickedDate);
         }
       }
     };
     xhr.onerror = () =>
-      console.log("** An error occurred during the transaction");
-    //xhr.send();
+      console.log('** An error occurred during the transaction');
     xhr.send(
       JSON.stringify({
         start: start,
@@ -75,7 +74,7 @@ export const ShowYearTable = ({
     pocasi?.forEach((one, index) =>
       output.push(
         <tr key={index}>
-          <td className={webToken !== "error" ? TableStyle.datum : ""}>
+          <td className={webToken !== 'error' ? TableStyle.datum : ''}>
             {one.datum}
           </td>
           <td style={rgbCss(255, 0, 0, 1 - (725 - one.hladina) / 2)}>
@@ -96,31 +95,31 @@ export const ShowYearTable = ({
     const clickedName = (e.target as HTMLButtonElement).name;
     setOrderBy({
       value: clickedName,
-      order: orderBy.order === "DESC" ? "ASC" : "DESC",
+      order: orderBy.order === 'DESC' ? 'ASC' : 'DESC',
     });
   };
 
   return (
     <>
-      {webToken !== "error" ? (
-        <header className="header">Přihlášený uživatel: {user}</header>
+      {webToken !== 'error' ? (
+        <header className='header'>Přihlášený uživatel: {user}</header>
       ) : null}
-      <header className="header">
+      <header className='header'>
         Historie : &nbsp;
         <button
           onClick={() =>
             pocasi?.length === limit ? setStart(start + limit) : null
           }
         >
-          {" "}
-          &nbsp; {"<"} &nbsp;{" "}
+          {' '}
+          &nbsp; {'<'} &nbsp;{' '}
         </button>
         &nbsp; {start} &nbsp;
         <button
           onClick={() => (start - limit >= 0 ? setStart(start - limit) : null)}
         >
-          {" "}
-          &nbsp; {">"} &nbsp;{" "}
+          {' '}
+          &nbsp; {'>'} &nbsp;{' '}
         </button>
         &nbsp; dní
       </header>
@@ -134,32 +133,32 @@ export const ShowYearTable = ({
             </tr>
             <tr>
               <th>
-                <button name="datum" onClick={(e) => sort(e)}>
+                <button name='datum' onClick={(e) => sort(e)}>
                   datum
                 </button>
               </th>
               <th>
-                <button name="hladina" onClick={(e) => sort(e)}>
+                <button name='hladina' onClick={(e) => sort(e)}>
                   hladina
                 </button>
               </th>
               <th>
-                <button name="pritok" onClick={(e) => sort(e)}>
+                <button name='pritok' onClick={(e) => sort(e)}>
                   přítok
                 </button>
               </th>
               <th>
-                <button name="odtok" onClick={(e) => sort(e)}>
+                <button name='odtok' onClick={(e) => sort(e)}>
                   odtok
                 </button>
               </th>
               <th>
-                <button name="voda" onClick={(e) => sort(e)}>
+                <button name='voda' onClick={(e) => sort(e)}>
                   voda
                 </button>
               </th>
               <th>
-                <button name="vzduch" onClick={(e) => sort(e)}>
+                <button name='vzduch' onClick={(e) => sort(e)}>
                   vzduch
                 </button>
               </th>

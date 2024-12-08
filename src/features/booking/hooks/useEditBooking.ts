@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { Url } from "../../../api/paths";
-import { api } from "../../../api/utils";
-import { GET_BOOKING_KEY } from "./useGetBooking";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { Url } from '../../../api/paths';
+import { api } from '../../../api/utils';
+import { GET_BOOKING_KEY } from './useGetBooking';
 
 type EditBookingRequest = {
   fotoGalleryOwner: string;
@@ -22,8 +22,8 @@ export type EditFormBookingErrorResponse = AxiosError & {
   data: { result: string };
 };
 
-export const EDIT_BOOKING_ENDPOINT = `${Url.API}/pdo_update_booking.php`;
-export const EDIT_BOOKING_KEY = "editBooking";
+export const EDIT_BOOKING_ENDPOINT = `${Url.NEW_API}/booking/edit.php`;
+export const EDIT_BOOKING_KEY = 'editBooking';
 
 const postEditBooking = async (
   request: EditBookingRequest
