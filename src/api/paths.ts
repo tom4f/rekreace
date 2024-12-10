@@ -1,12 +1,20 @@
+enum ServerUrl {
+  LOCALHOST = 'http://localhost:80',
+  LIVE = 'https://www.frymburk.com',
+}
+const dev = process.env.NODE_ENV !== 'production';
+
+const target = dev ? ServerUrl.LIVE : '';
+
 export enum Url {
-  DAVIS = '/davis',
-  KAMERA = '/kamera',
-  API = '/rekreace/api',
-  NEW_API = '/api',
-  GRAPHS = '/rekreace/graphs',
-  FOTOGALERIE = '/rekreace/fotogalerie_ubytovani',
-  BIG_GRAPH = '/rekreace/aktuality_big_graph.php',
-  GET_IP_KAMERA = '/rekreace/get_ip_kamera.php',
+  DAVIS = 'https://www.frymburk.com/davis',
+  KAMERA = 'https://www.frymburk.com/kamera',
+  API = 'https://www.frymburk.com/rekreace/api',
+  NEW_API = 'https://www.frymburk.com/api',
+  GRAPHS = 'https://www.frymburk.com/rekreace/graphs',
+  FOTOGALERIE = 'https://www.frymburk.com/rekreace/fotogalerie_ubytovani',
+  BIG_GRAPH = 'https://www.frymburk.com/rekreace/aktuality_big_graph.php',
+  GET_IP_KAMERA = 'https://www.frymburk.com/rekreace/get_ip_kamera.php',
 }
 
 const urlParams = new URLSearchParams(new URL(document.URL).search);
