@@ -13,8 +13,8 @@
       "destination": "https://www.frymburk.com/davis/$1"
     },
     {
-      "source": "/rekreace/kamera/(.*)",
-      "destination": "https://www.frymburk.com/rekreace/kamera/$1"
+      "source": "/kamera/(.*)",
+      "destination": "https://www.frymburk.com/kamera/$1"
     },
     {
       "source": "/rekreace/graphs/(.*)",
