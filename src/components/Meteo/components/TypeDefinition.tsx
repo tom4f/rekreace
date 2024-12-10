@@ -100,7 +100,7 @@ export type OneGraphType = {
 };
 
 export type LayoutType = {
-  children: JSX.Element;
+  children: React.JSX.Element;
   allPaths: onePathType[];
   graphsData: graphsDataType;
 };
@@ -125,7 +125,7 @@ export type CustomNavLinkType = ({
 }: {
   to: string;
   header: string;
-}) => JSX.Element;
+}) => React.JSX.Element;
 
 export type dateType = {
   [key in 'daily' | 'yearSum' | 'davisStat' | 'oldStation']: Date;

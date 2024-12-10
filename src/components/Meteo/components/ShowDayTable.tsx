@@ -3,6 +3,7 @@ import { Url } from '../../../api/paths';
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
 import { davisType } from './TypeDefinition';
+import React from 'react';
 
 export const ShowDayTable = () => {
   const { reduceDate } = useContext(DateContext);
@@ -72,7 +73,7 @@ export const ShowDayTable = () => {
   };
 
   const printDavis = () => {
-    const output: JSX.Element[] = [];
+    const output: React.JSX.Element[] = [];
     if (davis !== undefined)
       davis.forEach((one, index) => {
         output.push(

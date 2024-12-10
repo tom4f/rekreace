@@ -14,6 +14,9 @@ const target = dev ? ServerUrl.LOCALHOST : '';
 export default defineConfig({
   plugins: [react()],
   base: '/rekreace/',
+  build: {
+    outDir: 'dist/rekreace',
+  },
   css: {
     modules: {
       localsConvention: 'camelCase',

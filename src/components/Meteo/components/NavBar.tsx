@@ -20,9 +20,15 @@ export const NavBar = () => {
       {isFullscreen() ? null : (
         <header className={navBarStyle.header}>
           <nav>
-            <CustomNavLink to='frymburk' header='Meteo Frymburk' />
-            <CustomNavLink to='lipno' header='Meteo Lipno' />
-            <CustomNavLink to='oldStation' header='Meteo původní' />
+            <CustomNavLink
+              to='/meteostanice/frymburk'
+              header='Meteo Frymburk'
+            />
+            <CustomNavLink to='/meteostanice/lipno' header='Meteo Lipno' />
+            <CustomNavLink
+              to='/meteostanice/oldStation'
+              header='Meteo původní'
+            />
           </nav>
         </header>
       )}

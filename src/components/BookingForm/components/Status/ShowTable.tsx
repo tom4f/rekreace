@@ -1,20 +1,21 @@
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useGetBooking } from "../../../../features/booking/hooks";
-import { useLoginStatus } from "../../../../features/login";
-import { Modal } from "../../../Modal/Modal";
-import { Edit } from "../Edit/Edit";
-import "./css/showTable.css";
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useGetBooking } from '../../../../features/booking/hooks';
+import { useLoginStatus } from '../../../../features/login';
+import { Modal } from '../../../Modal/Modal';
+import { Edit } from '../Edit/Edit';
+import './css/showTable.css';
+import React from 'react';
 
 export const skeletonBookingData = Array.from({ length: 53 }, (_, index) => ({
   week: index + 1,
   g1_status: 0,
-  g1_text: "",
+  g1_text: '',
   g2_status: 0,
-  g2_text: "",
+  g2_text: '',
   g3_status: 0,
-  g3_text: "",
-  lastUpdate: "",
+  g3_text: '',
+  lastUpdate: '',
 }));
 
 export const firstWeekStart = (week = 0) => {
@@ -59,7 +60,7 @@ export const ShowTable = () => {
     const apartmentNr = clickedTd.cellIndex;
     const clickedWeek = childsTd[0].textContent?.match(/\((.*?)\)/);
 
-    if (apartmentNr && clickedWeek?.length && pathname === "/objednavka/edit") {
+    if (apartmentNr && clickedWeek?.length && pathname === '/objednavka/edit') {
       setApartmentNr(apartmentNr as 1 | 2 | 3);
       setDbWeek(+clickedWeek[1]);
       setIsEdit(true);
@@ -68,10 +69,10 @@ export const ShowTable = () => {
 
   const bgColor = [
     {},
-    { backgroundColor: "rgba(255, 208,   0, 0.9)" },
-    { backgroundColor: "rgba(255,   0,   0, 0.9)" },
-    { backgroundColor: "rgba(202, 202, 202, 0.9)" },
-    { backgroundColor: "rgba(  0, 255,   0, 0.9)" },
+    { backgroundColor: 'rgba(255, 208,   0, 0.9)' },
+    { backgroundColor: 'rgba(255,   0,   0, 0.9)' },
+    { backgroundColor: 'rgba(202, 202, 202, 0.9)' },
+    { backgroundColor: 'rgba(  0, 255,   0, 0.9)' },
   ];
 
   const createTr = (week: number) => {
@@ -89,27 +90,27 @@ export const ShowTable = () => {
         <td>{termin}</td>
         <td
           onClick={(e) => editTermin(e)}
-          style={bgColor[+data[weekArrIndex]["g1_status"]]}
+          style={bgColor[+data[weekArrIndex]['g1_status']]}
         >
-          {data[weekArrIndex]["g1_text"]}
+          {data[weekArrIndex]['g1_text']}
         </td>
         <td
           onClick={editTermin}
-          style={bgColor[+data[weekArrIndex]["g2_status"]]}
+          style={bgColor[+data[weekArrIndex]['g2_status']]}
         >
-          {data[weekArrIndex]["g2_text"]}
+          {data[weekArrIndex]['g2_text']}
         </td>
         <td
           onClick={editTermin}
-          style={bgColor[+data[weekArrIndex]["g3_status"]]}
+          style={bgColor[+data[weekArrIndex]['g3_status']]}
         >
-          {data[weekArrIndex]["g3_text"]}
+          {data[weekArrIndex]['g3_text']}
         </td>
       </tr>
     );
   };
 
-  const allTr: JSX.Element[] = [];
+  const allTr: React.JSX.Element[] = [];
   for (
     let week = firstWeekStart(0).actualWeek;
     week < firstWeekStart(0).actualWeek + data.length;
@@ -122,7 +123,7 @@ export const ShowTable = () => {
     <>
       {isEdit && dbWeek && apartmentNr && (
         <Modal
-          customStyle={{ width: "500px", height: "300px" }}
+          customStyle={{ width: '500px', height: '300px' }}
           setIsVisible={setIsEdit}
           children={
             <>
@@ -135,7 +136,7 @@ export const ShowTable = () => {
           }
         />
       )}
-      <table className="booking_table">
+      <table className='booking_table'>
         <thead>
           <tr>
             <th>Datum (týden so-so)</th>

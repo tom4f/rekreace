@@ -1,4 +1,3 @@
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { Apartments } from './components/Apartments';
 import { BookingForm } from './components/BookingForm/BookingForm';
@@ -14,9 +13,13 @@ import { Prices } from './components/Prices/Prices';
 import { Start } from './components/Start/Start';
 import { Top } from './components/Top/Top';
 import { Windsurfing } from './components/Windsurfing/Windsurfing';
+import { Bedrich } from './components/Bedrich/Bedrich';
 import './css/main.css';
+import { TopBedrich } from './components/Top/TopBedrich';
+import { useLoginStatus } from './features/login';
 
 export const App = () => {
+  const { loginData } = useLoginStatus();
   const { pathname, search } = useLocation();
   const isFullscreen =
     new URLSearchParams(search).get('fullscreen') === 'true' || false;
@@ -29,56 +32,41 @@ export const App = () => {
     (pathname === '/meteostanice/frymburk/table' && isFullscreen) ||
     (pathname === '/meteostanice/oldStation/graphs' && isFullscreen) ||
     pathname === '/meteoalarm';
-
+  console.log(pathname);
   return (
-    <HelmetProvider>
-      <div>
-        <Helmet>
-          <style type='text/css'>{`
-                    body {
-                        line-height: 1.6;
- 
-                        background: ${
-                          pathname === '/meteoalarm'
-                            ? 'url("windsurf.jpg")'
-                            : 'black'
-                        };
-                            background-repeat: no-repeat;
-                            background-size: cover;
-                            background-position: center;
-                        font-family: ${
-                          pathname === '/meteoalarm'
-                            ? 'BenchNine, Arial, Helvetica, sans-serif'
-                            : 'Verdana, Helvetica, sans-serif'
-                        };
-                    }
-                `}</style>
-        </Helmet>
-        <div
-          className='top_container'
-          style={{
-            maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
-            height: `${pathname === '/meteoalarm' ? '100vh' : 'unset'}`,
-          }}
-        >
-          {!hideTopBottom && <Top />}
-          <Routes>
-            <Route path='/' element={<Start />} />
-            <Route path='/apartmany/*' element={<Apartments />} />
-            <Route path='/objednavka/*' element={<BookingForm />} />
-            <Route path='/ceny/*' element={<Prices />} />
-            <Route path='/kontakt/*' element={<Contact_new />} />
-            <Route path='/frymburk/*' element={<Frymburk />} />
-            <Route path='/meteostanice/*' element={<Meteo />} />
-            <Route path='/forum/*' element={<Forum />} />
-            <Route path='/fotogalerie/*' element={<PhotoGallery />} />
-            <Route path='/meteoalarm/*' element={<MeteoAlarm />} />
-            <Route path='/kaliste/*' element={<Kaliste />} />
-            <Route path='/windsurfing/*' element={<Windsurfing />} />
-          </Routes>
-          {!hideTopBottom && <Bottom />}
-        </div>
+    <div
+      style={{
+        fontFamily: `${
+          pathname === '/meteoalarm'
+            ? 'BenchNine, Arial, Helvetica, sans-serif'
+            : 'Verdana, Helvetica, sans-serif'
+        }`,
+      }}
+    >
+      <div
+        style={{
+          maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
+        }}
+      >
+        {loginData.isLogged && <TopBedrich />}
+        {!hideTopBottom && <Top />}
+        <Routes>
+          <Route path='/' element={<Start />} />
+          <Route path='/apartmany/*' element={<Apartments />} />
+          <Route path='/objednavka/*' element={<BookingForm />} />
+          <Route path='/ceny/*' element={<Prices />} />
+          <Route path='/kontakt/*' element={<Contact_new />} />
+          <Route path='/frymburk/*' element={<Frymburk />} />
+          <Route path='/meteostanice/*' element={<Meteo />} />
+          <Route path='/forum/*' element={<Forum />} />
+          <Route path='/fotogalerie/*' element={<PhotoGallery />} />
+          <Route path='/meteoalarm/*' element={<MeteoAlarm />} />
+          <Route path='/kaliste/*' element={<Kaliste />} />
+          <Route path='/windsurfing/*' element={<Windsurfing />} />
+          <Route path='/bedrich/*' element={<Bedrich />} />
+        </Routes>
+        {!hideTopBottom && <Bottom />}
       </div>
-    </HelmetProvider>
+    </div>
   );
 };

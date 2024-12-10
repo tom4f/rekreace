@@ -70,7 +70,6 @@
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-  float: center;
 }
 
 .btn-group .button:not(:last-child) {
@@ -112,4 +111,18 @@
 
 .kniha_one_entry .kniha_text {
   text-align: left;
+}
+
+.center {
+  text-align: center;
+  margin: 0 auto;
+  background: #ff9933;
+  color: black;
+}
+
+.text {
+  text-align: justify;
+  padding: 1vw 2vw 2vw 2vw;
+  background: #ff9933;
+  color: black;
 }

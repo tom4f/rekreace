@@ -1,15 +1,16 @@
-.top_container {
-  margin: auto;
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  background-color: black;
+  line-height: 1.6;
 }
 
 * {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
-}
-
-.bottom {
-  text-align: center;
 }
 
 .header {
@@ -20,73 +21,4 @@
   font-size: 14px;
   font-weight: bold;
   clear: both;
-}
-
-.header a {
-  color: White;
-  text-decoration: none;
-}
-
-.header a:hover {
-  color: Lime;
-  text-decoration: none;
-}
-
-.mainpicture {
-  text-align: center;
-  width: 100%;
-  max-width: 724px;
-}
-
-.mainpicture img {
-  vertical-align: top;
-  width: 100%;
-  max-width: 724px;
-}
-
-/* -------------------------index.html */
-.kniha_small {
-  background: white;
-  color: black;
-  font-size: 12px;
-}
-
-.kniha-main-page {
-  background-color: white;
-  color: black;
-  font-size: 12px;
-  padding: 5px;
-}
-
-.kniha-main-page li {
-  list-style: none;
-}
-
-.center {
-  text-align: center;
-  margin: 0 auto;
-  background: #ff9933;
-  color: black;
-}
-
-.text {
-  text-align: justify;
-  padding: 1vw 2vw 2vw 2vw;
-  background: #ff9933;
-  color: black;
-}
-
-.text ul {
-  text-align: left;
-  padding: 1vw 2vw 2vw 2vw;
-}
-
-.img-float-left {
-  float: left;
-  margin: 0 1rem 1rem 0;
-  border: 1px solid black;
-}
-
-table.page {
-  background: #ff9933;
 }

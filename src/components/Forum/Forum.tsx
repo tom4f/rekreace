@@ -124,53 +124,51 @@ export const Forum = () => {
   };
 
   return (
-    <div className='top_container'>
-      <div className='center'>
-        <div className='header'>
-          <b>Lipenské fórum</b>
-        </div>
-        <br />
-        <div className='btn-group'>
-          <AddEntry categoryFromUrl={categoryFromUrl} />
-        </div>
-        <p style={{ clear: 'both' }}></p>
-        <br />
-        <div className='fields'>
-          <SearchForum
-            filteredEntriesCalculate={filteredEntriesCalculate}
-            selectedCategory={selectedCategory}
-          />
-          <SelectForum
-            filteredEntriesCalculate={filteredEntriesCalculate}
-            categoryFromUrl={categoryFromUrl}
-            searchText={searchText}
-          />
-        </div>
-        <div>Je vybráno {filteredEntriesBySearch?.length} záznamů.</div>
-        <Messages
-          entries={filteredEntriesBySearch?.slice(begin, begin + postsPerPage)}
-        />
-        <br />
-        <Paginations
-          paginate={setState}
-          postsPerPage={postsPerPage}
-          filteredEntriesBySearch={filteredEntriesBySearch}
-          begin={begin}
-          paginateSize={paginateSize}
-          next={next}
-          buttonText={buttonText}
-        />
-        <br />
-        <div className='fields'>
-          <SelectPaginate paginate={setState} />
-          <PostsPerPage
-            filteredEntriesBySearch={filteredEntriesBySearch}
-            paginate={setState}
-          />
-        </div>
-        <br />
-        <br />
+    <div className='center'>
+      <div className='header'>
+        <b>Lipenské fórum</b>
       </div>
+      <br />
+      <div className='btn-group'>
+        <AddEntry categoryFromUrl={categoryFromUrl} />
+      </div>
+      <p style={{ clear: 'both' }}></p>
+      <br />
+      <div className='fields'>
+        <SearchForum
+          filteredEntriesCalculate={filteredEntriesCalculate}
+          selectedCategory={selectedCategory}
+        />
+        <SelectForum
+          filteredEntriesCalculate={filteredEntriesCalculate}
+          categoryFromUrl={categoryFromUrl}
+          searchText={searchText}
+        />
+      </div>
+      <div>Je vybráno {filteredEntriesBySearch?.length} záznamů.</div>
+      <Messages
+        entries={filteredEntriesBySearch?.slice(begin, begin + postsPerPage)}
+      />
+      <br />
+      <Paginations
+        paginate={setState}
+        postsPerPage={postsPerPage}
+        filteredEntriesBySearch={filteredEntriesBySearch}
+        begin={begin}
+        paginateSize={paginateSize}
+        next={next}
+        buttonText={buttonText}
+      />
+      <br />
+      <div className='fields'>
+        <SelectPaginate paginate={setState} />
+        <PostsPerPage
+          filteredEntriesBySearch={filteredEntriesBySearch}
+          paginate={setState}
+        />
+      </div>
+      <br />
+      <br />
     </div>
   );
 };

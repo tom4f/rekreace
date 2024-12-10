@@ -3,6 +3,7 @@ import { Url } from '../../../api/paths';
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
 import { oldPocasiType, rgbCssType } from './TypeDefinition';
+import React from 'react';
 
 export const ShowOldStationTable = () => {
   const { reduceDate } = useContext(DateContext);
@@ -58,7 +59,7 @@ export const ShowOldStationTable = () => {
   };
 
   const printDavis = () => {
-    const output: JSX.Element[] = [];
+    const output: React.JSX.Element[] = [];
     davis?.forEach((one, index) => {
       output.push(
         <tr key={index}>

@@ -70,7 +70,7 @@ export const ShowYearTable = ({
   };
 
   const printPocasi = () => {
-    const output: JSX.Element[] = [];
+    const output: React.JSX.Element[] = [];
     pocasi?.forEach((one, index) =>
       output.push(
         <tr key={index}>

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=BenchNine");
+@import url('https://fonts.googleapis.com/css?family=BenchNine');
 
 .container-login,
 .container-forget-password,
@@ -7,18 +7,15 @@
 .container-about {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
+  margin: auto;
   width: 90%;
   max-width: 400px;
   color: white;
   border: 2px solid #555;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.5);
-  margin: 0 auto;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: auto;
+
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -27,7 +24,8 @@
   max-width: 1000px;
 }
 
-.about-specific p, .about-specific ul {
+.about-specific p,
+.about-specific ul {
   margin: 10px;
 }
 
@@ -79,8 +77,10 @@
   font-size: 20px;
 }
 
-.input-section input, .input-section select, .submit-section input {
-  font-size: 1.0rem;
+.input-section input,
+.input-section select,
+.submit-section input {
+  font-size: 1rem;
   width: 100%;
   background-color: transparent;
   border: none;
@@ -111,7 +111,8 @@
   margin: 2px 5px;
 }
 
-.input-section input:focus, .input-section select:focus {
+.input-section input:focus,
+.input-section select:focus {
   border: none;
   outline: none;
 }
@@ -128,7 +129,7 @@
   width: 100%;
 }
 
-.input-section ul input[type=checkbox] {
+.input-section ul input[type='checkbox'] {
   width: 10px;
 }
 
