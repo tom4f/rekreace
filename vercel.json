@@ -1,4 +1,18 @@
 {
+  "routes": [
+    { "src": "/rekreace/apartmany", "dest": "/" },
+    { "src": "/rekreace/objednavka", "dest": "/" },
+    { "src": "/rekreace/ceny", "dest": "/" },
+    { "src": "/rekreace/kontakt", "dest": "/" },
+    { "src": "/rekreace/frymburk", "dest": "/" },
+    { "src": "/rekreace/meteostanice", "dest": "/" },
+    { "src": "/rekreace/forum", "dest": "/" },
+    { "src": "/rekreace/fotogalerie", "dest": "/" },
+    { "src": "/rekreace/meteoalarm", "dest": "/" },
+    { "src": "/rekreace/kaliste", "dest": "/" },
+    { "src": "/rekreace/windsurfing", "dest": "/" },
+    { "src": "/rekreace/bedrich", "dest": "/" }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
