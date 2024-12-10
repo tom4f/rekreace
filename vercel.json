@@ -21,12 +21,12 @@
       "destination": "https://www.frymburk.com/rekreace/graphs/$1"
     },
     {
-      "source": "/rekreace/rekreace/fotogalerie_ubytovani/(.*)",
+      "source": "/rekreace/fotogalerie_ubytovani/(.*)",
       "destination": "https://www.frymburk.com/rekreace/fotogalerie_ubytovani/$1"
     },
     {
-      "source": "/rekreace/get_ip_kamera.php/(.*)",
-      "destination": "https://www.frymburk.com/rekreace/get_ip_kamera.php/$1"
+      "source": "/rekreace/get_ip_kamera.php",
+      "destination": "https://www.frymburk.com/rekreace/get_ip_kamera.php"
     }
   ]
 }
