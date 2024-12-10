@@ -5,7 +5,6 @@ export enum Url {
   NEW_API = '/api',
   GRAPHS = '/rekreace/graphs',
   FOTOGALERIE = '/rekreace/fotogalerie_ubytovani',
-  BIG_GRAPH = '/rekreace/aktuality_big_graph.php',
   GET_IP_KAMERA = '/rekreace/get_ip_kamera.php',
 }
 

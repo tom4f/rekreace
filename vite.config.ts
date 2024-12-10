@@ -49,10 +49,6 @@ export default defineConfig({
         target,
         changeOrigin: true,
       },
-      '/rekreace/aktuality_big_graph.php': {
-        target,
-        changeOrigin: true,
-      },
       '/rekreace/get_ip_kamera.php': {
         target,
         changeOrigin: true,

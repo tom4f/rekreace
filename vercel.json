@@ -7,6 +7,26 @@
     {
       "source": "/rekreace/api/(.*)",
       "destination": "https://www.frymburk.com/rekreace/api/$1"
+    },
+    {
+      "source": "/davis/(.*)",
+      "destination": "https://www.frymburk.com/davis/$1"
+    },
+    {
+      "source": "/rekreace/kamera/(.*)",
+      "destination": "https://www.frymburk.com/rekreace/kamera/$1"
+    },
+    {
+      "source": "/rekreace/graphs/(.*)",
+      "destination": "https://www.frymburk.com/rekreace/graphs/$1"
+    },
+    {
+      "source": "/rekreace/rekreace/fotogalerie_ubytovani/(.*)",
+      "destination": "https://www.frymburk.com/rekreace/fotogalerie_ubytovani/$1"
+    },
+    {
+      "source": "/rekreace/get_ip_kamera.php/(.*)",
+      "destination": "https://www.frymburk.com/rekreace/get_ip_kamera.php/$1"
     }
   ]
 }

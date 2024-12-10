@@ -27,7 +27,6 @@ export const ShowDayGraph = () => {
 
   const imgUrl = (type: string) =>
     `${Url.DAVIS}/archive/${year}/${type}-${year}-${monthString}-${dayString}.gif`;
-  const imgBig = `${Url.BIG_GRAPH}?width_graph=1480&year=${year}&id=${year}-${monthString}-${dayString}`;
 
   const setDate = (period: string, step: 1 | -1) => {
     reduceDate('daily', ChangeDate('daily', daily, period, step));
