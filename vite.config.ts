@@ -13,10 +13,6 @@ const target = dev ? ServerUrl.LIVE : ServerUrl.LIVE;
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/rekreace/',
-  build: {
-    outDir: 'dist/rekreace',
-  },
   css: {
     modules: {
       localsConvention: 'camelCase',
