@@ -20,6 +20,9 @@ export default defineConfig({
       generateScopedName: '[local]_[hash:base64:2]',
     },
   },
+  build: {
+    outDir: 'dist/rekreace',
+  },
   server: {
     proxy: {
       '/davis': {
