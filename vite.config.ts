@@ -8,7 +8,7 @@ enum ServerUrl {
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const target = dev ? ServerUrl.LIVE : '';
+const target = dev ? ServerUrl.LIVE : ServerUrl.LIVE;
 
 // https://vite.dev/config/
 export default defineConfig({
