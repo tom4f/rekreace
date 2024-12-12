@@ -19,9 +19,9 @@ export const TopBedrich = () => {
         MeteoData
       </NavLink>{' '}
       |
-      <NavLink className='menu' to='/meteostanice/lipno/edit'>
+      <NavLink className='menu' to='/bedrich'>
         {' '}
-        odhlásit
+        Bedřich
       </NavLink>{' '}
     </div>
   );

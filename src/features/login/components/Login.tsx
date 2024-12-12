@@ -2,7 +2,10 @@ import { useRef } from 'react';
 import styled from 'styled-components';
 import { AlertBox } from '../../../components/AlertBox/AlertBox';
 import { useAlert } from '../../alert/utils/useAlert';
-import { loginLogic } from '../utils/loginLogic';
+import { usePostLogin } from '../hooks';
+import { fotoGalleryOwner } from '../../../api/paths';
+import { LoginRequest } from '../hooks';
+import { NavLink } from 'react-router-dom';
 
 export type LoginType = {
   setLoginData: React.Dispatch<
@@ -15,20 +18,66 @@ export type LoginType = {
   >;
 };
 
-export const Login = ({ setLoginData }: LoginType) => {
+export const Login = () => {
+  const { mutate } = usePostLogin();
   const { alert, setAlert } = useAlert();
 
   const form = useRef<HTMLFormElement>(null);
 
+  const loginLogic = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (null === form.current) return;
+
+    const FD = new FormData(form.current);
+    const object = { user: '', password: '', fotoGalleryOwner: '' };
+
+    for (const [key, value] of FD.entries()) {
+      const typedKey = key as keyof LoginRequest;
+      object[typedKey] = value as string;
+      console.log(`${typedKey}: ${value}`);
+    }
+
+    object['fotoGalleryOwner'] = fotoGalleryOwner;
+
+    if (!object.user || !object.password) {
+      setAlert({ header: 'Uživatelské jméno / heslo', text: 'vyplňte údaje' });
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9\-_]{3,15}$/.test(object.user as string)) {
+      setAlert({
+        header: 'Špatné jméno',
+        text: 'zadejte 3 až 10 znaků (0-9 a..z A..Z - _ )',
+      });
+      return;
+    }
+
+    if (!/^[a-zA-Z0-9.\-_]{3,15}$/.test(object.password as string)) {
+      setAlert({
+        header: 'Špatné heslo!',
+        text: 'zadejte 3 až 10 znaků (0-9 a..z A..Z - . _ )',
+      });
+      return;
+    }
+
+    mutate(object, {
+      onSuccess: () => {
+        console.log(object);
+        //setLoginData(respObj);
+      },
+      onError: () => {
+        setAlert({
+          header: 'Přihlášení se nepovedlo !',
+          text: 'zkuste později...',
+        });
+      },
+    });
+  };
+
   return (
     <StyledLogin>
-      <form
-        ref={form}
-        onSubmit={(event) =>
-          loginLogic(event, form.current, setAlert, setLoginData)
-        }
-        name='login'
-      >
+      <form ref={form} onSubmit={loginLogic} name='login'>
         <StyledForm>
           <StyledInput>
             <label>Uživatel</label>
@@ -55,6 +104,13 @@ export const Login = ({ setLoginData }: LoginType) => {
           </StyledSubmit>
         </StyledForm>
       </form>
+      <div className='header'>
+        {' '}
+        <NavLink className='menu' to='/'>
+          {' '}
+          zpět na hlavní stránku
+        </NavLink>{' '}
+      </div>
     </StyledLogin>
   );
 };

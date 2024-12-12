@@ -1,39 +1,40 @@
-import { Route, Routes } from 'react-router-dom'
-import { Login, useLoginStatus } from '../../features/login'
-import { Form } from './components/Form'
-import { Status } from './components/Status'
+import { Route, Routes } from 'react-router-dom';
+import { Login } from '../../features/login';
+import { Form } from './components/Form';
+import { Status } from './components/Status';
+import { useLoginStatus } from '../../features/login/hooks/useGetLoginStatus';
 
 export const BookingForm = () => {
-    const { loginData, setLoginData } = useLoginStatus()
+  const { data: loginData } = useLoginStatus();
 
-    return (
-        <div>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <>
-                            <Form />
-                            <Status />
-                        </>
-                    }
-                ></Route>
-                <Route
-                    path="/edit"
-                    element={
-                        <>
-                            {loginData.isLogged ? (
-                                <Status />
-                            ) : (
-                                <>
-                                    <Login setLoginData={setLoginData} />
-                                    <Status />
-                                </>
-                            )}
-                        </>
-                    }
-                ></Route>
-            </Routes>
-        </div>
-    )
-}
+  return (
+    <div>
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <>
+              <Form />
+              <Status />
+            </>
+          }
+        ></Route>
+        <Route
+          path='/edit'
+          element={
+            <>
+              {loginData?.isLogged ? (
+                <Status />
+              ) : (
+                <>
+                  <Login />
+                  <Status />
+                </>
+              )}
+            </>
+          }
+        ></Route>
+      </Routes>
+    </div>
+  );
+};

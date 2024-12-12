@@ -1,2 +1,1 @@
-export * from './components/Login'
-export * from './utils/useLoginStatus'
+export * from './components/Login';

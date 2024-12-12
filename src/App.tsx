@@ -16,10 +16,10 @@ import { Windsurfing } from './components/Windsurfing/Windsurfing';
 import { Bedrich } from './components/Bedrich/Bedrich';
 import './css/main.css';
 import { TopBedrich } from './components/Top/TopBedrich';
-import { useLoginStatus } from './features/login';
+import { useLoginStatus } from './features/login/hooks/useGetLoginStatus';
 
 export const App = () => {
-  const { loginData } = useLoginStatus();
+  const { data: loginData } = useLoginStatus();
   const { pathname, search } = useLocation();
   const isFullscreen =
     new URLSearchParams(search).get('fullscreen') === 'true' || false;
@@ -48,7 +48,7 @@ export const App = () => {
           maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
         }}
       >
-        {loginData.isLogged && <TopBedrich />}
+        {loginData?.isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
         <Routes>
           <Route path='/' element={<Start />} />

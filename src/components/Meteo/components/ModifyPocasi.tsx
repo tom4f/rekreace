@@ -1,114 +1,110 @@
-import { useEffect, useRef, useState } from 'react'
-import FormularStyle from './../css/Formular.module.css'
-import ModifyPocasiStyle from './../css/ModifyPocasi.module.css'
-import { AddPocasi } from './AddPocasi'
-import { addQuerySelector } from './AddQuerySelector'
-import { DeletePocasi } from './DeletePocasi'
-import { EditPocasi } from './EditPocasi'
-import { ShowLogin } from './ShowLogin'
-import { ShowYearTable } from './ShowYearTable'
-import { editMeteoType, pocasiType } from './TypeDefinition'
+import { useEffect, useRef, useState } from 'react';
+import FormularStyle from './../css/Formular.module.css';
+import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
+import { AddPocasi } from './AddPocasi';
+import { addQuerySelector } from './AddQuerySelector';
+import { DeletePocasi } from './DeletePocasi';
+import { EditPocasi } from './EditPocasi';
+import { ShowYearTable } from './ShowYearTable';
+import { editMeteoType, pocasiType } from './TypeDefinition';
+import { useLoginStatus } from '../../../features/login/hooks/useGetLoginStatus';
+import { Login } from '../../../features/login';
 
 //import '../css/formular.css';
 
 export const ModifyPocasi = () => {
-    // last 30 meteo lines
-    const [pocasi, setPocasi] = useState<pocasiType[]>()
-    // login data
-    const [user, setUser] = useState('')
-    const [password, setPassword] = useState('')
-    const [webToken, setWebToken] = useState('error')
-    // edit params
-    const [editMeteo, setEditMeteo] = useState<editMeteoType>({
-        // values to be edited
-        editDate: '',
-        editKey: '',
-        editValue: '',
-        // show/hide forms
-        dispEdit: false,
-        dispDelete: false,
-        dispAdd: false,
-        // trigger for table reload
-        refresh: 0,
-    })
+  const { data: loginData } = useLoginStatus();
 
-    const editMeteoRef = useRef(editMeteo)
+  // last 30 meteo lines
+  const [pocasi, setPocasi] = useState<pocasiType[]>();
 
-    // update table querySelector when 'pocasi' changed
-    useEffect(() => {
-        if (!pocasi) return
-        addQuerySelector(pocasi, editMeteoRef.current, setEditMeteo, webToken)
-    }, [pocasi, webToken])
+  // edit params
+  const [editMeteo, setEditMeteo] = useState<editMeteoType>({
+    // values to be edited
+    editDate: '',
+    editKey: '',
+    editValue: '',
+    // show/hide forms
+    dispEdit: false,
+    dispDelete: false,
+    dispAdd: false,
+    // trigger for table reload
+    refresh: 0,
+  });
 
-    return (
-        <>
-            <div className={ModifyPocasiStyle.editPocasi}>
-                {webToken === 'error' ? (
-                    <ShowLogin
-                        user={user}
-                        setUser={setUser}
-                        password={password}
-                        setPassword={setPassword}
-                        setWebToken={setWebToken}
-                        editMeteo={editMeteo}
-                        setEditMeteo={setEditMeteo}
-                    />
-                ) : null}
-                {editMeteo.dispAdd && pocasi ? (
-                    <AddPocasi
-                        pocasi={pocasi}
-                        editMeteo={editMeteo}
-                        setEditMeteo={setEditMeteo}
-                        webToken={webToken}
-                        user={user}
-                    />
-                ) : null}
+  const editMeteoRef = useRef(editMeteo);
 
-                {editMeteo.dispEdit && pocasi ? (
-                    <EditPocasi
-                        editMeteo={editMeteo}
-                        setEditMeteo={setEditMeteo}
-                        webToken={webToken}
-                        user={user}
-                    />
-                ) : null}
+  // update table querySelector when 'pocasi' changed
+  useEffect(() => {
+    if (!pocasi) return;
+    addQuerySelector(
+      pocasi,
+      editMeteoRef.current,
+      setEditMeteo,
+      loginData?.webToken || ''
+    );
+  }, [pocasi]);
 
-                {editMeteo.dispDelete ? (
-                    <DeletePocasi
-                        editMeteo={editMeteo}
-                        setEditMeteo={setEditMeteo}
-                        webToken={webToken}
-                        user={user}
-                    />
-                ) : null}
+  return (
+    <>
+      <div className={ModifyPocasiStyle.editPocasi}>
+        {!loginData?.isLogged && <Login />}
 
-                {webToken !== 'error' ? (
-                    <div className={FormularStyle.form_booking}>
-                        <div className={FormularStyle.submit_booking}>
-                            <input
-                                type="submit"
-                                onClick={() =>
-                                    setEditMeteo({
-                                        ...editMeteo,
-                                        dispEdit: false,
-                                        dispDelete: false,
-                                        dispAdd: true,
-                                    })
-                                }
-                                value="+ Vytvřit nový záznam"
-                            />
-                        </div>
-                    </div>
-                ) : null}
+        {editMeteo.dispAdd && pocasi ? (
+          <AddPocasi
+            pocasi={pocasi}
+            editMeteo={editMeteo}
+            setEditMeteo={setEditMeteo}
+            webToken={loginData?.webToken || ''}
+            user={loginData?.webUser || ''}
+          />
+        ) : null}
+
+        {editMeteo.dispEdit && pocasi ? (
+          <EditPocasi
+            editMeteo={editMeteo}
+            setEditMeteo={setEditMeteo}
+            webToken={loginData?.webToken || ''}
+            user={loginData?.webUser || ''}
+          />
+        ) : null}
+
+        {editMeteo.dispDelete ? (
+          <DeletePocasi
+            editMeteo={editMeteo}
+            setEditMeteo={setEditMeteo}
+            webToken={loginData?.webToken || ''}
+            user={loginData?.webUser || ''}
+          />
+        ) : null}
+
+        {loginData?.isLogged ? (
+          <div className={FormularStyle.form_booking}>
+            <div className={FormularStyle.submit_booking}>
+              <input
+                type='submit'
+                onClick={() =>
+                  setEditMeteo({
+                    ...editMeteo,
+                    dispEdit: false,
+                    dispDelete: false,
+                    dispAdd: true,
+                  })
+                }
+                value='+ Vytvřit nový záznam'
+              />
             </div>
+          </div>
+        ) : null}
+      </div>
 
-            <ShowYearTable
-                pocasi={pocasi}
-                setPocasi={setPocasi}
-                user={user}
-                webToken={webToken}
-                editMeteo={editMeteo}
-            />
-        </>
-    )
-}
+      <ShowYearTable
+        pocasi={pocasi}
+        setPocasi={setPocasi}
+        user={loginData?.webUser}
+        webToken={loginData?.webToken}
+        editMeteo={editMeteo}
+      />
+    </>
+  );
+};

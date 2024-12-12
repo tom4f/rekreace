@@ -9,10 +9,10 @@ import {
   StyledInput,
   StyledLogin,
   StyledSubmit,
-  useLoginStatus,
 } from '../../../../features/login';
 import { AlertBox } from '../../../AlertBox/AlertBox';
 import { firstWeekStart, skeletonBookingData } from '../Status/ShowTable';
+import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
 
 type EditType = {
   week: number;
@@ -33,17 +33,15 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
     data[weekArrIndex][`g${apartmentNr}_status`]
   );
 
-  const {
-    loginData: { webAccess, webToken, webUser },
-  } = useLoginStatus();
+  const { data: loginData } = useLoginStatus();
 
   const updateTermin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formObject = {
-      fotoGalleryOwner: webAccess,
-      webToken,
-      webUser,
+      fotoGalleryOwner: loginData?.webAccess || '',
+      webToken: loginData?.webToken || '',
+      webUser: loginData?.webUser || '',
       g_number: apartmentNr,
       g_status: gStatus,
       g_text: gText,

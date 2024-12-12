@@ -1,4 +1,5 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { LoginRequest, LoginResponse } from '../../features/login/hooks';
 
 export interface allPhotoType {
   id: string;
@@ -124,9 +125,8 @@ export type BigImageType = {
   setAllPhoto: React.Dispatch<React.SetStateAction<photoType[]>>;
 };
 
-export type loginLogicType = (
+export type LoginLogicType = (
   event: React.FormEvent<HTMLFormElement>,
   formCurrent: HTMLFormElement | null,
-  setAlert: React.Dispatch<React.SetStateAction<AlertType>>,
-  setLoginData: any
-) => Promise<void>;
+  setAlert: React.Dispatch<React.SetStateAction<AlertType>>
+) => void;
