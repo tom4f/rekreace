@@ -1,26 +1,84 @@
-import { useEffect } from "react";
-import cesta from "./../../images/cesta.jpg";
-import kde_je_frymburk_republika from "./../../images/kde_je_frymburk_republika.gif";
-import mapka from "./../../images/mapka.gif";
-import "./css/contact.css";
+import { useState, useEffect } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import {
+  SendMessageRequest,
+  useSendMessage,
+} from '../../features/contact/hooks/useSendMessage';
+import './css/contact.css';
+import { AlertBox } from '../AlertBox/AlertBox';
+import { Modal } from '../Modal/Modal';
 
 export const Contact = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.setAttribute("src", `js/formular_kontakt.js`);
-    script.setAttribute("id", "formular_kontakt");
-    document.head.appendChild(script);
-  }, []);
+  const { mutateAsync, isPending } = useSendMessage();
+
+  const [isModal, setIsModal] = useState(false);
+  const [currentTimestamp, setCurrentTimestamp] = useState(
+    new Date().getMilliseconds()
+  );
+
+  const [alert, setAlert] = useState({ header: '', text: '', color: 'red' });
+
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SendMessageRequest>();
+
+  useEffect(
+    () => setValue('antispam_code_orig', currentTimestamp),
+    [currentTimestamp, setValue]
+  );
+
+  const onSubmit: SubmitHandler<SendMessageRequest> = (formObject) => {
+    mutateAsync(formObject, {
+      onSuccess: (succesResponse) => {
+        setCurrentTimestamp(new Date().getMilliseconds());
+        setValue('antispam_code_orig', currentTimestamp);
+        setIsModal(true);
+        setAlert({
+          header: 'V pořádku',
+          text: succesResponse.result,
+          color: 'lime',
+        });
+      },
+      onError: (errorResponse) => {
+        setIsModal(true);
+        setAlert({
+          header: 'Chyba',
+          text: errorResponse.response?.data.result,
+          color: 'red',
+        });
+        setCurrentTimestamp(new Date().getMilliseconds());
+      },
+    });
+  };
 
   return (
     <>
-      <header className="header">
+      {isModal && (
+        <Modal
+          customStyle={{ width: '500px', height: '300px' }}
+          setIsVisible={setIsModal}
+          children={
+            <>
+              <AlertBox alert={alert} />
+            </>
+          }
+        />
+      )}
+      <header className='header'>
         <b>Kontaktní informace</b>
       </header>
-      <article className="address_and_formular">
-        <form id="form_kontakt" name="form_kontakt" autoComplete="off">
-          <section className="formular">
-            <div className="adresa">
+      <article className='address_and_formular'>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          id='form_kontakt'
+          name='form_kontakt'
+          autoComplete='off'
+        >
+          <section className='formular'>
+            <div className='adresa'>
               <div>
                 Adresa :
                 <br />
@@ -34,7 +92,7 @@ export const Contact = () => {
                 Internet :
                 <br />
                 <b>
-                  <a href="http://www.LIPNOnet.cz/rekreace">
+                  <a href='http://www.LIPNOnet.cz/rekreace'>
                     www.LIPNOnet.cz/rekreace
                   </a>
                 </b>
@@ -42,7 +100,7 @@ export const Contact = () => {
                 E-mail :
                 <br />
                 <b>
-                  <a href="mailto:ubytovani@lipnonet.cz">
+                  <a href='mailto:ubytovani@lipnonet.cz'>
                     ubytovani@lipnonet.cz
                   </a>
                 </b>
@@ -58,77 +116,85 @@ export const Contact = () => {
               </div>
             </div>
 
-            <div className="contact_result_alert" id="form_result_alert" />
-
-            <div className="input_booking">
-              <label>E-mail</label>
+            <div className='input_booking'>
+              <label htmlFor='emailova_adresa'>
+                E-mail:{' '}
+                <span style={{ color: 'red' }}>
+                  {errors.emailova_adresa && errors.emailova_adresa.message}
+                </span>
+              </label>
               <input
-                type="email"
-                name="emailova_adresa"
-                placeholder="vyplňte svojí e-mailovou adresu"
-                required
+                placeholder='vyplňte svojí e-mailovou adresu'
+                id='emailova_adresa'
+                type='email'
+                {...register('emailova_adresa', {
+                  required: 'je nutné vyplnit',
+                })}
               />
             </div>
 
-            <div className="input_booking">
-              <label>Text</label>
+            <div className='input_booking'>
+              <label htmlFor='text'>
+                Text:{' '}
+                <span style={{ color: 'red' }}>
+                  {errors.text && errors.text.message}
+                </span>
+              </label>
               <textarea
-                name="text"
-                rows={10}
+                rows={5}
                 cols={68}
-                wrap="Yes"
-                placeholder="Pokud nám chcete cokoliv sdělit, sem múžete napsat zprávu..."
-                required
-              ></textarea>
+                placeholder='Pokud nám chcete cokoliv sdělit, sem múžete napsat zprávu...'
+                id='text'
+                {...register('text', { required: 'je nutné vyplnit' })}
+              />
+            </div>
+
+            <div className='antispam_booking input_booking'>
+              <label htmlFor='antispam_code'>
+                Opište kód: {currentTimestamp.toString()}{' '}
+                <span style={{ color: 'red' }}>
+                  {errors.antispam_code && errors.antispam_code.message}
+                </span>
+              </label>
+              <input
+                // required
+                id='antispam_code'
+                type='text'
+                placeholder='sem kód' // Set the placeholder to the current milliseconds
+                {...register('antispam_code', {
+                  required: 'je nutné vyplnit',
+                  valueAsNumber: true,
+                })}
+              />
             </div>
 
             <input
-              id="antispam_code_orig"
-              type="hidden"
-              name="antispam_code_orig"
+              type='hidden'
+              {...register('antispam_code_orig', { valueAsNumber: true })}
             />
 
-            <div className="antispam_booking input_booking">
-              <label id="antispam_code_label"></label>
+            <div className='submit_booking'>
               <input
-                id="antispam_code_input"
-                type="text"
-                name="antispam_code"
-                size={5}
-                placeholder="sem kód"
-                required
+                type='submit'
+                disabled={isPending}
+                value={isPending ? 'Odesílám...' : 'Odešli'}
               />
-            </div>
-
-            <div className="submit_booking">
-              <input type="submit" name="odesli" value="Odeslat" />
             </div>
           </section>
         </form>
       </article>
 
-      <header className="header">
+      <header className='header'>
         <b>Kudy k nám?</b>
       </header>
 
-      <article className="maps">
-        <section>
-          <img
-            className="img-left"
-            src={kde_je_frymburk_republika}
-            alt="Map"
-            width="423"
-            height="253"
-          />
-          <b>Městečko Frymburk</b> se nachází asi 50km na jih od Českých
-          Budějovic. Z Českých Budějovic do Frymburka se dostanete následovně:
-          Český Krumlov, Větřní, Světlík, Blatná, Frymburk. Frymburk leží na
-          břehu lipenského jezera a 7 km od hraničního přechodu s Rakouskem.
-          <br />
-          <img src={mapka} alt="Map" width="307" height="582" />
-          <img src={cesta} alt="Route" width="540" height="253" />
-        </section>
-      </article>
+      <iframe
+        title='Kaliště'
+        style={{ border: 0, marginBottom: '-6px' }}
+        src='https://frame.mapy.cz/s/fehutedezu'
+        width='100%'
+        height='400px'
+      ></iframe>
     </>
   );
 };

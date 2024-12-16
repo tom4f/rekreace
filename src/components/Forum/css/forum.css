@@ -18,25 +18,16 @@
   border: 3px solid #555;
 }
 
-.kniha_pagination {
-  width: 80%;
-  margin: 0 auto;
-  padding-bottom: 10px;
-}
-
 .pagina,
 .paginaPrev,
 .paginaNext {
   background-color: white;
   font-size: 12px;
-  padding: 0;
-  margin: 0;
-  white-space: nowrap;
+
   width: 30px;
   height: 30px;
-  border-style: none;
+
   cursor: pointer;
-  display: inline-block;
 }
 
 .left {
@@ -65,23 +56,12 @@
   border: 1px solid green;
   color: white;
   padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 16px;
   cursor: pointer;
 }
 
 .btn-group .button:not(:last-child) {
   border-right: none; /* Prevent double borders */
-}
-
-.btn-group .button:hover {
-  background-color: #3e8e41;
-}
-
-.button_on {
-  background-color: green;
 }
 
 .kniha_main {
@@ -93,36 +73,9 @@
   font-size: 14px;
 }
 
-.kniha_one_entry {
-  margin: 10px;
-  padding: 10px;
-  border: 0px;
-  background-color: #ebebeb;
-}
-
-.kniha_one_entry .kniha_datum {
-  text-align: right;
-  font-size: 10px;
-}
-
-.kniha_one_entry .kniha_jmeno {
-  text-align: left;
-}
-
-.kniha_one_entry .kniha_text {
-  text-align: left;
-}
-
 .center {
   text-align: center;
   margin: 0 auto;
-  background: #ff9933;
-  color: black;
-}
-
-.text {
-  text-align: justify;
-  padding: 1vw 2vw 2vw 2vw;
   background: #ff9933;
   color: black;
 }

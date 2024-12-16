@@ -2,8 +2,8 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { Apartments } from './components/Apartments';
 import { BookingForm } from './components/BookingForm/BookingForm';
 import { Bottom } from './components/Bottom/Bottom';
-import { Contact_new } from './components/Contact/Contact_new';
-import { Forum } from './components/Forum/Forum';
+import { Contact } from './components/Contact/Contact';
+import { Forum } from './pages/Forum';
 import { Frymburk } from './components/Frymburk/Frymburk';
 import { Kaliste } from './components/Kaliste/Kaliste';
 import { Meteo } from './components/Meteo';
@@ -55,7 +55,7 @@ export const App = () => {
           <Route path='/apartmany/*' element={<Apartments />} />
           <Route path='/objednavka/*' element={<BookingForm />} />
           <Route path='/ceny/*' element={<Prices />} />
-          <Route path='/kontakt/*' element={<Contact_new />} />
+          <Route path='/kontakt/*' element={<Contact />} />
           <Route path='/frymburk/*' element={<Frymburk />} />
           <Route path='/meteostanice/*' element={<Meteo />} />
           <Route path='/forum/*' element={<Forum />} />

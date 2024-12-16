@@ -2,16 +2,14 @@ import { useEffect, useState } from 'react';
 import {
   ForumResponse,
   useGetForum,
-} from '../../features/forum/hooks/useGetForum';
-import { AddEntry } from './AddEntry';
-import './css/forum.css';
-import { Messages } from './Messages';
-import { Paginations } from './Paginations';
-import { PostsPerPage } from './PostsPerPage';
-import { SearchForum } from './SearchForum';
-import { SelectForum } from './SelectForum';
-import { SelectPaginate } from './SelectPaginate';
-import { OneMessage } from '../../features/forum/hooks/useGetForum';
+} from '../features/forum/hooks/useGetForum';
+import { AddEntry } from '../components/Forum/AddEntry';
+import '../components/Forum/css/forum.css';
+import { Messages } from '../components/Forum/Messages';
+import { Paginations } from '../components/Forum/Paginations';
+import { SearchForum } from '../components/Forum/SearchForum';
+import { SelectForum } from '../components/Forum/SelectForum';
+import { OneMessage } from '../features/forum/hooks/useGetForum';
 
 export type ForumParams = {
   allEntries: ForumResponse;
@@ -129,9 +127,7 @@ export const Forum = () => {
         <b>Lipenské fórum</b>
       </div>
       <br />
-      <div className='btn-group'>
-        <AddEntry categoryFromUrl={categoryFromUrl} />
-      </div>
+      <AddEntry categoryFromUrl={categoryFromUrl} />
       <p style={{ clear: 'both' }}></p>
       <br />
       <div className='fields'>
@@ -159,16 +155,6 @@ export const Forum = () => {
         next={next}
         buttonText={buttonText}
       />
-      <br />
-      <div className='fields'>
-        <SelectPaginate paginate={setState} />
-        <PostsPerPage
-          filteredEntriesBySearch={filteredEntriesBySearch}
-          paginate={setState}
-        />
-      </div>
-      <br />
-      <br />
     </div>
   );
 };

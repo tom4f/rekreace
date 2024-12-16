@@ -22,3 +22,10 @@ body {
   font-weight: bold;
   clear: both;
 }
+
+.text {
+  text-align: justify;
+  padding: 1vw 2vw 2vw 2vw;
+  background: #ff9933;
+  color: black;
+}

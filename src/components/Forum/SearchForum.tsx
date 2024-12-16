@@ -1,3 +1,5 @@
+import { Input } from '../Atoms/Input/Input';
+
 type SearchForumType = {
   selectedCategory: number;
   filteredEntriesCalculate: (
@@ -11,10 +13,9 @@ export const SearchForum = ({
   selectedCategory,
 }: SearchForumType) => {
   return (
-    <input
-      placeholder="hledej"
-      type="text"
-      size={5}
+    <Input
+      label='Hledej'
+      placeholder='hledej'
       onChange={(event) =>
         filteredEntriesCalculate(event.target.value, selectedCategory)
       }

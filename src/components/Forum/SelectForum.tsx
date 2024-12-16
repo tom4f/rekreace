@@ -1,3 +1,5 @@
+import { Select } from '../Atoms/Input/Select';
+
 type SelectForumType = {
   searchText: string;
   filteredEntriesCalculate: (
@@ -15,34 +17,21 @@ export const SelectForum = ({
   const optionList =
     categoryFromUrl !== 8
       ? [
-          <option key="1" value="999999">
-            Všechny kategorie
-          </option>,
-          <option key="2" value="0">
-            Fórum
-          </option>,
-          <option key="3" value="1">
-            Inzerce
-          </option>,
-          <option key="4" value="2">
-            Seznamka
-          </option>,
-          <option key="5" value="3">
-            K obsahu stránek
-          </option>,
+          { value: '999999', label: 'Všechny kategorie' },
+          { value: '0', label: 'Fórum' },
+          { value: '1', label: 'Inzerce' },
+          { value: '2', label: 'Seznamka' },
+          { value: '3', label: ' K obsahu stránek' },
         ]
-      : null;
+      : [];
 
   return (
-    <select
-      required
-      name="typ"
+    <Select
+      label='kategorie'
+      options={[...optionList, { value: '8', label: 'Kaliště 993m n.m.' }]}
       onChange={(event) =>
         filteredEntriesCalculate(searchText, +event.target.value)
       }
-    >
-      {optionList}
-      <option value="8">Kaliště 993m n.m.</option>
-    </select>
+    />
   );
 };

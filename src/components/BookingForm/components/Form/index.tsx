@@ -81,7 +81,6 @@ export const Form = () => {
         <div className='booking_form'>
           <div className='input_booking'>
             <label>Apartmán číslo :</label>
-            <br />
             <select
               value={formData.apartment}
               onChange={(e) =>
