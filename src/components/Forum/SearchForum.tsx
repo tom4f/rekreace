@@ -14,8 +14,9 @@ export const SearchForum = ({
 }: SearchForumType) => {
   return (
     <Input
+      style={{ width: '130px' }}
       label='Hledej'
-      placeholder='hledej'
+      placeholder='hledaný text'
       onChange={(event) =>
         filteredEntriesCalculate(event.target.value, selectedCategory)
       }

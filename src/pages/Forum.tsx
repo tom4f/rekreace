@@ -10,6 +10,7 @@ import { Paginations } from '../components/Forum/Paginations';
 import { SearchForum } from '../components/Forum/SearchForum';
 import { SelectForum } from '../components/Forum/SelectForum';
 import { OneMessage } from '../features/forum/hooks/useGetForum';
+import { Button } from '../components/Atoms/Button/Button';
 
 export type ForumParams = {
   allEntries: ForumResponse;
@@ -42,6 +43,8 @@ export const Forum = () => {
     buttonText: '0',
     categoryFromUrl: window.location.search === '?category=8' ? 8 : 999999,
   });
+
+  const [addEntry, setAddEntry] = useState(false);
 
   const searchCriteria =
     state.categoryFromUrl === 8
@@ -127,21 +130,36 @@ export const Forum = () => {
         <b>Lipenské fórum</b>
       </div>
       <br />
-      <AddEntry categoryFromUrl={categoryFromUrl} />
-      <p style={{ clear: 'both' }}></p>
-      <br />
-      <div className='fields'>
-        <SearchForum
-          filteredEntriesCalculate={filteredEntriesCalculate}
-          selectedCategory={selectedCategory}
-        />
-        <SelectForum
-          filteredEntriesCalculate={filteredEntriesCalculate}
-          categoryFromUrl={categoryFromUrl}
-          searchText={searchText}
-        />
+      <div>
+        {addEntry && (
+          <AddEntry
+            addEntry={addEntry}
+            setAddEntry={setAddEntry}
+            categoryFromUrl={categoryFromUrl}
+          />
+        )}
       </div>
-      <div>Je vybráno {filteredEntriesBySearch?.length} záznamů.</div>
+      {addEntry && (
+        <div className='header mt-4'>
+          <b>&nbsp;</b>
+        </div>
+      )}
+      {!addEntry && (
+        <div className='flex flex-wrap justify-center py-4'>
+          <SearchForum
+            filteredEntriesCalculate={filteredEntriesCalculate}
+            selectedCategory={selectedCategory}
+          />
+          <SelectForum
+            filteredEntriesCalculate={filteredEntriesCalculate}
+            categoryFromUrl={categoryFromUrl}
+            searchText={searchText}
+          />
+
+          <Button label='Přidej komentář' onClick={() => setAddEntry(true)} />
+        </div>
+      )}
+      {filteredEntriesBySearch?.length} komentářů.
       <Messages
         entries={filteredEntriesBySearch?.slice(begin, begin + postsPerPage)}
       />

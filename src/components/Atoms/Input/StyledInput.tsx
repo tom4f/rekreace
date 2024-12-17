@@ -24,6 +24,7 @@ export const StyledInput = styled.div`
   select,
   textarea {
     width: 90%;
+    margin: auto;
     font-size: 1rem;
     background-color: transparent;
     border: none;

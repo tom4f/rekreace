@@ -10,6 +10,12 @@ export default {
       colors: {
         'light-grey': '#ebebeb',
       },
+      maxWidth: {
+        '724px': '724px',
+      },
+      width: {
+        '724px': '724px',
+      },
     },
   },
 };

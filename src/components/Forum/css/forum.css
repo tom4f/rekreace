@@ -38,19 +38,6 @@
   color: #09d3ac;
 }
 
-.fields {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: auto;
-  max-width: 710px;
-  font-size: 0.8rem;
-  color: #fff;
-  grid-gap: 0.1rem;
-  margin-top: 1rem;
-  text-align: center;
-  margin: auto;
-}
-
 .btn-group .button {
   background-color: #4caf50; /* Green */
   border: 1px solid green;

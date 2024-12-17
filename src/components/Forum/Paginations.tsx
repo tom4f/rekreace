@@ -75,7 +75,7 @@ export const Paginations = ({
         buttonPageList.push(
           <button
             // set background-color for 1st button
-            className={`text-xs w-8 h-8 cursor-pointer hover:bg-green-600 ${
+            className={`text-xs w-8 h-8 cursor-pointer hover:bg-green-600 rounded-2xl ${
               i === next ? 'bg-green-600' : 'bg-light-grey'
             }`}
             key={i}
@@ -92,14 +92,14 @@ export const Paginations = ({
   return (
     <div className='pb-10 w-9/12'>
       <button
-        className='bg-light-grey text-xs w-8 h-8 cursor-pointer'
+        className='bg-light-grey text-xs w-8 h-8 cursor-pointer rounded-2xl'
         onClick={(e) => pageButtonClick(e)}
       >
         prev
       </button>
       <span>{showPagination()}</span>
       <button
-        className='bg-light-grey text-xs w-8 h-8 cursor-pointer'
+        className='bg-light-grey text-xs w-8 h-8 cursor-pointer rounded-2xl'
         onClick={(e) => pageButtonClick(e)}
       >
         next

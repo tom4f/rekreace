@@ -19,7 +19,7 @@ export const Messages = ({ entries }: MessagesType) => {
 
   return entries.length ? (
     Object.keys(entries).map((key) => (
-      <div key={key} className='m-4 p-3 bg-light-grey'>
+      <div key={key} className='m-4 p-3 bg-light-grey rounded-md'>
         <div className='text-right text-xs'>
           {typText[entries[+key].typ]} - {entries[+key].datum.slice(0, 10)}
         </div>

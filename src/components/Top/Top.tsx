@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { GoogleAd } from '../GoogleAd';
 import mainImg from './../../images/main.jpg';
-import './css/top.css';
 
 export const Top = () => {
   return (
@@ -38,10 +37,10 @@ export const Top = () => {
         </NavLink>{' '}
       </div>
 
-      <div className='mainpictures'>
+      <div className='text-center w-full'>
         <NavLink className='menu' to='/'>
           <img
-            className='img'
+            className='w-full'
             src={mainImg}
             alt='Ubytování u Kučerů ve Frymburku - zima'
           />

@@ -17,7 +17,7 @@ export const SelectForum = ({
   const optionList =
     categoryFromUrl !== 8
       ? [
-          { value: '999999', label: 'Všechny kategorie' },
+          { value: '999999', label: 'všechny' },
           { value: '0', label: 'Fórum' },
           { value: '1', label: 'Inzerce' },
           { value: '2', label: 'Seznamka' },
@@ -27,7 +27,7 @@ export const SelectForum = ({
 
   return (
     <Select
-      label='kategorie'
+      label='Kategorie'
       options={[...optionList, { value: '8', label: 'Kaliště 993m n.m.' }]}
       onChange={(event) =>
         filteredEntriesCalculate(searchText, +event.target.value)

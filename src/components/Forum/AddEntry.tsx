@@ -7,9 +7,15 @@ import Textarea from '../Atoms/Input/Textarea';
 
 type AddEntryType = {
   categoryFromUrl: number;
+  addEntry: boolean;
+  setAddEntry: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const AddEntry = ({ categoryFromUrl }: AddEntryType) => {
+export const AddEntry = ({
+  categoryFromUrl,
+  addEntry,
+  setAddEntry,
+}: AddEntryType) => {
   const { mutate } = useAddForum();
 
   const [state, setState] = useState({
@@ -21,12 +27,7 @@ export const AddEntry = ({ categoryFromUrl }: AddEntryType) => {
     antispamForm: '',
   });
 
-  const [formVisible, setFormVisible] = useState(false);
   const [alert, setAlert] = useState('off');
-
-  const showForum = () => {
-    setFormVisible(true);
-  };
 
   const myChangeHandler = (
     event: React.ChangeEvent<
@@ -42,7 +43,7 @@ export const AddEntry = ({ categoryFromUrl }: AddEntryType) => {
     if (state.antispam === Number(data.get('antispamForm'))) {
       mutate(state, {
         onSuccess: () => {
-          setFormVisible(false);
+          setAddEntry(false);
           setAlert('ok');
 
           setTimeout(() => {
@@ -60,7 +61,7 @@ export const AddEntry = ({ categoryFromUrl }: AddEntryType) => {
   const optionList =
     categoryFromUrl !== 8
       ? [
-          { value: '', label: '--- vyber kategorii ---' },
+          { value: '', label: '--- vyber ---' },
           { value: '0', label: 'Fórum' },
           { value: '1', label: 'Inzerce' },
           { value: '2', label: 'Seznamka' },
@@ -69,63 +70,78 @@ export const AddEntry = ({ categoryFromUrl }: AddEntryType) => {
       : [];
 
   return (
-    <form
-      onSubmit={mySubmitHandler}
-      name='formular'
-      encType='multipart/form-data'
-    >
-      {formVisible && (
-        <div>
-          <Input
-            label='Jméno'
-            placeholder='Jméno'
-            onChange={myChangeHandler}
-            required
-            type='text'
-            name='jmeno'
-          />
-          <Input
-            label='E-mail'
-            placeholder='E-mail'
-            onChange={myChangeHandler}
-            required
-            type='email'
-            name='email'
-          />
-          <Select
-            required
-            name='typ'
-            label='Kategorie'
-            options={[
-              ...optionList,
-              { value: '8', label: 'Kaliště 993m n.m.' },
-            ]}
-            onChange={myChangeHandler}
-          />
-          <Textarea
-            label='text'
-            onChange={myChangeHandler}
-            required
-            rows={5}
-            cols={60}
-            name='text'
-          />
-          <Input
-            label={`opiš kód: ${state.antispam.toString()}`}
-            placeholder={state.antispam.toString()}
-            onChange={myChangeHandler}
-            required
-            type='text'
-            name='antispamForm'
-          />
-        </div>
-      )}
-      <Button label='Přidej záznam' onClick={showForum} />
-      {alert === 'ok' ? (
-        <h1>Záznam byl přidán !!!</h1>
-      ) : alert === 'antispamNotOk' ? (
-        <h1>Záznam se nepodařilo odeslat !!!</h1>
-      ) : null}
-    </form>
+    <>
+      <form
+        onSubmit={mySubmitHandler}
+        name='formular'
+        encType='multipart/form-data'
+      >
+        {addEntry && (
+          <div className=''>
+            <div className='flex flex-wrap justify-center *:w-52 pt-4 '>
+              <Input
+                label='Jméno'
+                placeholder='Jméno'
+                onChange={myChangeHandler}
+                required
+                type='text'
+                name='jmeno'
+              />
+              <Input
+                label='E-mail'
+                placeholder='E-mail'
+                onChange={myChangeHandler}
+                required
+                type='email'
+                name='email'
+              />
+              <Select
+                required
+                name='typ'
+                label='Kategorie'
+                options={[
+                  ...optionList,
+                  { value: '8', label: 'Kaliště 993m n.m.' },
+                ]}
+                onChange={myChangeHandler}
+              />
+            </div>
+            <div className='flex justify-center w-96'>
+              <Textarea
+                label='text'
+                onChange={myChangeHandler}
+                placeholder='komentář'
+                required
+                rows={5}
+                cols={60}
+                name='text'
+              />
+            </div>
+            <div className='flex flex-wrap justify-center *:w-32'>
+              <Input
+                label={`opiš kód: ${state.antispam.toString()}`}
+                placeholder={state.antispam.toString()}
+                onChange={myChangeHandler}
+                required
+                type='text'
+                name='antispamForm'
+              />
+              <Button label='Přidej' />
+              <Button
+                type='button'
+                variant='secondary'
+                label='zavřít'
+                onClick={() => setAddEntry(false)}
+              />
+            </div>
+          </div>
+        )}
+        {alert === 'ok' ? (
+          <h1>Záznam byl přidán !!!</h1>
+        ) : alert === 'antispamNotOk' ? (
+          <h1>Záznam se nepodařilo odeslat !!!</h1>
+        ) : null}
+      </form>
+    </>
   );
 };
