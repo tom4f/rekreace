@@ -14,6 +14,7 @@ body {
 }
 
 .header {
+  margin: 5px 0;
   background: #555555;
   text-align: center;
   color: white;
@@ -37,4 +38,8 @@ body {
   padding: 1vw 2vw 2vw 2vw;
   background: #ff9933;
   color: black;
+}
+
+.menu {
+  text-decoration: underline;
 }

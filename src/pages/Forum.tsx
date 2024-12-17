@@ -125,54 +125,58 @@ export const Forum = () => {
   };
 
   return (
-    <div className='center'>
+    <>
       <div className='header'>
         <b>Lipenské fórum</b>
       </div>
-      <br />
-      <div>
-        {addEntry && (
-          <AddEntry
-            addEntry={addEntry}
-            setAddEntry={setAddEntry}
-            categoryFromUrl={categoryFromUrl}
-          />
-        )}
+      <div className='center'>
+        <div>
+          {addEntry && (
+            <AddEntry
+              addEntry={addEntry}
+              setAddEntry={setAddEntry}
+              categoryFromUrl={categoryFromUrl}
+            />
+          )}
+        </div>
       </div>
+
       {addEntry && (
-        <div className='header mt-4'>
+        <div className='header'>
           <b>&nbsp;</b>
         </div>
       )}
-      {!addEntry && (
-        <div className='flex flex-wrap justify-center py-4'>
-          <SearchForum
-            filteredEntriesCalculate={filteredEntriesCalculate}
-            selectedCategory={selectedCategory}
-          />
-          <SelectForum
-            filteredEntriesCalculate={filteredEntriesCalculate}
-            categoryFromUrl={categoryFromUrl}
-            searchText={searchText}
-          />
+      <div className='center'>
+        {!addEntry && (
+          <div className='flex flex-wrap justify-center pt-4'>
+            <SearchForum
+              filteredEntriesCalculate={filteredEntriesCalculate}
+              selectedCategory={selectedCategory}
+            />
+            <SelectForum
+              filteredEntriesCalculate={filteredEntriesCalculate}
+              categoryFromUrl={categoryFromUrl}
+              searchText={searchText}
+            />
 
-          <Button label='Přidej komentář' onClick={() => setAddEntry(true)} />
-        </div>
-      )}
-      {filteredEntriesBySearch?.length} komentářů.
-      <Messages
-        entries={filteredEntriesBySearch?.slice(begin, begin + postsPerPage)}
-      />
-      <br />
-      <Paginations
-        paginate={setState}
-        postsPerPage={postsPerPage}
-        filteredEntriesBySearch={filteredEntriesBySearch}
-        begin={begin}
-        paginateSize={paginateSize}
-        next={next}
-        buttonText={buttonText}
-      />
-    </div>
+            <Button label='Přidej komentář' onClick={() => setAddEntry(true)} />
+          </div>
+        )}
+        <div className='pt-5'>{filteredEntriesBySearch?.length} komentářů.</div>
+        <Messages
+          entries={filteredEntriesBySearch?.slice(begin, begin + postsPerPage)}
+        />
+        <br />
+        <Paginations
+          paginate={setState}
+          postsPerPage={postsPerPage}
+          filteredEntriesBySearch={filteredEntriesBySearch}
+          begin={begin}
+          paginateSize={paginateSize}
+          next={next}
+          buttonText={buttonText}
+        />
+      </div>
+    </>
   );
 };

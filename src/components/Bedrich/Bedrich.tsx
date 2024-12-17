@@ -17,11 +17,15 @@ export const Bedrich = () => {
   return (
     <div>
       {loginData.isLogged ? (
-        <div style={{ color: 'red', textAlign: 'center', margin: '50px auto' }}>
+        <div
+          style={{ color: 'lime', textAlign: 'center', margin: '50px auto' }}
+        >
           {loginData.webUser} je úspěšně přihlášen
           <br />
           <br />
-          <button onClick={executeLogout}>odhlásit...</button>
+          <button className='text-red-500' onClick={executeLogout}>
+            odhlásit...
+          </button>
         </div>
       ) : (
         <Modal>

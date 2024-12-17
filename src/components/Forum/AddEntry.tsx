@@ -117,7 +117,7 @@ export const AddEntry = ({
                 name='text'
               />
             </div>
-            <div className='flex flex-wrap justify-center *:w-32'>
+            <div className='flex flex-wrap justify-center *:w-32 pb-4'>
               <Input
                 label={`opiš kód: ${state.antispam.toString()}`}
                 placeholder={state.antispam.toString()}

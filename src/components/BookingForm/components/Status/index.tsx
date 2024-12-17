@@ -3,6 +3,7 @@ import { useGetBooking } from '../../../../features/booking/hooks';
 import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
 import './css/status.css';
 import { ShowTable } from './ShowTable';
+import { NavLink } from 'react-router-dom';
 
 export const Status = () => {
   const { data: loginData } = useLoginStatus();
@@ -40,14 +41,33 @@ export const Status = () => {
           Poslední změna : {lastUpdate()}
           <span id='last_booking_update'></span>
           <br />
-          Pro zamluvení termínu použijte
-          <a href='formular.php#1'>závaznou objednávku</a>] nebo [
-          <a href='mailto:ubytovani@lipnonet.cz'>email</a>]
+          Pro zamluvení termínu použijte&nbsp;
+          <a className='menu' href='#1'>
+            závaznou objednávku
+          </a>
+          ] nebo [
+          <a className='menu' href='mailto:ubytovani@lipnonet.cz'>
+            email
+          </a>
+          ]
           <br />
-          Popis : [<a href='garsonka.php#4'>Apartmá č.1</a>] [
-          <a href='garsonka.php#2'>Apartmá č.2</a>] [
-          <a href='garsonka.php#3'>Apartmá č.3</a>] a [
-          <a href='garsonka.php#1'>CENÍK</a>]
+          Popis : [
+          <NavLink className='menu' to='/apartmany'>
+            Apartmá č.1
+          </NavLink>
+          ] [
+          <NavLink className='menu' to='/apartmany'>
+            Apartmá č.2
+          </NavLink>
+          ] [
+          <NavLink className='menu' to='/apartmany'>
+            Apartmá č.3
+          </NavLink>
+          ] a [
+          <NavLink className='menu' to='/ceny'>
+            CENÍK
+          </NavLink>
+          ]
           <br />
           Žluté a zelené plochy odpovídají již obsazeným termínům (týdnům).
           <br />
