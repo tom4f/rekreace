@@ -4,6 +4,7 @@ import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
 import { davisType } from './TypeDefinition';
 import React from 'react';
+import { Header } from '../../Atoms';
 
 export const ShowDayTable = () => {
   const { reduceDate } = useContext(DateContext);
@@ -138,23 +139,25 @@ export const ShowDayTable = () => {
 
   return (
     <>
-      <header className='header'>
-        Historie :
+      <Header>
+        Historie:&nbsp;
         <button
+          className='text-zinc-500 hover:text-orange-400'
           onClick={() =>
             davis?.length === limit ? setStart(start + limit) : null
           }
         >
-          {'<'}
+          &nbsp;{'<'}&nbsp;
         </button>
         {start}
         <button
+          className='text-zinc-500 hover:text-orange-400'
           onClick={() => (start - limit >= 0 ? setStart(start - limit) : null)}
         >
-          {'>'}
+          &nbsp;{'>'}&nbsp;
         </button>
         dní
-      </header>
+      </Header>
       <section className={TableStyle.davisTable}>
         <table>
           <thead>

@@ -11,6 +11,7 @@ import { SearchForum } from '../components/Forum/SearchForum';
 import { SelectForum } from '../components/Forum/SelectForum';
 import { OneMessage } from '../features/forum/hooks/useGetForum';
 import { Button } from '../components/Atoms/Button/Button';
+import { Header } from '../components/Atoms';
 
 export type ForumParams = {
   allEntries: ForumResponse;
@@ -126,9 +127,7 @@ export const Forum = () => {
 
   return (
     <>
-      <div className='header'>
-        <b>Lipenské fórum</b>
-      </div>
+      <Header>Lipenské fórum</Header>
       <div className='center'>
         <div>
           {addEntry && (
@@ -141,11 +140,7 @@ export const Forum = () => {
         </div>
       </div>
 
-      {addEntry && (
-        <div className='header'>
-          <b>&nbsp;</b>
-        </div>
-      )}
+      {addEntry && <Header>&nbsp;</Header>}
       <div className='center'>
         {!addEntry && (
           <div className='flex flex-wrap justify-center pt-4'>

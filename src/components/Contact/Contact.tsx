@@ -7,6 +7,7 @@ import {
 import './css/contact.css';
 import { AlertBox } from '../AlertBox/AlertBox';
 import { Modal } from '../Modal/Modal';
+import { Header } from '../Atoms';
 
 export const Contact = () => {
   const { mutateAsync, isPending } = useSendMessage();
@@ -67,9 +68,7 @@ export const Contact = () => {
           }
         />
       )}
-      <header className='header'>
-        <b>Kontaktní informace</b>
-      </header>
+      <Header>Kontaktní informace</Header>
       <article className='address_and_formular'>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -92,9 +91,7 @@ export const Contact = () => {
                 Internet :
                 <br />
                 <b>
-                  <a href='http://www.LIPNOnet.cz/rekreace'>
-                    www.LIPNOnet.cz/rekreace
-                  </a>
+                  <a href='https://www.frymburk.com'>www.frymburk.com</a>
                 </b>
                 <br />
                 E-mail :
@@ -184,9 +181,7 @@ export const Contact = () => {
         </form>
       </article>
 
-      <header className='header'>
-        <b>Kudy k nám?</b>
-      </header>
+      <Header>Kudy k nám?</Header>
 
       <iframe
         title='Kaliště'

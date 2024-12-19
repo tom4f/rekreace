@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import { GoogleAd } from '../GoogleAd';
 import mainImg from './../../images/main.jpg';
+import { Header } from '../Atoms';
 
 export const Top = () => {
   return (
     <>
-      <div className='header'>
+      <Header>
         <NavLink className='menu' to='/'>
           {' '}
           Start
@@ -35,7 +36,7 @@ export const Top = () => {
           {' '}
           O Frymburku
         </NavLink>{' '}
-      </div>
+      </Header>
 
       <div className='text-center w-full'>
         <NavLink className='menu' to='/'>
@@ -47,7 +48,7 @@ export const Top = () => {
         </NavLink>
       </div>
 
-      <div className='header'>
+      <Header>
         <NavLink className='menu' to='/meteostanice'>
           {' '}
           Meteostanice
@@ -77,7 +78,7 @@ export const Top = () => {
           {' '}
           Windsurfing
         </NavLink>{' '}
-      </div>
+      </Header>
 
       <GoogleAd />
     </>

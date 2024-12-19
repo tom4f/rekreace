@@ -20,7 +20,7 @@
     "noUnusedLocals": false, // temporary
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
+    "noUncheckedSideEffectImports": true
   },
   "include": ["src", "src/globals.d.ts"]
 }

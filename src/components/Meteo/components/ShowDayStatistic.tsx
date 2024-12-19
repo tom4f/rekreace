@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
-import StatisticStyle from './../css/Statistic.module.css';
 import { ChangeDate } from './ChangeDate';
 import { DateContext } from './DateContext';
 import { Url } from '../../../api/paths';
+import { Header } from '../../Atoms';
 
 export const ShowDayStatistic = () => {
   const {
@@ -45,7 +45,7 @@ export const ShowDayStatistic = () => {
 
   return (
     <>
-      <header className='header'>
+      <Header>
         Rok / měsíc:&nbsp;
         <button
           className='text-zinc-500 hover:text-orange-400'
@@ -78,13 +78,15 @@ export const ShowDayStatistic = () => {
           {' '}
           {'>'}{' '}
         </button>
-      </header>
+      </Header>
 
-      <article className={StatisticStyle.davisMonth}>
-        <section className={StatisticStyle.myPre}>{davisText.month}</section>
+      <article className='w-fit'>
+        <section className='text-sm font-mono whitespace-pre text-left'>
+          {davisText.month}
+        </section>
       </article>
 
-      <header className={'header ' + StatisticStyle.button}>
+      <Header>
         Rok :
         <button
           className='text-zinc-500 hover:text-orange-400'
@@ -101,10 +103,12 @@ export const ShowDayStatistic = () => {
           {' '}
           {'>'}{' '}
         </button>
-      </header>
+      </Header>
 
-      <article className={StatisticStyle.davisMonth}>
-        <section className={StatisticStyle.myPre}>{davisText.year}</section>
+      <article className='w-fit'>
+        <section className='text-sm font-mono whitespace-pre text-left'>
+          {davisText.year}
+        </section>
       </article>
     </>
   );

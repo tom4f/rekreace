@@ -4,6 +4,7 @@ import { ChangeDate } from './ChangeDate';
 import { DateContext } from './DateContext';
 import { Url } from '../../../api/paths';
 import { useLocation, NavLink } from 'react-router-dom';
+import { Header } from '../../Atoms';
 
 export const ShowDayGraph = () => {
   const { search } = useLocation();
@@ -34,18 +35,56 @@ export const ShowDayGraph = () => {
 
   return (
     <>
-      <header id='detail_graphs' className='header'>
+      <Header id='detail_graphs'>
         Den.měsíc.rok:&nbsp;&nbsp;
-        <button onClick={() => setDate('day', -1)}> {'<'} </button>
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('day', -1)}
+        >
+          &nbsp;
+          {'<'}&nbsp;
+        </button>
         {dayString}
-        <button onClick={() => setDate('day', +1)}> {'>'} </button>.
-        <button onClick={() => setDate('month', -1)}> {'<'} </button>
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('day', +1)}
+        >
+          &nbsp;
+          {'>'}&nbsp;
+        </button>
+        .
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('month', -1)}
+        >
+          &nbsp;
+          {'<'}&nbsp;
+        </button>
         {monthString}
-        <button onClick={() => setDate('month', +1)}> {'>'} </button>.
-        <button onClick={() => setDate('year', -1)}> {'<'} </button>
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('month', +1)}
+        >
+          &nbsp;
+          {'>'}&nbsp;
+        </button>
+        .
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('year', -1)}
+        >
+          &nbsp;
+          {'<'}&nbsp;
+        </button>
         {year}
-        <button onClick={() => setDate('year', +1)}> {'>'} </button>
-      </header>
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('year', +1)}
+        >
+          &nbsp;
+          {'>'}&nbsp;
+        </button>
+      </Header>
       <article className={ShowDayGraphStyle.dayGraph}>
         <NavLink className='menu' to={toggleFullscreen}>
           <img alt='wind' src={imgUrl('wind')} />
