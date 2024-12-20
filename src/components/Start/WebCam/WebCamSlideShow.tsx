@@ -1,8 +1,8 @@
-import { faPlayCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import "./css/WebCamSlideShow.css";
-import { WebCamState } from "./WebCam";
+import { faPlayCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+import './css/WebCamSlideShow.css';
+import { WebCamState } from './WebCam';
 
 export const WebCamSlideShow = ({
   state: { day, hour, minute, timer },
@@ -46,22 +46,25 @@ export const WebCamSlideShow = ({
   const stopShow = () => {
     clearInterval(timer);
     setStartButton((prev) => !prev);
-    reactChange({ isLiveImg: true });
+    reactChange((old: WebCamState) => ({
+      ...old,
+      isLiveImg: true,
+    }));
   };
 
   return (
     <div>
       {startButton ? (
         <FontAwesomeIcon
-          className="slide-show"
-          size="3x"
+          className='slide-show'
+          size='3x'
           icon={faPlayCircle}
           onClick={() => startShow()}
         />
       ) : (
         <FontAwesomeIcon
-          className="slide-show"
-          size="3x"
+          className='slide-show'
+          size='3x'
           icon={faStopCircle}
           onClick={() => stopShow()}
         />

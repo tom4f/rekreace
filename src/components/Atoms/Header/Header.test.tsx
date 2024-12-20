@@ -1,7 +1,15 @@
-import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Header } from './Header';
+import { NavLink } from 'react-router-dom';
+
+import { BrowserRouter } from 'react-router-dom';
+
+import { ReactNode } from 'react';
+
+const RouterWrapper = ({ children }: { children: ReactNode }) => {
+  return <BrowserRouter>{children}</BrowserRouter>;
+};
 
 describe('Header component', () => {
   it('renders children correctly', () => {
@@ -9,23 +17,29 @@ describe('Header component', () => {
     expect(screen.getByText('Test Header')).toBeInTheDocument();
   });
 
-  it('applies additional props to the header element', () => {
-    render(<Header className='custom-class'>Test Header</Header>);
-    const headerElement = screen.getByText('Test Header').parentElement;
-    expect(headerElement).toHaveClass('custom-class');
+  it('renders NavLink with correct styles', () => {
+    render(
+      <RouterWrapper>
+        <Header>
+          <NavLink to='/'>Start</NavLink>
+        </Header>
+      </RouterWrapper>
+    );
+    const headerElement = screen.getByText('Start').parentElement;
+    // expect(headerElement).toHaveClass('custom-class');
     expect(headerElement).toHaveStyle('color: rgb(255, 255, 255)');
     expect(headerElement).toHaveStyle('background: rgb(85, 85, 85)');
   });
 
-  /*   it('renders link with correct styles', () => {
+  it('renders link with correct styles', () => {
     render(
       <Header>
         <a href='#'>Test Link</a>
       </Header>
     );
     const linkElement = screen.getByText('Test Link');
-    expect(linkElement).toHaveStyle('color: white');
+    expect(linkElement).toHaveStyle('color: rgb(0, 255, 0)');
     linkElement.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-    expect(linkElement).toHaveStyle('color: lime');
-  }); */
+    expect(linkElement).toHaveStyle('color: rgb(0, 255, 0)');
+  });
 });

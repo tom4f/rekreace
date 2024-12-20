@@ -5,7 +5,7 @@ export const Bottom = () => {
     <>
       <Header>
         <a href='https://tomas-blog.vercel.app/'>
-          © 1998-2024 Created by Tomáš Kučera
+          © 1998-2025 Created by Tomáš Kučera
         </a>
         <br />
         <a href='http://www.lipnonet.cz/'>LIPNOnet.cz</a> |

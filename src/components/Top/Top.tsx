@@ -7,39 +7,16 @@ export const Top = () => {
   return (
     <>
       <Header>
-        <NavLink className='menu' to='/'>
-          {' '}
-          Start
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/apartmany'>
-          {' '}
-          Apartmány
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/objednavka'>
-          {' '}
-          Objednávka
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/ceny'>
-          {' '}
-          Ceny
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/kontakt'>
-          {' '}
-          Kontakt
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/frymburk'>
-          {' '}
-          O Frymburku
-        </NavLink>{' '}
+        <NavLink to='/'> Start</NavLink> |
+        <NavLink to='/apartmany'> Apartmány</NavLink>|
+        <NavLink to='/objednavka'> Objednávka</NavLink> |
+        <NavLink to='/ceny'> Ceny</NavLink> |
+        <NavLink to='/kontakt'> Kontakt</NavLink> |
+        <NavLink to='/frymburk'> O Frymburku</NavLink>{' '}
       </Header>
 
       <div className='text-center w-full'>
-        <NavLink className='menu' to='/'>
+        <NavLink to='/'>
           <img
             className='w-full'
             src={mainImg}
@@ -49,35 +26,12 @@ export const Top = () => {
       </div>
 
       <Header>
-        <NavLink className='menu' to='/meteostanice'>
-          {' '}
-          Meteostanice
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/forum'>
-          {' '}
-          Fórum
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/fotogalerie'>
-          {' '}
-          Fotogalerie
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/meteoalarm'>
-          {' '}
-          MeteoAlarm
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/kaliste'>
-          {' '}
-          Kaliště
-        </NavLink>{' '}
-        |
-        <NavLink className='menu' to='/windsurfing'>
-          {' '}
-          Windsurfing
-        </NavLink>{' '}
+        <NavLink to='/meteostanice'> Meteostanice</NavLink> |
+        <NavLink to='/forum'> Fórum</NavLink> |
+        <NavLink to='/fotogalerie'> Fotogalerie</NavLink> |
+        <NavLink to='/meteoalarm'> MeteoAlarm</NavLink> |
+        <NavLink to='/kaliste'> Kaliště</NavLink> |
+        <NavLink to='/windsurfing'> Windsurfing</NavLink>{' '}
       </Header>
 
       <GoogleAd />

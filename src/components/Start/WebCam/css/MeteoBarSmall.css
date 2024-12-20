@@ -1,31 +1,31 @@
 .meteo_box {
-    position: absolute;
-    width: auto;
-    max-width: 724px;
-    height: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-    left: 50%;
-    transition: bottom 2s, color 2s, transform 2s;
-    bottom: 13%;
-    transform: translate(-50%, -50%);
-    color: white;
-    white-space: nowrap;
-    border-radius: 8px;
-    padding: 0px 5px;
-  }
-  
-  .meteo_box fieldset {
-    font-size: 10px;
-    width: auto;
-    display: inline;
-    padding: 1px 3px;
-    margin-right: 1px;
-    border: 2px solid green;
-    border-radius: 8px;
-  }
-  
-  .meteo_box_transition_out {
-    bottom: 100px;
-    color: transparent;
-    transform: rotate(180deg);
-  }
+  position: absolute;
+  width: auto;
+  max-width: 724px;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  left: 220px;
+  transition: bottom 2s, color 2s, transform 2s;
+  bottom: 13%;
+  transform: translate(-50%, -50%);
+  color: white;
+  white-space: nowrap;
+  border-radius: 8px;
+  padding: 0px 5px;
+}
+
+.meteo_box fieldset {
+  font-size: 10px;
+  width: auto;
+  display: inline;
+  padding: 1px 3px;
+  margin-right: 1px;
+  border: 2px solid green;
+  border-radius: 8px;
+}
+
+.meteo_box_transition_out {
+  bottom: 100px;
+  color: transparent;
+  transform: rotate(180deg);
+}
