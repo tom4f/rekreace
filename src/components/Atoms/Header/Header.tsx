@@ -6,11 +6,7 @@ interface HeaderProps extends HTMLAttributes<HTMLElement> {
 }
 
 export const Header = ({ children, ...props }: HeaderProps) => {
-  return (
-    <StyledHeader {...props}>
-      <b>{children}</b>
-    </StyledHeader>
-  );
+  return <StyledHeader {...props}>{children}</StyledHeader>;
 };
 
 const StyledHeader = styled.header`

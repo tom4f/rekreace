@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 const buttonStyles = {
   primary: css`
-    background-color: rgba(0, 256, 0, 0.4);
+    background-color: rgba(0, 256, 0, 0.5);
     color: white;
 
     &:hover {
@@ -35,8 +35,6 @@ const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
   border: 1px solid white;
   padding: 10px;
   margin: 5px;
-
-  transition: background-color 3s;
 
   ${({ variant }) => buttonStyles[variant]}
 `;
