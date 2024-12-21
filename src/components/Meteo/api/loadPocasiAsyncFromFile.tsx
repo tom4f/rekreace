@@ -1,8 +1,8 @@
 import {
   LoadDataFromFileFunctionType,
   pureData,
-} from "../components/TypeDefinition";
-import { Url } from "../../../api/paths";
+} from '../components/TypeDefinition';
+import { MeteoFiles } from '../../../features/meteo/hooks/useGetTextFile';
 
 export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
   graphsConfig
@@ -11,13 +11,13 @@ export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
     // get meteodata array for one file
     const loadOneFile = async (txtFile: string) => {
       const response = await fetch(txtFile, {
-        mode: "no-cors",
+        mode: 'no-cors',
       });
       // this response check not works if .httaccess show default html page instead text file
       if (response.status !== 200) return [];
       const text = await response.text();
       // lines to array
-      const arr = text.trim().split("\n");
+      const arr = text.trim().split('\n');
       // remove first 3 lines
       arr.shift();
       arr.shift();
@@ -31,10 +31,13 @@ export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
     const dayOfWeekNow = new Date().getUTCDay();
     for (let day = dayOfWeekNow + 1; day < dayOfWeekNow + 6; day++) {
       const correctedDay = day > 6 ? day - 7 : day;
-      const meteoFile = `${Url.DAVIS}/archive/downld02-${correctedDay}.txt`;
+      const meteoFile = MeteoFiles.DOWNLD02_NR.replace(
+        '{{correctedDay}}',
+        correctedDay.toString()
+      );
       meteoFiles = [...meteoFiles, meteoFile];
     }
-    meteoFiles = [...meteoFiles, `${Url.DAVIS}/downld02.txt`];
+    meteoFiles = [...meteoFiles, MeteoFiles.DOWNLD02];
 
     // create meteo array for all 7 days
     let mergedArr: string[] = [];
@@ -44,7 +47,7 @@ export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
     );
 
     const dirObj: { [key: string]: number } = {
-      "---": 16,
+      '---': 16,
       NNW: 15,
       NW: 14,
       WNW: 13,
@@ -68,36 +71,36 @@ export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
         const arrFromLine = line.trim().split(/ +/g);
 
         const names = [
-          "OrigDate",
-          "Time",
-          "TempOut",
-          "TempHi",
-          "TempLow",
-          "HumOut",
-          "DewPt",
-          "WindSpeed",
-          "WindDir",
-          "WindRun",
-          "HiSpeed",
-          "HiDir",
-          "WindChill",
-          "HeatIndex",
-          "THWIndex",
-          "Bar",
-          "Rain",
-          "RainRate",
-          "HeatDD",
-          "CoolDD",
-          "TempIn",
-          "HumIn",
-          "DewIn",
-          "HeatIn",
-          "EMCIn",
-          "AirDensityIn",
-          "WindSamp",
-          "WindTx",
-          "ISSRecept",
-          "ArcInt",
+          'OrigDate',
+          'Time',
+          'TempOut',
+          'TempHi',
+          'TempLow',
+          'HumOut',
+          'DewPt',
+          'WindSpeed',
+          'WindDir',
+          'WindRun',
+          'HiSpeed',
+          'HiDir',
+          'WindChill',
+          'HeatIndex',
+          'THWIndex',
+          'Bar',
+          'Rain',
+          'RainRate',
+          'HeatDD',
+          'CoolDD',
+          'TempIn',
+          'HumIn',
+          'DewIn',
+          'HeatIn',
+          'EMCIn',
+          'AirDensityIn',
+          'WindSamp',
+          'WindTx',
+          'ISSRecept',
+          'ArcInt',
         ];
 
         const objFromLine: { [key: string]: string | number } =
@@ -112,8 +115,8 @@ export const loadPocasiAsyncFromFile: LoadDataFromFileFunctionType = async (
         const [OrigDate, Time] = arrFromLine;
 
         // UTC used to disable time offset effect
-        const [day, month, year] = OrigDate.split(".");
-        const [hour, minute] = Time.split(":");
+        const [day, month, year] = OrigDate.split('.');
+        const [hour, minute] = Time.split(':');
         const dateString = new Date(
           Date.UTC(2000 + +year, +month - 1, +day, +hour, +minute)
         ).toJSON();

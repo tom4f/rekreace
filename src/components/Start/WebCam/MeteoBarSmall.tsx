@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 import './css/MeteoBarSmall.css';
-import { useGetMeteoText } from '../../../features/meteo/hooks/useGetMeteoText';
+import { useGetTextFile } from '../../../features/meteo/hooks/useGetTextFile';
+import { MeteoFiles } from '../../../features/meteo/hooks/useGetTextFile';
 
 export const MeteoBarSmall = () => {
   const [cssTransitionOut, setCssTransitionOut] = useState(
     'meteo_box_transition_out'
   );
-  const { data: meteoText, error, isLoading } = useGetMeteoText();
 
-  console.log(meteoText);
+  const {
+    data: meteoText,
+    error,
+    isLoading,
+  } = useGetTextFile(MeteoFiles.LIPNONET_METEO, 10000);
 
   useEffect(() => {
     if (meteoText) {
@@ -82,7 +86,7 @@ export const MeteoBarSmall = () => {
 
   return (
     <div className={`meteo_box ${cssTransitionOut}`}>
-      {meteoText && meteoBox(meteoText)}
+      {meteoText ? meteoBox(meteoText) : null}
     </div>
   );
 };

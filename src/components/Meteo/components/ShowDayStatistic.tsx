@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { ChangeDate } from './ChangeDate';
 import { DateContext } from './DateContext';
-import { Url } from '../../../api/paths';
 import { Header } from '../../Atoms';
+import { useGetNOAA } from '../../../features/meteo/hooks/useGetTextFile';
 
 export const ShowDayStatistic = () => {
   const {
@@ -10,34 +10,10 @@ export const ShowDayStatistic = () => {
     reduceDate,
   } = useContext(DateContext);
 
-  const [davisText, setDavisText] = useState({
-    month: '',
-    year: '',
-  });
-
   const year = davisStat.getFullYear();
   const month = `0${davisStat.getMonth() + 1}`.slice(-2);
 
-  useEffect(() => {
-    const setDavis: () => void = async () => {
-      const urlList = [
-        `${Url.DAVIS}/archive/${year}/NOAAMO-${year}-${month}.TXT`,
-        `${Url.DAVIS}/archive/${year}/NOAAYR-${year}.TXT`,
-      ];
-      const fetchList = urlList.map((url) =>
-        fetch(url).then((resp) => resp.text())
-      );
-      const settled = await Promise.allSettled(fetchList);
-      const respFulfilled = settled.map((onePromise) =>
-        onePromise.status === 'fulfilled' ? onePromise.value : ''
-      );
-      setDavisText({
-        month: respFulfilled[0],
-        year: respFulfilled[1],
-      });
-    };
-    setDavis();
-  }, [year, month]);
+  const queries = useGetNOAA(year.toString(), month);
 
   const setDate = (period: string, step: 1 | -1) => {
     reduceDate('davisStat', ChangeDate('davisStat', davisStat, period, step));
@@ -46,7 +22,17 @@ export const ShowDayStatistic = () => {
   return (
     <>
       <Header>
-        Rok / měsíc:&nbsp;
+        {
+          <span style={{ color: queries[0].isFetching ? 'lime' : 'unset' }}>
+            Rok
+          </span>
+        }{' '}
+        /{' '}
+        {
+          <span style={{ color: queries[1].isFetching ? 'lime' : 'unset' }}>
+            měsíc &nbsp;
+          </span>
+        }
         <button
           className='text-zinc-500 hover:text-orange-400'
           onClick={() => setDate('month', -1)}
@@ -82,12 +68,18 @@ export const ShowDayStatistic = () => {
 
       <article className='w-fit'>
         <section className='text-sm font-mono whitespace-pre text-left'>
-          {davisText.month}
+          {queries[1].data}
+          {queries[1].isError && <div>Error fetching the text files</div>}
         </section>
       </article>
 
       <Header>
-        Rok :
+        {
+          <span style={{ color: queries[0].isFetching ? 'lime' : 'unset' }}>
+            Rok
+          </span>
+        }
+        &nbsp;
         <button
           className='text-zinc-500 hover:text-orange-400'
           onClick={() => setDate('year', -1)}
@@ -107,7 +99,8 @@ export const ShowDayStatistic = () => {
 
       <article className='w-fit'>
         <section className='text-sm font-mono whitespace-pre text-left'>
-          {davisText.year}
+          {queries[0].isError && <div>Error fetching the text files</div>}
+          {queries[0].data}
         </section>
       </article>
     </>
