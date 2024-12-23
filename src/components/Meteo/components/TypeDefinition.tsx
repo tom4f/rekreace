@@ -44,7 +44,12 @@ export type LoadDataFunctionType = (
 
 export type LoadDataFromFileFunctionType = (
   graphsConfig: graphDataWithoutFunctionType[]
-) => Promise<graphDataWithoutFunctionType[]>;
+) => {
+  graphsData: graphDataWithoutFunctionType[];
+  isFetching: boolean;
+  isSuccess: boolean;
+  isSuccessPercentages: number;
+};
 
 export type commonWithoutFunctionType = {
   index: number;

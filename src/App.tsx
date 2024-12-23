@@ -32,7 +32,7 @@ export const App = () => {
     (pathname === '/meteostanice/frymburk/table' && isFullscreen) ||
     (pathname === '/meteostanice/oldStation/graphs' && isFullscreen) ||
     pathname === '/meteoalarm';
-  console.log(pathname);
+
   return (
     <div
       style={{

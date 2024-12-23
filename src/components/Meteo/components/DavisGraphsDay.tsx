@@ -1,31 +1,20 @@
-import { useState, useEffect } from 'react';
-import { loadPocasiAsyncFromFile } from '../api/loadPocasiAsyncFromFile';
+import { useLoadWeatherFromFile } from '../api/useLoadWeatherFromFile';
 import graphsConfig from './../config/davis-day-graphs.json';
 import DavisGraphsDayStyle from './../css/DavisGraphsDay.module.css';
 import { OnePage } from './OnePage';
 import { FullscreenHeader } from './FullscreenHeader';
 
 export const DavisGraphsDay = () => {
-  const [isGraphLoading, setIsGraphLoading] = useState(true);
-  const [graphsData, setGraphsData] = useState(graphsConfig);
-
-  let loadPocasiAsyncCustomFromFile = undefined;
-  loadPocasiAsyncCustomFromFile = async () => {
-    const graphsData = await loadPocasiAsyncFromFile(graphsConfig);
-    setIsGraphLoading(!!graphsData[0]?.data[0]?.dummy);
-
-    return graphsData;
-  };
-
-  useEffect(() => {
-    (async () => {
-      const data1 = await loadPocasiAsyncCustomFromFile();
-      setGraphsData([{ ...graphsConfig[0], data: data1[0]?.data }]);
-    })();
-  }, []);
-
-  const ShowLoading = ({ isGraphLoading }: { isGraphLoading: boolean }) => {
-    return isGraphLoading ? (
+  const { graphsData, isFetching, isSuccess, isSuccessPercentages } =
+    useLoadWeatherFromFile(graphsConfig);
+  const ShowLoading = ({
+    isFetching,
+    isSuccessPercentages,
+  }: {
+    isFetching: boolean;
+    isSuccessPercentages: number;
+  }) => {
+    return isFetching ? (
       <div className={DavisGraphsDayStyle.isLoading}>
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -35,6 +24,16 @@ export const DavisGraphsDay = () => {
           stroke='#FFF'
           strokeWidth='1'
         >
+          <text
+            x='50%'
+            y='50%'
+            dominantBaseline='middle'
+            textAnchor='middle'
+            fontSize='20'
+            fill='#000'
+          >
+            {isSuccessPercentages}%
+          </text>
           <circle
             pathLength='1'
             cx='50'
@@ -52,11 +51,17 @@ export const DavisGraphsDay = () => {
   return (
     <>
       <FullscreenHeader />
-      <ShowLoading isGraphLoading={isGraphLoading} />
-      <OnePage
-        graphsData={graphsData}
-        loadPocasiAsyncCustom={loadPocasiAsyncCustomFromFile}
+      <ShowLoading
+        isFetching={isFetching}
+        isSuccessPercentages={isSuccessPercentages}
       />
+
+      {isSuccess && (
+        <OnePage
+          graphsData={graphsData}
+          loadPocasiAsyncCustom={async () => await []}
+        />
+      )}
     </>
   );
 };

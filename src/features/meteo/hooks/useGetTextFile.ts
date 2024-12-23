@@ -11,8 +11,6 @@ export enum MeteoFiles {
   DOWNLD02 = `${Url.DAVIS}/downld02.txt`,
 }
 
-export const GET_TEXT_KEY = 'getTextFile';
-
 export const getTextFile = async (url: string): Promise<string> => {
   const response = await apiGet({
     url,
@@ -42,12 +40,12 @@ export const useGetNOAA = (year: string, month: string) => {
   const queries = useQueries({
     queries: [
       {
-        queryKey: [GET_TEXT_KEY, NOAAYR.split('/').pop()],
+        queryKey: [NOAAYR.split('/').pop()],
         queryFn: () => getTextFile(NOAAYR),
         placeholderData: previousData[0],
       },
       {
-        queryKey: [GET_TEXT_KEY, NOAAMO.split('/').pop()],
+        queryKey: [NOAAMO.split('/').pop()],
         queryFn: () => getTextFile(NOAAMO),
         placeholderData: previousData[1],
       },
@@ -59,6 +57,31 @@ export const useGetNOAA = (year: string, month: string) => {
   useEffect(() => {
     setPreviousData([NOAAYRdata || '', NOAAMOdata || '']);
   }, [NOAAYRdata, NOAAMOdata]);
+
+  return queries;
+};
+
+export const useGetDownld02 = () => {
+  let meteoFiles: string[] = [];
+  const dayOfWeekNow = new Date().getUTCDay();
+  for (let day = dayOfWeekNow + 1; day < dayOfWeekNow + 6; day++) {
+    const correctedDay = day > 6 ? day - 7 : day;
+    const meteoFile = MeteoFiles.DOWNLD02_NR.replace(
+      '{{correctedDay}}',
+      correctedDay.toString()
+    );
+    meteoFiles = [...meteoFiles, meteoFile];
+  }
+  meteoFiles = [...meteoFiles, MeteoFiles.DOWNLD02];
+
+  const createQueries = meteoFiles.map((filePath) => ({
+    queryKey: [filePath.split('/').pop()],
+    queryFn: () => getTextFile(filePath),
+  }));
+
+  const queries = useQueries({
+    queries: createQueries,
+  });
 
   return queries;
 };
