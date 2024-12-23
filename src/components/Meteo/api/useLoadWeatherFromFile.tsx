@@ -8,32 +8,23 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
   graphsConfig
 ) => {
   const queries = useGetDownld02();
-  if (!graphsConfig || graphsConfig.length === 0 || !queries[0].data)
-    return {
-      graphsData: graphsConfig,
-      isFetching: false,
-      isSuccess: false,
-      isSuccessPercentages: 0,
+
+  const textToArrayAllFiles = queries.reduce<string[]>((acc, query) => {
+    if (!query.data) return acc;
+
+    const textToArray = (text: string) => {
+      const lines = text.trim().split('\n');
+      lines.shift();
+      lines.shift();
+      lines.shift();
+      // return empty array if not valid text file - return (-1) = FALSE
+      return !lines[0].search(/..\...\.......:../) ? lines : [];
     };
 
-  const lineToArray = (text: string) => {
-    const arr = text.trim().split('\n');
-    // remove first 3 lines
-    arr.shift();
-    arr.shift();
-    arr.shift();
-    // return empty arr if not valid text file - return (-1) = FALSE
-    return !arr[0].search(/..\...\.......:../) ? arr : [];
-  };
+    return [...acc, ...(query.data && textToArray(query.data))];
+  }, []);
 
-  let mergedArr: string[] = [];
-
-  queries.forEach((query) => {
-    if (!query.data) return;
-    mergedArr = [...mergedArr, ...lineToArray(query.data)];
-  });
-
-  const dirObj: { [key: string]: number } = {
+  const windDirections: { [key: string]: number } = {
     '---': 16,
     NNW: 15,
     NW: 14,
@@ -53,11 +44,11 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
     N: 0,
   };
 
-  const arrOfObj = mergedArr.reduce(
+  const arrOfObj = textToArrayAllFiles.reduce(
     (accumulator: Array<pureData>, line, index) => {
       const arrFromLine = line.trim().split(/ +/g);
 
-      const names = [
+      const meteoProperty = [
         'OrigDate',
         'Time',
         'TempOut',
@@ -91,27 +82,25 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
       ];
 
       const objFromLine: { [key: string]: string | number } =
-        arrFromLine.reduce((accObj, value, index) => {
-          // console.log(names[index], value);
-          return {
+        arrFromLine.reduce(
+          (accObj, value, index) => ({
             ...accObj,
-            [names[index]]: value,
-          };
-        }, {});
+            [meteoProperty[index]]: value,
+          }),
+          {}
+        );
 
       if (!arrFromLine) return accumulator;
 
-      const [OrigDate, Time] = arrFromLine || [];
+      const [OrigDate, Time] = arrFromLine;
 
-      // UTC used to disable time offset effect
       const [day, month, year] = OrigDate.split('.');
       const [hour, minute] = Time.split(':');
-      const dateString = new Date(
+      const isoDate = new Date(
         Date.UTC(2000 + +year, +month - 1, +day, +hour, +minute)
       ).toJSON();
-      objFromLine.Date = dateString;
-      // Wind dir - degrees from string
-      objFromLine.WindDir = 22.5 * dirObj[objFromLine.WindDir];
+      objFromLine.Date = isoDate;
+      objFromLine.WindDir = 22.5 * windDirections[objFromLine.WindDir];
 
       // tricky index is from 1
       // skip duplicated entries when merging more text files ( optional? )
@@ -125,17 +114,9 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
     []
   );
 
-  if (arrOfObj.length === 0)
-    return {
-      graphsData: [],
-      isFetching: false,
-      isSuccess: false,
-      isSuccessPercentages: 0,
-    };
-
   const graphsData = [{ ...graphsConfig[0], data: arrOfObj }];
 
-  const isSuccessPercentages = Math.round(
+  const isSuccessPercentage = Math.round(
     (queries.reduce((acc, query) => (query.isSuccess ? ++acc : acc), 0) * 100) /
       queries.length
   );
@@ -144,6 +125,6 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
     graphsData,
     isFetching: queries.some((query) => query.isFetching),
     isSuccess: queries.some((query) => query.isSuccess),
-    isSuccessPercentages,
+    isSuccessPercentage,
   };
 };

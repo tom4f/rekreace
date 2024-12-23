@@ -7,7 +7,7 @@ export enum MeteoFiles {
   LIPNONET_METEO = `${Url.DAVIS}/lipnonet_meteo.txt`,
   NOAAMO = `${Url.DAVIS}/archive/{{year}}/NOAAMO-{{year}}-{{month}}.TXT`,
   NOAAYR = `${Url.DAVIS}/archive/{{year}}/NOAAYR-{{year}}.TXT`,
-  DOWNLD02_NR = `${Url.DAVIS}/archive/downld02-{{correctedDay}}.txt`,
+  DOWNLD02_NR = `${Url.DAVIS}/archive/downld02-{{meteoFileId}}.txt`,
   DOWNLD02 = `${Url.DAVIS}/downld02.txt`,
 }
 
@@ -62,26 +62,23 @@ export const useGetNOAA = (year: string, month: string) => {
 };
 
 export const useGetDownld02 = () => {
-  let meteoFiles: string[] = [];
   const dayOfWeekNow = new Date().getUTCDay();
-  for (let day = dayOfWeekNow + 1; day < dayOfWeekNow + 6; day++) {
-    const correctedDay = day > 6 ? day - 7 : day;
-    const meteoFile = MeteoFiles.DOWNLD02_NR.replace(
-      '{{correctedDay}}',
-      correctedDay.toString()
+
+  let meteoFiles = [0, 1, 2, 3, 4, 5, 6].map((id) => {
+    const meteoFilesId =
+      dayOfWeekNow + id > 6 ? dayOfWeekNow + id - 7 : dayOfWeekNow + id;
+    return MeteoFiles.DOWNLD02_NR.replace(
+      '{{meteoFileId}}',
+      meteoFilesId.toString()
     );
-    meteoFiles = [...meteoFiles, meteoFile];
-  }
+  });
+
   meteoFiles = [...meteoFiles, MeteoFiles.DOWNLD02];
 
-  const createQueries = meteoFiles.map((filePath) => ({
+  const queries = meteoFiles.map((filePath) => ({
     queryKey: [filePath.split('/').pop()],
     queryFn: () => getTextFile(filePath),
   }));
 
-  const queries = useQueries({
-    queries: createQueries,
-  });
-
-  return queries;
+  return useQueries({ queries });
 };

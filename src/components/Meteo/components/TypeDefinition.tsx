@@ -48,7 +48,7 @@ export type LoadDataFromFileFunctionType = (
   graphsData: graphDataWithoutFunctionType[];
   isFetching: boolean;
   isSuccess: boolean;
-  isSuccessPercentages: number;
+  isSuccessPercentage: number;
 };
 
 export type commonWithoutFunctionType = {

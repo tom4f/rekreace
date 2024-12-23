@@ -5,14 +5,14 @@ import { OnePage } from './OnePage';
 import { FullscreenHeader } from './FullscreenHeader';
 
 export const DavisGraphsDay = () => {
-  const { graphsData, isFetching, isSuccess, isSuccessPercentages } =
+  const { graphsData, isFetching, isSuccess, isSuccessPercentage } =
     useLoadWeatherFromFile(graphsConfig);
   const ShowLoading = ({
     isFetching,
-    isSuccessPercentages,
+    isSuccessPercentage,
   }: {
     isFetching: boolean;
-    isSuccessPercentages: number;
+    isSuccessPercentage: number;
   }) => {
     return isFetching ? (
       <div className={DavisGraphsDayStyle.isLoading}>
@@ -32,7 +32,7 @@ export const DavisGraphsDay = () => {
             fontSize='20'
             fill='#000'
           >
-            {isSuccessPercentages}%
+            {isSuccessPercentage}%
           </text>
           <circle
             pathLength='1'
@@ -53,7 +53,7 @@ export const DavisGraphsDay = () => {
       <FullscreenHeader />
       <ShowLoading
         isFetching={isFetching}
-        isSuccessPercentages={isSuccessPercentages}
+        isSuccessPercentage={isSuccessPercentage}
       />
 
       {isSuccess && (
