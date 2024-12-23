@@ -44,6 +44,7 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
     N: 0,
   };
 
+  console.time('arrOfObj calculation');
   const arrOfObj = textToArrayAllFiles.reduce(
     (accumulator: Array<pureData>, line, index) => {
       const arrFromLine = line.trim().split(/ +/g);
@@ -113,6 +114,7 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
     },
     []
   );
+  console.timeEnd('arrOfObj calculation');
 
   const graphsData = [{ ...graphsConfig[0], data: arrOfObj }];
 
