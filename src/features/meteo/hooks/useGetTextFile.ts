@@ -64,7 +64,7 @@ export const useGetNOAA = (year: string, month: string) => {
 export const useGetDownld02 = () => {
   const dayOfWeekNow = new Date().getUTCDay();
 
-  let meteoFiles = [0, 1, 2, 3, 4, 5, 6].map((id) => {
+  let meteoFiles = [0, 1, 2, 3, 4, 5].map((id) => {
     const meteoFilesId =
       dayOfWeekNow + id > 6 ? dayOfWeekNow + id - 7 : dayOfWeekNow + id;
     return MeteoFiles.DOWNLD02_NR.replace(
