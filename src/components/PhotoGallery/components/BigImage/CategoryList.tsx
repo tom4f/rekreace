@@ -1,13 +1,10 @@
-import { useState, useEffect } from "react";
-import {
-  setStateType,
-  categoryObjType,
-  CategoryNameType,
-} from "./../../TypeDefinition";
-import { readCategoryName } from "./../../api/read";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAlignJustify } from "@fortawesome/free-solid-svg-icons";
-import "./CategoryList.css";
+import { useState } from 'react';
+import { setStateType, categoryObjType } from './../../TypeDefinition';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
+import './CategoryList.css';
+import { useGetCategory } from '../../../../features/photo';
+import { fotoGalleryOwner } from '../../../../api/paths';
 
 interface eightPhotoTypes {
   setImgPosition: setStateType;
@@ -18,10 +15,11 @@ export const CategoryList = ({
   setImgPosition,
   categoryObj,
 }: eightPhotoTypes) => {
+  const { data: categoryName } = useGetCategory({
+    fotoGalleryOwner,
+  });
+
   const [showCategory, setShowCategory] = useState(false);
-  const [categoryName, setCategoryName] = useState<CategoryNameType | null>(
-    null
-  );
 
   const category = [];
 
@@ -34,27 +32,23 @@ export const CategoryList = ({
         current: 0,
       }));
     category.push(
-      <div className="oneCategory" key={key} onClick={changeCategory}>
-        <header>{categoryName?.[+key] ?? "loading"}</header>
+      <div className='oneCategory' key={key} onClick={changeCategory}>
+        <header>{categoryName?.[+key] ?? 'loading'}</header>
         <article>{value}</article>
       </div>
     );
   }
 
-  useEffect(() => {
-    (async () => setCategoryName(await readCategoryName()))();
-  }, []);
-
   return (
     <>
       <FontAwesomeIcon
-        className="category"
+        className='category'
         icon={faAlignJustify}
         onMouseOver={() => setShowCategory(true)}
       />
       {showCategory ? (
         <div
-          className="categoryList"
+          className='categoryList'
           onMouseLeave={() => setShowCategory(false)}
         >
           <fieldset>

@@ -2,7 +2,7 @@ import {
   LoadDataFromFileFunctionType,
   pureData,
 } from '../components/TypeDefinition';
-import { useGetDownld02 } from '../../../features/meteo/hooks/useGetTextFile';
+import { useGetDownld02 } from '../../../features/meteo';
 
 export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
   graphsConfig

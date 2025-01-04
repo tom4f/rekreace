@@ -1,5 +1,4 @@
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import { LoginRequest, LoginResponse } from '../../features/login/hooks';
 
 export interface allPhotoType {
   id: string;
@@ -47,6 +46,7 @@ export type categoryChangeType =
 export type SmallImagesTypes = {
   eightPhoto: Array<allPhotoType>;
   imgPosition: imgPositionType;
+  bigPhoto: photoType;
   setImgPosition: setStateType;
   arrIndexFromImgId: (clickedId: number) => number;
 };
@@ -57,22 +57,8 @@ export type AlertType = {
   color?: string;
 };
 
-type setImgPositionType = React.Dispatch<
-  React.SetStateAction<{
-    smallImgStart: number;
-    smallImgsSize: number;
-    current: number;
-    category: number;
-    reload: number;
-  }>
->;
-
-export type editLogicType = (
-  event: React.MouseEvent<HTMLInputElement>,
-  formCurrent: HTMLFormElement | null,
-  setAlert: React.Dispatch<React.SetStateAction<AlertType>>,
-  loginData: any,
-  setImgPosition: setImgPositionType
+export type EditLogicType = (
+  event: React.MouseEvent<HTMLInputElement>
 ) => Promise<void>;
 
 export type FormularType = {
@@ -84,23 +70,17 @@ export type FormularType = {
 };
 
 export type editCategoryLogicType = (
-  event: React.MouseEvent<HTMLInputElement>,
-  categoryName: CategoryNameType | null,
-  setAlert: React.Dispatch<React.SetStateAction<AlertType>>
+  event: React.MouseEvent<HTMLInputElement>
 ) => Promise<void>;
 
 export type addCategoryLogicType = (
-  event: React.MouseEvent<HTMLInputElement>,
-  setCategoryName: React.Dispatch<React.SetStateAction<CategoryNameType | null>>
+  event: React.MouseEvent<HTMLInputElement>
 ) => Promise<void>;
 
 export type EditCategoryType = {
   categoryObj: categoryObjType;
   setImgPosition: setStateType;
   editCategory: (event: React.MouseEvent<HTMLInputElement>) => void;
-  setCategoryName: React.Dispatch<
-    React.SetStateAction<CategoryNameType | null>
-  >;
   categoryName: { [key: string]: string } | null;
 };
 
@@ -122,7 +102,6 @@ export type BigImageType = {
   bigPhoto: photoType;
   categoryObj: categoryObjType;
   length: number;
-  setAllPhoto: React.Dispatch<React.SetStateAction<photoType[]>>;
 };
 
 export type LoginLogicType = (

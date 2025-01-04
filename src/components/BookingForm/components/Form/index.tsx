@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './css/formular.css';
-import { useSendBooking } from '../../../../features/booking/hooks/useSendBooking';
+import { useSendBooking } from '../../../../features/booking';
 import { Modal } from '../../../Modal/Modal';
 import { AlertBox } from '../../../AlertBox/AlertBox';
 

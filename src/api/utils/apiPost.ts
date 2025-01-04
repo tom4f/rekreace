@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
 interface AxiosRequest {
   url: string;
@@ -34,10 +34,9 @@ export const apiPost = ({
         resolve(response);
       })
       .catch((error: AxiosError<ApiErrorResponse>) => {
-        console.error(error);
         if (error.response?.data) {
           const errorData = error.response.data;
-          if ("result" in errorData) {
+          if (typeof errorData !== 'string' && 'result' in errorData) {
             // normal error
             console.error(`error.response.data.result = ${errorData.result}`);
             reject(error);
@@ -47,10 +46,10 @@ export const apiPost = ({
             reject(errorData.message);
           }
         } else if (error.request) {
-          console.error("No response received:", error.request);
+          console.error('No response received:', error.request);
           reject(error);
         } else {
-          console.error("Error setting up request:", error.message);
+          console.error('Error setting up request:', error.message);
           reject(error);
         }
       });

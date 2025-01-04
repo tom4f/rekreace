@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import {
   ForumResponse,
   useGetForum,
-} from '../features/forum/hooks/useGetForum';
+  OneMessage,
+} from '../features/forum/hooks';
 import { AddEntry } from '../components/Forum/AddEntry';
 import '../components/Forum/css/forum.css';
 import { Messages } from '../components/Forum/Messages';
 import { Paginations } from '../components/Forum/Paginations';
 import { SearchForum } from '../components/Forum/SearchForum';
 import { SelectForum } from '../components/Forum/SelectForum';
-import { OneMessage } from '../features/forum/hooks/useGetForum';
 import { Button } from '../components/Atoms/Button/Button';
 import { Header } from '../components/Atoms';
 

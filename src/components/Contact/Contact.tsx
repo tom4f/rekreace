@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import {
-  SendMessageRequest,
-  useSendMessage,
-} from '../../features/contact/hooks/useSendMessage';
+import { SendMessageRequest, useSendMessage } from '../../features/contact';
 import './css/contact.css';
 import { AlertBox } from '../AlertBox/AlertBox';
 import { Modal } from '../Modal/Modal';

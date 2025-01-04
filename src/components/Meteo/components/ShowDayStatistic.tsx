@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { ChangeDate } from './ChangeDate';
 import { DateContext } from './DateContext';
 import { Header } from '../../Atoms';
-import { useGetNOAA } from '../../../features/meteo/hooks/useGetTextFile';
+import { useGetNOAA } from '../../../features/meteo';
 
 export const ShowDayStatistic = () => {
   const {

@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components";
-import { Url } from "../../../../api/paths";
-import { imgPositionType } from "../../TypeDefinition";
+import styled, { css } from 'styled-components';
+import { Url } from '../../../../api/paths';
+import { imgPositionType } from '../../TypeDefinition';
 
 interface StyledDivTypes {
   imgPosition: imgPositionType;

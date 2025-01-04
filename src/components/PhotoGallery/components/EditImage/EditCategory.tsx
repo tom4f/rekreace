@@ -5,17 +5,27 @@ import {
   EditCategoryType,
   categoryChangeType,
 } from './../../TypeDefinition';
-import { addCategoryLogic, editCategoryLogic } from './logic/editCategoryLogic';
+import { CategoryNameType } from './../../TypeDefinition';
+import { fotoGalleryOwner } from '../../../../api/paths';
+import {
+  addCategoryLogicType,
+  editCategoryLogicType,
+} from './../../TypeDefinition';
+
+import { useUpdateCategory } from '../../../../features/photo';
 
 export const EditCategory = ({
-  categoryName,
-  setCategoryName,
-  categoryObj,
-  setImgPosition,
+  categoryName: initialCategoryName,
   editCategory,
 }: EditCategoryType) => {
+  const { mutate: updateCategory } = useUpdateCategory();
+  const [categoryName, setCategoryName] = useState<CategoryNameType | null>(
+    initialCategoryName
+  );
   const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
   Delay(alert, setAlert);
+
+  if (!categoryName) return null;
 
   const categoryChange = (e: categoryChangeType) => {
     const { name, value } = e.target;
@@ -26,18 +36,11 @@ export const EditCategory = ({
   };
 
   const category = [];
-  for (const [key, value] of Object.entries(categoryObj)) {
-    const changeCategory = () =>
-      setImgPosition((prev) => ({
-        ...prev,
-        category: +key,
-        smallImgStart: 0,
-        current: 0,
-      }));
+  for (const [key] of Object.entries(categoryName)) {
     category.push(
-      <div key={key} onClick={changeCategory} className='oneLine'>
-        <article>index-{key}</article>
-        <div className='input_booking' style={{ width: '50%' }}>
+      <div key={key} className='oneLine'>
+        <article>{key}</article>
+        <div className='input_booking' style={{ width: '200px' }}>
           <input
             value={categoryName?.[+key] ?? ''}
             onChange={categoryChange}
@@ -46,10 +49,41 @@ export const EditCategory = ({
             size={10}
           />
         </div>
-        <article>{value}x</article>
       </div>
     );
   }
+
+  const editCategoryLogic: editCategoryLogicType = async (event) => {
+    event.preventDefault();
+
+    if (!categoryName) return;
+    setAlert({
+      header: 'Ukládám změny',
+      text: 'malý moment...',
+      color: 'lime',
+    });
+    updateCategory(
+      { categoryName, fotoGalleryOwner },
+      {
+        onSuccess: () => setAlert({ header: 'OK', text: ':-)', color: 'lime' }),
+        onError: (err) =>
+          setAlert({ header: 'Error', text: err?.message, color: 'red' }),
+      }
+    );
+  };
+
+  const addCategoryLogic: addCategoryLogicType = async (event) => {
+    event.preventDefault();
+
+    setCategoryName((orig) => {
+      if (!orig) return orig;
+      const highestKey = Math.max(
+        ...Object.keys(orig).map((key) => (key !== '99999' ? +key : 0))
+      );
+      console.log('highestKey', highestKey);
+      return { ...orig, [highestKey + 1]: 'value' };
+    });
+  };
 
   return (
     <form name='formularCategory'>
@@ -74,9 +108,7 @@ export const EditCategory = ({
         >
           <input
             type='Submit'
-            onClick={(event) =>
-              editCategoryLogic(event, categoryName, setAlert)
-            }
+            onClick={(event) => editCategoryLogic(event)}
             defaultValue='Uložit'
           />
         </div>
@@ -86,7 +118,7 @@ export const EditCategory = ({
         >
           <input
             type='Submit'
-            onClick={(event) => addCategoryLogic(event, setCategoryName)}
+            onClick={(event) => addCategoryLogic(event)}
             defaultValue='Nová kat.'
           />
         </div>

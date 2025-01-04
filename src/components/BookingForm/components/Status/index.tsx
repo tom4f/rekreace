@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { useGetBooking } from '../../../../features/booking/hooks';
+import { useGetBooking } from '../../../../features/booking';
 import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
 import './css/status.css';
 import { ShowTable } from './ShowTable';

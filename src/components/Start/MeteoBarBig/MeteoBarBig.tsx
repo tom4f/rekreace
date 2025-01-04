@@ -1,37 +1,8 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import "./css/MeteoBarBig.css";
-import { Url } from "../../../api/paths";
-
-type DavisType = {
-  date: string;
-  temp_mean: string;
-  temp_high: string;
-  temp_high_time: string;
-  temp_low: string;
-  temp_low_time: string;
-  heat_deg_days: string;
-  cool_deg_days: string;
-  rain: string;
-  wind_speed_avg: string;
-  wind_speed_high: string;
-  wind_speed_high_time: string;
-  dir: string;
-  wind3: number;
-  wind6: number;
-  wind9: number;
-  wind12: number;
-  bar_min: string;
-  bar_avg: string;
-  bar_max: string;
-  huminidy_min: string;
-  huminidy_avg: string;
-  huminidy_max: string;
-  air_density_min: string;
-  air_density_avg: string;
-  air_density_max: string;
-  rain_rate_max: string;
-};
+import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import './css/MeteoBarBig.css';
+import { Url } from '../../../api/paths';
+import { DavisResponse } from '../../../features/meteo';
 
 type PocasiType = {
   id: number;
@@ -46,9 +17,9 @@ type PocasiType = {
 };
 
 export const MeteoBarBig = () => {
-  const [meteoData, setMeteoData] = useState<[DavisType, PocasiType]>();
+  const [meteoData, setMeteoData] = useState<[DavisResponse, PocasiType]>();
 
-  const meteoTable = ([davisData, pocasiData]: [DavisType, PocasiType]) => {
+  const meteoTable = ([davisData, pocasiData]: [DavisResponse, PocasiType]) => {
     const {
       // date,
       temp_mean,
@@ -91,7 +62,7 @@ export const MeteoBarBig = () => {
     if (!meteoData) return <></>;
 
     return (
-      <section className="happyMeteo">
+      <section className='happyMeteo'>
         <fieldset>
           <legend>Vítr</legend>
           <section>
@@ -241,8 +212,8 @@ export const MeteoBarBig = () => {
 
   return (
     <>
-      <div className="header">
-        <NavLink className="menu" to="/meteostanice">
+      <div className='header'>
+        <NavLink className='menu' to='/meteostanice'>
           METEOSTANICE dnes
         </NavLink>
       </div>

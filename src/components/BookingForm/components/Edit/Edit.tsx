@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { useAlert } from '../../../../features/alert/utils/useAlert';
-import {
-  useEditBooking,
-  useGetBooking,
-} from '../../../../features/booking/hooks';
+import { useEditBooking, useGetBooking } from '../../../../features/booking';
 import {
   StyledForm,
   StyledInput,

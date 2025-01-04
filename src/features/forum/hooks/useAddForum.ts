@@ -24,7 +24,7 @@ export type AddForumErrorResponse = AxiosError & {
 export const ADD_FORUM_ENDPOINT = `${Url.NEW_API}/forum/create.php`;
 export const ADD_FORUM_KEY = 'addForum';
 
-const postEditBooking = async (
+const addForum = async (
   request: AddForumRequest
 ): Promise<AddForumResponse> => {
   const { data } = await api
@@ -42,7 +42,7 @@ const postEditBooking = async (
 export const useAddForum = () => {
   const queryClient = useQueryClient();
   return useMutation<AddForumResponse, AddForumErrorResponse, AddForumRequest>({
-    mutationFn: postEditBooking,
+    mutationFn: addForum,
     mutationKey: [ADD_FORUM_KEY],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [GET_FORUM_KEY] });

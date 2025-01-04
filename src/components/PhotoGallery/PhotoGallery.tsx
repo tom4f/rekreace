@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { loadPicturesfromMySQL } from "./api/read";
-import { BigImage } from "./components/BigImage/BigImage";
-import { SmallImages } from "./components/SmallImages";
-import "./css/App.css";
-import { allPhotoType, categoryObjType } from "./TypeDefinition";
+import { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { BigImage } from './components/BigImage/BigImage';
+import { SmallImages } from './components/SmallImages';
+import './css/App.css';
+import { allPhotoType, categoryObjType } from './TypeDefinition';
+import { useGetPhoto } from '../../features/photo';
+import { fotoGalleryOwner } from '../../api/paths';
 
-export function PhotoGallery({ category }: { category?: number }) {
+export const PhotoGallery = ({ category }: { category?: number }) => {
+  const { data: allPhoto } = useGetPhoto({ fotoGalleryOwner });
+
   const { pathname } = useLocation();
-  const [allPhoto, setAllPhoto] = useState<allPhotoType[]>([]);
   const [imgPosition, setImgPosition] = useState({
     smallImgStart: 0,
     smallImgsSize: 8,
@@ -17,17 +19,15 @@ export function PhotoGallery({ category }: { category?: number }) {
     reload: 0,
   });
 
-  useEffect(() => {
-    (async () => setAllPhoto(await loadPicturesfromMySQL()))();
-  }, [imgPosition.reload]);
-
-  const arrIndexFromImgId = (clickedImgId: number): number =>
-    filteredPhoto.findIndex((img) => +img["id"] === clickedImgId);
+  if (!allPhoto) return null;
 
   const filteredPhoto =
     imgPosition.category === 99999
       ? allPhoto
-      : allPhoto.filter((one) => +one["typ"] === imgPosition.category);
+      : allPhoto?.filter((one) => +one['typ'] === imgPosition.category);
+
+  const arrIndexFromImgId = (clickedImgId: number): number =>
+    filteredPhoto.findIndex((img) => +img['id'] === clickedImgId);
 
   const bigPhoto = filteredPhoto[imgPosition.current];
 
@@ -47,21 +47,23 @@ export function PhotoGallery({ category }: { category?: number }) {
   };
 
   return (
-    <div className="container">
-      <div className="header">
-        {pathname === "/" || pathname === "/kaliste" ? (
-          <NavLink className="menu" to="/fotogalerie">
+    <div className='container'>
+      <div className='header'>
+        {pathname === '/' || pathname === '/kaliste' ? (
+          <NavLink className='menu' to='/fotogalerie'>
             Fotogalerie
           </NavLink>
         ) : (
-          <NavLink className="menu" to="/">
+          <NavLink className='menu' to='/'>
             Start
           </NavLink>
         )}
       </div>
       <SmallImages
+        key={imgPosition.reload}
         imgPosition={imgPosition}
         setImgPosition={setImgPosition}
+        bigPhoto={bigPhoto}
         eightPhoto={eightPhoto}
         arrIndexFromImgId={arrIndexFromImgId}
       />
@@ -71,8 +73,7 @@ export function PhotoGallery({ category }: { category?: number }) {
         bigPhoto={bigPhoto}
         categoryObj={categoryObj}
         length={filteredPhoto.length}
-        setAllPhoto={setAllPhoto}
       />
     </div>
   );
-}
+};
