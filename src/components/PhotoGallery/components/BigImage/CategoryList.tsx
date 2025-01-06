@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { setStateType, categoryObjType } from './../../TypeDefinition';
+import { SetStateType, CategoryObjType } from './../../TypeDefinition';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import './CategoryList.css';
@@ -7,8 +7,8 @@ import { useGetCategory } from '../../../../features/photo';
 import { fotoGalleryOwner } from '../../../../api/paths';
 
 interface eightPhotoTypes {
-  setImgPosition: setStateType;
-  categoryObj: categoryObjType;
+  setImgPosition: SetStateType;
+  categoryObj: CategoryObjType;
 }
 
 export const CategoryList = ({

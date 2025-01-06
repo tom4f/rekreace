@@ -80,41 +80,43 @@ export const Windsurfing = () => {
         na SZ vítr a Kovářov na Z vítr. Praktickými zkušenostmi je ověřeno, že
         vlny tam dosahují přibližných velikostí dle následující tabulky :
         <table style={{ margin: '20px auto' }} width='400' bgcolor='White'>
-          <tr>
-            <td>
-              <b>síla větru</b>
-            </td>
-            <td>&nbsp;8 m/s</td>
-            <td>12 m/s</td>
-            <td>18 m/s</td>
-            <td>25 m/s</td>
-          </tr>
-          <tr>
-            <td>
-              <b>velikost plachty</b>
-            </td>
-            <td>
-              6.5 m<sup>2</sup>
-            </td>
-            <td>
-              5.0 m<sup>2</sup>
-            </td>
-            <td>
-              4.0 m<sup>2</sup>
-            </td>
-            <td>
-              3.5 m<sup>2</sup>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>max. velikost vln</b>
-            </td>
-            <td>0.5 m</td>
-            <td>1.0 m</td>
-            <td align='center'>1.5 m</td>
-            <td align='center'>2.0 m</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td>
+                <b>síla větru</b>
+              </td>
+              <td>&nbsp;8 m/s</td>
+              <td>12 m/s</td>
+              <td>18 m/s</td>
+              <td>25 m/s</td>
+            </tr>
+            <tr>
+              <td>
+                <b>velikost plachty</b>
+              </td>
+              <td>
+                6.5 m<sup>2</sup>
+              </td>
+              <td>
+                5.0 m<sup>2</sup>
+              </td>
+              <td>
+                4.0 m<sup>2</sup>
+              </td>
+              <td>
+                3.5 m<sup>2</sup>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>max. velikost vln</b>
+              </td>
+              <td>0.5 m</td>
+              <td>1.0 m</td>
+              <td align='center'>1.5 m</td>
+              <td align='center'>2.0 m</td>
+            </tr>
+          </tbody>
         </table>
         Hodnoty jsou pouze orientační, velikost plachty platí pro 75 kg těžkého
         surfaře.
@@ -219,105 +221,108 @@ export const Windsurfing = () => {
       </div>
       <div className='text'>
         <table width='90%' align='center'>
-          <tr>
-            <td align='center' valign='middle'>
-              <b>SMĚR</b>
-            </td>
-            <td valign='middle'>
-              <b>MAX.</b>
-            </td>
-            <td valign='middle'>
-              <b>NEJVÝHODNĚJŠÍ LOKALITA</b>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>J</b>
-            </td>
-            <td>7 km</td>
-            <td>
-              Ideální místem je jednoznačně Radslav. Bez problémů lze startovat
-              i z kempu Jestřábí a Surf Shopu, ale u břehu nefouká a musí se
-              odjet zhruba 100 m. Bezvlnovou alternativou je Dolní Vltavice.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>JZ</b>
-            </td>
-            <td>6.5 km</td>
-            <td>
-              Ideální směr pro surfaře v kempu Jestřábí, SurfShopu a u Radslavi.
-              Vítr je většinou stabilní. Při tomto směru je na vodě nejvíc
-              surfařů. Vítr fouká k hrázi v Černé v Pošumaví; tomuto místu se ne
-              nadarmo říká "zátoka blbců". Nepatrně slabší alternativou je
-              Kovářov
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>Z</b>
-            </td>
-            <td>6 km</td>
-            <td>
-              Pro tento směr je nejvhodnější Kovářov. Jedná se o největší plochu
-              na Lipně a začátečníci by si měli dávat pozor na velké vlny. Pokud
-              vám vlny vadí, na Dolní Vltavici jsou poloviční. Dá se jezdit i v
-              Černé v Pošumaví, ale vítr tam je slabší.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>SZ</b>
-            </td>
-            <td>8 km</td>
-            <td>
-              Nejlepší lokalitou jsou jednoznačně Hruštice. Dělají se zde patrně
-              největší vlny v České republice. Jsou krásně zaoblené a skvěle se
-              na nich skáče. Vhodný je též Kovářov. Pro menší vlny lze doporučit
-              opět Dolní Vltavici.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>S</b>
-            </td>
-            <td>5 km</td>
-            <td>
-              Jediná vhodná lokalita je Kovářov. Při této kombinaci se jezdí
-              kolmo od břehu.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>SV</b>
-            </td>
-            <td>6.5 km</td>
-            <td>
-              Jediné místo pro tento směr je pás od SurfShopu po Radslav.
-              Ideální je louka za Jestřábí III. U Surfshopu nefouká u břehu a
-              musí se asi 100 m odjet. Od břehu síla větru nejde poznat. Hladina
-              je téměř bez vln a jedná se o nejlepší bezvlnovou kombinaci na
-              Lipně
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>V</b>
-            </td>
-            <td>6 km</td>
-            <td>
-              Jediné vhodné místo je Dolní Vltavice. Vlny spíše průměrné. Jinam
-              na tyto směry nemá cenu jezdit.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <b>JV</b>
-            </td>
-            <td>8 km</td>
-            <td>Shodné s předchozím směrem.</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td align='center' valign='middle'>
+                <b>SMĚR</b>
+              </td>
+              <td valign='middle'>
+                <b>MAX.</b>
+              </td>
+              <td valign='middle'>
+                <b>NEJVÝHODNĚJŠÍ LOKALITA</b>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>J</b>
+              </td>
+              <td>7 km</td>
+              <td>
+                Ideální místem je jednoznačně Radslav. Bez problémů lze
+                startovat i z kempu Jestřábí a Surf Shopu, ale u břehu nefouká a
+                musí se odjet zhruba 100 m. Bezvlnovou alternativou je Dolní
+                Vltavice.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>JZ</b>
+              </td>
+              <td>6.5 km</td>
+              <td>
+                Ideální směr pro surfaře v kempu Jestřábí, SurfShopu a u
+                Radslavi. Vítr je většinou stabilní. Při tomto směru je na vodě
+                nejvíc surfařů. Vítr fouká k hrázi v Černé v Pošumaví; tomuto
+                místu se ne nadarmo říká "zátoka blbců". Nepatrně slabší
+                alternativou je Kovářov
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Z</b>
+              </td>
+              <td>6 km</td>
+              <td>
+                Pro tento směr je nejvhodnější Kovářov. Jedná se o největší
+                plochu na Lipně a začátečníci by si měli dávat pozor na velké
+                vlny. Pokud vám vlny vadí, na Dolní Vltavici jsou poloviční. Dá
+                se jezdit i v Černé v Pošumaví, ale vítr tam je slabší.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>SZ</b>
+              </td>
+              <td>8 km</td>
+              <td>
+                Nejlepší lokalitou jsou jednoznačně Hruštice. Dělají se zde
+                patrně největší vlny v České republice. Jsou krásně zaoblené a
+                skvěle se na nich skáče. Vhodný je též Kovářov. Pro menší vlny
+                lze doporučit opět Dolní Vltavici.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>S</b>
+              </td>
+              <td>5 km</td>
+              <td>
+                Jediná vhodná lokalita je Kovářov. Při této kombinaci se jezdí
+                kolmo od břehu.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>SV</b>
+              </td>
+              <td>6.5 km</td>
+              <td>
+                Jediné místo pro tento směr je pás od SurfShopu po Radslav.
+                Ideální je louka za Jestřábí III. U Surfshopu nefouká u břehu a
+                musí se asi 100 m odjet. Od břehu síla větru nejde poznat.
+                Hladina je téměř bez vln a jedná se o nejlepší bezvlnovou
+                kombinaci na Lipně
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>V</b>
+              </td>
+              <td>6 km</td>
+              <td>
+                Jediné vhodné místo je Dolní Vltavice. Vlny spíše průměrné.
+                Jinam na tyto směry nemá cenu jezdit.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>JV</b>
+              </td>
+              <td>8 km</td>
+              <td>Shodné s předchozím směrem.</td>
+            </tr>
+          </tbody>
         </table>
         <img
           style={{ margin: '20px auto', display: 'block' }}

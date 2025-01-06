@@ -1,7 +1,7 @@
-import { SliderWithText } from "./css/slider-dynamic-css";
-import "./css/slider.css";
+import { SliderWithText } from './css/slider-dynamic-css';
+import './css/slider.css';
 
-import { WebCamState } from "./WebCam";
+import { WebCamState } from './WebCam';
 
 export const RangeSlider = ({
   state: { day, hour, minute },
@@ -12,7 +12,7 @@ export const RangeSlider = ({
 }) => {
   const ranger = (e: any) => {
     const { name: sliderName, value: sliderValue } = e;
-    if (sliderName === "day") {
+    if (sliderName === 'day') {
       reactChange((old: {}) => ({
         ...old,
         day: +sliderValue,
@@ -20,7 +20,7 @@ export const RangeSlider = ({
       }));
     }
 
-    if (sliderName === "time") {
+    if (sliderName === 'time') {
       const hourSelected = Math.floor(sliderValue / 60);
       const minuteSelected = sliderValue - hourSelected * 60;
       reactChange((old: {}) => ({
@@ -44,28 +44,28 @@ export const RangeSlider = ({
       ? `${day}.${monthToday}.`
       : `${day}.${monthToday - 1}.`;
   return (
-    <div className="sliders-container">
-      <div className="slide-container">
+    <div className='sliders-container'>
+      <div className='slide-container'>
         <SliderWithText
-          time={sliderDate}
-          className="slider"
-          type="range"
-          name="day"
-          min="1"
-          max="31"
+          $time={sliderDate}
+          className='slider'
+          type='range'
+          name='day'
+          min='1'
+          max='31'
           onChange={(e) => ranger(e.target)}
           value={day}
         />
       </div>
-      <div className="slide-container">
+      <div className='slide-container'>
         <SliderWithText
-          time={hour + ":" + minute}
-          className="slider"
-          type="range"
-          name="time"
+          $time={hour + ':' + minute}
+          className='slider'
+          type='range'
+          name='time'
           min={7 * 60 + 12}
           max={22 * 60 + 57}
-          step="15"
+          step='15'
           onChange={(e) => ranger(e.target)}
           value={hour * 60 + minute}
         />

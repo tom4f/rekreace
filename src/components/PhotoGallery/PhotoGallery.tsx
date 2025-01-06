@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { BigImage } from './components/BigImage/BigImage';
 import { SmallImages } from './components/SmallImages';
 import './css/App.css';
-import { allPhotoType, categoryObjType } from './TypeDefinition';
+import { AllPhotoType, CategoryObjType } from './TypeDefinition';
 import { useGetPhoto } from '../../features/photo';
 import { fotoGalleryOwner } from '../../api/paths';
 
@@ -36,7 +36,7 @@ export const PhotoGallery = ({ category }: { category?: number }) => {
     imgPosition.smallImgStart + imgPosition.smallImgsSize
   );
 
-  const reducer = (sumPerCat: categoryObjType, oneEntry: allPhotoType) => {
+  const reducer = (sumPerCat: CategoryObjType, oneEntry: AllPhotoType) => {
     sumPerCat[oneEntry.typ] =
       oneEntry.typ in sumPerCat ? ++sumPerCat[oneEntry.typ] : 1;
     return sumPerCat;

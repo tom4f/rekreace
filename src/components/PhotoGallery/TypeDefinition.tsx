@@ -1,6 +1,7 @@
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { LoginResponse } from '../../features/login';
 
-export interface allPhotoType {
+export interface AllPhotoType {
   id: string;
   text: string;
   autor: string;
@@ -13,7 +14,7 @@ export interface allPhotoType {
   imgType: string;
 }
 
-export interface photoType extends allPhotoType {
+export interface PhotoType extends AllPhotoType {
   url?: string | ArrayBuffer | null;
 }
 
@@ -25,18 +26,13 @@ export type imgPositionType = {
   reload: number;
 };
 
-export type setStateType = React.Dispatch<
+export type SetStateType = React.Dispatch<
   React.SetStateAction<imgPositionType>
 >;
 
-export type categoryObjType = { [key: string]: number };
+export type CategoryObjType = { [key: string]: number };
 
 export type CategoryNameType = { [key: string]: string };
-
-export type ChangeType =
-  | ChangeEvent<HTMLInputElement>
-  | ChangeEvent<HTMLTextAreaElement>
-  | ChangeEvent<HTMLSelectElement>;
 
 export type categoryChangeType =
   | ChangeEvent<HTMLInputElement>
@@ -44,68 +40,37 @@ export type categoryChangeType =
   | ChangeEvent<HTMLSelectElement>;
 
 export type SmallImagesTypes = {
-  eightPhoto: Array<allPhotoType>;
+  eightPhoto: Array<AllPhotoType>;
   imgPosition: imgPositionType;
-  bigPhoto: photoType;
-  setImgPosition: setStateType;
+  bigPhoto: PhotoType;
+  setImgPosition: SetStateType;
   arrIndexFromImgId: (clickedId: number) => number;
 };
 
-export type AlertType = {
-  header: string;
-  text: string;
-  color?: string;
-};
-
-export type EditLogicType = (
-  event: React.MouseEvent<HTMLInputElement>
-) => Promise<void>;
-
 export type FormularType = {
-  editPhoto: photoType;
-  setEditPhoto: Dispatch<SetStateAction<photoType>>;
-  setImgPosition: setStateType;
-  categoryObj: categoryObjType;
-  loginData: any;
-};
-
-export type editCategoryLogicType = (
-  event: React.MouseEvent<HTMLInputElement>
-) => Promise<void>;
-
-export type addCategoryLogicType = (
-  event: React.MouseEvent<HTMLInputElement>
-) => Promise<void>;
-
-export type EditCategoryType = {
-  categoryObj: categoryObjType;
-  setImgPosition: setStateType;
-  editCategory: (event: React.MouseEvent<HTMLInputElement>) => void;
-  categoryName: { [key: string]: string } | null;
+  editPhoto: PhotoType;
+  setEditPhoto: Dispatch<SetStateAction<PhotoType>>;
+  setImgPosition: SetStateType;
+  categoryObj: CategoryObjType;
+  loginData: LoginResponse;
 };
 
 export type editImage = {
-  editPhoto: photoType;
-  setEditPhoto: Dispatch<SetStateAction<photoType>>;
-  setImgPosition: setStateType;
-  categoryObj: categoryObjType;
+  editPhoto: PhotoType;
+  setEditPhoto: Dispatch<SetStateAction<PhotoType>>;
+  setImgPosition: SetStateType;
+  categoryObj: CategoryObjType;
 };
 
 export type imageChangeType = {
-  setEditPhoto: React.Dispatch<React.SetStateAction<photoType>>;
+  setEditPhoto: React.Dispatch<React.SetStateAction<PhotoType>>;
   imgId?: string;
 };
 
 export type BigImageType = {
   imgPosition: imgPositionType;
-  setImgPosition: setStateType;
-  bigPhoto: photoType;
-  categoryObj: categoryObjType;
+  setImgPosition: SetStateType;
+  bigPhoto: PhotoType;
+  categoryObj: CategoryObjType;
   length: number;
 };
-
-export type LoginLogicType = (
-  event: React.FormEvent<HTMLFormElement>,
-  formCurrent: HTMLFormElement | null,
-  setAlert: React.Dispatch<React.SetStateAction<AlertType>>
-) => void;

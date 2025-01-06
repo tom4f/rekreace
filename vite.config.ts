@@ -12,7 +12,6 @@ const dev = process.env.NODE_ENV !== 'production';
 
 const target = dev ? ServerUrl.LOCALHOST : '';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {

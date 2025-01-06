@@ -28,20 +28,48 @@ const buttonStyles = {
       cursor: not-allowed;
     }
   `,
+  red: css`
+    background-color: red;
+    color: white;
+
+    &:hover {
+      background-color: #565e64;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  `,
+  blue: css`
+    background-color: blue;
+    color: white;
+
+    &:hover {
+      background-color: #565e64;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  `,
 };
 
-const StyledButton = styled.button<{ variant: 'primary' | 'secondary' }>`
+const StyledButton = styled.button<{
+  $variant: 'primary' | 'secondary' | 'red' | 'blue';
+}>`
   border-radius: 5px;
   border: 1px solid white;
   padding: 10px;
   margin: 5px;
 
-  ${({ variant }) => buttonStyles[variant]}
+  ${({ $variant }) => buttonStyles[$variant]}
 `;
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'red' | 'blue';
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -50,7 +78,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <StyledButton variant={variant} {...props}>
+    <StyledButton $variant={variant} {...props}>
       {label}
     </StyledButton>
   );

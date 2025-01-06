@@ -1,23 +1,51 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, SetStateAction, Dispatch } from 'react';
 import { AlertBox, Delay } from '../../../AlertBox/AlertBox';
-import { AlertType, ChangeType, FormularType } from './../../TypeDefinition';
+import { AlertType } from '../../../../features/alert/utils/useAlert';
+import { PhotoType, SetStateType, CategoryObjType } from '../../TypeDefinition';
+import { LoginResponse } from '../../../../features/login';
 import './../BigImage/CategoryListEdit.css';
 import { EditCategory } from './EditCategory';
 import { ImageChange } from './ImageChange';
 import { fotoGalleryOwner } from '../../../../api/paths';
-import { EditLogicType } from './../../TypeDefinition';
 import {
   useAddPhoto,
   useUpdatePhoto,
   useDeletePhoto,
   useGetCategory,
 } from '../../../../features/photo';
+import { Input } from '../../../Atoms/Input/Input';
+import { Select } from '../../../Atoms/Input/Select';
+import { Textarea } from '../../../Atoms/Input/Textarea';
+import { Button } from '../../../Atoms/Button/Button';
+import styled from 'styled-components';
+
+type ChangeType = React.ChangeEvent<
+  HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+>;
+
+type EditType = React.MouseEvent<
+  HTMLButtonElement | HTMLInputElement,
+  MouseEvent
+>;
+
+type EditLogicType = (event: EditType) => void;
+
+export type EditCategoryToggleType = (
+  event: React.MouseEvent<HTMLButtonElement>
+) => void;
+
+type FormularType = {
+  editPhoto: PhotoType;
+  setEditPhoto: Dispatch<SetStateAction<PhotoType>>;
+  setImgPosition: SetStateType;
+  categoryObj: CategoryObjType;
+  loginData: LoginResponse;
+};
 
 export const Formular = ({
   editPhoto,
   setEditPhoto,
   setImgPosition,
-  categoryObj,
   loginData,
 }: FormularType) => {
   const { data: categoryName, isSuccess } = useGetCategory({
@@ -32,7 +60,7 @@ export const Formular = ({
   Delay(alert, setAlert);
 
   const [isCategory, setIsCategory] = useState(false);
-  const editCategory = (event: React.MouseEvent<HTMLInputElement>) => {
+  const editCategory: EditCategoryToggleType = (event) => {
     event.preventDefault();
     setIsCategory((old) => !old);
   };
@@ -42,18 +70,9 @@ export const Formular = ({
 
   const form = useRef<HTMLFormElement>(null);
 
-  const category = [];
-  if (categoryName) {
-    for (const [key, value] of Object.entries(categoryName)) {
-      if (key !== '99999') {
-        category.push(
-          <option key={key} value={key}>
-            {value}
-          </option>
-        );
-      }
-    }
-  }
+  const category = Object.entries(categoryName ?? {})
+    .filter(([key]) => key !== '99999')
+    .map(([key, value]) => ({ value: key, label: value }));
 
   const editLogic: EditLogicType = async (event) => {
     event.preventDefault();
@@ -78,171 +97,159 @@ export const Formular = ({
     switch (action) {
       case 'create':
         FD.delete('id');
-        addPhoto(FD);
+        addPhoto(FD, {
+          onSuccess: () => {
+            setEditPhoto((orig) => ({ ...orig, rotate: '0' }));
+            setAlert({ header: 'Foto přidáno', text: ':-)', color: 'lime' });
+          },
+        });
         break;
       case 'update':
         updatePhoto(FD, {
           onSuccess: () => {
             setImgPosition((old) => ({ ...old, reload: ++old.reload }));
+            setEditPhoto((orig) => ({ ...orig, rotate: '0' }));
+            setAlert({ header: 'Foto upraveno', text: ':-)', color: 'lime' });
           },
         });
         break;
       case 'delete':
-        deletePhoto(FD);
+        deletePhoto(FD, {
+          onSuccess: () => {
+            setAlert({ header: 'Foto smazáno', text: ':-)', color: 'lime' });
+          },
+        });
         break;
       default:
         break;
     }
-
-    setAlert({ header: 'Hotovo', text: ':-)', color: 'lime' });
   };
 
   return isSuccess && isCategory ? (
-    <EditCategory
-      categoryName={categoryName}
-      categoryObj={categoryObj}
-      setImgPosition={setImgPosition}
-      editCategory={editCategory}
-    />
+    <EditCategory categoryName={categoryName} editCategory={editCategory} />
   ) : (
-    <div style={{ overflow: 'visible' }}>
-      <form ref={form} name='formular'>
-        <div className='form_booking'>
-          <div>{editPhoto?.id}</div>
-          <input
-            name='imgType'
-            value={editPhoto?.imgType ?? 'image/jpeg'}
-            onChange={change}
-            hidden
-          />
-          <input
-            name='id'
-            value={editPhoto?.id ?? 0}
-            onChange={change}
-            hidden
-          />
-          <div className='input_booking'>
-            <label>Název</label>
-            <input
-              value={editPhoto?.header ?? 'loading...'}
-              onChange={change}
-              placeholder='zadej název'
-              name='header'
-              size={34}
-            />
-          </div>
-          <div className='input_booking' style={{ width: '40%' }}>
-            <label>Kategorie</label>
-            <select value={editPhoto?.typ ?? ''} onChange={change} name='typ'>
-              <option value=''>--- vyber kategorii</option>
-              {category}
-            </select>
-          </div>
-          <div className='input_booking' style={{ width: '40%' }}>
-            <label>Datum focení</label>
-            <input
-              name='date'
-              value={editPhoto?.date ?? '2021-01-01'}
-              onChange={change}
-              size={10}
-              type='date'
-            />
-          </div>
-          <div className='input_booking'>
-            <label>Popis</label>
-            <textarea
-              value={editPhoto?.text ?? 'loading...'}
-              onChange={change}
-              name='text'
-              rows={2}
-              cols={60}
-              placeholder='popis fotky'
-              wrap='Yes'
-            ></textarea>
-          </div>
-          <div className='input_booking' style={{ width: '40%' }}>
-            <label>Autor</label>
-            <input
-              value={editPhoto?.autor ?? 'loading...'}
-              onChange={change}
-              name='autor'
-              placeholder='autor'
-              size={10}
-            />
-          </div>
-          <div className='input_booking' style={{ width: '40%' }}>
-            <label>Email</label>
-            <input
-              placeholder='email'
-              name='email'
-              value={editPhoto?.email ?? 'loading...'}
-              onChange={change}
-              size={20}
-            />
-          </div>
-          <div className='input_booking'>
-            <label>otoceni vlevo o kolik stupňů</label>
-            <input
-              value={editPhoto?.rotate ?? 0}
-              onChange={change}
-              type='number'
-              name='rotate'
-              min='0'
-              max='270'
-              step='90'
-            />
-          </div>
-
-          <ImageChange imgId={editPhoto?.id} setEditPhoto={setEditPhoto} />
-
+    <form ref={form}>
+      <StyledForm>
+        <div style={{ width: '100%', textAlign: 'center' }}>
+          {editPhoto.id}
           {alert.header && (
-            <div className='input_booking'>
-              <AlertBox alert={alert} />
-            </div>
-          )}
-          <div className='submit_booking green'>
-            <input
-              type='Submit'
-              onClick={editLogic}
-              name='create'
-              defaultValue='Přidej'
+            <AlertBox
+              style={{ width: '100%', textAlign: 'center' }}
+              alert={alert}
             />
-          </div>
-          <div className='submit_booking blue'>
-            <input
-              type='Submit'
-              onClick={editLogic}
-              name='update'
-              defaultValue='Uprav'
-            />
-          </div>
-          <div
-            className='submit_booking red'
-            style={{ backgroundColor: 'rgba(256, 0, 0, 0.4)' }}
-          >
-            <input
-              type='Submit'
-              onClick={editLogic}
-              name='delete'
-              defaultValue='Smaž'
-            />
-          </div>
-
-          {isCategory ? null : (
-            <div
-              className='submit_booking red'
-              style={{ backgroundColor: 'rgba(256, 0, 256, 0.4)' }}
-            >
-              <input
-                type='Submit'
-                onClick={(event) => editCategory(event)}
-                name='delete'
-                defaultValue='Kategorie'
-              />
-            </div>
           )}
         </div>
-      </form>
-    </div>
+      </StyledForm>
+      <StyledForm>
+        <Input
+          label='Název'
+          value={editPhoto.header}
+          onChange={change}
+          placeholder='zadej název'
+          name='header'
+        />
+
+        <Select
+          label='Kategorie'
+          options={category}
+          defaultValue={editPhoto.typ}
+          onChange={change}
+          name='typ'
+        />
+
+        <Textarea
+          label='Popis'
+          value={editPhoto.text ?? 'loading...'}
+          onChange={change}
+          name='text'
+          placeholder='popis fotky'
+          wrap='Yes'
+        />
+
+        <Input
+          label='Datum focení'
+          name='date'
+          value={editPhoto.date}
+          onChange={change}
+          type='date'
+        />
+
+        <Input
+          label='Autor'
+          value={editPhoto.autor ?? 'loading...'}
+          onChange={change}
+          name='autor'
+          placeholder='autor'
+        />
+
+        <Input
+          label='Email'
+          placeholder='email'
+          name='email'
+          value={editPhoto.email}
+          onChange={change}
+        />
+
+        <Input
+          label='otoceni vlevo o kolik stupňů'
+          value={editPhoto.rotate}
+          onChange={change}
+          type='number'
+          name='rotate'
+          min='0'
+          max='270'
+          step='90'
+        />
+
+        <ImageChange imgId={editPhoto.id} setEditPhoto={setEditPhoto} />
+      </StyledForm>
+
+      <StyledForm>
+        <Button label='Přidej' onClick={editLogic} name='create' />
+
+        <Button
+          label='Uprav'
+          onClick={editLogic}
+          name='update'
+          variant='secondary'
+        />
+
+        <Button label='Smaž' onClick={editLogic} name='delete' variant='red' />
+
+        {isCategory ? null : (
+          <Button
+            label='Kategorie'
+            onClick={(e) => editCategory(e)}
+            name='delete'
+            variant='blue'
+          />
+        )}
+      </StyledForm>
+      <input
+        name='imgType'
+        value={editPhoto.imgType ?? 'image/jpeg'}
+        onChange={change}
+        hidden
+      />
+      <input name='id' value={editPhoto.id ?? 0} onChange={change} hidden />
+    </form>
   );
 };
+
+const StyledForm = styled.div`
+  max-width: 600px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  text-align: left;
+  border-radius: 5px;
+  border: 1px solid #555;
+  z-index: 3;
+
+  & > * {
+    flex: 1 1 40%;
+  }
+`;

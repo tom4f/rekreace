@@ -15,7 +15,7 @@ export const Modal = ({
   customStyle?: CustomStyle;
 }) => {
   return (
-    <StyledDiv customStyle={customStyle}>
+    <StyledDiv $customStyle={customStyle}>
       {setIsVisible && (
         <CloseDiv onClick={() => setIsVisible(false)}>X&nbsp;</CloseDiv>
       )}
@@ -25,7 +25,7 @@ export const Modal = ({
 };
 
 const StyledDiv = styled.div<{
-  customStyle?: CustomStyle;
+  $customStyle?: CustomStyle;
 }>`
   position: fixed;
   top: 50%;
@@ -37,10 +37,10 @@ const StyledDiv = styled.div<{
   width: 100%;
   height: 100%;
 
-  ${({ customStyle }) =>
-    customStyle &&
+  ${({ $customStyle }) =>
+    $customStyle &&
     css`
-      ${customStyle}
+      ${$customStyle}
     `}
 `;
 

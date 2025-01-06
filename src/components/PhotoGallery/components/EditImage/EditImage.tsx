@@ -1,6 +1,5 @@
 import { Login } from '../../../../features/login';
 import { editImage } from '../../TypeDefinition';
-import './EditImage.css';
 import { Formular } from './Formular';
 import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
 

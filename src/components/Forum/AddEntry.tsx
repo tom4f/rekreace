@@ -3,7 +3,7 @@ import { useAddForum } from '../../features/forum/hooks';
 import { Button } from '../Atoms/Button/Button';
 import { Input } from '../Atoms/Input/Input';
 import { Select } from '../Atoms/Input/Select';
-import Textarea from '../Atoms/Input/Textarea';
+import { Textarea } from '../Atoms/Input/Textarea';
 
 type AddEntryType = {
   categoryFromUrl: number;

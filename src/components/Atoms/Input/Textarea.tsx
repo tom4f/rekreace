@@ -5,7 +5,7 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
 }
 
-const Textarea: React.FC<TextareaProps> = ({ label, id, ...props }) => {
+export const Textarea: React.FC<TextareaProps> = ({ label, id, ...props }) => {
   return (
     <StyledInput>
       <label htmlFor={id}>{label}</label>
@@ -13,5 +13,3 @@ const Textarea: React.FC<TextareaProps> = ({ label, id, ...props }) => {
     </StyledInput>
   );
 };
-
-export default Textarea;

@@ -1,55 +1,49 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import navBarStyle from './../css/NavBar.module.css';
 import { CustomNavLinkType } from './TypeDefinition';
+import { Header } from '../../Atoms';
+import styled from 'styled-components';
 
-const CustomNavLink: CustomNavLinkType = ({ to, header }) => {
-  const activeStyle = (navData: { isActive: boolean }) =>
-    navData.isActive ? navBarStyle.active : '';
-  return (
-    <NavLink className={(navData) => activeStyle(navData)} to={to}>
-      {header}
-    </NavLink>
-  );
+const isFullscreen = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('fullscreen') === 'true';
 };
 
-export const NavBar = () => {
-  const urlParams = new URLSearchParams(new URL(document.URL).search);
-  const isFullscreen = () => urlParams.get('fullscreen') === 'true' || false;
-  return (
-    <>
-      {isFullscreen() ? null : (
-        <header className={navBarStyle.header}>
-          <nav>
-            <CustomNavLink
-              to='/meteostanice/frymburk'
-              header='Meteo Frymburk'
-            />
-            <CustomNavLink to='/meteostanice/lipno' header='Meteo Lipno' />
-            <CustomNavLink
-              to='/meteostanice/oldStation'
-              header='Meteo původní'
-            />
-          </nav>
-        </header>
-      )}
-    </>
-  );
-};
+const CustomNavLink: CustomNavLinkType = ({ to, header }) => (
+  <NavLink
+    style={({ isActive }) =>
+      isActive ? { backgroundColor: 'gray', color: 'white' } : undefined
+    }
+    to={to}
+  >
+    {header}
+  </NavLink>
+);
+
+export const NavBar = () => (
+  <>
+    {!isFullscreen() && (
+      <>
+        <Header>Meteostanice u Kučerů</Header>
+        <StyledHeader>
+          <CustomNavLink to='/meteostanice/frymburk' header='Meteo Frymburk' />
+          <CustomNavLink to='/meteostanice/lipno' header='Meteo Lipno' />
+          <CustomNavLink to='/meteostanice/oldStation' header='Meteo původní' />
+        </StyledHeader>
+      </>
+    )}
+  </>
+);
 
 export const NavBarDavis = () => {
-  const urlParams = new URLSearchParams(new URL(document.URL).search);
-  const isFullscreen = () => urlParams.get('fullscreen') === 'true' || false;
   return (
     <>
-      {isFullscreen() ? null : (
-        <header className={navBarStyle.header}>
-          <nav>
-            <CustomNavLink to='week' header='Týden' />
-            <CustomNavLink to='year' header='od roku 2012' />
-            <CustomNavLink to='table' header='tabulka' />
-            <CustomNavLink to='statistics' header='statistiky' />
-          </nav>
-        </header>
+      {!isFullscreen() && (
+        <StyledHeader>
+          <CustomNavLink to='week' header='Týden' />
+          <CustomNavLink to='year' header='od roku 2012' />
+          <CustomNavLink to='table' header='tabulka' />
+          <CustomNavLink to='statistics' header='statistiky' />
+        </StyledHeader>
       )}
       <Outlet />
     </>
@@ -57,17 +51,13 @@ export const NavBarDavis = () => {
 };
 
 export const NavBarLipno = () => {
-  const urlParams = new URLSearchParams(new URL(document.URL).search);
-  const isFullscreen = () => urlParams.get('fullscreen') === 'true' || false;
   return (
     <>
-      {isFullscreen() ? null : (
-        <header className={navBarStyle.header}>
-          <nav>
-            <CustomNavLink to='graphs' header='grafy od roku 2000' />
-            <CustomNavLink to='table' header='tabulka' />
-          </nav>
-        </header>
+      {!isFullscreen() && (
+        <StyledHeader>
+          <CustomNavLink to='graphs' header='grafy od roku 2000' />
+          <CustomNavLink to='table' header='tabulka' />
+        </StyledHeader>
       )}
       <Outlet />
     </>
@@ -75,19 +65,49 @@ export const NavBarLipno = () => {
 };
 
 export const NavBarOldStation = () => {
-  const urlParams = new URLSearchParams(new URL(document.URL).search);
-  const isFullscreen = () => urlParams.get('fullscreen') === 'true' || false;
   return (
     <>
-      {isFullscreen() ? null : (
-        <header className={navBarStyle.header}>
-          <nav>
-            <CustomNavLink to='graphs' header='grafy do roku 2000' />
-            <CustomNavLink to='table' header='tabulka' />
-          </nav>
-        </header>
+      {!isFullscreen() && (
+        <StyledHeader>
+          <CustomNavLink to='graphs' header='grafy do roku 2000' />
+          <CustomNavLink to='table' header='tabulka' />
+        </StyledHeader>
       )}
       <Outlet />
     </>
   );
 };
+
+const StyledHeader = styled(Header)`
+  display: flex;
+  gap: 4px;
+
+  @media screen and (max-width: 500px) {
+    flex-wrap: wrap;
+  }
+
+  a {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    background-color: white;
+    color: black;
+
+    &:visited {
+      color: black;
+    }
+
+    a.active {
+      background-color: gray;
+      color: white;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: gray;
+      color: white;
+    }
+  }
+`;

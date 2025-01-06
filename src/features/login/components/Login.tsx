@@ -6,6 +6,9 @@ import { usePostLogin } from '../hooks';
 import { fotoGalleryOwner } from '../../../api/paths';
 import { LoginRequest } from '../hooks';
 import { NavLink } from 'react-router-dom';
+import { Input } from '../../../components/Atoms/Input/Input';
+import { Button } from '../../../components/Atoms/Button/Button';
+import { Header } from '../../../components/Atoms';
 
 export type LoginType = {
   setLoginData: React.Dispatch<
@@ -35,7 +38,6 @@ export const Login = () => {
     for (const [key, value] of FD.entries()) {
       const typedKey = key as keyof LoginRequest;
       object[typedKey] = value as string;
-      console.log(`${typedKey}: ${value}`);
     }
 
     object['fotoGalleryOwner'] = fotoGalleryOwner;
@@ -63,7 +65,6 @@ export const Login = () => {
 
     mutate(object, {
       onSuccess: () => {
-        console.log(object);
         //setLoginData(respObj);
       },
       onError: () => {
@@ -77,40 +78,30 @@ export const Login = () => {
 
   return (
     <StyledLogin>
-      <form ref={form} onSubmit={loginLogic} name='login'>
+      <form ref={form} onSubmit={loginLogic}>
         <StyledForm>
-          <StyledInput>
-            <label>Uživatel</label>
-            <input
-              name='user'
-              type='text'
-              placeholder='zadejte uživatele'
-              size={10}
-            />
-          </StyledInput>
-          <StyledInput>
-            <label>Heslo</label>
-            <input
-              name='password'
-              type='password'
-              placeholder='Zadejte heslo'
-              size={10}
-              autoComplete='off'
-            />
-          </StyledInput>
+          <Input
+            label='Uživatel'
+            placeholder='zadejte uživatele'
+            required
+            name='user'
+            type='text'
+          />
+          <Input
+            label='E-mail'
+            placeholder='Zadejte heslo'
+            required
+            name='password'
+            type='password'
+            autoComplete='off'
+          />
           <AlertBox alert={alert} />
-          <StyledSubmit>
-            <input type='submit' name='login' value='Odeslat' />
-          </StyledSubmit>
+          <Button label='Odeslat' />
         </StyledForm>
       </form>
-      <div className='header'>
-        {' '}
-        <NavLink className='menu' to='/'>
-          {' '}
-          zpět na hlavní stránku
-        </NavLink>{' '}
-      </div>
+      <Header>
+        <NavLink to='/'>zpět na hlavní stránku</NavLink>
+      </Header>
     </StyledLogin>
   );
 };
@@ -133,85 +124,4 @@ export const StyledForm = styled.div`
   border-radius: 5px;
   border: 1px solid #555;
   padding: 1rem 0;
-`;
-export const StyledInput = styled.div`
-  text-align: left;
-  background-color: rgba(0, 0, 0, 0.4);
-  width: 45%;
-  border-radius: 5px;
-  border: 1px solid white;
-  padding: 2px;
-  margin: 5px;
-
-  &:hover {
-    border: 1px solid black;
-  }
-
-  label {
-    font-size: 0.7rem;
-    color: white;
-    font-weight: bold;
-    margin: 2px 5px;
-    display: block;
-  }
-
-  input,
-  select {
-    width: 90%;
-    font-size: 1rem;
-    background-color: transparent;
-    border: none;
-    margin: 2px 5px;
-    color: white;
-    letter-spacing: 0.1rem;
-  }
-
-  input:focus {
-    border: none;
-    outline: none;
-  }
-
-  input:is(
-      :-webkit-autofill,
-      :-webkit-autofill:hover,
-      :-webkit-autofill:focus,
-      :-webkit-autofill:active,
-      :autofill,
-      :autofill:hover,
-      :autofill:focus,
-      :autofill:active,
-
-    ) {
-    -webkit-text-fill-color: #31b0dd;
-    transition: background-color 5000s ease-in-out 0s;
-  }
-
-  option {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-`;
-
-export const StyledSubmit = styled.div`
-  border-radius: 5px;
-  border: 1px solid white;
-  margin: 5px;
-  width: 40%;
-
-  &:hover {
-    border: 1px solid black;
-  }
-
-  input {
-    color: white;
-    background-color: rgba(0, 256, 0, 0.4);
-    width: 100%;
-    margin: 0;
-    padding: 20px;
-    border: none;
-    font-size: 1rem;
-  }
-
-  input:focus {
-    background-color: rgba(0, 256, 0, 0.5);
-  }
 `;

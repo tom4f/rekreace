@@ -1,21 +1,27 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useAlert } from '../../../../features/alert/utils/useAlert';
 import { useEditBooking, useGetBooking } from '../../../../features/booking';
-import {
-  StyledForm,
-  StyledInput,
-  StyledLogin,
-  StyledSubmit,
-} from '../../../../features/login';
+import { StyledForm, StyledLogin } from '../../../../features/login';
 import { AlertBox } from '../../../AlertBox/AlertBox';
 import { firstWeekStart, skeletonBookingData } from '../Status/ShowTable';
 import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
+import { Input } from '../../../Atoms/Input/Input';
+import { Select } from '../../../Atoms/Input/Select';
+import { Button } from '../../../Atoms/Button/Button';
 
 type EditType = {
   week: number;
   apartmentNr: 1 | 2 | 3;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+const statusOptions = [
+  { value: '0', label: 'volno' },
+  { value: '1', label: 'obsazeno' },
+  { value: '2', label: 'mimo provoz' },
+  { value: '3', label: 'částečně obsazeno' },
+  { value: '4', label: 'zaplaceno' },
+];
 
 export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
   const { isSuccess, data: bookingData } = useGetBooking();
@@ -32,7 +38,16 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
 
   const { data: loginData } = useLoginStatus();
 
-  const updateTermin = (event: React.FormEvent<HTMLFormElement>) => {
+  const showTermin = useMemo(() => {
+    const actualWeek = firstWeekStart(0).actualWeek;
+    const weekModified = week < actualWeek ? week + 52 : week;
+    const start = firstWeekStart(weekModified - 1);
+    const end = firstWeekStart(weekModified);
+
+    return `(${week}) ${start.date}.${start.month}-${end.date}.${end.month}.${end.year}`;
+  }, [week]);
+
+  const handleUpdateTermin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formObject = {
@@ -53,11 +68,11 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
     };
 
     mutate(formObject, {
-      onSuccess: (succesResponse) => {
+      onSuccess: (successResponse) => {
         delay();
         setAlert({
           header: 'v pořádku',
-          text: succesResponse.result,
+          text: successResponse.result,
           color: 'lime',
         });
       },
@@ -65,7 +80,7 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
         delay();
         setAlert({
           header: 'změna se neprovedla',
-          text: `${errorResponse.data.result} -  ${errorResponse.status}`,
+          text: `${errorResponse.data.result} - ${errorResponse.status}`,
           color: 'red',
         });
       },
@@ -73,76 +88,36 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
   };
 
   if (data?.length && week && apartmentNr) {
-    const SelectStatus = () => {
-      const statusArr = [
-        'volno',
-        'obsazeno',
-        'mimo provoz',
-        'částečně obsazeno',
-        'zaplaceno',
-      ];
-
-      return (
-        <select
-          name='g_status'
-          onChange={(event) => setGStatus(+event.target.value)}
-          defaultValue={gStatus}
-        >
-          {statusArr.map((status, i) => (
-            <option key={i} value={i}>
-              {status}
-            </option>
-          ))}
-        </select>
-      );
-    };
-
-    const showTermin = () => {
-      const actualWeek = firstWeekStart(0).actualWeek;
-      const weekModified = week < actualWeek ? week + 52 : week;
-      const { date: dateStart, month: monthStart } = firstWeekStart(
-        weekModified - 1
-      );
-      const {
-        date: dateEnd,
-        month: monthEnd,
-        year: yearEnd,
-      } = firstWeekStart(weekModified);
-
-      return `(${week}) ${dateStart}.${monthStart}-${dateEnd}.${monthEnd}.${yearEnd}`;
-    };
-
     return (
       <StyledLogin>
         <AlertBox alert={alert} />
-        <form onSubmit={updateTermin} autoComplete='off'>
+        <form onSubmit={handleUpdateTermin} autoComplete='off'>
           <StyledForm>
-            <div>Upravujete termín {showTermin()}</div>
+            <div>Upravujete termín {showTermin}</div>
             <input type='hidden' name='g_week' value={week} />
             <input type='hidden' name='g_number' value={apartmentNr} />
 
-            <StyledInput>
-              <label>Stav :</label>
-              <SelectStatus />
-            </StyledInput>
+            <Select
+              name='g_status'
+              onChange={(event) => setGStatus(+event.target.value)}
+              defaultValue={gStatus}
+              label='Stav :'
+              options={statusOptions}
+            />
 
-            <StyledInput>
-              <label>Text :</label>
-              <input
-                onChange={(event) => setGText(event?.target.value)}
-                type='text'
-                name='g_text'
-                value={gText}
-              />
-            </StyledInput>
+            <Input
+              label='Text :'
+              onChange={(event) => setGText(event?.target.value)}
+              type='text'
+              name='g_text'
+              value={gText}
+            />
 
-            <StyledSubmit>
-              <input type='submit' name='odesli' value='Odeslat' />
-            </StyledSubmit>
+            <Button name='odesli' label='Odeslat' />
           </StyledForm>
         </form>
       </StyledLogin>
     );
   }
-  return <></>;
+  return null;
 };

@@ -1,18 +1,21 @@
 import { useState } from 'react';
 import { AlertBox, Delay } from '../../../AlertBox/AlertBox';
-import {
-  AlertType,
-  EditCategoryType,
-  categoryChangeType,
-} from './../../TypeDefinition';
+import { categoryChangeType } from './../../TypeDefinition';
+import { AlertType } from '../../../../features/alert/utils/useAlert';
 import { CategoryNameType } from './../../TypeDefinition';
 import { fotoGalleryOwner } from '../../../../api/paths';
-import {
-  addCategoryLogicType,
-  editCategoryLogicType,
-} from './../../TypeDefinition';
-
 import { useUpdateCategory } from '../../../../features/photo';
+import { Button } from '../../../Atoms/Button/Button';
+import { EditCategoryToggleType } from './Formular';
+import { Input } from '../../../Atoms/Input/Input';
+import styled from 'styled-components';
+
+export type EditCategoryType = {
+  editCategory: EditCategoryToggleType;
+  categoryName: { [key: string]: string } | null;
+};
+
+type categoryLogicType = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
 export const EditCategory = ({
   categoryName: initialCategoryName,
@@ -35,25 +38,7 @@ export const EditCategory = ({
     }
   };
 
-  const category = [];
-  for (const [key] of Object.entries(categoryName)) {
-    category.push(
-      <div key={key} className='oneLine'>
-        <article>{key}</article>
-        <div className='input_booking' style={{ width: '200px' }}>
-          <input
-            value={categoryName?.[+key] ?? ''}
-            onChange={categoryChange}
-            name={`name-${key}`}
-            placeholder='text'
-            size={10}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  const editCategoryLogic: editCategoryLogicType = async (event) => {
+  const editCategoryLogic: categoryLogicType = (event) => {
     event.preventDefault();
 
     if (!categoryName) return;
@@ -72,7 +57,7 @@ export const EditCategory = ({
     );
   };
 
-  const addCategoryLogic: addCategoryLogicType = async (event) => {
+  const addCategoryLogic: categoryLogicType = (event) => {
     event.preventDefault();
 
     setCategoryName((orig) => {
@@ -80,49 +65,50 @@ export const EditCategory = ({
       const highestKey = Math.max(
         ...Object.keys(orig).map((key) => (key !== '99999' ? +key : 0))
       );
-      console.log('highestKey', highestKey);
       return { ...orig, [highestKey + 1]: 'value' };
     });
   };
 
   return (
-    <form name='formularCategory'>
-      <div className='form_booking'>
-        {alert.header && <AlertBox alert={alert} />}
-        <div className='input_booking'>
-          <section className='categoryListEdit'>{category}</section>
-        </div>
-        <div
-          className='submit_booking red'
-          style={{ backgroundColor: 'rgba(256, 0, 256, 0.4)' }}
-        >
-          <input
-            type='Submit'
-            onClick={(event) => editCategory(event)}
-            defaultValue='Zpět Foto'
+    <form>
+      <StyledCategory>
+        <Button label='Zpět Foto' onClick={editCategory} variant='blue' />
+        <Button label='Uložit' onClick={editCategoryLogic} />
+        <Button
+          label='Nová kat.'
+          onClick={addCategoryLogic}
+          variant='secondary'
+        />
+
+        {alert.header && (
+          <AlertBox
+            alert={alert}
+            style={{ width: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
           />
-        </div>
-        <div
-          className='submit_booking red'
-          style={{ backgroundColor: 'rgba(0, 256, 0, 0.4)' }}
-        >
-          <input
-            type='Submit'
-            onClick={(event) => editCategoryLogic(event)}
-            defaultValue='Uložit'
+        )}
+      </StyledCategory>
+      <StyledCategory>
+        {Object.entries(categoryName).map(([key]) => (
+          <Input
+            key={key}
+            label={key}
+            value={categoryName?.[+key] ?? ''}
+            onChange={categoryChange}
+            name={`name-${key}`}
+            placeholder='text'
+            size={15}
           />
-        </div>
-        <div
-          className='submit_booking red'
-          style={{ backgroundColor: 'rgba(0, 0, 256, 0.4)' }}
-        >
-          <input
-            type='Submit'
-            onClick={(event) => addCategoryLogic(event)}
-            defaultValue='Nová kat.'
-          />
-        </div>
-      </div>
+        ))}
+      </StyledCategory>
     </form>
   );
 };
+
+const StyledCategory = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 90%;
+  background-color: rgba(0, 0, 0, 0.6);
+  margin: 10px auto;
+  padding: 20px;
+`;

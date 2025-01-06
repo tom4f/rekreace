@@ -14,6 +14,7 @@ export type LoginResponse = {
   webToken: string;
   webAccess: string;
   webUser: string;
+  isLogged: boolean;
 };
 
 export type LoginData = LoginResponse & { isLogged: boolean };
@@ -44,15 +45,10 @@ export const usePostLogin = () => {
   return useMutation<LoginResponse, LoginErrorResponse, LoginRequest>({
     mutationFn: postLogin,
     mutationKey: [LOGIN_KEY],
-    onSuccess: (oldData) => {
-      const loginData = {
-        ...oldData,
-        isLogged: true,
-      };
-
-      if (fotoGalleryOwner === oldData.webAccess) {
-        queryClient.setQueryData([LOGIN_STATUS_KEY], loginData);
-        sessionStorage.setItem('client', JSON.stringify(loginData));
+    onSuccess: (data) => {
+      if (fotoGalleryOwner === data.webAccess) {
+        queryClient.setQueryData([LOGIN_STATUS_KEY], data);
+        sessionStorage.setItem('client', JSON.stringify(data));
       }
     },
   });

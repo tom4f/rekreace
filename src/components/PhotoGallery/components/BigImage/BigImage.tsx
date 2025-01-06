@@ -64,11 +64,11 @@ export const BigImage = ({
   return (
     <BigImg
       ref={mainRef}
-      bigPhoto={bigPhoto}
-      editPhoto={editPhoto}
       className={`main-img`}
-      fadeIn={fadeIn}
-      imgPosition={imgPosition}
+      $bigPhoto={bigPhoto}
+      $editPhoto={editPhoto}
+      $fadeIn={fadeIn}
+      $imgPosition={imgPosition}
     >
       <InfoText bigPhoto={bigPhoto} />
       <ChangeImage

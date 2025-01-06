@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { imageChangeType, photoType } from '../../TypeDefinition';
+import { imageChangeType, PhotoType } from '../../TypeDefinition';
+import { Input } from '../../../Atoms/Input/Input';
 
 export const ImageChange = ({ setEditPhoto, imgId }: imageChangeType) => {
   const inputFile = useRef<HTMLInputElement>(null);
@@ -51,7 +52,7 @@ export const ImageChange = ({ setEditPhoto, imgId }: imageChangeType) => {
     reader.onloadstart = () => setIsLoading(true);
     reader.onloadend = () => setIsLoading(false);
     reader.onload = () => {
-      return setEditPhoto((old: photoType) => ({
+      return setEditPhoto((old: PhotoType) => ({
         ...old,
         url: reader.result,
         imgType: imgExtensionFromType(imgType),
@@ -59,28 +60,28 @@ export const ImageChange = ({ setEditPhoto, imgId }: imageChangeType) => {
     };
   };
 
-  const imgStatus = () => {
-    if (isLoading)
-      return <span className='isLoading'> . . . n a h r á v á m . . .</span>;
-    if (imgParams.type)
-      return (
+  const imgStatus = () => (
+    <>
+      {!isLoading && !imgParams.type && <>Vyberte foto</>}
+      {isLoading && (
+        <span className='isLoading'> . . . n a h r á v á m . . .</span>
+      )}
+      {!isLoading && imgParams.type && (
         <span>
-          {' '}
-          | {imgParams.type} | {imgParams.size}MB | {imgParams.lastModified}
+          {imgParams.type} | {imgParams.size}MB | {imgParams.lastModified}
         </span>
-      );
-  };
+      )}
+    </>
+  );
 
   return (
-    <div className='input_booking'>
-      <label>Vyberte foto {imgStatus()} </label>
-      <input
-        ref={inputFile}
-        type='file'
-        name='upfile'
-        accept='image/*'
-        onChange={(event) => justLogic(event)}
-      />
-    </div>
+    <Input
+      label={imgStatus()}
+      ref={inputFile}
+      type='file'
+      name='upfile'
+      accept='image/*'
+      onChange={(event) => justLogic(event)}
+    />
   );
 };
