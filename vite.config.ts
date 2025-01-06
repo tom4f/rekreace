@@ -1,6 +1,6 @@
 // 'test' does not exist in type 'UserConfigExport'
-// import { defineConfig } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
+//import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
 
 enum ServerUrl {
@@ -14,11 +14,11 @@ const target = dev ? ServerUrl.LOCALHOST : '';
 
 export default defineConfig({
   plugins: [react()],
-  test: {
+  /*   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
-  },
+  }, */
   base: '/rekreace/',
   css: {
     modules: {
