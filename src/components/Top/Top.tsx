@@ -2,8 +2,16 @@ import { NavLink } from 'react-router-dom';
 import { GoogleAd } from '../GoogleAd';
 import mainImg from './../../images/main.jpg';
 import { Header } from '../Atoms';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const Top = () => {
+  const { pathname } = useLocation();
+
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => setCounter((orig) => orig + 1), [pathname]);
+
   return (
     <>
       <Header>
@@ -34,7 +42,7 @@ export const Top = () => {
         <NavLink to='/windsurfing'> Windsurfing</NavLink>{' '}
       </Header>
 
-      <GoogleAd />
+      <GoogleAd key={counter} counter={counter} />
     </>
   );
 };

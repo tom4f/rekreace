@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <Router basename={'/rekreace/'}>
+      <Router basename={'/rekreace'}>
         <App />
       </Router>
     </QueryClientProvider>

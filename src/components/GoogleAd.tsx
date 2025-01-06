@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const GoogleAd = () => {
+export const GoogleAd = ({ counter }: { counter: number }) => {
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
       try {
@@ -24,7 +24,7 @@ export const GoogleAd = () => {
           border: '1px solid #ccc',
         }}
       >
-        <span>Google Ad Placeholder</span>
+        <span>Google Ad Placeholder {counter}</span>
       </div>
     );
   }
