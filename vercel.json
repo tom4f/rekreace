@@ -28,6 +28,17 @@
       "source": "/rekreace/get_ip_kamera.php",
       "destination": "https://www.frymburk.com/rekreace/get_ip_kamera.php"
     },
-    { "source": "/rekreace/(.*)", "destination": "/rekreace/" }
+    { "source": "/apartmany(/.*)", "destination": "/" },
+    { "source": "/objednavka(/.*)", "destination": "/" },
+    { "source": "/ceny(/.*)", "destination": "/" },
+    { "source": "/kontakt(/.*)", "destination": "/" },
+    { "source": "/frymburk(/.*)", "destination": "/" },
+    { "source": "/meteostanice(/.*)", "destination": "/" },
+    { "source": "/forum(/.*)", "destination": "/" },
+    { "source": "/fotogalerie(/.*)", "destination": "/" },
+    { "source": "/meteoalarm(/.*)", "destination": "/" },
+    { "source": "/kaliste(/.*)", "destination": "/" },
+    { "source": "/bedrich(/.*)", "destination": "/" },
+    { "source": "/windsurfing(/.*)", "destination": "/" }
   ]
 }
