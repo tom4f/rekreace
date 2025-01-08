@@ -1,31 +1,23 @@
 import { useState } from 'react';
-import { APP_MOCKS, ENV_MODE } from '../../env';
+
 import {
   DEFAULT_STATE,
   LOCAL_STORAGE_MOCK_DELAY_KEY,
   LOCAL_STORAGE_MOCK_KEY,
 } from '../../features/mocks';
 import { availableScenarios } from '../../features/mocks';
-import {
-  Button,
-  ClickableButton,
-  CustomCol,
-  DevToolsWrapper,
-  Headline,
-  Input,
-  Label,
-  Table,
-  TableWrapper,
-  Tag,
-  Td,
-  Th,
-  Tr,
-} from './MockDevTools.styled';
+import { Button } from '../Atoms/Button/Button';
+import { Input } from '../Atoms/Input/Input';
 
 const MOCK_DEV_TOOLS_LOCAL_STORAGE_KEY = 'devTools_mocks';
 
 export const MockDevTools = () => {
-  if (ENV_MODE === 'production' || APP_MOCKS === 'false') return null;
+  const [reload, setReload] = useState(1);
+
+  const [search, setSearch] = useState('');
+  const [delay, setDelay] = useState(
+    parseInt(localStorage.getItem(LOCAL_STORAGE_MOCK_DELAY_KEY) || '0')
+  );
 
   let isVisibleCurrentState = false;
 
@@ -34,15 +26,10 @@ export const MockDevTools = () => {
       localStorage.getItem(MOCK_DEV_TOOLS_LOCAL_STORAGE_KEY) || 'false'
     );
   } catch (e) {
-    // do nothing
+    console.log(e);
   }
 
-  const [reload, setReload] = useState(1);
   const [isVisible, setIsVisible] = useState(isVisibleCurrentState);
-  const [search, setSearch] = useState('');
-  const [delay, setDelay] = useState(
-    parseInt(localStorage.getItem(LOCAL_STORAGE_MOCK_DELAY_KEY) || '0')
-  );
 
   const onVisibleButtonClick = () => {
     setIsVisible((current) => {
@@ -104,84 +91,87 @@ export const MockDevTools = () => {
 
   return (
     <>
-      <Button onClick={onVisibleButtonClick} $isVisible={isVisible}>
-        {isVisible ? 'X' : 'MOCK'}
-      </Button>
+      <Button
+        onClick={onVisibleButtonClick}
+        label={isVisible ? 'X' : 'MOCK'}
+        className='right-4 bottom-16 fixed z-50'
+      />
       {isVisible && (
-        <DevToolsWrapper>
-          <div>
-            <CustomCol>
-              <Headline>
-                <Input
-                  placeholder='Search...'
-                  onChange={(e) => setSearch(e.target.value)}
-                  value={search}
-                />
-                <Label>Response delay (ms):</Label>
-                <Input
-                  placeholder='Response delay (ms)...'
-                  onChange={(e) => onDelayChange(parseInt(e.target.value) || 0)}
-                  value={delay}
-                />
-                <ClickableButton onClick={onResetClick}>
-                  reset all mocks to default state
-                </ClickableButton>
-              </Headline>
-              <TableWrapper>
-                <Table key={reload}>
-                  <thead>
-                    <tr>
-                      <Th style={{ width: 400 }}>Endpoint</Th>
-                      <Th>Available scenarios</Th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.from(availableScenarios.entries())
-                      .filter((item) => {
-                        if (!search) {
-                          return true;
-                        }
-                        return (
-                          item[0].includes(search) ||
-                          Object.keys(item[1]).join(' ').includes(search)
-                        );
-                      })
-                      .map(([route, scenarios]) => {
-                        return Object.keys(scenarios).length ? (
-                          <Tr key={route}>
-                            <Td>{route}</Td>
-                            <Td>
-                              <Tag
-                                selected={
-                                  getActiveItem(route) === DEFAULT_STATE
-                                }
-                                onClick={() => onTagClick(route, DEFAULT_STATE)}
-                              >
-                                default
-                              </Tag>
-                              {Object.keys(scenarios).map((scenario) => {
-                                return (
-                                  <Tag
-                                    key={scenario}
-                                    selected={getActiveItem(route) === scenario}
-                                    onClick={() => onTagClick(route, scenario)}
-                                  >
-                                    {scenario}
-                                  </Tag>
-                                );
-                              })}
-                            </Td>
-                          </Tr>
-                        ) : (
-                          <></>
-                        );
-                      })}
-                  </tbody>
-                </Table>
-              </TableWrapper>
-            </CustomCol>
+        <div className='right-0 left-0 bottom-0 fixed z-40 bg-slate-500'>
+          <div className='flex'>
+            <Input
+              label='search route'
+              placeholder='Search...'
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+            />
+            <Input
+              label='Response delay (ms):'
+              placeholder='Response delay (ms)...'
+              onChange={(e) => onDelayChange(parseInt(e.target.value) || 0)}
+              value={delay}
+            />
+            <Button
+              onClick={onResetClick}
+              label='reset all mocks to default state'
+            />
           </div>
-        </DevToolsWrapper>
+
+          <table key={reload} className='w-11/12 overflow-auto max-h-md'>
+            <thead>
+              <tr>
+                <th className='text-left'>Endpoint</th>
+                <th className='text-left'>Available scenarios</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from(availableScenarios.entries())
+                .filter((item) => {
+                  if (!search) {
+                    return true;
+                  }
+                  return (
+                    item[0].includes(search) ||
+                    Object.keys(item[1]).join(' ').includes(search)
+                  );
+                })
+                .map(([route, scenarios]) => {
+                  return Object.keys(scenarios).length ? (
+                    <tr key={route}>
+                      <td>{route}</td>
+                      <td>
+                        <Button
+                          label='default'
+                          variant={
+                            getActiveItem(route) === DEFAULT_STATE
+                              ? 'primary'
+                              : 'secondary'
+                          }
+                          onClick={() => onTagClick(route, DEFAULT_STATE)}
+                        />
+                        {Object.keys(scenarios).map((scenario) => {
+                          return (
+                            <Button
+                              key={scenario}
+                              label={scenario}
+                              variant={
+                                getActiveItem(route) === scenario
+                                  ? 'primary'
+                                  : 'secondary'
+                              }
+                              onClick={() => onTagClick(route, scenario)}
+                            />
+                          );
+                        })}
+                      </td>
+                    </tr>
+                  ) : (
+                    <></>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       )}
     </>
   );

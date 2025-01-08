@@ -18,6 +18,7 @@ import './css/main.css';
 import { TopBedrich } from './components/Top/TopBedrich';
 import { useLoginStatus } from './features/login/hooks/useGetLoginStatus';
 import { MockDevTools } from './components/MockDevTools';
+import { APP_MOCKS, ENV_MODE } from './env';
 
 export const App = () => {
   const { data: loginData } = useLoginStatus();
@@ -51,7 +52,9 @@ export const App = () => {
       >
         {loginData?.isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
-        <MockDevTools />
+        {(ENV_MODE !== 'production' || APP_MOCKS === 'true') && (
+          <MockDevTools />
+        )}
         <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/apartmany/*' element={<Apartments />} />
