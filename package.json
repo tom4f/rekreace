@@ -54,6 +54,7 @@
     "eslint-plugin-storybook": "^0.11.2",
     "globals": "^15.14.0",
     "jsdom": "^25.0.1",
+    "msw": "^2.7.0",
     "postcss": "^8.4.49",
     "prop-types": "15.8.1",
     "storybook": "8.4.7",
@@ -67,6 +68,11 @@
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
+    ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
     ]
   }
 }
