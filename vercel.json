@@ -28,6 +28,6 @@
       "source": "/rekreace/get_ip_kamera.php",
       "destination": "https://www.frymburk.com/rekreace/get_ip_kamera.php"
     },
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/(.*)", "destination": "/rekreace/" }
   ]
 }
