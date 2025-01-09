@@ -28,6 +28,7 @@
       "source": "/rekreace/get_ip_kamera.php",
       "destination": "https://www.frymburk.com/rekreace/get_ip_kamera.php"
     },
-    { "source": "/rekreace/(.*)", "destination": "/rekreace/" }
+    { "source": "/rekreace/(.*)", "destination": "/rekreace/" },
+    { "source": "/(.*)", "destination": "https://olca.cz/rekreace/" }
   ]
 }
