@@ -3,11 +3,12 @@ import { useAlert } from '../../../../features/alert/utils/useAlert';
 import { useEditBooking, useGetBooking } from '../../../../features/booking';
 import { StyledForm, StyledLogin } from '../../../../features/login';
 import { AlertBox } from '../../../AlertBox/AlertBox';
-import { firstWeekStart, skeletonBookingData } from '../Status/ShowTable';
+import { skeletonBookingData } from '../Status/ShowTable';
 import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
 import { Input } from '../../../Atoms/Input/Input';
 import { Select } from '../../../Atoms/Input/Select';
 import { Button } from '../../../Atoms/Button/Button';
+import { weekStartAt } from '../../../../utils/weekStartAt';
 
 type EditType = {
   week: number;
@@ -39,10 +40,10 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
   const { data: loginData } = useLoginStatus();
 
   const showTermin = useMemo(() => {
-    const actualWeek = firstWeekStart(0).actualWeek;
+    const actualWeek = weekStartAt().actualWeek;
     const weekModified = week < actualWeek ? week + 52 : week;
-    const start = firstWeekStart(weekModified - 1);
-    const end = firstWeekStart(weekModified);
+    const start = weekStartAt(weekModified);
+    const end = weekStartAt(weekModified + 1);
 
     return `(${week}) ${start.date}.${start.month}-${end.date}.${end.month}.${end.year}`;
   }, [week]);

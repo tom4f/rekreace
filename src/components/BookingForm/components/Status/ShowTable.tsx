@@ -6,6 +6,7 @@ import { Modal } from '../../../Modal/Modal';
 import { Edit } from '../Edit/Edit';
 import './css/showTable.css';
 import React from 'react';
+import { weekStartAt } from '../../../../utils/weekStartAt';
 
 export const skeletonBookingData = Array.from({ length: 53 }, (_, index) => ({
   week: index + 1,
@@ -17,25 +18,6 @@ export const skeletonBookingData = Array.from({ length: 53 }, (_, index) => ({
   g3_text: '',
   lastUpdate: '',
 }));
-
-export const firstWeekStart = (week = 0) => {
-  const year = new Date().getFullYear();
-  const today = new Date().getTime();
-  const firstDay = new Date(year, 0).getDay(); // 1 = Monday
-  // Get the firt day of year + get day of week : 0 (Sunday) to 6 (Saturday)
-  const plusDays = firstDay >= 0 && firstDay < 5 ? 0 : 7;
-  const firstSat = new Date(year, 0, 7 * week + firstDay + plusDays - 2);
-  const actualWeek = Math.ceil(
-    (today - firstSat.getTime()) / (1000 * 60 * 60 * 24 * 7)
-  );
-
-  return {
-    date: `0${firstSat.getDate()}`.slice(-2),
-    month: `0${firstSat.getMonth() + 1}`.slice(-2),
-    year: firstSat.getFullYear(),
-    actualWeek,
-  };
-};
 
 export const ShowTable = () => {
   const { isSuccess, data: bookingData } = useGetBooking();
@@ -75,12 +57,12 @@ export const ShowTable = () => {
 
   const createTr = (week: number) => {
     const weekModified = week < data.length ? week : week - data.length + 1;
-    const { date: dateStart, month: monthStart } = firstWeekStart(week - 1);
+    const { date: dateStart, month: monthStart } = weekStartAt(week);
     const {
       date: dateEnd,
       month: monthEnd,
       year: yearEnd,
-    } = firstWeekStart(week);
+    } = weekStartAt(week + 1);
     const termin = `(${weekModified}) ${dateStart}.${monthStart}-${dateEnd}.${monthEnd}.${yearEnd}`;
     const weekArrIndex = weekModified - 1;
     return (
@@ -110,8 +92,8 @@ export const ShowTable = () => {
 
   const allTr: React.JSX.Element[] = [];
   for (
-    let week = firstWeekStart(0).actualWeek;
-    week < firstWeekStart(0).actualWeek + data.length;
+    let week = weekStartAt().actualWeek;
+    week < weekStartAt().actualWeek + data.length;
     week++
   ) {
     allTr.push(createTr(week));
