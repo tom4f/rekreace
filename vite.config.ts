@@ -10,7 +10,7 @@ enum ServerUrl {
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const target = dev ? ServerUrl.LOCALHOST : '';
+const target = dev ? ServerUrl.LIVE : '';
 
 export default defineConfig({
   plugins: [react()],
@@ -19,7 +19,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
   },
-  base: './',
+  base: '/rekreace',
   css: {
     modules: {
       localsConvention: 'camelCase',
@@ -27,7 +27,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist/rekreace',
   },
   server: {
     proxy: {

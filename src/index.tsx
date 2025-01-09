@@ -24,7 +24,7 @@ const enableMocking = async () => {
 
   await worker.start({
     onUnhandledRequest: 'bypass',
-    serviceWorker: { url: '/mockServiceWorker.js' },
+    serviceWorker: { url: '/rekreace/mockServiceWorker.js' },
   });
 
   return worker;
