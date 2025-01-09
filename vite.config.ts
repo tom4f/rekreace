@@ -19,7 +19,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
   },
-  base: '/',
+  base: '/rekreace',
   css: {
     modules: {
       localsConvention: 'camelCase',

@@ -14,7 +14,7 @@ let worker: SetupWorker | null;
 console.log(ENV_MODE);
 
 const enableMocking = async () => {
-  if (APP_MOCKS !== 'true') {
+  if (!APP_MOCKS || ENV_MODE === 'production') {
     return;
   }
 
@@ -58,7 +58,7 @@ enableMocking().then(() => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <Router basename='/'>
+        <Router basename='/rekreace'>
           <App />
         </Router>
       </QueryClientProvider>

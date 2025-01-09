@@ -52,9 +52,7 @@ export const App = () => {
       >
         {loginData?.isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
-        {(ENV_MODE !== 'production' || APP_MOCKS === 'true') && (
-          <MockDevTools />
-        )}
+        {ENV_MODE !== 'production' && APP_MOCKS && <MockDevTools />}
         <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/apartmany/*' element={<Apartments />} />
