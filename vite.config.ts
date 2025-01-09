@@ -27,7 +27,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist/rekreace',
   },
   server: {
     proxy: {
