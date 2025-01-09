@@ -30,8 +30,8 @@
     },
     { "source": "/rekreace/(.*)", "destination": "/rekreace/" },
     {
-      "source": "/:subdir*",
-      "destination": "https://olca.cz/rekreace/:subdir*"
+      "source": "/",
+      "destination": "/rekreace/"
     }
   ]
 }
