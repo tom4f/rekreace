@@ -14,11 +14,13 @@ interface GetRequestConfig extends AxiosRequestConfig {
 export async function apiGet({ url, ...config }: GetRequestConfig) {
   try {
     const response = await axios.get<any>(url, config);
+    console.log('ok');
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
       const err: AxiosError<PostErrorType> = error;
-      return err.response;
+      console.log('error');
+      throw err;
     }
   }
 }

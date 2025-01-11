@@ -1,6 +1,7 @@
 import { delay, http } from 'msw';
 import { postLoginMock } from '../login';
 import { getForumMock } from '../forum';
+import { getBookingMock } from '../booking';
 
 import { LOCAL_STORAGE_MOCK_DELAY_KEY } from './mockResolver';
 
@@ -14,4 +15,5 @@ export const resolveHandlers = () => [
   globalDelay,
   ...postLoginMock(),
   ...getForumMock(),
+  ...getBookingMock(),
 ];

@@ -2,6 +2,7 @@ const { defineConfig } = await import(
   process.env.NODE_ENV === 'test' ? 'vitest/config' : 'vite'
 );
 import react from '@vitejs/plugin-react-swc';
+import path from 'path';
 
 enum ServerUrl {
   LOCALHOST = 'http://localhost:80',
@@ -10,10 +11,15 @@ enum ServerUrl {
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const target = dev ? ServerUrl.LIVE : '';
+const target = dev ? ServerUrl.LOCALHOST : '';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      src: path.resolve(__dirname, './src'),
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

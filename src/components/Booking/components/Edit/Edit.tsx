@@ -3,7 +3,7 @@ import { useAlert } from '../../../../features/alert/utils/useAlert';
 import { useEditBooking, useGetBooking } from '../../../../features/booking';
 import { StyledForm, StyledLogin } from '../../../../features/login';
 import { AlertBox } from '../../../AlertBox/AlertBox';
-import { skeletonBookingData } from '../Status/ShowTable';
+import { skeletonBookingData } from '../../../../features/booking';
 import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
 import { Input } from '../../../Atoms/Input/Input';
 import { Select } from '../../../Atoms/Input/Select';
@@ -15,14 +15,6 @@ type EditType = {
   apartmentNr: 1 | 2 | 3;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-const statusOptions = [
-  { value: '0', label: 'volno' },
-  { value: '1', label: 'obsazeno' },
-  { value: '2', label: 'mimo provoz' },
-  { value: '3', label: 'částečně obsazeno' },
-  { value: '4', label: 'zaplaceno' },
-];
 
 export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
   const { isSuccess, data: bookingData } = useGetBooking();
@@ -87,6 +79,14 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
       },
     });
   };
+
+  const statusOptions = [
+    { value: '0', label: 'volno' },
+    { value: '1', label: 'obsazeno' },
+    { value: '2', label: 'mimo provoz' },
+    { value: '3', label: 'částečně obsazeno' },
+    { value: '4', label: 'zaplaceno' },
+  ];
 
   if (data?.length && week && apartmentNr) {
     return (

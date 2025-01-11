@@ -18,23 +18,21 @@ export const Messages = ({ entries }: MessagesType) => {
   ];
 
   return entries.length ? (
-    Object.keys(entries).map((key) => (
-      <div key={key} className='m-4 p-3 bg-light-grey rounded-md'>
+    entries.map((message) => (
+      <div key={message.id} className='m-4 p-3 bg-light-grey rounded-md'>
         <div className='text-right text-xs'>
-          {typText[entries[+key].typ]} - {entries[+key].datum.slice(0, 10)}
+          {typText[message.typ]} - {message.datum.slice(0, 10)}
         </div>
         <div className='text-left'>
           <b>
-            {entries[+key].email ? (
-              <a href={'mailto:' + entries[+key].email}>
-                {entries[+key].jmeno}
-              </a>
+            {message.email ? (
+              <a href={'mailto:' + message.email}>{message.jmeno}</a>
             ) : (
-              entries[+key].jmeno
+              message.jmeno
             )}
           </b>
         </div>
-        <div className='text-left'>{entries[+key].text}</div>
+        <div className='text-left'>{message.text}</div>
       </div>
     ))
   ) : (

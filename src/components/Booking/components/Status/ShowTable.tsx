@@ -1,34 +1,29 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useGetBooking } from '../../../../features/booking';
-import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
-import { Modal } from '../../../Modal/Modal';
-import { Edit } from '../Edit/Edit';
+import { useGetBooking } from 'src/features/booking';
+import { useLoginStatus } from 'src/features/login/hooks/useGetLoginStatus';
+import { Modal } from 'src/components/Modal/Modal';
+import { Edit } from '../Edit';
+import { weekStartAt } from 'src/utils/weekStartAt';
 import './css/showTable.css';
-import React from 'react';
-import { weekStartAt } from '../../../../utils/weekStartAt';
-
-export const skeletonBookingData = Array.from({ length: 53 }, (_, index) => ({
-  week: index + 1,
-  g1_status: 0,
-  g1_text: '',
-  g2_status: 0,
-  g2_text: '',
-  g3_status: 0,
-  g3_text: '',
-  lastUpdate: '',
-}));
+import { skeletonBookingData } from 'src/features/booking';
 
 export const ShowTable = () => {
-  const { isSuccess, data: bookingData } = useGetBooking();
-  const { pathname } = useLocation();
   const [apartmentNr, setApartmentNr] = useState<1 | 2 | 3>();
   const [dbWeek, setDbWeek] = useState<number>();
   const [isEdit, setIsEdit] = useState(false);
-
   const { data: loginData } = useLoginStatus();
 
-  const data = isSuccess ? bookingData : skeletonBookingData;
+  const {
+    data: apiData,
+    isSuccess,
+    isFetching,
+    isLoading,
+    isError,
+  } = useGetBooking();
+  const { pathname } = useLocation();
+
+  const data = isSuccess ? apiData : skeletonBookingData;
 
   const editTermin = (event: React.MouseEvent<HTMLTableCellElement>) => {
     if (!loginData?.isLogged) return null;
@@ -90,13 +85,13 @@ export const ShowTable = () => {
     );
   };
 
-  const allTr: React.JSX.Element[] = [];
+  const AllTr: React.JSX.Element[] = [];
   for (
     let week = weekStartAt().actualWeek;
     week < weekStartAt().actualWeek + data.length;
     week++
   ) {
-    allTr.push(createTr(week));
+    AllTr.push(createTr(week));
   }
 
   return (
@@ -116,16 +111,18 @@ export const ShowTable = () => {
           }
         />
       )}
+      {isError && <>Něco se pokazilo, zkuste to prosím později.</>}
+      {(isLoading || isFetching) && <>Nahrávám tabulku.</>}
       <table className='booking_table'>
         <thead>
           <tr>
-            <th>Datum (týden so-so)</th>
+            <th>týden</th>
             <th>Apartmán č.1</th>
             <th>Apartmán č.2</th>
             <th>Apartmán č.3</th>
           </tr>
         </thead>
-        <tbody>{allTr}</tbody>
+        <tbody>{AllTr}</tbody>
       </table>
     </>
   );

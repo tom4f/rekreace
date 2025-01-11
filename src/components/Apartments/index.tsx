@@ -394,7 +394,7 @@ export const Apartments = () => {
         <StyledSmallImage
           onClick={() => showImage(g3b)}
           src={g3}
-          width='120'
+          width='213'
           height='160'
           alt='Ubytování u Kučerů'
         />

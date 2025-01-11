@@ -1,26 +1,27 @@
 import { ForumParams } from '../../pages/Forum';
 import { ForumResponse } from '../../features/forum/hooks';
+import { useState } from 'react';
 
 type PaginationsType = {
   begin: number;
   postsPerPage: number;
-  paginate: React.Dispatch<React.SetStateAction<ForumParams>>;
+  setForum: React.Dispatch<React.SetStateAction<ForumParams>>;
   paginateSize: number;
   next: number;
-  filteredEntriesBySearch: ForumResponse;
-  buttonText: string;
+  filteredEntries: ForumResponse;
 };
 
 export const Paginations = ({
   begin,
   postsPerPage,
-  paginate,
+  setForum,
   paginateSize,
   next,
-  filteredEntriesBySearch,
-  buttonText,
+  filteredEntries,
 }: PaginationsType) => {
-  const lastPage = filteredEntriesBySearch?.length;
+  const [buttonText, setButtonText] = useState('0');
+
+  const lastPage = filteredEntries?.length;
   const pageButtonClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -28,7 +29,7 @@ export const Paginations = ({
     const buttonTarget = event.target as HTMLButtonElement;
     const buttonTextClicked =
       buttonTarget.textContent || buttonTarget.innerText;
-    let myButtonText: number;
+    let myButtonText = 0;
     const buttonsDom = buttonTarget.parentElement?.children;
 
     if (+buttonTextClicked >= 0 && buttonsDom) {
@@ -38,12 +39,11 @@ export const Paginations = ({
         'bg-green-600',
         'bg-light-grey'
       );
-      // buttonsDom[Number(buttonText)].classList.add('bg-light-grey');
 
       buttonTarget.classList.replace('bg-light-grey', 'bg-green-600');
-      myButtonText = +buttonTextClicked - next;
+      myButtonText = +buttonTextClicked;
     }
-    // if 'next' button clicked
+
     if (buttonTextClicked === 'next') {
       myButtonText = 0;
       if (next < lastPage / postsPerPage - paginateSize) {
@@ -51,7 +51,7 @@ export const Paginations = ({
         begin = postsPerPage * next;
       }
     }
-    // if 'prev' button clicked
+
     if (buttonTextClicked === 'prev') {
       myButtonText = 0;
       if (next > paginateSize - 1) {
@@ -59,15 +59,15 @@ export const Paginations = ({
         begin = postsPerPage * next;
       }
     }
-    paginate((old: ForumParams) => ({
+    setForum((old: ForumParams) => ({
       ...old,
       begin: begin,
       next: next,
-      buttonText: myButtonText.toString(),
     }));
+
+    setButtonText(myButtonText.toString());
   };
 
-  // [UI] generate pagination button list
   const showPagination = () => {
     const buttonPageList = [];
     for (let i = next; i < lastPage / postsPerPage; i++) {

@@ -13,6 +13,17 @@ export type GetBookingResponse = {
   lastUpdate: string;
 }[];
 
+export const skeletonBookingData = Array.from({ length: 53 }, (_, index) => ({
+  week: index + 1,
+  g1_status: 0,
+  g1_text: '',
+  g2_status: 0,
+  g2_text: '',
+  g3_status: 0,
+  g3_text: '',
+  lastUpdate: '',
+}));
+
 export const GET_BOOKING_ENDPOINT = `${Url.NEW_API}/booking/read.php`;
 export const GET_BOOKING_KEY = 'getBooking';
 
@@ -28,5 +39,6 @@ export const useGetBooking = () => {
   return useQuery({
     queryKey: [GET_BOOKING_KEY],
     queryFn: () => getBooking(),
+    placeholderData: skeletonBookingData,
   });
 };

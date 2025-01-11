@@ -1,129 +1,88 @@
-import { useEffect, useState } from 'react';
-import {
-  ForumResponse,
-  useGetForum,
-  OneMessage,
-} from '../features/forum/hooks';
+import { useState } from 'react';
+import { useGetForum } from '../features/forum/hooks';
 import { AddEntry } from '../components/Forum/AddEntry';
 import '../components/Forum/css/forum.css';
 import { Messages } from '../components/Forum/Messages';
 import { Paginations } from '../components/Forum/Paginations';
-import { SearchForum } from '../components/Forum/SearchForum';
-import { SelectForum } from '../components/Forum/SelectForum';
 import { Button } from '../components/Atoms/Button/Button';
 import { Header } from '../components/Atoms';
+import { Input } from 'src/components/Atoms/Input/Input';
+import { Select } from 'src/components/Atoms/Input/Select';
 
 export type ForumParams = {
-  allEntries: ForumResponse;
-  filteredEntriesByCategory: ForumResponse;
-  filteredEntriesBySearch: ForumResponse;
-  entries: OneMessage[];
   begin: number;
-  postsPerPage: number;
-  paginateSize: number;
   next: number;
   searchText: string;
   selectedCategory: number;
-  buttonText: string;
-  categoryFromUrl: number;
 };
 
 export const Forum = () => {
-  const [state, setState] = useState<ForumParams>({
-    allEntries: [],
-    filteredEntriesByCategory: [],
-    filteredEntriesBySearch: [],
-    entries: [],
+  const [forum, setForum] = useState<ForumParams>({
     begin: 0,
-    postsPerPage: 5,
-    paginateSize: 10,
     next: 0,
     searchText: '',
     // filter based on url
     selectedCategory: window.location.search === '?category=8' ? 8 : 999999,
-    buttonText: '0',
-    categoryFromUrl: window.location.search === '?category=8' ? 8 : 999999,
   });
 
   const [addEntry, setAddEntry] = useState(false);
 
-  const searchCriteria =
-    state.categoryFromUrl === 8
-      ? 'WHERE typ = 8'
-      : 'WHERE (typ < 4) OR (typ = 8)';
+  const categoryFromUrl = window.location.search === '?category=8' ? 8 : 999999;
 
-  const { data: allForum, isSuccess } = useGetForum({
+  const searchCriteria =
+    categoryFromUrl === 8 ? 'WHERE typ = 8' : 'WHERE (typ < 4) OR (typ = 8)';
+
+  const {
+    data: allEntries,
+    isSuccess,
+    isError,
+  } = useGetForum({
     searchCriteria,
     start: 0,
     limit: 999999,
   });
 
-  const end = state.begin + state.postsPerPage - 1;
+  if (!allEntries) {
+    return null;
+  }
 
-  useEffect(() => {
-    if (isSuccess && allForum.length) {
-      setState((orig) => ({
-        ...orig,
-        allEntries: allForum,
-        filteredEntriesByCategory: allForum,
-        filteredEntriesBySearch: allForum,
-        entries: allForum.slice(state.begin, end),
-      }));
-    }
-  }, [isSuccess, allForum, end, state.begin]);
+  const postsPerPage = 5;
+  const paginateSize = 10;
 
-  const {
-    allEntries,
-    filteredEntriesBySearch,
-    begin,
-    postsPerPage,
-    paginateSize,
-    next,
-    searchText,
-    selectedCategory,
-    buttonText,
-    categoryFromUrl,
-  } = state;
+  let filteredEntries = allEntries;
 
   // calculate filter result
-  const filteredEntriesCalculate = (
-    searchText: string,
-    selectedCategory: number
-  ) => {
-    // select category
-    const filteredEntriesByCategory =
-      selectedCategory === 999999
-        ? allEntries
-        : allEntries.filter((one) => +one.typ === selectedCategory);
-    setState((orig) => ({
-      ...orig,
-      selectedCategory,
-      filteredEntriesByCategory,
-      searchText,
-      begin: 0,
-      next: 0,
-    }));
-    // search text
-    const filteredForum = filteredEntriesByCategory.filter((alarm) => {
-      const regex = new RegExp(`${searchText}`, 'gi');
-      return alarm.text.match(regex) || alarm.jmeno.match(regex);
-    });
-    if (searchText.length === 0)
-      setState((orig) => ({
-        ...orig,
-        filteredEntriesBySearch: filteredEntriesByCategory,
-      }));
-    else if (filteredForum.length === 0)
-      setState((orig) => ({
-        ...orig,
-        filteredEntriesBySearch: [],
-      }));
-    else
-      setState((orig) => ({
-        ...orig,
-        filteredEntriesBySearch: filteredForum,
-      }));
-  };
+
+  const { begin, next, searchText, selectedCategory } = forum;
+
+  const filteredEntriesByCategory =
+    selectedCategory === 999999
+      ? allEntries
+      : allEntries.filter((one) => +one.typ === selectedCategory);
+
+  const filteredForum = filteredEntriesByCategory.filter((entry) => {
+    const regex = new RegExp(`${searchText}`, 'gi');
+    return entry.text.match(regex) || entry.jmeno.match(regex);
+  });
+
+  if (!searchText.length) {
+    filteredEntries = filteredEntriesByCategory;
+  } else if (filteredForum.length === 0) {
+    filteredEntries = [];
+  } else {
+    filteredEntries = filteredForum;
+  }
+
+  const optionList =
+    categoryFromUrl !== 8
+      ? [
+          { value: '999999', label: 'všechny' },
+          { value: '0', label: 'Fórum' },
+          { value: '1', label: 'Inzerce' },
+          { value: '2', label: 'Seznamka' },
+          { value: '3', label: ' K obsahu stránek' },
+        ]
+      : [];
 
   return (
     <>
@@ -141,36 +100,64 @@ export const Forum = () => {
       </div>
 
       {addEntry && <Header>&nbsp;</Header>}
+
       <div className='center'>
         {!addEntry && (
           <div className='flex flex-wrap justify-center pt-4'>
-            <SearchForum
-              filteredEntriesCalculate={filteredEntriesCalculate}
-              selectedCategory={selectedCategory}
+            <Input
+              style={{ width: '130px' }}
+              label='Hledej'
+              placeholder='hledaný text'
+              onChange={(event) =>
+                setForum((orig) => ({
+                  ...orig,
+                  searchText: event.target.value,
+                  begin: 0,
+                  next: 0,
+                }))
+              }
             />
-            <SelectForum
-              filteredEntriesCalculate={filteredEntriesCalculate}
-              categoryFromUrl={categoryFromUrl}
-              searchText={searchText}
+            <Select
+              label='Kategorie'
+              options={[
+                ...optionList,
+                { value: '8', label: 'Kaliště 993m n.m.' },
+              ]}
+              onChange={(event) =>
+                setForum((orig) => ({
+                  ...orig,
+                  selectedCategory: +event.target.value,
+                  begin: 0,
+                  next: 0,
+                }))
+              }
             />
 
             <Button label='Přidej komentář' onClick={() => setAddEntry(true)} />
           </div>
         )}
-        <div className='pt-5'>{filteredEntriesBySearch?.length} komentářů.</div>
-        <Messages
-          entries={filteredEntriesBySearch?.slice(begin, begin + postsPerPage)}
-        />
-        <br />
-        <Paginations
-          paginate={setState}
-          postsPerPage={postsPerPage}
-          filteredEntriesBySearch={filteredEntriesBySearch}
-          begin={begin}
-          paginateSize={paginateSize}
-          next={next}
-          buttonText={buttonText}
-        />
+        <div className='pt-5'>{filteredEntries?.length} komentářů.</div>
+        {isSuccess && filteredEntries ? (
+          <>
+            <Messages
+              entries={filteredEntries.slice(begin, begin + postsPerPage)}
+            />
+
+            <br />
+            {filteredEntries.length > postsPerPage && (
+              <Paginations
+                setForum={setForum}
+                postsPerPage={postsPerPage}
+                filteredEntries={filteredEntries}
+                begin={begin}
+                paginateSize={paginateSize}
+                next={next}
+              />
+            )}
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

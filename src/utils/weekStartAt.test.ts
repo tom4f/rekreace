@@ -1,59 +1,29 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect } from 'vitest';
 import { weekStartAt } from './weekStartAt';
 
+type TestCases = [string, number | undefined, string, string, number, number];
+
 describe('weekStartAt', () => {
-  it('should return when started 1st week of the year 2025 / week not present', () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2025-01-01'));
-    expect(weekStartAt()).toStrictEqual({
-      date: '28',
-      month: '12',
-      year: 2024,
-      actualWeek: 1,
-    });
-  });
+  const testCases: TestCases[] = [
+    ['2025-01-01', undefined, '28', '12', 2024, 1],
+    ['2025-01-01', 1, '28', '12', 2024, 1],
+    ['2025-01-09', 2, '04', '01', 2025, 2],
+    ['2025-12-24', 52, '20', '12', 2025, 52],
+    ['2026-01-01', 1, '27', '12', 2025, 1],
+    ['2027-01-08', 1, '02', '01', 2027, 1],
+  ];
 
-  it('should return when started first week of the year', () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2025-01-01'));
-    expect(weekStartAt(1)).toStrictEqual({
-      date: '28',
-      month: '12',
-      year: 2024,
-      actualWeek: 1,
-    });
-  });
-
-  it('should return when started second week of the year', () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2025-01-09'));
-    expect(weekStartAt(2)).toStrictEqual({
-      date: '04',
-      month: '01',
-      year: 2025,
-      actualWeek: 2,
-    });
-  });
-
-  it('should return when started 52th week of the year', () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2025-12-24'));
-    expect(weekStartAt(52)).toStrictEqual({
-      date: '20',
-      month: '12',
-      year: 2025,
-      actualWeek: 52,
-    });
-  });
-
-  it('should return when started 1st week of the year 2026', () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date('2026-01-01'));
-    expect(weekStartAt(1)).toStrictEqual({
-      date: '27',
-      month: '12',
-      year: 2025,
-      actualWeek: 1,
-    });
-  });
+  test.each(testCases)(
+    'For date %i and weekStartAt(%i) should return {date: "%i", month: "%i",year: %i, actualWeek: %i}',
+    (date, week, d, m, y, w) => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date(date));
+      expect(weekStartAt(week)).toStrictEqual({
+        date: d,
+        month: m,
+        year: y,
+        actualWeek: w,
+      });
+    }
+  );
 });

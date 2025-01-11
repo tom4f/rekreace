@@ -8,10 +8,12 @@ import {
 import { availableScenarios } from '../../features/mocks';
 import { Button } from '../Atoms/Button/Button';
 import { Input } from '../Atoms/Input/Input';
+import { useQueryClient } from '@tanstack/react-query';
 
 const MOCK_DEV_TOOLS_LOCAL_STORAGE_KEY = 'devTools_mocks';
 
 export const MockDevTools = () => {
+  const queryClient = useQueryClient();
   const [reload, setReload] = useState(1);
 
   const [search, setSearch] = useState('');
@@ -46,7 +48,7 @@ export const MockDevTools = () => {
     [key: string]: string;
   }
 
-  const onTagClick = (route: string, scenario: string) => {
+  const onTagClick = (route: string[], scenario: string) => {
     let settings: Settings = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_MOCK_KEY) || '{}'
     );
@@ -54,11 +56,17 @@ export const MockDevTools = () => {
       settings = {};
     }
 
-    settings[route] = scenario;
+    settings[route[0]] = scenario;
 
     localStorage.setItem(LOCAL_STORAGE_MOCK_KEY, JSON.stringify(settings));
     window.dispatchEvent(new Event('localStorageChange'));
     setReload(Math.random());
+  };
+
+  const onReFetchClick = (key: string) => {
+    queryClient.invalidateQueries({
+      queryKey: [key],
+    });
   };
 
   const onDelayChange = (delay: number) => {
@@ -137,13 +145,18 @@ export const MockDevTools = () => {
                 })
                 .map(([route, scenarios]) => {
                   return Object.keys(scenarios).length ? (
-                    <tr key={route}>
-                      <td>{route}</td>
+                    <tr key={route[0]}>
+                      <td>{route[0]}</td>
                       <td>
+                        <Button
+                          label='reset'
+                          variant='blue'
+                          onClick={() => onReFetchClick(route[1])}
+                        />
                         <Button
                           label='default'
                           variant={
-                            getActiveItem(route) === DEFAULT_STATE
+                            getActiveItem(route[0]) === DEFAULT_STATE
                               ? 'primary'
                               : 'secondary'
                           }
@@ -155,7 +168,7 @@ export const MockDevTools = () => {
                               key={scenario}
                               label={scenario}
                               variant={
-                                getActiveItem(route) === scenario
+                                getActiveItem(route[0]) === scenario
                                   ? 'primary'
                                   : 'secondary'
                               }

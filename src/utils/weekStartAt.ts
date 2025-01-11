@@ -1,15 +1,18 @@
 export const weekStartAt = (week = 1) => {
-  const year = new Date().getFullYear();
-  const today = new Date().getTime();
-  const firstDay = new Date(year, 0).getDay(); // 1 = Monday
-  // Get the first day of year + get day of week : 0 (Sunday) to 6 (Saturday)
-  const isCorrectionDays = !(firstDay > 0 && firstDay < 5);
-  const correctionDays = isCorrectionDays ? -7 : 0;
-  const mondyDayNumber = 7 * (week - 1) + 1 - firstDay + 1 + correctionDays;
-  const firstSaturday = new Date(year, 0, mondyDayNumber - 2);
+  const actualYear = new Date().getFullYear();
+  const actualMiliseconds = new Date().getTime();
+  const firstDayNrOfYear = new Date(actualYear, 0).getDay();
+
+  const correctionDays = firstDayNrOfYear > 0 && firstDayNrOfYear < 5 ? 0 : 7;
+
+  const firstSaturdayDayNumber =
+    correctionDays - firstDayNrOfYear + 7 * (week - 1);
+
+  const firstSaturday = new Date(actualYear, 0, firstSaturdayDayNumber);
 
   const actualWeek = Math.ceil(
-    (today - new Date(year, 0, 1 + correctionDays).getTime()) /
+    (actualMiliseconds -
+      new Date(actualYear, 0, 1 + correctionDays).getTime()) /
       (1000 * 60 * 60 * 24 * 7)
   );
 

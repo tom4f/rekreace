@@ -16,7 +16,7 @@ export const Top = () => {
     <>
       <Header>
         <NavLink to='/'> Start</NavLink> |
-        <NavLink to='/apartmany'> Apartmány</NavLink>|
+        <NavLink to='/apartmany'> Apartmány</NavLink> |
         <NavLink to='/objednavka'> Objednávka</NavLink> |
         <NavLink to='/ceny'> Ceny</NavLink> |
         <NavLink to='/kontakt'> Kontakt</NavLink> |

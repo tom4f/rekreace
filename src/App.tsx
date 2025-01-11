@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { Apartments } from './components/Apartments';
-import { BookingForm } from './components/BookingForm/BookingForm';
+import { Booking } from './pages/Booking';
 import { Bottom } from './components/Bottom/Bottom';
 import { Contact } from './components/Contact/Contact';
 import { Forum } from './pages/Forum';
@@ -56,7 +56,7 @@ export const App = () => {
         <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/apartmany/*' element={<Apartments />} />
-          <Route path='/objednavka/*' element={<BookingForm />} />
+          <Route path='/objednavka/*' element={<Booking />} />
           <Route path='/ceny/*' element={<Prices />} />
           <Route path='/kontakt/*' element={<Contact />} />
           <Route path='/frymburk/*' element={<Frymburk />} />

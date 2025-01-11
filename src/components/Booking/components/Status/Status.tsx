@@ -1,17 +1,18 @@
 import { useLocation } from 'react-router-dom';
-import { useGetBooking } from '../../../../features/booking';
-import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
+import { useGetBooking } from 'src/features/booking';
+import { useLoginStatus } from 'src/features/login';
 import './css/status.css';
 import { ShowTable } from './ShowTable';
 import { NavLink } from 'react-router-dom';
+import { Header } from 'src/components/Atoms';
 
 export const Status = () => {
   const { data: loginData } = useLoginStatus();
   const { pathname } = useLocation();
-  const { isSuccess, isError, data: formResult } = useGetBooking();
+  const { isSuccess, data: formResult } = useGetBooking();
 
   const lastUpdate = () => {
-    if (!isSuccess) return '?';
+    if (!isSuccess || !formResult.length) return '?';
 
     const lastUpdateLong = formResult.reduce((lastUpdateAccumulator, week) => {
       return lastUpdateAccumulator.localeCompare(week.lastUpdate) > 0
@@ -24,22 +25,16 @@ export const Status = () => {
 
   return (
     <>
-      <div className='header' id='user-logged-in'>
+      <Header>
         Aktuální obsazenost
         {pathname === '/objednavka/edit' &&
           loginData?.isLogged &&
           ` - Uživatel: ${loginData?.webUser}`}
-      </div>
+      </Header>
       <div className='booking_status'>
-        <div
-          className='form_result_alert edit_alert'
-          id='form_edit_alert'
-        ></div>
-        {isError && <>Něco se pokazilo, zkuste to prosím později.</>}
         <ShowTable />
         <div className='booking_info'>
           Poslední změna : {lastUpdate()}
-          <span id='last_booking_update'></span>
           <br />
           Pro zamluvení termínu použijte&nbsp;
           <a className='menu' href='#1'>
