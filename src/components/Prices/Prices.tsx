@@ -112,7 +112,7 @@ export const Prices = () => {
         </div>
 
         <br />
-        <div className='flex items-center flex-wrap'>
+        <div className='flex justify-center flex-wrap'>
           <img
             src={pes}
             width='100'

@@ -105,7 +105,7 @@ export const AddEntry = ({
                 onChange={myChangeHandler}
               />
             </div>
-            <div className='flex justify-center w-96'>
+            <div className='flex justify-center'>
               <Textarea
                 label='text'
                 onChange={myChangeHandler}
