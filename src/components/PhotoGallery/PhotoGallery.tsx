@@ -19,7 +19,9 @@ export const PhotoGallery = ({ category }: { category?: number }) => {
     reload: 0,
   });
 
-  if (!allPhoto) return null;
+  if (!Array.isArray(allPhoto)) {
+    return null;
+  }
 
   const filteredPhoto =
     imgPosition.category === 99999

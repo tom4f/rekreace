@@ -11,8 +11,6 @@ import { SetupWorker } from 'msw/browser';
 
 let worker: SetupWorker | null;
 
-console.log(ENV_MODE);
-
 const enableMocking = async () => {
   if (!APP_MOCKS || ENV_MODE === 'production') {
     return;

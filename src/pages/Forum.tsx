@@ -32,17 +32,13 @@ export const Forum = () => {
   const searchCriteria =
     categoryFromUrl === 8 ? 'WHERE typ = 8' : 'WHERE (typ < 4) OR (typ = 8)';
 
-  const {
-    data: allEntries,
-    isSuccess,
-    isError,
-  } = useGetForum({
+  const { data: allEntries, isSuccess } = useGetForum({
     searchCriteria,
     start: 0,
     limit: 999999,
   });
 
-  if (!allEntries) {
+  if (!Array.isArray(allEntries)) {
     return null;
   }
 
@@ -50,8 +46,6 @@ export const Forum = () => {
   const paginateSize = 10;
 
   let filteredEntries = allEntries;
-
-  // calculate filter result
 
   const { begin, next, searchText, selectedCategory } = forum;
 

@@ -14,7 +14,7 @@ export const Bottom = () => {
         <a href='http://www.frymburk.eu/'> FRYMBURK.eu</a>
       </Header>
 
-      <div>
+      <div className='flex justify-center'>
         <a href='https://www.toplist.cz/stat/6477' target='_top'>
           <img
             src='https://toplist.cz/count.asp?id=6477&logo=bc'

@@ -19,6 +19,7 @@ import { TopBedrich } from './components/Top/TopBedrich';
 import { useLoginStatus } from './features/login/hooks/useGetLoginStatus';
 import { MockDevTools } from './components/MockDevTools';
 import { APP_MOCKS, ENV_MODE } from './env';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 export const App = () => {
   const { data: loginData } = useLoginStatus();
@@ -38,6 +39,8 @@ export const App = () => {
   return (
     <div
       style={{
+        maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
+        margin: '0 auto',
         fontFamily: `${
           pathname === '/meteoalarm'
             ? 'BenchNine, Arial, Helvetica, sans-serif'
@@ -45,11 +48,7 @@ export const App = () => {
         }`,
       }}
     >
-      <div
-        style={{
-          maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
-        }}
-      >
+      <ErrorBoundary fallback={<div>Custom Error Message</div>}>
         {loginData?.isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
         {ENV_MODE !== 'production' && APP_MOCKS && <MockDevTools />}
@@ -69,7 +68,7 @@ export const App = () => {
           <Route path='/bedrich/*' element={<Bedrich />} />
         </Routes>
         {!hideTopBottom && <Bottom />}
-      </div>
+      </ErrorBoundary>
     </div>
   );
 };

@@ -19,6 +19,29 @@ type PocasiType = {
 export const MeteoBarBig = () => {
   const [meteoData, setMeteoData] = useState<[DavisResponse, PocasiType]>();
 
+  const fetchAllMeteo = async () => {
+    const urlList = [
+      `${Url.API}/pdo_read_davis.php`,
+      `${Url.API}/pdo_read_pocasi.php`,
+    ];
+
+    const fetchList = urlList.map((url) =>
+      fetch(`${url}`).then((response) => response.json())
+    );
+
+    const [davisData, damData] = await Promise.all(fetchList);
+
+    setMeteoData([davisData[0], damData[0]]);
+  };
+
+  useEffect(() => {
+    fetchAllMeteo();
+    const timer = setInterval(() => fetchAllMeteo(), 10000);
+    return () => clearInterval(timer);
+  }, []);
+
+  if (meteoData && (!meteoData[0] || !meteoData[1])) return null;
+
   const meteoTable = ([davisData, pocasiData]: [DavisResponse, PocasiType]) => {
     const {
       // date,
@@ -58,8 +81,6 @@ export const MeteoBarBig = () => {
       //vzduch,
       voda,
     } = pocasiData;
-
-    if (!meteoData) return <></>;
 
     return (
       <section className='happyMeteo'>
@@ -188,27 +209,6 @@ export const MeteoBarBig = () => {
       </section>
     );
   };
-
-  const fetchAllMeteo = async () => {
-    const urlList = [
-      `${Url.API}/pdo_read_davis.php`,
-      `${Url.API}/pdo_read_pocasi.php`,
-    ];
-
-    const fetchList = urlList.map((url) =>
-      fetch(`${url}`).then((response) => response.json())
-    );
-
-    const [davisData, damData] = await Promise.all(fetchList);
-
-    setMeteoData([davisData[0], damData[0]]);
-  };
-
-  useEffect(() => {
-    fetchAllMeteo();
-    const timer = setInterval(() => fetchAllMeteo(), 10000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <>

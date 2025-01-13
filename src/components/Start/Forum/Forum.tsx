@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { ForumResponse, useGetForum } from '../../../features/forum';
-import './css/forum.css';
+import { useGetForum } from '../../../features/forum';
+import { Header } from 'src/components/Atoms';
 
 export const Forum = ({
   searchCriteria = '',
@@ -10,52 +9,44 @@ export const Forum = ({
   searchCriteria?: string;
   showHeader?: boolean;
 }) => {
-  const [items, setItems] = useState<ForumResponse>([]);
-
   const { data, isSuccess } = useGetForum({
     start: 0,
     limit: 5,
     searchCriteria,
   });
 
-  useEffect(() => {
-    if (isSuccess && data.length) {
-      setItems(data);
-    }
-  }, [isSuccess, data]);
+  if (!isSuccess || !Array.isArray(data)) {
+    return null;
+  }
 
   const showForum = () => {
-    let knihaUL: any[] = [];
-    items.forEach((item) => {
-      const { id, datum, text, jmeno, email } = item;
-      const [year, month, day] = datum?.split(' ')[0].split('-');
-      const mailto = `mailto:${email}`;
-      knihaUL.push(
-        <li key={id}>
-          {day}.{month}.{year}
-          &nbsp;
-          <b>
-            <i>{email ? <a href={mailto}>{jmeno}</a> : <>{jmeno}</>}</i>
-          </b>
-          &nbsp;{text.slice(0, 80)}
-        </li>
+    return data.map((item) => {
+      const { id, text, jmeno, email } = item;
+      return (
+        <div key={id} className='flex flex-wrap justify-start'>
+          <div className='w-1/12 overflow-hidden text-clip whitespace-nowrap'>
+            <b>
+              {email ? <a href={`mailto:${email}`}>{jmeno}</a> : <>{jmeno}</>}
+            </b>
+          </div>
+          <div className='w-11/12 overflow-hidden text-ellipsis whitespace-nowrap px-3'>
+            {text}
+          </div>
+        </div>
       );
     });
-    return knihaUL;
   };
 
   return (
     <>
       {showHeader && (
-        <div className='header'>
-          <NavLink className='menu' to='/forum?category=8'>
-            LIPNO FÓRUM
-          </NavLink>
-        </div>
+        <Header>
+          <NavLink to='/forum'>LIPNO FÓRUM</NavLink>
+        </Header>
       )}
 
-      <section className='kniha-main-page'>
-        <ul>{showForum()}</ul>
+      <section className='bg-slate-200 text-black text-xs p-3 '>
+        {showForum()}
       </section>
     </>
   );

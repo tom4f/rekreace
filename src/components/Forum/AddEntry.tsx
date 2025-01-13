@@ -91,7 +91,6 @@ export const AddEntry = ({
                 label='E-mail'
                 placeholder='E-mail'
                 onChange={myChangeHandler}
-                required
                 type='email'
                 name='email'
               />

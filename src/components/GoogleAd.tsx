@@ -15,7 +15,7 @@ export const GoogleAd = ({ counter }: { counter: number }) => {
     return (
       <div
         style={{
-          width: '724px',
+          maxWidth: '724px',
           height: '90px',
           backgroundColor: '#f0f0f0',
           display: 'flex',
@@ -32,7 +32,7 @@ export const GoogleAd = ({ counter }: { counter: number }) => {
   return (
     <ins
       className='adsbygoogle'
-      style={{ display: 'block', width: '724px', height: '90px' }}
+      style={{ display: 'block', maxWidth: '724px', height: '90px' }}
       data-ad-client='ca-pub-6892058759603615'
       data-ad-slot='6550229081'
       data-ad-format='auto'
