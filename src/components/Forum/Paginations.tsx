@@ -90,7 +90,7 @@ export const Paginations = ({
   };
 
   return (
-    <div className='pb-10 w-9/12'>
+    <div className='pb-10 px-4 flex justify-center'>
       <button
         className='bg-light-grey text-xs w-8 h-8 cursor-pointer rounded-2xl'
         onClick={(e) => pageButtonClick(e)}
