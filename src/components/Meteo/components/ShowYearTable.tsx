@@ -3,6 +3,7 @@ import { Url } from '../../../api/paths';
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
 import { rgbCssType, showYearTableType } from './TypeDefinition';
+import { Header } from 'src/components/Atoms';
 
 export const ShowYearTable = ({
   pocasi,
@@ -102,11 +103,12 @@ export const ShowYearTable = ({
   return (
     <>
       {webToken !== 'error' ? (
-        <header className='header'>Přihlášený uživatel: {user}</header>
+        <Header>Přihlášený uživa tel: {user}</Header>
       ) : null}
-      <header className='header'>
+      <Header>
         Historie : &nbsp;
         <button
+          className='text-zinc-500 hover:text-orange-400'
           onClick={() =>
             pocasi?.length === limit ? setStart(start + limit) : null
           }
@@ -116,13 +118,14 @@ export const ShowYearTable = ({
         </button>
         &nbsp; {start} &nbsp;
         <button
+          className='text-zinc-500 hover:text-orange-400'
           onClick={() => (start - limit >= 0 ? setStart(start - limit) : null)}
         >
           {' '}
           &nbsp; {'>'} &nbsp;{' '}
         </button>
         &nbsp; dní
-      </header>
+      </Header>
       <section className={TableStyle.davisTable}>
         <table>
           <thead>

@@ -1,6 +1,6 @@
-import parking from './../../images/parking.gif';
-import pes from './../../images/pes.jpg';
-import wiFi from './../../images/wi-fi.gif';
+import parking from 'src/images/parking.gif';
+import pes from 'src/images/pes.jpg';
+import wiFi from 'src/images/wi-fi.gif';
 
 export const Prices = () => {
   return (

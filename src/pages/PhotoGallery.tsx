@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { BigImage } from './components/BigImage/BigImage';
-import { SmallImages } from './components/SmallImages';
-import './css/App.css';
-import { AllPhotoType, CategoryObjType } from './TypeDefinition';
-import { useGetPhoto } from '../../features/photo';
-import { fotoGalleryOwner } from '../../api/paths';
+import { Link, useLocation } from 'react-router-dom';
+import { BigImage } from '../components/PhotoGallery/components/BigImage/BigImage';
+import { SmallImages } from '../components/PhotoGallery/components/SmallImages';
+import {
+  AllPhotoType,
+  CategoryObjType,
+} from '../components/PhotoGallery/TypeDefinition';
+import { useGetPhoto } from '../features/photo';
+import { fotoGalleryOwner } from '../api/paths';
+import { Header } from '../components/Atoms';
 
 export const PhotoGallery = ({ category }: { category?: number }) => {
   const { data: allPhoto } = useGetPhoto({ fotoGalleryOwner });
@@ -49,18 +52,14 @@ export const PhotoGallery = ({ category }: { category?: number }) => {
   };
 
   return (
-    <div className='container'>
-      <div className='header'>
+    <div>
+      <Header>
         {pathname === '/' || pathname === '/kaliste' ? (
-          <NavLink className='menu' to='/fotogalerie'>
-            Fotogalerie
-          </NavLink>
+          <Link to='/fotogalerie'>Fotogalerie</Link>
         ) : (
-          <NavLink className='menu' to='/'>
-            Start
-          </NavLink>
+          <Link to='/'>Start</Link>
         )}
-      </div>
+      </Header>
       <SmallImages
         key={imgPosition.reload}
         imgPosition={imgPosition}

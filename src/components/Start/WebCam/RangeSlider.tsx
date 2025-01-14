@@ -3,70 +3,72 @@ import './css/slider.css';
 
 import { WebCamState } from './WebCam';
 
+type RangeSliderType = {
+  state: WebCamState;
+  reactChange: React.Dispatch<React.SetStateAction<WebCamState>>;
+};
+
 export const RangeSlider = ({
   state: { day, hour, minute },
   reactChange,
-}: {
-  state: WebCamState;
-  reactChange: (value: any) => void;
-}) => {
-  const ranger = (e: any) => {
-    const { name: sliderName, value: sliderValue } = e;
-    if (sliderName === 'day') {
-      reactChange((old: {}) => ({
-        ...old,
-        day: +sliderValue,
+}: RangeSliderType) => {
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'day') {
+      reactChange((prevState) => ({
+        ...prevState,
+        day: +value,
         isLiveImg: false,
       }));
-    }
-
-    if (sliderName === 'time') {
-      const hourSelected = Math.floor(sliderValue / 60);
-      const minuteSelected = sliderValue - hourSelected * 60;
-      reactChange((old: {}) => ({
-        ...old,
-        hour: hourSelected,
-        minute: minuteSelected,
+    } else if (name === 'time') {
+      const totalMinutes = parseInt(value);
+      const selectedHour = Math.floor(totalMinutes / 60);
+      const selectedMinute = totalMinutes % 60;
+      reactChange((prevState) => ({
+        ...prevState,
+        hour: selectedHour,
+        minute: selectedMinute,
         isLiveImg: false,
       }));
     }
   };
 
   const now = new Date();
-  const monthToday = now.getMonth() + 1;
+  const currentMonth = now.getMonth() + 1;
 
-  const dateFromSlider = new Date();
-  dateFromSlider.setDate(+day);
-  dateFromSlider.setHours(+hour, +minute);
+  const sliderDate = new Date();
+  sliderDate.setDate(day);
+  sliderDate.setHours(hour, minute);
 
-  const sliderDate =
-    now > dateFromSlider
-      ? `${day}.${monthToday}.`
-      : `${day}.${monthToday - 1}.`;
+  const formattedDate =
+    now > sliderDate
+      ? `${day}.${currentMonth}.`
+      : `${day}.${currentMonth !== 1 ? currentMonth - 1 : 12}.`;
+
   return (
     <div className='sliders-container'>
       <div className='slide-container'>
         <SliderWithText
-          $time={sliderDate}
+          $time={formattedDate}
           className='slider'
           type='range'
           name='day'
           min='1'
           max='31'
-          onChange={(e) => ranger(e.target)}
+          onChange={handleSliderChange}
           value={day}
         />
       </div>
       <div className='slide-container'>
         <SliderWithText
-          $time={hour + ':' + minute}
+          $time={`${hour}:${minute}`}
           className='slider'
           type='range'
           name='time'
           min={7 * 60 + 12}
           max={22 * 60 + 57}
           step='15'
-          onChange={(e) => ranger(e.target)}
+          onChange={handleSliderChange}
           value={hour * 60 + minute}
         />
       </div>

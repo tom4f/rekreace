@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import About from './components/About';
-import ForgetPassword from './components/ForgetPassword';
-import LoginPage from './components/LoginPage';
-import Menu from './components/Menu';
-import NewUser from './components/NewUser';
-import ShowValues from './components/ShowValues';
-import './index.css';
-import windsurfImg from './../../images/windsurf.jpg';
+import About from 'src/components/MeteoAlarm/components/About';
+import ForgetPassword from 'src/components/MeteoAlarm/components/ForgetPassword';
+import LoginPage from 'src/components/MeteoAlarm/components/LoginPage';
+import Menu from 'src/components/MeteoAlarm/components/Menu';
+import NewUser from 'src/components/MeteoAlarm/components/NewUser';
+import ShowValues from 'src/components/MeteoAlarm/components/ShowValues';
+import 'src/components/MeteoAlarm/css/index.css';
+import windsurfImg from 'src/images/windsurf.jpg';
 
 export const MeteoAlarm: React.FC = () => {
   const initItems = {

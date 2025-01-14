@@ -1,27 +1,26 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { DateProvider } from './components/DateContext';
-import { DavisGraphs } from './components/DavisGraphs';
-import { DavisGraphsDay } from './components/DavisGraphsDay';
-import { LipnoGraphs } from './components/LipnoGraphs';
-import { ModifyPocasi } from './components/ModifyPocasi';
+import { DateProvider } from '../components/Meteo/components/DateContext';
+import { DavisGraphs } from '../components/Meteo/components/DavisGraphs';
+import { DavisGraphsDay } from '../components/Meteo/components/DavisGraphsDay';
+import { LipnoGraphs } from '../components/Meteo/components/LipnoGraphs';
+import { ModifyPocasi } from '../components/Meteo/components/ModifyPocasi';
 import {
   NavBar,
   NavBarDavis,
   NavBarLipno,
   NavBarOldStation,
-} from './components/NavBar';
-import { OldGraphs } from './components/OldGraphs';
-import { ShowDayGraph } from './components/ShowDayGraph';
-import { ShowDayStatistic } from './components/ShowDayStatistic';
-import { ShowDayTable } from './components/ShowDayTable';
-import { ShowOldStationTable } from './components/ShowOldStationTable';
-import { ShowYearGraph } from './components/ShowYearGraph';
-import { YearTable } from './components/YearTable';
-import AppStyles from './css/App.module.css';
+} from '../components/Meteo/components/NavBar';
+import { OldGraphs } from '../components/Meteo/components/OldGraphs';
+import { ShowDayGraph } from '../components/Meteo/components/ShowDayGraph';
+import { ShowDayStatistic } from '../components/Meteo/components/ShowDayStatistic';
+import { ShowDayTable } from '../components/Meteo/components/ShowDayTable';
+import { ShowOldStationTable } from '../components/Meteo/components/ShowOldStationTable';
+import { ShowYearGraph } from '../components/Meteo/components/ShowYearGraph';
+import { YearTable } from '../components/Meteo/components/YearTable';
 
 export const Meteo = () => {
   return (
-    <div className={AppStyles.graphs}>
+    <div>
       <NavBar />
       <DateProvider>
         <Routes>

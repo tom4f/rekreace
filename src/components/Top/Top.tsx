@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { GoogleAd } from '../GoogleAd';
+import { GoogleAd } from '../GoogleAd/GoogleAd';
 import mainImg from './../../images/main.jpg';
 import { Header } from '../Atoms';
 import { useState, useEffect } from 'react';

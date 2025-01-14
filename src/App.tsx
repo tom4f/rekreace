@@ -1,25 +1,28 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Apartments } from './components/Apartments';
-import { Booking } from './pages/Booking';
+import {
+  Apartments,
+  Booking,
+  Contact,
+  Forum,
+  Frymburk,
+  Kaliste,
+  Meteo,
+  MeteoAlarm,
+  PhotoGallery,
+  Prices,
+  Start,
+  Windsurfing,
+  Bedrich,
+} from './pages';
 import { Bottom } from './components/Bottom/Bottom';
-import { Contact } from './components/Contact/Contact';
-import { Forum } from './pages/Forum';
-import { Frymburk } from './components/Frymburk/Frymburk';
-import { Kaliste } from './components/Kaliste/Kaliste';
-import { Meteo } from './components/Meteo';
-import { MeteoAlarm } from './components/MeteoAlarm/MeteoAlarm';
-import { PhotoGallery } from './components/PhotoGallery/PhotoGallery';
-import { Prices } from './components/Prices/Prices';
-import { Start } from './components/Start/Start';
 import { Top } from './components/Top/Top';
-import { Windsurfing } from './components/Windsurfing/Windsurfing';
-import { Bedrich } from './components/Bedrich/Bedrich';
-import './css/main.css';
 import { TopBedrich } from './components/Top/TopBedrich';
-import { useLoginStatus } from './features/login/hooks/useGetLoginStatus';
 import { MockDevTools } from './components/MockDevTools';
 import { APP_MOCKS, ENV_MODE } from './env';
+import { useLoginStatus } from './features/login/hooks/useGetLoginStatus';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+
+import './css/main.css';
 
 export const App = () => {
   const { data: loginData } = useLoginStatus();
