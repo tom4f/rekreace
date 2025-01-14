@@ -67,7 +67,7 @@ export const ShowDayStatistic = () => {
       </Header>
 
       <article className='w-fit'>
-        <section className='text-sm font-mono whitespace-pre text-left'>
+        <section className='text-sm font-mono whitespace-pre text-left text-white'>
           {queries[1].data}
           {queries[1].isError && <div>Error fetching the text files</div>}
         </section>
@@ -98,7 +98,7 @@ export const ShowDayStatistic = () => {
       </Header>
 
       <article className='w-fit'>
-        <section className='text-sm font-mono whitespace-pre text-left'>
+        <section className='text-sm font-mono whitespace-pre text-left text-white'>
           {queries[0].isError && <div>Error fetching the text files</div>}
           {queries[0].data}
         </section>
