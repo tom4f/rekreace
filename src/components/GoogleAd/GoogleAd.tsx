@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
 
+declare global {
+  interface Window {
+    adsbygoogle: { [key: string]: unknown }[];
+  }
+}
+
 export const GoogleAd = ({ counter }: { counter: number }) => {
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {

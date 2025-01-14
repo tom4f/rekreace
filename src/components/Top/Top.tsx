@@ -1,9 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { GoogleAd } from '../GoogleAd/GoogleAd';
 import mainImg from './../../images/main.jpg';
 import { Header } from '../Atoms';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { CustomNavLinkType } from '../Meteo/components/TypeDefinition';
 
 export const Top = () => {
   const { pathname } = useLocation();
@@ -12,34 +13,40 @@ export const Top = () => {
 
   useEffect(() => setCounter((orig) => orig + 1), [pathname]);
 
+  const CustomNavLink: CustomNavLinkType = ({ to, header }) => (
+    <NavLink className={({ isActive }) => (isActive ? 'bg-black' : '')} to={to}>
+      {header}
+    </NavLink>
+  );
+
   return (
     <>
-      <Header>
-        <NavLink to='/'> Start</NavLink> |
-        <NavLink to='/apartmany'> Apartmány</NavLink> |
-        <NavLink to='/objednavka'> Objednávka</NavLink> |
-        <NavLink to='/ceny'> Ceny</NavLink> |
-        <NavLink to='/kontakt'> Kontakt</NavLink> |
-        <NavLink to='/frymburk'> O Frymburku</NavLink>{' '}
+      <Header className='flex flex-wrap justify-center [&>*]:px-2'>
+        <CustomNavLink to='/' header='Start' />
+        <CustomNavLink to='/apartmany' header='Apartmány' />
+        <CustomNavLink to='/objednavka' header='Objednávka' />
+        <CustomNavLink to='/ceny' header='Ceny' />
+        <CustomNavLink to='/kontakt' header='Kontakt' />
+        <CustomNavLink to='/frymburk' header='O Frymburku' />{' '}
       </Header>
 
       <div className='text-center w-full'>
-        <NavLink to='/'>
+        <Link to='/'>
           <img
             className='w-full'
             src={mainImg}
-            alt='Ubytování u Kučerů ve Frymburku - zima'
+            alt='Ubytování u Kučerů ve Frymburku'
           />
-        </NavLink>
+        </Link>
       </div>
 
-      <Header>
-        <NavLink to='/meteostanice'> Meteostanice</NavLink> |
-        <NavLink to='/forum'> Fórum</NavLink> |
-        <NavLink to='/fotogalerie'> Fotogalerie</NavLink> |
-        <NavLink to='/meteoalarm'> MeteoAlarm</NavLink> |
-        <NavLink to='/kaliste'> Kaliště</NavLink> |
-        <NavLink to='/windsurfing'> Windsurfing</NavLink>{' '}
+      <Header className='flex flex-wrap justify-center [&>*]:px-2'>
+        <CustomNavLink to='/meteostanice' header='Meteostanice' />
+        <CustomNavLink to='/forum' header='Fórum' />
+        <CustomNavLink to='/fotogalerie' header='Fotogalerie' />
+        <CustomNavLink to='/meteoalarm' header='MeteoAlarm' />
+        <CustomNavLink to='/kaliste' header='Kaliště' />
+        <CustomNavLink to='/windsurfing' header='Windsurfing' />{' '}
       </Header>
 
       <GoogleAd key={counter} counter={counter} />
