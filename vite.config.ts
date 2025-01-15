@@ -11,7 +11,7 @@ enum ServerUrl {
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const target = dev ? ServerUrl.LOCALHOST : '';
+const target = dev ? ServerUrl.LIVE : '';
 
 export default defineConfig({
   plugins: [react()],

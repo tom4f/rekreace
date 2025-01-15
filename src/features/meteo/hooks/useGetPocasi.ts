@@ -5,6 +5,7 @@ import { api } from '../../../api/utils';
 type BaseMeteoRequest = {
   orderBy: string;
   sort: string;
+  refetchInterval?: 10000;
 };
 
 type MeteoDateRequest = BaseMeteoRequest & {
@@ -80,6 +81,6 @@ export const useGetPocasi = (request: MeteoRequest) => {
       request.sort,
     ],
     queryFn: () => getPocasi(request),
-    refetchInterval: 10000,
+    refetchInterval: request.refetchInterval ?? 0,
   });
 };

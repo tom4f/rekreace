@@ -7,9 +7,9 @@ import { LOGIN_ENDPOINT, LoginResponse } from '../hooks';
 const handlers = [
   http.post(LOGIN_ENDPOINT, async () => {
     return HttpResponse.json<LoginResponse>({
-      webToken: '82cfcf046eaaa97f9f2b55e0d9461964',
+      webToken: '97f9f2b55e0d946196482cfcf046eaaa',
       webAccess: '_ubytovani',
-      webUser: 'Bedrich Mock',
+      webUser: 'User Mock',
       isLogged: true,
     });
   }),

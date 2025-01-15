@@ -1,4 +1,4 @@
-import { useLoadWeatherFromFile } from '../api/useLoadWeatherFromFile';
+import { useLoadWeatherFromFile } from '../api';
 import graphsConfig from './../config/davis-day-graphs.json';
 import DavisGraphsDayStyle from './../css/DavisGraphsDay.module.css';
 import { OnePage } from './OnePage';

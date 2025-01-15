@@ -11,6 +11,7 @@ export const MeteoBarBig = () => {
     requestType: 'amount',
     orderBy: 'date',
     sort: 'DESC',
+    refetchInterval: 10000,
   });
   const { data: pocasiData, isFetching: isFetchingPocasi } = useGetPocasi({
     start: 0,
@@ -18,6 +19,7 @@ export const MeteoBarBig = () => {
     requestType: 'amount',
     orderBy: 'datum',
     sort: 'DESC',
+    refetchInterval: 10000,
   });
 
   if (!davisData?.length || !pocasiData?.length) return null;

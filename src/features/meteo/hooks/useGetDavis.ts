@@ -1,10 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Url } from '../../../api/paths';
 import { api } from '../../../api/utils';
 
 type BaseMeteoRequest = {
   orderBy: string;
   sort: string;
+  refetchInterval?: number;
 };
 
 type MeteoDateRequest = BaseMeteoRequest & {
@@ -23,32 +24,32 @@ type MeteoRequest = MeteoDateRequest | MeteoAmountRequest;
 
 export type DavisResponse = {
   date: string;
-  temp_mean: string;
-  temp_high: string;
+  temp_mean: number;
+  temp_high: number;
   temp_high_time: string;
-  temp_low: string;
+  temp_low: number;
   temp_low_time: string;
   heat_deg_days: string;
   cool_deg_days: string;
-  rain: string;
-  wind_speed_avg: string;
-  wind_speed_high: string;
+  rain: number;
+  wind_speed_avg: number;
+  wind_speed_high: number;
   wind_speed_high_time: string;
   dir: string;
   wind3: number;
   wind6: number;
   wind9: number;
   wind12: number;
-  bar_min: string;
-  bar_avg: string;
-  bar_max: string;
-  huminidy_min: string;
-  huminidy_avg: string;
-  huminidy_max: string;
+  bar_min: number;
+  bar_avg: number;
+  bar_max: number;
+  huminidy_min: number;
+  huminidy_avg: number;
+  huminidy_max: number;
   air_density_min: string;
   air_density_avg: string;
   air_density_max: string;
-  rain_rate_max: string;
+  rain_rate_max: number;
 }[];
 
 export const GET_DAVIS_ENDPOINT = `${Url.NEW_API}/meteo/read_davis.php`;
@@ -98,6 +99,7 @@ export const useGetDavis = (request: MeteoRequest) => {
       request.sort,
     ],
     queryFn: () => getDavis(request),
-    refetchInterval: 10000,
+    refetchInterval: request.refetchInterval ?? 0,
+    placeholderData: keepPreviousData,
   });
 };

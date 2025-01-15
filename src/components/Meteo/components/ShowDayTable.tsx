@@ -1,10 +1,9 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Url } from '../../../api/paths';
+import { useContext, useRef, useState, useEffect } from 'react';
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
-import { davisType } from './TypeDefinition';
 import React from 'react';
 import { Header } from '../../Atoms';
+import { useGetDavis } from 'src/features/meteo';
 
 export const ShowDayTable = () => {
   const { reduceDate } = useContext(DateContext);
@@ -19,41 +18,21 @@ export const ShowDayTable = () => {
 
   const limit = 30;
 
-  const [davis, setDavis] = useState<davisType[]>();
+  const { data: davis } = useGetDavis({
+    start,
+    limit,
+    requestType: 'amount',
+    orderBy: orderBy.value,
+    sort: orderBy.order,
+  });
 
   useEffect(() => {
-    const loadDavis = (
-      start: number,
-      orderBy: { value: string; order: string }
-    ) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', `${Url.API}/pdo_read_davis.php`, true);
-      xhr.setRequestHeader('Content-type', 'application/json');
-      xhr.onload = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          const pdoResp = JSON.parse(xhr.responseText);
-          if (pdoResp.length) {
-            setDavis(pdoResp);
-            const [year, month, day] = pdoResp[0].date.split('-');
-            const clickedDate = new Date(+year, +month - 1, +day);
-            reduceDateRef.current('daily', clickedDate);
-          }
-        }
-      };
-      xhr.onerror = () =>
-        console.log('** An error occurred during the transaction');
-      xhr.send(
-        JSON.stringify({
-          start: start,
-          limit: limit,
-          orderBy: orderBy.value,
-          sort: orderBy.order,
-        })
-      );
-    };
-
-    loadDavis(start, orderBy);
-  }, [start, orderBy]);
+    if (davis?.length) {
+      const [year, month, day] = davis[0].date.split('-');
+      const clickedDate = new Date(+year, +month - 1, +day);
+      reduceDateRef.current('daily', clickedDate);
+    }
+  }, [start, orderBy, davis]);
 
   const rgbCss = (r: number, g: number, b: number, value: number) => ({
     background: `rgba(${r}, ${g}, ${b}, ${value})`,
