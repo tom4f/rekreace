@@ -1,48 +1,28 @@
-import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './css/MeteoBarBig.css';
-import { Url } from '../../../api/paths';
-import { DavisResponse } from '../../../features/meteo';
-
-type PocasiType = {
-  id: number;
-  datum: string;
-  cas: null;
-  hladina: string;
-  pritok: string;
-  odtok: string;
-  vzduch: string;
-  voda: string;
-  pocasi: string;
-};
+import { useGetDavis, useGetPocasi } from '../../../features/meteo';
+import { Header } from 'src/components/Atoms';
+import styled from 'styled-components';
 
 export const MeteoBarBig = () => {
-  const [meteoData, setMeteoData] = useState<[DavisResponse, PocasiType]>();
+  const { data: davisData, isFetching: isFetchingDavis } = useGetDavis({
+    start: 0,
+    limit: 1,
+    requestType: 'amount',
+    orderBy: 'date',
+    sort: 'DESC',
+  });
+  const { data: pocasiData, isFetching: isFetchingPocasi } = useGetPocasi({
+    start: 0,
+    limit: 1,
+    requestType: 'amount',
+    orderBy: 'datum',
+    sort: 'DESC',
+  });
 
-  const fetchAllMeteo = async () => {
-    const urlList = [
-      `${Url.API}/pdo_read_davis.php`,
-      `${Url.API}/pdo_read_pocasi.php`,
-    ];
+  if (!davisData?.length || !pocasiData?.length) return null;
 
-    const fetchList = urlList.map((url) =>
-      fetch(`${url}`).then((response) => response.json())
-    );
-
-    const [davisData, damData] = await Promise.all(fetchList);
-
-    setMeteoData([davisData[0], damData[0]]);
-  };
-
-  useEffect(() => {
-    fetchAllMeteo();
-    const timer = setInterval(() => fetchAllMeteo(), 10000);
-    return () => clearInterval(timer);
-  }, []);
-
-  if (meteoData && (!meteoData[0] || !meteoData[1])) return null;
-
-  const meteoTable = ([davisData, pocasiData]: [DavisResponse, PocasiType]) => {
+  const MeteoTable = () => {
     const {
       // date,
       temp_mean,
@@ -71,7 +51,7 @@ export const MeteoBarBig = () => {
       // air_density_avg,
       // air_density_max,
       rain_rate_max,
-    } = davisData;
+    } = davisData[0];
 
     const {
       //id, datum, cas,
@@ -80,7 +60,7 @@ export const MeteoBarBig = () => {
       odtok,
       //vzduch,
       voda,
-    } = pocasiData;
+    } = pocasiData[0];
 
     return (
       <section className='happyMeteo'>
@@ -212,12 +192,36 @@ export const MeteoBarBig = () => {
 
   return (
     <>
-      <div className='header'>
-        <NavLink className='menu' to='/meteostanice'>
-          METEOSTANICE dnes
-        </NavLink>
-      </div>
-      {meteoData && meteoTable(meteoData)}
+      <Header>
+        <Link to='/meteostanice'>
+          <FadeInText $isFetching={isFetchingDavis || isFetchingPocasi}>
+            METEOSTANICE dnes
+          </FadeInText>
+        </Link>
+      </Header>
+      {MeteoTable()}
     </>
   );
 };
+
+const FadeInText = styled.span<{ $isFetching: boolean }>`
+  animation: ${({ $isFetching }) => ($isFetching ? 'fadeOut 2s' : 'fadeIn 2s')};
+
+  @keyframes fadeIn {
+    0% {
+      color: lime;
+    }
+    100% {
+      color: white;
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      color: white;
+    }
+    100% {
+      color: lime;
+    }
+  }
+`;

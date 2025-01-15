@@ -19,7 +19,7 @@ type FormRequest = {
 
 export type ForumResponse = OneMessage[];
 
-export const GET_FORUM_ENDPOINT = `${Url.NEW_API}/forum/read.php?{start}{limit}{searchCriteria}`;
+export const GET_FORUM_ENDPOINT = `${Url.NEW_API}/forum/read.php`;
 export const GET_FORUM_KEY = 'getForum';
 
 const getForum = async (request: FormRequest): Promise<ForumResponse> => {
@@ -32,7 +32,7 @@ const getForum = async (request: FormRequest): Promise<ForumResponse> => {
     params.append('searchCriteria', request.searchCriteria);
 
   const data = await api.get({
-    url: `${Url.NEW_API}/forum/read.php?${params.toString()}`,
+    url: `${GET_FORUM_ENDPOINT}?${params.toString()}`,
   });
 
   return data;

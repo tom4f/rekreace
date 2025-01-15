@@ -8,8 +8,8 @@ type BaseMeteoRequest = {
 };
 
 type MeteoDateRequest = BaseMeteoRequest & {
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   requestType: 'date';
 };
 
@@ -21,40 +21,22 @@ type MeteoAmountRequest = BaseMeteoRequest & {
 
 type MeteoRequest = MeteoDateRequest | MeteoAmountRequest;
 
-export type DavisResponse = {
-  date: string;
-  temp_mean: string;
-  temp_high: string;
-  temp_high_time: string;
-  temp_low: string;
-  temp_low_time: string;
-  heat_deg_days: string;
-  cool_deg_days: string;
-  rain: string;
-  wind_speed_avg: string;
-  wind_speed_high: string;
-  wind_speed_high_time: string;
-  dir: string;
-  wind3: number;
-  wind6: number;
-  wind9: number;
-  wind12: number;
-  bar_min: string;
-  bar_avg: string;
-  bar_max: string;
-  huminidy_min: string;
-  huminidy_avg: string;
-  huminidy_max: string;
-  air_density_min: string;
-  air_density_avg: string;
-  air_density_max: string;
-  rain_rate_max: string;
+export type PocasiResponse = {
+  id: number;
+  datum: string;
+  cas: string;
+  hladina: number;
+  pritok: number;
+  odtok: number;
+  voda: number;
+  vzduch: number;
+  pocasi: string;
 }[];
 
-export const GET_DAVIS_ENDPOINT = `${Url.NEW_API}/meteo/read_davis.php`;
-export const GET_DAVIS_KEY = 'getDavis';
+export const GET_POCASI_ENDPOINT = `${Url.NEW_API}/meteo/read_pocasi.php`;
+export const GET_POCASI_KEY = 'getPocasi';
 
-const getDavis = async (request: MeteoRequest): Promise<DavisResponse> => {
+const getPocasi = async (request: MeteoRequest): Promise<PocasiResponse> => {
   const params = new URLSearchParams();
   if (request?.orderBy !== undefined) {
     params.append('orderBy', request.orderBy);
@@ -82,22 +64,22 @@ const getDavis = async (request: MeteoRequest): Promise<DavisResponse> => {
   }
 
   const data = await api.get({
-    url: `${GET_DAVIS_ENDPOINT}?${params.toString()}`,
+    url: `${GET_POCASI_ENDPOINT}?${params.toString()}`,
   });
 
   return data;
 };
 
-export const useGetDavis = (request: MeteoRequest) => {
+export const useGetPocasi = (request: MeteoRequest) => {
   return useQuery({
     queryKey: [
-      GET_DAVIS_KEY,
+      GET_POCASI_KEY,
       request.requestType === 'amount' ? request.start : request.startDate,
       request.requestType === 'amount' ? request.limit : request.endDate,
       request.orderBy,
       request.sort,
     ],
-    queryFn: () => getDavis(request),
+    queryFn: () => getPocasi(request),
     refetchInterval: 10000,
   });
 };
