@@ -2,11 +2,65 @@
   {
     "common": {
       "index": 0,
+      "dateField": "date",
+      "isAllDownloaded": false,
+      "url": "meteo/read_davis.php",
+      "title": "Meteostanice Frymburk",
+      "navName": "Frymburk",
+      "data": [{}]
+    },
+    "specific": [
+      [
+        {
+          "sourceField": "temp_low",
+          "color": "lime",
+          "style": "line",
+          "width": 1,
+          "header": "temp_low [°C]",
+          "group": 1,
+          "lineStyle": []
+        },
+        {
+          "sourceField": "temp_high",
+          "color": "yellow",
+          "style": "line",
+          "width": 1,
+          "header": "temp_high [°C]",
+          "group": 1,
+          "lineStyle": []
+        }
+      ],
+      [
+        {
+          "sourceField": "wind_speed_high",
+          "color": "red",
+          "style": "area",
+          "width": 5,
+          "header": "wind_speed_high [m/s]",
+          "group": 1,
+          "lineStyle": []
+        },
+        {
+          "sourceField": "wind_speed_avg",
+          "color": "white",
+          "style": "area",
+          "width": 5,
+          "header": "wind_speed_avg [m/s]",
+          "group": 1,
+          "lineStyle": []
+        }
+      ]
+    ]
+  },
+  {
+    "common": {
+      "index": 1,
       "dateField": "datum",
       "isAllDownloaded": false,
-      "url": "/api/meteo/read_pocasi.php",
+      "url": "meteo/read_pocasi.php",
       "title": "Meteostanice Frymburk",
-      "navName": "Frymburk"
+      "navName": "Frymburk",
+      "data": [{}]
     },
     "specific": [
       [

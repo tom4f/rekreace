@@ -1,19 +1,12 @@
-import {
-  graphDataType,
-  isAllDownloaded,
-  loadDataFunctionCustomType,
-  oneGraphDataType,
-  pureData,
-  specificType,
-} from "./TypeDefinition";
-
-export default class Draw implements isAllDownloaded {
-  dataOrig: pureData[];
-  dataReduced: pureData[];
+import { SpecificGraphType, LoadDataFunctionType, PureData } from './OnePage';
+import { OneGraphDataWithGetDataFn } from './OneGraph';
+export default class Draw {
+  dataOrig: PureData[];
+  dataReduced: PureData[];
   dateField: string;
   isAllDownloaded: boolean;
-  loadPocasi: loadDataFunctionCustomType | undefined;
-  graphsConfig: specificType[];
+  loadPocasi?: LoadDataFunctionType;
+  graphsConfig: SpecificGraphType;
   isAllDownloadedForOneGraph: boolean;
   private ctx: CanvasRenderingContext2D;
   private ctx_pointer: CanvasRenderingContext2D;
@@ -28,11 +21,11 @@ export default class Draw implements isAllDownloaded {
   yForInfo: number;
   refresh: () => void;
 
-  color = "white";
-  header = "";
+  color = 'white';
+  header = '';
   group = 1;
-  type = "";
-  style = "line";
+  type = '';
+  style = 'line';
   lineStyle: number[] = [];
 
   lineWidth = 1;
@@ -45,14 +38,14 @@ export default class Draw implements isAllDownloaded {
   minSecond = 0;
   yLimitSecond = 0;
 
-  start = "01-01-2000";
-  end = "31-12-3000";
+  start = '01-01-2000';
+  end = '31-12-3000';
   xLimit = 0;
 
   constructor(
     private canvas: HTMLCanvasElement,
     private canvas_pointer: HTMLCanvasElement,
-    private graphData: oneGraphDataType
+    private graphData: OneGraphDataWithGetDataFn
   ) {
     this.graphSelect = (graphNumber: number) => {
       console.log(graphNumber);
@@ -61,7 +54,7 @@ export default class Draw implements isAllDownloaded {
     this.canvas_pointer = canvas_pointer;
     this.graphData = graphData;
 
-    this.dataOrig = graphData.data;
+    this.dataOrig = graphData.common.data || [];
     this.dateField = graphData.common.dateField;
     this.isAllDownloaded = graphData.common.isAllDownloaded;
     this.loadPocasi = graphData.common.loadDataFunction;
@@ -71,8 +64,8 @@ export default class Draw implements isAllDownloaded {
     this.isAllDownloadedForOneGraph = false;
     // date identificator in DB object
 
-    this.ctx = canvas.getContext("2d")!;
-    this.ctx_pointer = canvas_pointer.getContext("2d")!;
+    this.ctx = canvas.getContext('2d')!;
+    this.ctx_pointer = canvas_pointer.getContext('2d')!;
     // array of data object
     //this.dataOrig    = this.pdoResp;
 
@@ -88,26 +81,26 @@ export default class Draw implements isAllDownloaded {
     // 1 month default step
     this.reducerStep = 1;
 
-    canvas_pointer.addEventListener("mousemove", (event) =>
+    canvas_pointer.addEventListener('mousemove', (event) =>
       this.getInfo(event.offsetX, event.offsetY)
     );
-    canvas_pointer.addEventListener("click", (event) =>
+    canvas_pointer.addEventListener('click', (event) =>
       this.button.click(event)
     );
-    canvas_pointer.addEventListener("mousedown", (event) =>
+    canvas_pointer.addEventListener('mousedown', (event) =>
       this.dynamicInterval(event)
     );
-    canvas_pointer.addEventListener("mouseup", () => {
+    canvas_pointer.addEventListener('mouseup', () => {
       this.reducerStep = 1;
       clearInterval(this.timer);
     });
     // for touch devicess (tablet)
     canvas_pointer.addEventListener(
-      "touchstart",
+      'touchstart',
       (event) => this.dynamicInterval(event),
       { passive: false }
     );
-    canvas_pointer.addEventListener("touchend", () => {
+    canvas_pointer.addEventListener('touchend', () => {
       this.reducerStep = 1;
       clearInterval(this.timer);
     });
@@ -127,7 +120,7 @@ export default class Draw implements isAllDownloaded {
       const graphArray = (selectGroup: number) => {
         const myArray: number[] = [];
 
-        this.dataReduced.forEach((pureData) => {
+        this.dataReduced.forEach((PureData) => {
           for (
             let graphNumber = 0;
             graphNumber < this.graphsConfig.length;
@@ -136,10 +129,10 @@ export default class Draw implements isAllDownloaded {
             const source = this.graphsConfig[graphNumber].sourceField;
 
             if (this.graphsConfig[graphNumber].group === selectGroup) {
-              if (isNaN(pureData[source] as number)) {
+              if (isNaN(PureData[source] as number)) {
                 return null;
               } else {
-                myArray.push(pureData[source] as number);
+                myArray.push(PureData[source] as number);
               }
             }
           }
@@ -198,18 +191,18 @@ export default class Draw implements isAllDownloaded {
       this.ctx.clearRect(posX, 0, btnWidth, btnHeight);
       this.ctx.fillRect(posX, 0, btnWidth, btnHeight);
       // show text
-      this.ctx.font = "30px Arial";
-      this.ctx.fillStyle = "white";
-      this.ctx.textBaseline = "middle";
-      this.ctx.textAlign = "center";
+      this.ctx.font = '30px Arial';
+      this.ctx.fillStyle = 'white';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.textAlign = 'center';
       this.ctx.fillText(char, posX + btnWidth / 2, btnHeight / 2);
     };
     // show all buttons
     const show = () => {
-      dispBtn(btnX.startPrev, "<", 0.5);
-      dispBtn(btnX.startNext, ">", 0.5);
-      dispBtn(btnX.endPrev, "<", 0.5);
-      dispBtn(btnX.endNext, ">", 0.5);
+      dispBtn(btnX.startPrev, '<', 0.5);
+      dispBtn(btnX.startNext, '>', 0.5);
+      dispBtn(btnX.endPrev, '<', 0.5);
+      dispBtn(btnX.endNext, '>', 0.5);
     };
 
     const isXinButton = (x: number) => {
@@ -223,29 +216,35 @@ export default class Draw implements isAllDownloaded {
 
     // click on button detection
     const click = (event: MouseEvent | TouchEvent) => {
-      const evenRetyped = event as any;
-
-      const x = evenRetyped.offsetX || evenRetyped.layerX;
-      const y = evenRetyped.offsetY || evenRetyped.layerY;
+      let x: number, y: number;
+      if (event instanceof MouseEvent) {
+        x = event.offsetX;
+        y = event.offsetY;
+      } else {
+        const touch = event.touches[0] || event.changedTouches[0];
+        const rect = this.canvas_pointer.getBoundingClientRect();
+        x = touch.clientX - rect.left;
+        y = touch.clientY - rect.top;
+      }
       if (y >= 0 && y <= btnHeight) {
         const { startPrev, startNext, endPrev, endNext } = isXinButton(x);
         // decrease month
         if (startPrev) {
-          this.updateGraph("start", -this.reducerStep);
-          dispBtn(btnX.startPrev, "<", 0.9);
+          this.updateGraph('start', -this.reducerStep);
+          dispBtn(btnX.startPrev, '<', 0.9);
         }
         if (startNext) {
-          this.updateGraph("start", +this.reducerStep);
-          dispBtn(btnX.startNext, ">", 0.9);
+          this.updateGraph('start', +this.reducerStep);
+          dispBtn(btnX.startNext, '>', 0.9);
         }
         // add month
         if (endPrev) {
-          this.updateGraph("end", -this.reducerStep);
-          dispBtn(btnX.endPrev, "<", 0.9);
+          this.updateGraph('end', -this.reducerStep);
+          dispBtn(btnX.endPrev, '<', 0.9);
         }
         if (endNext) {
-          this.updateGraph("end", +this.reducerStep);
-          dispBtn(btnX.endNext, ">", 0.9);
+          this.updateGraph('end', +this.reducerStep);
+          dispBtn(btnX.endNext, '>', 0.9);
         }
       }
     };
@@ -255,21 +254,31 @@ export default class Draw implements isAllDownloaded {
       if (y >= 0 && y <= btnHeight) {
         const { startPrev, startNext, endPrev, endNext } = isXinButton(x);
 
-        startPrev || startNext || endPrev || endNext
-          ? this.canvas_pointer.classList.add("pointerOnGrab")
-          : this.canvas_pointer.classList.remove("pointerOnGrab");
-        startPrev
-          ? dispBtn(btnX.startPrev, "<", 0.9)
-          : dispBtn(btnX.startPrev, "<", 0.5);
-        startNext
-          ? dispBtn(btnX.startNext, ">", 0.9)
-          : dispBtn(btnX.startNext, ">", 0.5);
-        endPrev
-          ? dispBtn(btnX.endPrev, "<", 0.9)
-          : dispBtn(btnX.endPrev, "<", 0.5);
-        endNext
-          ? dispBtn(btnX.endNext, ">", 0.9)
-          : dispBtn(btnX.endNext, ">", 0.5);
+        if (startPrev || startNext || endPrev || endNext) {
+          this.canvas_pointer.classList.add('pointerOnGrab');
+        } else {
+          this.canvas_pointer.classList.remove('pointerOnGrab');
+        }
+        if (startPrev) {
+          dispBtn(btnX.startPrev, '<', 0.9);
+        } else {
+          dispBtn(btnX.startPrev, '<', 0.5);
+        }
+        if (startNext) {
+          dispBtn(btnX.startNext, '>', 0.9);
+        } else {
+          dispBtn(btnX.startNext, '>', 0.5);
+        }
+        if (endPrev) {
+          dispBtn(btnX.endPrev, '<', 0.9);
+        } else {
+          dispBtn(btnX.endPrev, '<', 0.5);
+        }
+        if (endNext) {
+          dispBtn(btnX.endNext, '>', 0.9);
+        } else {
+          dispBtn(btnX.endNext, '>', 0.5);
+        }
 
         return null;
       }
@@ -283,12 +292,12 @@ export default class Draw implements isAllDownloaded {
       if (isXinGraph) return null;
 
       // remove onGrab pointer outside button & graph
-      this.canvas_pointer.classList.remove("pointerOnGrab");
+      this.canvas_pointer.classList.remove('pointerOnGrab');
       // decrease opacity of button outside button & graph
-      dispBtn(btnX.startPrev, "<", 0.5);
-      dispBtn(btnX.startNext, ">", 0.5);
-      dispBtn(btnX.endPrev, "<", 0.5);
-      dispBtn(btnX.endNext, ">", 0.5);
+      dispBtn(btnX.startPrev, '<', 0.5);
+      dispBtn(btnX.startNext, '>', 0.5);
+      dispBtn(btnX.endPrev, '<', 0.5);
+      dispBtn(btnX.endNext, '>', 0.5);
     };
 
     // return button methods
@@ -308,7 +317,7 @@ export default class Draw implements isAllDownloaded {
 
   dataReducer(startOrEnd: string, move: number) {
     const dateBeforeModification = new Date(
-      startOrEnd === "start" ? this.start : this.end
+      startOrEnd === 'start' ? this.start : this.end
     );
     // change start or end date by +1 year or -1 year
     const updatedDate = new Date(
@@ -318,9 +327,9 @@ export default class Draw implements isAllDownloaded {
 
     const dataReduced = this.dataOrig.filter((value) => {
       const oneDate = new Date(value[this.dateField]);
-      if (startOrEnd === "start")
+      if (startOrEnd === 'start')
         return oneDate >= updatedDate && oneDate <= new Date(this.end);
-      if (startOrEnd === "end")
+      if (startOrEnd === 'end')
         return oneDate <= updatedDate && oneDate >= new Date(this.start);
       return null;
     });
@@ -342,11 +351,11 @@ export default class Draw implements isAllDownloaded {
     if (this.isAllDownloaded === false && this.loadPocasi) {
       try {
         const dummy = (await this.loadPocasi(
-          "1999-01-01",
-          "2099-01-01",
+          '1999-01-01',
+          '2099-01-01',
           this.graphData.common.index
-        )) as graphDataType[];
-        this.dataOrig = dummy[0].data;
+        )) as PureData[];
+        this.dataOrig = dummy;
         this.isAllDownloaded = true;
       } catch (err) {
         console.log(err);
@@ -384,7 +393,7 @@ export default class Draw implements isAllDownloaded {
       this.yForInfo = yPos;
 
       // enable cursor
-      this.canvas_pointer.classList.add("pointerOn");
+      this.canvas_pointer.classList.add('pointerOn');
 
       // clear whole canvas
       this.ctx_pointer.clearRect(0, 0, this.clientWidth, this.clientHeight);
@@ -401,20 +410,20 @@ export default class Draw implements isAllDownloaded {
         if ((this.dataReduced[0][this.dateField] as string).length === 10) {
           return shortDate.slice(0, 10);
         } else {
-          const [, month, day] = shortDate.slice(0, 10).split("-");
+          const [, month, day] = shortDate.slice(0, 10).split('-');
           return `${day}.${month}. ${shortDate.slice(11, 16)}`;
         }
       };
 
       // search entry with datum
       const valueY = this.dataReduced.find((value) =>
-        [shortDate, shortDate.split("T")[0]].includes(
+        [shortDate, shortDate.split('T')[0]].includes(
           value[this.dateField] as string
         )
       );
 
       const showInfo = () => {
-        this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)";
+        this.ctx_pointer.fillStyle = 'rgba(255, 0, 0, 0.9)';
         // show line for x
         this.ctx_pointer.beginPath();
         this.ctx_pointer.fillRect(
@@ -429,14 +438,14 @@ export default class Draw implements isAllDownloaded {
         this.ctx_pointer.fillRect(xPos - 40, this.graphSpaceBtn - 20, 80, 20);
 
         // show X text
-        this.ctx_pointer.font = "12px Arial";
-        this.ctx_pointer.fillStyle = "white";
-        this.ctx_pointer.textBaseline = "middle";
-        this.ctx_pointer.textAlign = "center";
+        this.ctx_pointer.font = '12px Arial';
+        this.ctx_pointer.fillStyle = 'white';
+        this.ctx_pointer.textBaseline = 'middle';
+        this.ctx_pointer.textAlign = 'center';
         this.ctx_pointer.fillText(dayText(), xPos, this.graphSpaceBtn - 8);
 
         const infoLeftY = (type: string, yValue: number) => {
-          this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)";
+          this.ctx_pointer.fillStyle = 'rgba(255, 0, 0, 0.9)';
           // show line for y
           this.ctx_pointer.beginPath();
           this.ctx_pointer.fillRect(
@@ -451,9 +460,9 @@ export default class Draw implements isAllDownloaded {
           this.ctx_pointer.fillRect(0, yValue - 10, this.graphSpaceLeft, 20);
 
           // show Y text
-          this.ctx_pointer.fillStyle = "white";
-          this.ctx_pointer.textBaseline = "middle";
-          this.ctx_pointer.textAlign = "right";
+          this.ctx_pointer.fillStyle = 'white';
+          this.ctx_pointer.textBaseline = 'middle';
+          this.ctx_pointer.textAlign = 'right';
           this.ctx_pointer.fillText(
             ` ${valueY && valueY[type]}`,
             this.graphSpaceLeft,
@@ -461,7 +470,7 @@ export default class Draw implements isAllDownloaded {
           );
         };
         const infoRightY = (type: string, yValue: number) => {
-          this.ctx_pointer.fillStyle = "rgba(255, 0, 0, 0.9)";
+          this.ctx_pointer.fillStyle = 'rgba(255, 0, 0, 0.9)';
           // show line for y second
           this.ctx_pointer.beginPath();
           this.ctx_pointer.fillRect(
@@ -481,9 +490,9 @@ export default class Draw implements isAllDownloaded {
           );
 
           // show Y second text
-          this.ctx_pointer.fillStyle = "white";
-          this.ctx_pointer.textBaseline = "middle";
-          this.ctx_pointer.textAlign = "left";
+          this.ctx_pointer.fillStyle = 'white';
+          this.ctx_pointer.textBaseline = 'middle';
+          this.ctx_pointer.textAlign = 'left';
           this.ctx_pointer.fillText(
             ` ${valueY && valueY[type]}`,
             this.clientWidth - this.graphSpaceLeft,
@@ -528,13 +537,13 @@ export default class Draw implements isAllDownloaded {
     }
 
     // disable cursor
-    this.canvas_pointer.classList.remove("pointerOn");
+    this.canvas_pointer.classList.remove('pointerOn');
   }
 
   axesXY(graphNumber: number) {
     //line arround graph
     this.ctx.beginPath();
-    this.ctx.strokeStyle = "grey";
+    this.ctx.strokeStyle = 'grey';
     this.ctx.lineWidth = 1;
     this.ctx.moveTo(
       this.graphSpaceLeft,
@@ -551,7 +560,7 @@ export default class Draw implements isAllDownloaded {
 
     // inner axesX & axesY
     this.ctx.beginPath();
-    this.ctx.strokeStyle = "grey";
+    this.ctx.strokeStyle = 'grey';
     this.ctx.lineWidth = 1;
     this.ctx.setLineDash([1, 2]);
     for (let number = 10; number >= 0; number--) {
@@ -579,7 +588,7 @@ export default class Draw implements isAllDownloaded {
 
   yearLine() {
     this.ctx.beginPath();
-    this.ctx.strokeStyle = "red";
+    this.ctx.strokeStyle = 'red';
     this.ctx.lineWidth = 2;
     this.ctx.setLineDash([1, 0]);
 
@@ -587,7 +596,7 @@ export default class Draw implements isAllDownloaded {
     let lastDate = 0;
     let step = 1;
     //let sliceText;
-    let lineDate = "";
+    let lineDate = '';
     let sliceStartStop: number[] = [];
 
     const sliceTextNew = (lineDate: string, sliceStartStop: number[]) => {
@@ -634,9 +643,9 @@ export default class Draw implements isAllDownloaded {
         this.clientHeight - this.graphSpaceBtn
       );
       // text for lineStep
-      this.ctx.font = "12px Arial";
-      this.ctx.textAlign = "left";
-      this.ctx.fillStyle = "white";
+      this.ctx.font = '12px Arial';
+      this.ctx.textAlign = 'left';
+      this.ctx.fillStyle = 'white';
       this.ctx.fillText(
         `${sliceTextNew(lineDate, sliceStartStop)}`,
         this.xPositionFromDate(lineDate),
@@ -656,17 +665,17 @@ export default class Draw implements isAllDownloaded {
   }
 
   textHeader(graphNumber: number) {
-    this.ctx.font = "20px Arial";
+    this.ctx.font = '20px Arial';
     this.ctx.fillStyle = this.color;
-    this.ctx.textBaseline = "top";
-    this.ctx.textAlign = "left";
+    this.ctx.textBaseline = 'top';
+    this.ctx.textAlign = 'left';
     if (graphNumber === 0) {
       this.ctx.fillText(this.header, this.clientWidth / 2, 0);
     }
     if (graphNumber === 1) {
       this.ctx.fillText(this.header, this.clientWidth / 2, 20);
     }
-    this.ctx.textAlign = "right";
+    this.ctx.textAlign = 'right';
     if (graphNumber === 2) {
       this.ctx.fillText(this.header, this.clientWidth / 2, 0);
     }
@@ -703,19 +712,19 @@ export default class Draw implements isAllDownloaded {
     const minutes = dateX.getUTCMinutes();
 
     // text for axes X
-    this.ctx.font = "14px Arial";
-    this.ctx.fillStyle = "white";
+    this.ctx.font = '14px Arial';
+    this.ctx.fillStyle = 'white';
     this.ctx.save();
     this.ctx.translate(X, this.clientHeight - this.graphSpaceBtn);
     this.ctx.rotate(-Math.PI / 4);
-    this.ctx.textBaseline = "hanging";
-    this.ctx.textAlign = "right";
+    this.ctx.textBaseline = 'hanging';
+    this.ctx.textAlign = 'right';
     // different x text length for day and year graph
     if ((this.dataReduced[0][this.dateField] as string).length === 10) {
       this.ctx.fillText(`${day}.${month}.`, 0, 0);
     } else {
       this.ctx.fillText(
-        `${("0" + hour).slice(-2)}:${("0" + minutes).slice(-2)}`,
+        `${('0' + hour).slice(-2)}:${('0' + minutes).slice(-2)}`,
         0,
         0
       );
@@ -724,9 +733,9 @@ export default class Draw implements isAllDownloaded {
     this.ctx.restore();
 
     // text for axes Y
-    this.ctx.font = "12px Arial";
+    this.ctx.font = '12px Arial';
     this.ctx.fillStyle = this.color;
-    this.ctx.textBaseline = "middle";
+    this.ctx.textBaseline = 'middle';
 
     let yValue = this.min + (this.yLimit * number) / 10;
 
@@ -734,15 +743,15 @@ export default class Draw implements isAllDownloaded {
       yValue = this.minSecond + (this.yLimitSecond * number) / 10;
     }
 
-    let yValueRound = yValue > 100 ? yValue.toFixed(0) : yValue.toFixed(1);
+    const yValueRound = yValue > 100 ? yValue.toFixed(0) : yValue.toFixed(1);
 
     if (graphNumber === 0) {
-      this.ctx.textAlign = "right";
+      this.ctx.textAlign = 'right';
       this.ctx.fillText(` ${yValueRound} `, this.graphSpaceLeft, Y);
     }
 
     if (graphNumber === 1) {
-      this.ctx.textAlign = "left";
+      this.ctx.textAlign = 'left';
       this.ctx.fillText(
         ` ${yValueRound} `,
         this.clientWidth - this.graphSpaceLeft,
@@ -809,7 +818,7 @@ export default class Draw implements isAllDownloaded {
         minutesInOneDay = 24 * 60;
 
       // automatic lineWidth for 'area' type
-      if (this.style === "area") {
+      if (this.style === 'area') {
         const widthOfOneValue =
           (this.clientWidth - 2 * this.graphSpaceLeft) /
           (this.xLimit * minutesInOneDay);
@@ -832,16 +841,16 @@ export default class Draw implements isAllDownloaded {
         }
       }
 
-      const line = (oneEntry: pureData) => {
+      const line = (oneEntry: PureData) => {
         // do not show direction if no wind
         if (
-          this.graphsConfig[graphNumber].sourceField === "WindDir" &&
+          this.graphsConfig[graphNumber].sourceField === 'WindDir' &&
           oneEntry[this.graphsConfig[graphNumber].sourceField] === 360
         )
           return null;
 
         // for graph type = area
-        if (this.style === "dot") {
+        if (this.style === 'dot') {
           //this.ctx.beginPath();
           this.ctx.moveTo(
             this.xPositionFromDate(oneEntry[this.dateField] as string) +
@@ -867,7 +876,7 @@ export default class Draw implements isAllDownloaded {
           );
         }
 
-        if (this.style === "area") {
+        if (this.style === 'area') {
           this.ctx.moveTo(
             this.ctx.lineWidth / 2 +
               this.xPositionFromDate(oneEntry[this.dateField] as string),
@@ -885,7 +894,7 @@ export default class Draw implements isAllDownloaded {
           );
         }
 
-        if (this.style === "line") {
+        if (this.style === 'line') {
           this.ctx.lineTo(
             this.xPositionFromDate(oneEntry[this.dateField] as string),
             this.yPositionFromDate(

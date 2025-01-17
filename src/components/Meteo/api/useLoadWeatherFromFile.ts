@@ -1,8 +1,14 @@
-import {
-  LoadDataFromFileFunctionType,
-  pureData,
-} from '../components/TypeDefinition';
 import { useGetDownld02 } from '../../../features/meteo';
+import { PureData, GraphsDataWithGetDataFn } from '../components/OnePage';
+
+type LoadDataFromFileFunctionType = (
+  graphsConfig: GraphsDataWithGetDataFn[]
+) => {
+  graphsData: GraphsDataWithGetDataFn[];
+  isFetching: boolean;
+  isSuccess: boolean;
+  isSuccessPercentage: number;
+};
 
 export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
   graphsConfig
@@ -63,7 +69,7 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
   ];
 
   const linesToObject = (lines: string[]) => {
-    const arrOfObj = lines.reduce((accumulator: Array<pureData>, line) => {
+    const arrOfObj = lines.reduce((accumulator: Array<PureData>, line) => {
       const oneMinuteArray = line.trim().split(/ +/g);
 
       const oneMinuteObject: { [key: string]: string } = oneMinuteArray.reduce(
@@ -99,7 +105,7 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
     return arrOfObj;
   };
 
-  const textToArrayAllFiles = queries.reduce<pureData[]>((acc, query) => {
+  const textToArrayAllFiles = queries.reduce<PureData[]>((acc, query) => {
     if (!query.data) return acc;
 
     const textToArray = (text: string) => {
@@ -120,7 +126,13 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
 
   return {
     graphsData: [
-      { ...graphsConfig[0], data: textToArrayAllFiles as pureData[] },
+      {
+        ...graphsConfig[0],
+        common: {
+          ...graphsConfig[0].common,
+          data: textToArrayAllFiles as PureData[],
+        },
+      },
     ],
     isFetching: queries.some((query) => query.isFetching),
     isSuccess: queries.some((query) => query.isSuccess),

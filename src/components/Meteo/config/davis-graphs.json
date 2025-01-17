@@ -1,11 +1,10 @@
 [
   {
-    "data": [{}],
     "common": {
       "index": 0,
       "dateField": "date",
       "isAllDownloaded": false,
-      "url": "pdo_read_davis_by_date.php",
+      "url": "/api/meteo/read_davis.php",
       "title": "Meteostanice Frymburk",
       "navName": "Frymburk"
     },

@@ -56,12 +56,7 @@ export const DavisGraphsDay = () => {
         isSuccessPercentage={isSuccessPercentage}
       />
 
-      {isSuccess && (
-        <OnePage
-          graphsData={graphsData}
-          loadPocasiAsyncCustom={async () => await []}
-        />
-      )}
+      {isSuccess && <OnePage graphsDataWithGetDataFn={graphsData} />}
     </>
   );
 };

@@ -1,6 +1,4 @@
-import { ReactElement } from 'react';
 import { ParsedUrlQuery } from 'querystring';
-
 export interface urlQueryType extends ParsedUrlQuery {
   page: string;
 }
@@ -17,111 +15,6 @@ type onePathType = {
 
 export type NavType = {
   allPaths: onePathType[];
-};
-
-export type specificType = {
-  sourceField: string;
-  color: string;
-  style: string;
-  width: number;
-  header: string;
-  group: number;
-  lineStyle: number[];
-};
-
-export type loadDataFunctionCustomType = (
-  startDate?: string,
-  endDate?: string,
-  index?: number
-) => Promise<graphDataWithoutFunctionType[]>;
-
-export type LoadDataFunctionType = (
-  start: string,
-  end: string,
-  index: number,
-  graphsConfig: graphDataWithoutFunctionType[]
-) => Promise<graphDataWithoutFunctionType[]>;
-
-export type LoadDataFromFileFunctionType = (
-  graphsConfig: graphDataWithoutFunctionType[]
-) => {
-  graphsData: graphDataWithoutFunctionType[];
-  isFetching: boolean;
-  isSuccess: boolean;
-  isSuccessPercentage: number;
-};
-
-export type commonWithoutFunctionType = {
-  index: number;
-  dateField: string;
-  isAllDownloaded: boolean;
-  url: string;
-  title: string;
-  navName: string;
-};
-
-export type commonType = commonWithoutFunctionType & {
-  loadDataFunction: loadDataFunctionCustomType;
-};
-
-export type pureData = {
-  [key: string]: number | string;
-};
-
-export type graphConfigType = {
-  common: commonType;
-  specific: specificType[][];
-};
-
-export type graphDataType = {
-  common: commonType;
-  specific: specificType[][];
-  data: pureData[];
-};
-
-export type graphDataWithoutFunctionType = {
-  common: commonWithoutFunctionType;
-  specific: specificType[][];
-  data: pureData[];
-};
-
-export type onePageType = {
-  graphsData: graphDataWithoutFunctionType[];
-  loadPocasiAsyncCustom: loadDataFunctionCustomType;
-};
-
-export type oneGraphDataType = {
-  common: commonType;
-  specific: specificType[];
-  data: pureData[];
-};
-
-export type graphsDataType = {
-  graphsData: graphDataType[];
-};
-
-export type OneGraphType = {
-  graphData: oneGraphDataType;
-};
-
-export type LayoutType = {
-  children: React.JSX.Element;
-  allPaths: onePathType[];
-  graphsData: graphsDataType;
-};
-
-export type showGraphType = (
-  canvas: HTMLCanvasElement,
-  canvas_pointer: HTMLCanvasElement
-) => void;
-
-export interface isAllDownloaded {
-  isAllDownloaded: boolean;
-}
-
-export type GraphsProviderType = {
-  children: ReactElement;
-  graphsData: graphDataType[];
 };
 
 export type CustomNavLinkType = ({
@@ -149,31 +42,6 @@ export type reduceDateType = (param: string, value: Date) => void;
 export type providerType = {
   date: dateType;
   reduceDate: reduceDateType;
-};
-
-export type davisType = {
-  wind3: number;
-  wind6: number;
-  wind9: number;
-  wind_speed_avg: number;
-  wind_speed_high: number;
-  dir: number;
-
-  temp_low: number;
-  temp_mean: number;
-  temp_high: number;
-
-  rain: number;
-  rain_rate_max: number;
-
-  bar_min: number;
-  bar_avg: number;
-  bar_max: number;
-
-  huminidy_min: number;
-  huminidy_avg: number;
-  huminidy_max: number;
-  date: string;
 };
 
 export type pocasiType = {

@@ -1,8 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { DateProvider } from '../components/Meteo/components/DateContext';
-import { DavisGraphs } from '../components/Meteo/components/DavisGraphs';
 import { DavisGraphsDay } from '../components/Meteo/components/DavisGraphsDay';
-import { LipnoGraphs } from '../components/Meteo/components/LipnoGraphs';
 import { ModifyPocasi } from '../components/Meteo/components/ModifyPocasi';
 import {
   NavBar,
@@ -10,13 +8,17 @@ import {
   NavBarLipno,
   NavBarOldStation,
 } from '../components/Meteo/components/NavBar';
-import { OldGraphs } from '../components/Meteo/components/OldGraphs';
+import { UniversalGraphs } from 'src/components/Meteo/components/UniversalGraphs';
 import { ShowDayGraph } from '../components/Meteo/components/ShowDayGraph';
 import { ShowDayStatistic } from '../components/Meteo/components/ShowDayStatistic';
 import { ShowDayTable } from '../components/Meteo/components/ShowDayTable';
 import { ShowOldStationTable } from '../components/Meteo/components/ShowOldStationTable';
 import { ShowYearGraph } from '../components/Meteo/components/ShowYearGraph';
 import { YearTable } from '../components/Meteo/components/YearTable';
+
+import davisGraphsConfig from 'src/components/Meteo/config/davis-graphs.json';
+import lipnoGraphsConfig from 'src/components/Meteo/config/lipno-graphs.json';
+import oldGraphsGraphsConfig from 'src/components/Meteo/config/old-graphs.json';
 
 export const Meteo = () => {
   return (
@@ -28,7 +30,10 @@ export const Meteo = () => {
           <Route path='frymburk' element={<NavBarDavis />}>
             <Route path='' element={<Navigate replace to='week' />} />
             <Route path='week' element={<DavisGraphsDay />} />
-            <Route path='year' element={<DavisGraphs />} />
+            <Route
+              path='year'
+              element={<UniversalGraphs graphsConfig={davisGraphsConfig} />}
+            />
             <Route
               path='table'
               element={
@@ -43,7 +48,10 @@ export const Meteo = () => {
 
           <Route path='lipno' element={<NavBarLipno />}>
             <Route path='' element={<Navigate replace to='graphs' />} />
-            <Route path='graphs' element={<LipnoGraphs />} />
+            <Route
+              path='graphs'
+              element={<UniversalGraphs graphsConfig={lipnoGraphsConfig} />}
+            />
             <Route
               path='table'
               element={
@@ -58,7 +66,10 @@ export const Meteo = () => {
 
           <Route path='oldStation' element={<NavBarOldStation />}>
             <Route path='' element={<Navigate replace to='graphs' />} />
-            <Route path='graphs' element={<OldGraphs />} />
+            <Route
+              path='graphs'
+              element={<UniversalGraphs graphsConfig={oldGraphsGraphsConfig} />}
+            />
             <Route path='table' element={<ShowOldStationTable />} />
           </Route>
         </Routes>
