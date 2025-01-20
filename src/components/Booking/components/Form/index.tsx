@@ -281,7 +281,7 @@ export const Form = () => {
               Opište kód : {formData.antispam_code_orig}
             </label>
             <input
-              value={formData.antispam_code}
+              value={formData.antispam_code || ''}
               onChange={(e) =>
                 setFormData((old) => ({
                   ...old,

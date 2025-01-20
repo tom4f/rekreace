@@ -152,7 +152,7 @@ export const Formular = ({
         <Select
           label='Kategorie'
           options={category}
-          defaultValue={editPhoto.typ}
+          value={editPhoto.typ}
           onChange={change}
           name='typ'
         />

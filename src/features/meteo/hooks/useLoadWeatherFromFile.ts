@@ -1,5 +1,8 @@
-import { useGetDownld02 } from '../../../features/meteo';
-import { PureData, GraphsDataWithGetDataFn } from '../components/OnePage';
+import { useGetDownld02 } from '..';
+import {
+  PureData,
+  GraphsDataWithGetDataFn,
+} from '../../../components/Meteo/components/OnePage';
 
 type LoadDataFromFileFunctionType = (
   graphsConfig: GraphsDataWithGetDataFn[]
@@ -92,13 +95,6 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
         22.5 * +windDirections[oneMinuteObject.WindDir]
       ).toString();
 
-      // todo: skip duplicated entries
-      /*         const result =
-          index > 0 &&
-          oneMinuteObject.Date < accumulator[accumulator.length - 1].Date
-            ? accumulator
-            : [...accumulator, oneMinuteObject]; */
-
       return [...accumulator, oneMinuteObject];
     }, []);
 
@@ -106,7 +102,9 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
   };
 
   const textToArrayAllFiles = queries.reduce<PureData[]>((acc, query) => {
-    if (!query.data) return acc;
+    if (!query.data) {
+      return acc;
+    }
 
     const textToArray = (text: string) => {
       const lines = text.trim().split('\n');
@@ -117,11 +115,7 @@ export const useLoadWeatherFromFile: LoadDataFromFileFunctionType = (
       return /..\...\.......:../.test(lines[0]) ? lines : [];
     };
 
-    if (!query.data) return acc;
-
-    const linesToObjectForOneFile = linesToObject(textToArray(query.data));
-
-    return [...acc, ...linesToObjectForOneFile];
+    return [...acc, ...linesToObject(textToArray(query.data))];
   }, []);
 
   return {

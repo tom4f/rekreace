@@ -1,59 +1,42 @@
 import { useState } from 'react';
-import { Url } from '../../../api/paths';
 import FormularStyle from './../css/Formular.module.css';
 import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
-import { FDobjectType, ModifyPocasiType } from './TypeDefinition';
+import { ModifyPocasiType } from './TypeDefinition';
+import { useEditLipno } from 'src/features/meteo/hooks/useEditLipno';
+import { useLoginStatus } from 'src/features/login';
+import { EditMeteoType } from './ModifyPocasi';
 
-export const EditPocasi = ({
-  editMeteo,
-  setEditMeteo,
-  webToken,
-  user,
-}: ModifyPocasiType) => {
-  const { editDate, editKey, editValue, refresh } = editMeteo;
+export const EditPocasi = ({ editMeteo, setEditMeteo }: ModifyPocasiType) => {
+  const { mutate } = useEditLipno();
+  const { data: loginData } = useLoginStatus();
+  const { editDate, editKey, editValue } = editMeteo;
 
-  const fotoGalleryOwner = '_ubytovani';
   const [loginResp, setLoginResp] = useState('empty');
 
   const updateMySQL = (e: React.FormEvent<HTMLFormElement>) => {
-    // disable page reload-clear after submit
     e.preventDefault();
-    // all form data to special object
-    const form = document.querySelector('#edit_form_pocasi') as HTMLFormElement;
-    const FD = new FormData(form);
-    FD.append('fotoGalleryOwner', fotoGalleryOwner);
-    FD.append('webToken', webToken);
-    FD.append('webUser', user);
-    // real object
-    const FDobject: FDobjectType = {};
-    // fill form data ojbect
-    FD.forEach((value, key) => (FDobject[key] = value));
-    // AJAX
-    {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', `${Url.API}/pdo_update_pocasi.php`, true);
-      xhr.setRequestHeader('Content-type', 'applic ation/json');
-      xhr.onload = function () {
-        if (this.readyState === 4 && this.status === 200) {
-          const editResult = JSON.parse(this.responseText);
-          if (editResult.result === 'pocasi_update_ok') {
-            setEditMeteo({
-              ...editMeteo,
-              dispAdd: false,
-              dispEdit: false,
-              dispDelete: false,
-              refresh: refresh + 1,
-            });
-          } else {
-            setLoginResp('error');
-          }
-        }
-      };
-      xhr.onerror = function () {
-        setLoginResp('error');
-      };
-      xhr.send(JSON.stringify(FDobject));
-    }
+
+    mutate(
+      {
+        datum: editDate,
+        key: editKey,
+        value: editValue,
+        webToken: loginData.webToken,
+        webUser: loginData.webUser,
+        fotoGalleryOwner: loginData.webAccess,
+      },
+      {
+        onSuccess: () => {
+          setEditMeteo((editMeteo: EditMeteoType) => ({
+            ...editMeteo,
+            dispEdit: false,
+          }));
+        },
+        onError: () => {
+          setLoginResp('error');
+        },
+      }
+    );
   };
 
   return (

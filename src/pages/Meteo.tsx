@@ -14,7 +14,7 @@ import { ShowDayStatistic } from '../components/Meteo/components/ShowDayStatisti
 import { ShowDayTable } from '../components/Meteo/components/ShowDayTable';
 import { ShowOldStationTable } from '../components/Meteo/components/ShowOldStationTable';
 import { ShowYearGraph } from '../components/Meteo/components/ShowYearGraph';
-import { YearTable } from '../components/Meteo/components/YearTable';
+import { ShowYearTable } from 'src/components/Meteo/components/ShowYearTable';
 
 import davisGraphsConfig from 'src/components/Meteo/config/davis-graphs.json';
 import lipnoGraphsConfig from 'src/components/Meteo/config/lipno-graphs.json';
@@ -56,7 +56,7 @@ export const Meteo = () => {
               path='table'
               element={
                 <>
-                  <YearTable />
+                  <ShowYearTable />
                   <ShowYearGraph />
                 </>
               }
@@ -68,7 +68,13 @@ export const Meteo = () => {
             <Route path='' element={<Navigate replace to='graphs' />} />
             <Route
               path='graphs'
-              element={<UniversalGraphs graphsConfig={oldGraphsGraphsConfig} />}
+              element={
+                <UniversalGraphs
+                  graphsConfig={oldGraphsGraphsConfig}
+                  startDate='2011-08-22'
+                  endDate='2012-08-22'
+                />
+              }
             />
             <Route path='table' element={<ShowOldStationTable />} />
           </Route>

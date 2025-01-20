@@ -1,17 +1,16 @@
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Url } from '../../../api/paths';
 import { api } from '../../../api/utils';
-import { MeteoKey } from './useLoadWeather';
 
 type BaseMeteoRequest = {
   orderBy: string;
   sort: string;
-  refetchInterval?: number;
+  refetchInterval?: 10000;
 };
 
 type MeteoDateRequest = BaseMeteoRequest & {
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   requestType: 'date';
 };
 
@@ -23,40 +22,27 @@ type MeteoAmountRequest = BaseMeteoRequest & {
 
 type MeteoRequest = MeteoDateRequest | MeteoAmountRequest;
 
-export type DavisResponse = {
-  date: string;
-  temp_mean: number;
-  temp_high: number;
-  temp_high_time: string;
-  temp_low: number;
-  temp_low_time: string;
-  heat_deg_days: string;
-  cool_deg_days: string;
-  rain: number;
-  wind_speed_avg: number;
-  wind_speed_high: number;
-  wind_speed_high_time: string;
-  dir: string;
+type PocasiResponse = {
   wind3: number;
   wind6: number;
   wind9: number;
   wind12: number;
-  bar_min: number;
-  bar_avg: number;
-  bar_max: number;
-  huminidy_min: number;
-  huminidy_avg: number;
-  huminidy_max: number;
-  air_density_min: string;
-  air_density_avg: string;
-  air_density_max: string;
+  windmax: number;
+  direct: number;
+  tempmin: number;
+  tempavg: number;
+  tempmax: number;
+  rain: number;
   rain_rate_max: number;
+  date: string;
 }[];
 
-export const GET_DAVIS_ENDPOINT = `${Url.NEW_API}/meteo/read_davis.php`;
-export const GET_DAVIS_KEY = MeteoKey.DAVIS;
+export const GET_OLD_Station_ENDPOINT = `${Url.NEW_API}/meteo/read_old_station.php`;
+export const GET_OLD_STATION_KEY = 'getOldStation';
 
-const getDavis = async (request: MeteoRequest): Promise<DavisResponse> => {
+const getOldStation = async (
+  request: MeteoRequest
+): Promise<PocasiResponse> => {
   const params = new URLSearchParams();
   if (request?.orderBy !== undefined) {
     params.append('orderBy', request.orderBy);
@@ -84,23 +70,22 @@ const getDavis = async (request: MeteoRequest): Promise<DavisResponse> => {
   }
 
   const data = await api.get({
-    url: `${GET_DAVIS_ENDPOINT}?${params.toString()}`,
+    url: `${GET_OLD_Station_ENDPOINT}?${params.toString()}`,
   });
 
   return data;
 };
 
-export const useGetDavis = (request: MeteoRequest) => {
+export const useGetOldStation = (request: MeteoRequest) => {
   return useQuery({
     queryKey: [
-      GET_DAVIS_KEY,
+      GET_OLD_STATION_KEY,
       request.requestType === 'amount' ? request.start : request.startDate,
       request.requestType === 'amount' ? request.limit : request.endDate,
       request.orderBy,
       request.sort,
     ],
-    queryFn: () => getDavis(request),
+    queryFn: () => getOldStation(request),
     refetchInterval: request.refetchInterval ?? 0,
-    placeholderData: keepPreviousData,
   });
 };

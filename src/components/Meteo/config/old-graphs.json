@@ -4,7 +4,7 @@
       "index": 0,
       "dateField": "date",
       "isAllDownloaded": false,
-      "url": "/rekreace/api/pdo_read_old_station_by_date.php",
+      "url": "/api/meteo/read_old_station.php",
       "title": "Původní meteostanice Frymburk",
       "navName": "Frymburk"
     },

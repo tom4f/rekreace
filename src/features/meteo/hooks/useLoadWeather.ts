@@ -6,6 +6,21 @@ import {
   PureData,
 } from 'src/components/Meteo/components/OnePage';
 
+export enum MeteoKey {
+  DAVIS = 'getDavis',
+  OLD_STATION = 'getOldStation',
+  POCASI = 'getPocasi',
+  TEXT = 'getText',
+  NOAA = 'getTextNoaa',
+  DOWNLD02 = 'getTextDownld02',
+}
+
+const urlToMeteoKey: { [key: string]: MeteoKey } = {
+  '/api/meteo/read_davis.php': MeteoKey.DAVIS,
+  '/api/meteo/read_old_station.php': MeteoKey.OLD_STATION,
+  '/api/meteo/read_pocasi.php': MeteoKey.POCASI,
+};
+
 export const useLoadWeather = (requests: MeteoRequest[]) => {
   const loadWeather = (request: MeteoRequest) =>
     universalGet({
@@ -32,14 +47,21 @@ const getTextDateFromNewDate = (updDate: Date) => {
 };
 
 export const useGetWeatherConfigWithData = (
-  graphsConfig: GraphsDataWithGetDataFn[]
+  graphsConfig: GraphsDataWithGetDataFn[],
+  start?: string,
+  end?: string
 ) => {
+  const startDate =
+    start ||
+    getTextDateFromNewDate(
+      new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+    );
+  const endDate = end || getTextDateFromNewDate(new Date());
+
   const queries = graphsConfig.map((graphConfig) => {
     const request: MeteoRequest = {
-      startDate: getTextDateFromNewDate(
-        new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-      ),
-      endDate: getTextDateFromNewDate(new Date()),
+      startDate,
+      endDate,
       orderBy: graphConfig.common.dateField,
       sort: 'ASC',
       url: graphConfig.common.url,
@@ -47,7 +69,13 @@ export const useGetWeatherConfigWithData = (
     };
 
     return {
-      queryKey: [graphConfig.common.url],
+      queryKey: [
+        urlToMeteoKey[graphConfig.common.url],
+        startDate,
+        endDate,
+        request.orderBy,
+        request.sort,
+      ],
       queryFn: () => universalGet(request),
       select: (response: PureData[]) => {
         return response;

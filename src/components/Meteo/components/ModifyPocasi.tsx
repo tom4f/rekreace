@@ -2,27 +2,40 @@ import { useEffect, useRef, useState } from 'react';
 import FormularStyle from './../css/Formular.module.css';
 import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
 import { AddPocasi } from './AddPocasi';
-import { addQuerySelector } from './AddQuerySelector';
+import { addQuerySelector } from './addQuerySelector';
 import { DeletePocasi } from './DeletePocasi';
 import { EditPocasi } from './EditPocasi';
 import { ShowYearTable } from './ShowYearTable';
-import { editMeteoType, pocasiType } from './TypeDefinition';
+import { ShowYearGraph } from './ShowYearGraph';
 import { useLoginStatus } from '../../../features/login/hooks/useGetLoginStatus';
 import { Login } from '../../../features/login';
+import { useGetPocasi } from 'src/features/meteo';
 
-//import '../css/formular.css';
-
+export type EditMeteoType = {
+  editDate: string;
+  editKey: 'hladina' | 'pritok' | 'odtok' | 'voda' | 'vzduch' | 'pocasi';
+  editValue: string | number;
+  dispEdit: boolean;
+  dispDelete: boolean;
+  dispAdd: boolean;
+  refresh: number;
+};
 export const ModifyPocasi = () => {
   const { data: loginData } = useLoginStatus();
 
-  // last 30 meteo lines
-  const [pocasi, setPocasi] = useState<pocasiType[]>();
+  const { data: pocasi } = useGetPocasi({
+    start: 0,
+    limit: 30,
+    requestType: 'amount',
+    orderBy: 'datum',
+    sort: 'DESC',
+  });
 
   // edit params
-  const [editMeteo, setEditMeteo] = useState<editMeteoType>({
+  const [editMeteo, setEditMeteo] = useState<EditMeteoType>({
     // values to be edited
     editDate: '',
-    editKey: '',
+    editKey: 'hladina',
     editValue: '',
     // show/hide forms
     dispEdit: false,
@@ -37,12 +50,7 @@ export const ModifyPocasi = () => {
   // update table querySelector when 'pocasi' changed
   useEffect(() => {
     if (!pocasi) return;
-    addQuerySelector(
-      pocasi,
-      editMeteoRef.current,
-      setEditMeteo,
-      loginData?.webToken || ''
-    );
+    addQuerySelector(pocasi, editMeteoRef.current, setEditMeteo);
   }, [pocasi]);
 
   return (
@@ -91,20 +99,15 @@ export const ModifyPocasi = () => {
                     dispAdd: true,
                   })
                 }
-                value='+ Vytvřit nový záznam'
+                value='+ Vytvořit nový záznam'
               />
             </div>
           </div>
         ) : null}
       </div>
 
-      <ShowYearTable
-        pocasi={pocasi}
-        setPocasi={setPocasi}
-        user={loginData?.webUser}
-        webToken={loginData?.webToken}
-        editMeteo={editMeteo}
-      />
+      <ShowYearTable />
+      <ShowYearGraph />
     </>
   );
 };

@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import { Url } from '../../../api/paths';
 import FormularStyle from './../css/Formular.module.css';
 import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
 import { AddPocasiType } from './TypeDefinition';
+import { useAddLipno, useGetPocasi } from 'src/features/meteo';
+import { useLoginStatus } from 'src/features/login';
+import { EditMeteoType } from './ModifyPocasi';
 
-export const AddPocasi = ({
-  pocasi,
-  editMeteo,
-  setEditMeteo,
-  webToken,
-  user,
-}: AddPocasiType) => {
-  const { refresh } = editMeteo;
-
-  const { hladina, pritok, odtok, voda, vzduch, pocasi: komentar } = pocasi[0];
-
-  const fotoGalleryOwner = '_ubytovani';
+export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
+  const { mutate } = useAddLipno();
+  const { data: loginData } = useLoginStatus();
+  const { data: pocasiData } = useGetPocasi({
+    start: 0,
+    limit: 1,
+    requestType: 'amount',
+    orderBy: 'datum',
+    sort: 'DESC',
+    refetchInterval: 10000,
+  });
 
   const today = (now: Date) => {
     const day = now.getDate();
@@ -28,48 +29,46 @@ export const AddPocasi = ({
 
   const [newValues, setNewValues] = useState({
     datum: today(new Date()),
-    hladina,
-    pritok,
-    odtok,
-    voda,
-    vzduch,
-    pocasi: komentar,
+    hladina: 0,
+    pritok: 0,
+    odtok: 0,
+    voda: 0,
+    vzduch: 0,
+    pocasi: '',
   });
 
   const [loginResp, setLoginResp] = useState('empty');
 
-  const insert = (e: React.FormEvent<HTMLFormElement>) => {
+  if (!pocasiData) {
+    return null;
+  }
+
+  const addLipno = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // AJAX
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${Url.API}/pdo_add_pocasi.php`, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.onload = function () {
-      if (this.readyState === 4 && this.status === 200) {
-        const editResult = JSON.parse(this.responseText);
-        if (editResult.result === 'pocasi_create_ok') {
-          setEditMeteo({
+    mutate(
+      {
+        datum: newValues.datum,
+        hladina: newValues.hladina,
+        pritok: newValues.pritok,
+        odtok: newValues.odtok,
+        voda: newValues.voda,
+        vzduch: newValues.vzduch,
+        pocasi: newValues.pocasi,
+        webToken: loginData.webToken,
+        webUser: loginData.webUser,
+        fotoGalleryOwner: loginData.webAccess,
+      },
+      {
+        onSuccess: () => {
+          setEditMeteo((editMeteo: EditMeteoType) => ({
             ...editMeteo,
             dispAdd: false,
-            dispEdit: false,
-            dispDelete: false,
-            refresh: refresh + 1,
-          });
-        } else {
+          }));
+        },
+        onError: () => {
           setLoginResp('error');
-        }
+        },
       }
-    };
-    xhr.onerror = function () {
-      setLoginResp('error');
-    };
-    xhr.send(
-      JSON.stringify({
-        ...newValues,
-        webToken,
-        webUser: user,
-        fotoGalleryOwner,
-      })
     );
   };
 
@@ -79,21 +78,24 @@ export const AddPocasi = ({
     setNewValues({ ...newValues, [param]: value });
   };
 
-  // setLoginResp('empty');
-
   return (
     <>
       <div className={ModifyPocasiStyle.container}>
         <div
           className={ModifyPocasiStyle.closeBtn}
-          onClick={() => setEditMeteo({ ...editMeteo, dispAdd: false })}
+          onClick={() =>
+            setEditMeteo((editMeteo: EditMeteoType) => ({
+              ...editMeteo,
+              dispAdd: false,
+            }))
+          }
         >
           <span>x</span>
         </div>
         {loginResp === 'error' ? <div> Někde nastala chyba :-(</div> : null}
-        <h4>Nový záznam </h4>
+        <h4>Nový záznam</h4>
         <form
-          onSubmit={(e) => insert(e)}
+          onSubmit={addLipno}
           autoComplete='off'
           id='edit_form_pocasi'
           name='edit_form_pocasi'
@@ -115,7 +117,7 @@ export const AddPocasi = ({
               <input
                 type='text'
                 name='voda'
-                value={newValues.voda}
+                value={newValues.voda || pocasiData[0].voda}
                 onChange={(e) => set(e)}
               />
             </div>
@@ -125,7 +127,7 @@ export const AddPocasi = ({
               <input
                 type='text'
                 name='vzduch'
-                value={newValues.vzduch}
+                value={newValues.vzduch || pocasiData[0].vzduch}
                 onChange={(e) => set(e)}
               />
             </div>
@@ -135,7 +137,7 @@ export const AddPocasi = ({
               <input
                 type='text'
                 name='hladina'
-                value={newValues.hladina}
+                value={newValues.hladina || pocasiData[0].hladina}
                 onChange={(e) => set(e)}
               />
             </div>
@@ -145,7 +147,7 @@ export const AddPocasi = ({
               <input
                 type='text'
                 name='pritok'
-                value={newValues.pritok}
+                value={newValues.pritok || pocasiData[0].pritok}
                 onChange={(e) => set(e)}
               />
             </div>
@@ -155,7 +157,7 @@ export const AddPocasi = ({
               <input
                 type='text'
                 name='odtok'
-                value={newValues.odtok}
+                value={newValues.odtok || pocasiData[0].odtok}
                 onChange={(e) => set(e)}
               />
             </div>
@@ -165,7 +167,7 @@ export const AddPocasi = ({
               <input
                 type='text'
                 name='pocasi'
-                value={newValues.pocasi}
+                value={newValues.pocasi || pocasiData[0].pocasi}
                 onChange={(e) => set(e)}
               />
             </div>

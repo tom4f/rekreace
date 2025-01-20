@@ -3,8 +3,7 @@ import { addQuerySelectorType } from './TypeDefinition';
 export const addQuerySelector: addQuerySelectorType = (
   pocasi,
   editMeteo,
-  setEditMeteo,
-  webToken
+  setEditMeteo
 ) => {
   // set 'click' event listener for all table <div>
 
@@ -70,10 +69,8 @@ export const addQuerySelector: addQuerySelectorType = (
   };
 
   const clickedDiv = document.querySelectorAll('td');
-  // add eventListener only if login OK
-  if (webToken !== 'error') {
-    clickedDiv.forEach((div) => {
-      div.addEventListener('click', (e) => editTermin(e));
-    });
-  }
+
+  clickedDiv.forEach((div) => {
+    div.addEventListener('click', (e) => editTermin(e));
+  });
 };

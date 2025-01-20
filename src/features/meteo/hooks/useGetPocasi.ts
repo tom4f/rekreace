@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Url } from '../../../api/paths';
 import { api } from '../../../api/utils';
 
 type BaseMeteoRequest = {
   orderBy: string;
-  sort: string;
+  sort: 'DESC' | 'ASC';
   refetchInterval?: 10000;
 };
 
@@ -82,5 +82,6 @@ export const useGetPocasi = (request: MeteoRequest) => {
     ],
     queryFn: () => getPocasi(request),
     refetchInterval: request.refetchInterval ?? 0,
+    placeholderData: keepPreviousData,
   });
 };

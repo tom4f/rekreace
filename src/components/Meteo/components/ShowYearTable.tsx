@@ -1,21 +1,22 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Url } from '../../../api/paths';
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
-import { rgbCssType, showYearTableType } from './TypeDefinition';
+import { rgbCssType } from './TypeDefinition';
 import { Header } from 'src/components/Atoms';
+import { useGetPocasi } from 'src/features/meteo';
+import { useLoginStatus } from 'src/features/login';
 
-export const ShowYearTable = ({
-  pocasi,
-  setPocasi,
-  editMeteo,
-  user = 'no-user',
-  webToken = 'error',
-}: showYearTableType) => {
-  const refresh = editMeteo?.refresh ?? 0;
+export const ShowYearTable = () => {
   const { reduceDate } = useContext(DateContext);
 
-  const [orderBy, setOrderBy] = useState({
+  const { data: loginData } = useLoginStatus();
+
+  const reduceDateRef = useRef(reduceDate);
+
+  const [orderBy, setOrderBy] = useState<{
+    value: string;
+    order: 'DESC' | 'ASC';
+  }>({
     value: 'datum',
     order: 'DESC',
   });
@@ -24,42 +25,21 @@ export const ShowYearTable = ({
 
   const [start, setStart] = useState(0);
 
-  const loadPocasi = (
-    start: number,
-    orderBy: { value: string; order: string }
-  ) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${Url.API}/pdo_read_pocasi.php`, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.onload = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const pdoResp = JSON.parse(xhr.responseText);
-        if (pdoResp.length) {
-          setPocasi(pdoResp);
-          const [year, month, day] = pdoResp[0].datum.split('-');
-          const clickedDate = new Date(year, month - 1, day);
-          reduceDate('yearSum', clickedDate);
-        }
-      }
-    };
-    xhr.onerror = () =>
-      console.log('** An error occurred during the transaction');
-    xhr.send(
-      JSON.stringify({
-        start: start,
-        limit: limit,
-        orderBy: orderBy.value,
-        sort: orderBy.order,
-      })
-    );
-  };
+  const { data: pocasi } = useGetPocasi({
+    start,
+    limit,
+    requestType: 'amount',
+    orderBy: orderBy.value,
+    sort: orderBy.order,
+  });
 
-  const loadPocasiRef = useRef(loadPocasi);
-
-  useEffect(
-    () => loadPocasiRef.current(start, orderBy),
-    [start, orderBy, refresh]
-  );
+  useEffect(() => {
+    if (pocasi?.length) {
+      const [year, month, day] = pocasi[0].datum.split('-');
+      const clickedDate = new Date(+year, +month - 1, +day);
+      reduceDateRef.current('yearSum', clickedDate);
+    }
+  }, [start, orderBy, pocasi]);
 
   const rgbCss: rgbCssType = (r, g, b, value) => {
     return { background: `rgba(${r}, ${g}, ${b}, ${value})` };
@@ -70,12 +50,14 @@ export const ShowYearTable = ({
       : { background: `rgba(0, 0, 255, ${-value / 25})` };
   };
 
-  const printPocasi = () => {
+  const PrintPocasi = () => {
     const output: React.JSX.Element[] = [];
     pocasi?.forEach((one, index) =>
       output.push(
         <tr key={index}>
-          <td className={webToken !== 'error' ? TableStyle.datum : ''}>
+          <td
+            className={loginData.webToken !== 'error' ? TableStyle.datum : ''}
+          >
             {one.datum}
           </td>
           <td style={rgbCss(255, 0, 0, 1 - (725 - one.hladina) / 2)}>
@@ -102,9 +84,6 @@ export const ShowYearTable = ({
 
   return (
     <>
-      {webToken !== 'error' ? (
-        <Header>Přihlášený uživa tel: {user}</Header>
-      ) : null}
       <Header>
         Historie : &nbsp;
         <button
@@ -181,7 +160,7 @@ export const ShowYearTable = ({
               <th></th>
             </tr>
           </thead>
-          <tbody>{printPocasi()}</tbody>
+          <tbody>{PrintPocasi()}</tbody>
         </table>
       </section>
     </>

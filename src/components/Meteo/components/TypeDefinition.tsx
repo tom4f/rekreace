@@ -1,4 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
+import { EditMeteoType } from './ModifyPocasi';
 export interface urlQueryType extends ParsedUrlQuery {
   page: string;
 }
@@ -59,15 +60,6 @@ export type setPocasiType = React.Dispatch<
   React.SetStateAction<pocasiType[] | undefined>
 >;
 
-export type showYearTableType = {
-  pocasi: pocasiType[] | undefined;
-  setPocasi: setPocasiType;
-  editMeteo?: editMeteoType;
-  user?: string;
-  order?: string;
-  webToken?: string;
-};
-
 export type rgbCssType = (
   r: number,
   g: number,
@@ -95,22 +87,12 @@ export type oldPocasiType = {
   date: string;
 };
 
-export type editMeteoType = {
-  editDate: string;
-  editKey: string;
-  editValue: string | number;
-  dispEdit: boolean;
-  dispDelete: boolean;
-  dispAdd: boolean;
-  refresh: number;
-};
-
 export type setEditMeteoType = React.Dispatch<
-  React.SetStateAction<editMeteoType>
+  React.SetStateAction<EditMeteoType>
 >;
 
 export type ModifyPocasiType = {
-  editMeteo: editMeteoType;
+  editMeteo: EditMeteoType;
   setEditMeteo: setEditMeteoType;
   webToken: string;
   user: string;
@@ -126,9 +108,8 @@ export type FDobjectType = {
 
 export type addQuerySelectorType = (
   pocasi: pocasiType[],
-  editMeteo: editMeteoType,
-  setEditMeteo: setEditMeteoType,
-  webToken: string
+  editMeteo: EditMeteoType,
+  setEditMeteo: setEditMeteoType
 ) => void;
 
 type setUserType = React.Dispatch<React.SetStateAction<string>>;
@@ -141,6 +122,6 @@ export type ShowLoginType = {
   password: string;
   setPassword: setPasswordType;
   setWebToken: setWebTokenType;
-  editMeteo: editMeteoType;
+  editMeteo: EditMeteoType;
   setEditMeteo: setEditMeteoType;
 };

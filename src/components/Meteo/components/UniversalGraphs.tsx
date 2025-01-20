@@ -1,7 +1,9 @@
 import { OnePage } from './OnePage';
 import { FullscreenHeader } from './FullscreenHeader';
-import { universalGet } from 'src/features/meteo/hooks/useUniversalGet';
-import { useGetWeatherConfigWithData } from 'src/features/meteo/hooks/useLoadWeather';
+import {
+  universalGet,
+  useGetWeatherConfigWithData,
+} from 'src/features/meteo/hooks';
 import { GraphsDataWithGetDataFn } from './OnePage';
 
 const getTextDateFromNewDate = (updDate: Date) => {
@@ -10,12 +12,18 @@ const getTextDateFromNewDate = (updDate: Date) => {
   )}-${('0' + updDate.getDate()).slice(-2)}`;
 };
 
+type UniversalGraphsType = {
+  graphsConfig: GraphsDataWithGetDataFn[];
+  startDate?: string;
+  endDate?: string;
+};
+
 export const UniversalGraphs = ({
   graphsConfig,
-}: {
-  graphsConfig: GraphsDataWithGetDataFn[];
-}) => {
-  const queries = useGetWeatherConfigWithData(graphsConfig);
+  startDate,
+  endDate,
+}: UniversalGraphsType) => {
+  const queries = useGetWeatherConfigWithData(graphsConfig, startDate, endDate);
 
   const queriesData = queries.map((query) => query.data);
 
