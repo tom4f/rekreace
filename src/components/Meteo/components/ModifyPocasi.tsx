@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import FormularStyle from './../css/Formular.module.css';
 import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
 import { AddPocasi } from './AddPocasi';
-import { addQuerySelector } from 'src/components/Meteo/components/addQuerySelector';
+import { addLipnoTableQuerySelector } from 'src/components/Meteo/components/addLipnoTableQuerySelector';
 import { DeletePocasi } from './DeletePocasi';
 import { EditPocasi } from './EditPocasi';
 import { ShowYearTable } from './ShowYearTable';
@@ -50,7 +50,7 @@ export const ModifyPocasi = () => {
   // update table querySelector when 'pocasi' changed
   useEffect(() => {
     if (!pocasi) return;
-    addQuerySelector(pocasi, editMeteoRef.current, setEditMeteo);
+    addLipnoTableQuerySelector(pocasi, editMeteoRef.current, setEditMeteo);
   }, [pocasi]);
 
   return (

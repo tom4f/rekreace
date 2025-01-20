@@ -1,6 +1,6 @@
 import { addQuerySelectorType } from './TypeDefinition';
 
-export const addQuerySelector: addQuerySelectorType = (
+export const addLipnoTableQuerySelector: addQuerySelectorType = (
   pocasi,
   editMeteo,
   setEditMeteo
