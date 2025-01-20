@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import FormularStyle from './../css/Formular.module.css';
 import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
 import { AddPocasi } from './AddPocasi';
-import { addQuerySelector } from './addQuerySelector';
+import { addQuerySelector } from 'src/components/Meteo/components/addQuerySelector';
 import { DeletePocasi } from './DeletePocasi';
 import { EditPocasi } from './EditPocasi';
 import { ShowYearTable } from './ShowYearTable';
