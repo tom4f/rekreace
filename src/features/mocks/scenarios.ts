@@ -10,6 +10,8 @@ import {
   GET_DAVIS_ENDPOINT,
   GET_LIPNO_ENDPOINT,
   getLipnoScenarios,
+  GET_OLD_STATION_ENDPOINT,
+  getOldStationScenarios,
 } from '../meteo';
 
 export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
@@ -20,5 +22,6 @@ export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
     [MeteoFiles.DOWNLD02, getTextFileScenarios],
     [GET_DAVIS_ENDPOINT, getDavisScenarios],
     [GET_LIPNO_ENDPOINT, getLipnoScenarios],
+    [GET_OLD_STATION_ENDPOINT, getOldStationScenarios],
     ...getMultipleTextFileScenarios,
   ];

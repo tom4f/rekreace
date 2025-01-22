@@ -22,7 +22,7 @@ type MeteoAmountRequest = BaseMeteoRequest & {
 
 type MeteoRequest = MeteoDateRequest | MeteoAmountRequest;
 
-type PocasiResponse = {
+export type OldStationResponse = {
   wind3: number;
   wind6: number;
   wind9: number;
@@ -33,16 +33,16 @@ type PocasiResponse = {
   tempavg: number;
   tempmax: number;
   rain: number;
-  rain_rate_max: number;
+  //rain_rate_max: number;
   date: string;
 }[];
 
-export const GET_OLD_Station_ENDPOINT = `${Url.NEW_API}/meteo/read_old_station.php`;
+export const GET_OLD_STATION_ENDPOINT = `${Url.NEW_API}/meteo/read_old_station.php`;
 export const GET_OLD_STATION_KEY = 'getOldStation';
 
 const getOldStation = async (
   request: MeteoRequest
-): Promise<PocasiResponse> => {
+): Promise<OldStationResponse> => {
   const params = new URLSearchParams();
   if (request?.orderBy !== undefined) {
     params.append('orderBy', request.orderBy);
@@ -70,7 +70,7 @@ const getOldStation = async (
   }
 
   const data = await api.get({
-    url: `${GET_OLD_Station_ENDPOINT}?${params.toString()}`,
+    url: `${GET_OLD_STATION_ENDPOINT}?${params.toString()}`,
   });
 
   return data;

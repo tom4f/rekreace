@@ -115,32 +115,32 @@ export const ShowYearTable = () => {
             </tr>
             <tr>
               <th>
-                <button name='datum' onClick={(e) => sort(e)}>
+                <button name='datum' onClick={sort}>
                   datum
                 </button>
               </th>
               <th>
-                <button name='hladina' onClick={(e) => sort(e)}>
+                <button name='hladina' onClick={sort}>
                   hladina
                 </button>
               </th>
               <th>
-                <button name='pritok' onClick={(e) => sort(e)}>
+                <button name='pritok' onClick={sort}>
                   přítok
                 </button>
               </th>
               <th>
-                <button name='odtok' onClick={(e) => sort(e)}>
+                <button name='odtok' onClick={sort}>
                   odtok
                 </button>
               </th>
               <th>
-                <button name='voda' onClick={(e) => sort(e)}>
+                <button name='voda' onClick={sort}>
                   voda
                 </button>
               </th>
               <th>
-                <button name='vzduch' onClick={(e) => sort(e)}>
+                <button name='vzduch' onClick={sort}>
                   vzduch
                 </button>
               </th>

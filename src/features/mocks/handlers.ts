@@ -7,6 +7,7 @@ import {
   getMultipleTextFileMock,
   getDavisMock,
   getLipnoMock,
+  getOldStationMock,
 } from '../meteo';
 
 import { LOCAL_STORAGE_MOCK_DELAY_KEY } from './mockResolver';
@@ -32,4 +33,5 @@ export const resolveHandlers = () => [
   ...getMultipleTextFileMock[6](),
   ...getDavisMock(),
   ...getLipnoMock(),
+  ...getOldStationMock(),
 ];

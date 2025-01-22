@@ -1,53 +1,41 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Url } from '../../../api/paths';
+import { useContext, useEffect, useState, useRef } from 'react';
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
-import { oldPocasiType, rgbCssType } from './TypeDefinition';
+import { rgbCssType } from './TypeDefinition';
 import React from 'react';
+import { useGetOldStation } from 'src/features/meteo';
 
 export const ShowOldStationTable = () => {
   const { reduceDate } = useContext(DateContext);
+  const reduceDateRef = useRef(reduceDate);
 
-  const [orderBy, setOrderBy] = useState({
+  const [orderBy, setOrderBy] = useState<{
+    value: string;
+    order: 'DESC' | 'ASC';
+  }>({
     value: 'date',
     order: 'DESC',
   });
 
-  // which lines requested from mySQL
+  const limit = 30;
+
   const [start, setStart] = useState(0);
-  const [davis, setDavis] = useState<oldPocasiType[]>();
 
-  const loadDavis = (
-    start: number,
-    orderBy: { value: string; order: string }
-  ) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', `${Url.API}/pdo_read_old_station.php`, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.onload = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        const pdoResp = JSON.parse(xhr.responseText);
-        setDavis(pdoResp);
-        const [year, month, day] = pdoResp[0].date.split('-');
-        const clickedDate = new Date(year, month - 1, day);
-        reduceDate('daily', clickedDate);
-      }
-    };
-    xhr.onerror = () =>
-      console.log('** An error occurred during the transaction');
-    xhr.send(
-      JSON.stringify({
-        start: start,
-        limit: 30,
-        orderBy: orderBy.value,
-        sort: orderBy.order,
-      })
-    );
-  };
+  const { data: oldStation } = useGetOldStation({
+    start,
+    limit,
+    orderBy: orderBy.value,
+    sort: orderBy.order,
+    requestType: 'amount',
+  });
 
-  const loadDavisRef = useRef(loadDavis);
-
-  useEffect(() => loadDavisRef.current(start, orderBy), [start, orderBy]);
+  useEffect(() => {
+    if (oldStation?.length) {
+      const [year, month, day] = oldStation[0].date.split('-');
+      const clickedDate = new Date(+year, +month - 1, +day);
+      reduceDateRef.current('daily', clickedDate);
+    }
+  }, [start, orderBy, oldStation]);
 
   const rgbCss: rgbCssType = (r, g, b, value) => {
     return { background: `rgba(${r}, ${g}, ${b}, ${value})` };
@@ -58,9 +46,9 @@ export const ShowOldStationTable = () => {
       : { background: `rgba(0, 0, 255, ${-value / 25})` };
   };
 
-  const printDavis = () => {
+  const printoldStation = () => {
     const output: React.JSX.Element[] = [];
-    davis?.forEach((one, index) => {
+    oldStation?.forEach((one, index) => {
       output.push(
         <tr key={index}>
           <td className={TableStyle.link}>{one.date}</td>
@@ -84,7 +72,8 @@ export const ShowOldStationTable = () => {
     return output;
   };
   const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const clickedName = (e.target as HTMLButtonElement).name;
+    const clickedName = (e.target as HTMLButtonElement).id;
+    console.log(e.target);
     setOrderBy({
       value: clickedName,
       order: orderBy.order === 'DESC' ? 'ASC' : 'DESC',
@@ -129,59 +118,59 @@ export const ShowOldStationTable = () => {
             </tr>
             <tr>
               <th>
-                <button id='date' onClick={(e) => sort(e)}>
+                <button id='date' onClick={sort}>
                   datum
                 </button>
               </th>
               <th>
-                <button id='wind3' onClick={(e) => sort(e)}>
+                <button id='wind3' onClick={sort}>
                   &gt;3<sub id='wind3'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id='wind6' onClick={(e) => sort(e)}>
+                <button id='wind6' onClick={sort}>
                   &gt;6<sub id='wind6'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id='wind9' onClick={(e) => sort(e)}>
+                <button id='wind9' onClick={sort}>
                   &gt;9<sub id='wind9'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id='wind12' onClick={(e) => sort(e)}>
+                <button id='wind12' onClick={sort}>
                   &gt;12<sub id='wind12'>m/s</sub>
                 </button>
               </th>
               <th>
-                <button id='windmax' onClick={(e) => sort(e)}>
+                <button id='windmax' onClick={sort}>
                   max
                 </button>
               </th>
               <th>
-                <button id='direct' onClick={(e) => sort(e)}>
+                <button id='direct' onClick={sort}>
                   směr
                 </button>
               </th>
 
               <th>
-                <button id='tempmin' onClick={(e) => sort(e)}>
+                <button id='tempmin' onClick={sort}>
                   min
                 </button>
               </th>
               <th>
-                <button id='tempavg' onClick={(e) => sort(e)}>
+                <button id='tempavg' onClick={sort}>
                   prů
                 </button>
               </th>
               <th>
-                <button id='tempmax' onClick={(e) => sort(e)}>
+                <button id='tempmax' onClick={sort}>
                   max
                 </button>
               </th>
 
               <th>
-                <button id='rain' onClick={(e) => sort(e)}>
+                <button id='rain' onClick={sort}>
                   celk
                 </button>
               </th>
@@ -202,7 +191,7 @@ export const ShowOldStationTable = () => {
               <th>mm</th>
             </tr>
           </thead>
-          <tbody>{printDavis()}</tbody>
+          <tbody>{printoldStation()}</tbody>
         </table>
       </section>
     </>
