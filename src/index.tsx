@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { APP_MOCKS, ENV_MODE } from './env';
 import { LOCAL_STORAGE_MOCK_KEY } from './features/mocks';
 import { SetupWorker } from 'msw/browser';
+import { MockDevTools } from './components/MockDevTools';
 
 let worker: SetupWorker | null;
 
@@ -57,6 +58,7 @@ enableMocking().then(() => {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <Router basename='/rekreace'>
+          {ENV_MODE !== 'production' && APP_MOCKS && <MockDevTools />}
           <App />
         </Router>
       </QueryClientProvider>

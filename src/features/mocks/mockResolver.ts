@@ -6,8 +6,8 @@ export const LOCAL_STORAGE_MOCK_DELAY_KEY = 'mocks_delay';
 
 export const resolveMock = (
   handler: HttpHandler[],
-  scenarios?: { [key: string]: HttpHandler[] },
-  endpoint?: string
+  scenarios: { [key: string]: HttpHandler[] },
+  endpoint: string
 ) => {
   const settings = JSON.parse(
     localStorage.getItem(LOCAL_STORAGE_MOCK_KEY) || '{}'
@@ -17,7 +17,7 @@ export const resolveMock = (
     settings &&
     endpoint &&
     settings[endpoint] &&
-    scenarios &&
+    //scenarios &&
     scenarios[settings[endpoint]] &&
     settings[endpoint] !== DEFAULT_STATE
   ) {

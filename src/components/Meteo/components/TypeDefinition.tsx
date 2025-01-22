@@ -45,21 +45,6 @@ export type providerType = {
   reduceDate: reduceDateType;
 };
 
-export type pocasiType = {
-  datum: string;
-  cas: string;
-  hladina: number;
-  pritok: number;
-  odtok: number;
-  voda: number;
-  vzduch: number;
-  pocasi: string;
-};
-
-export type setPocasiType = React.Dispatch<
-  React.SetStateAction<pocasiType[] | undefined>
->;
-
 export type rgbCssType = (
   r: number,
   g: number,
@@ -87,30 +72,16 @@ export type oldPocasiType = {
   date: string;
 };
 
-export type setEditMeteoType = React.Dispatch<
+export type SetEditMeteoType = React.Dispatch<
   React.SetStateAction<EditMeteoType>
 >;
 
 export type ModifyPocasiType = {
   editMeteo: EditMeteoType;
-  setEditMeteo: setEditMeteoType;
+  setEditMeteo: SetEditMeteoType;
   webToken: string;
   user: string;
 };
-
-export type AddPocasiType = ModifyPocasiType & {
-  pocasi: pocasiType[];
-};
-
-export type FDobjectType = {
-  [key: string]: number | string | File;
-};
-
-export type addQuerySelectorType = (
-  pocasi: pocasiType[],
-  editMeteo: EditMeteoType,
-  setEditMeteo: setEditMeteoType
-) => void;
 
 type setUserType = React.Dispatch<React.SetStateAction<string>>;
 type setPasswordType = React.Dispatch<React.SetStateAction<string>>;
@@ -123,5 +94,5 @@ export type ShowLoginType = {
   setPassword: setPasswordType;
   setWebToken: setWebTokenType;
   editMeteo: EditMeteoType;
-  setEditMeteo: setEditMeteoType;
+  setEditMeteo: SetEditMeteoType;
 };

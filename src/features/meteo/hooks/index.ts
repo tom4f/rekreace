@@ -1,6 +1,6 @@
 export * from './useGetDavis';
 export * from './useGetTextFile';
-export * from './useGetPocasi';
+export * from './useGetLipno';
 export * from './useLoadWeather';
 export * from './useLoadWeatherFromFile';
 export * from './useUniversalGet';

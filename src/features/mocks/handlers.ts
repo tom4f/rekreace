@@ -2,6 +2,12 @@ import { delay, http } from 'msw';
 import { postLoginMock } from '../login';
 import { getForumMock } from '../forum';
 import { getBookingMock } from '../booking';
+import {
+  getTextFileMock,
+  getMultipleTextFileMock,
+  getDavisMock,
+  getLipnoMock,
+} from '../meteo';
 
 import { LOCAL_STORAGE_MOCK_DELAY_KEY } from './mockResolver';
 
@@ -16,4 +22,14 @@ export const resolveHandlers = () => [
   ...postLoginMock(),
   ...getForumMock(),
   ...getBookingMock(),
+  ...getTextFileMock(),
+  ...getMultipleTextFileMock[0](),
+  ...getMultipleTextFileMock[1](),
+  ...getMultipleTextFileMock[2](),
+  ...getMultipleTextFileMock[3](),
+  ...getMultipleTextFileMock[4](),
+  ...getMultipleTextFileMock[5](),
+  ...getMultipleTextFileMock[6](),
+  ...getDavisMock(),
+  ...getLipnoMock(),
 ];

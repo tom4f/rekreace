@@ -17,8 +17,6 @@ import {
 import { Bottom } from './components/Bottom/Bottom';
 import { Top } from './components/Top/Top';
 import { TopBedrich } from './components/Top/TopBedrich';
-import { MockDevTools } from './components/MockDevTools';
-import { APP_MOCKS, ENV_MODE } from './env';
 import { useLoginStatus } from './features/login/hooks/useGetLoginStatus';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
@@ -54,7 +52,7 @@ export const App = () => {
       <ErrorBoundary fallback={<div>Custom Error Message</div>}>
         {loginData?.isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
-        {ENV_MODE !== 'production' && APP_MOCKS && <MockDevTools />}
+
         <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/apartmany/*' element={<Apartments />} />

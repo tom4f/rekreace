@@ -8,12 +8,11 @@ import {
 import { availableScenarios } from '../../features/mocks';
 import { Button } from '../Atoms/Button/Button';
 import { Input } from '../Atoms/Input/Input';
-import { useQueryClient } from '@tanstack/react-query';
+import styled from 'styled-components';
 
 const MOCK_DEV_TOOLS_LOCAL_STORAGE_KEY = 'devTools_mocks';
 
 export const MockDevTools = () => {
-  const queryClient = useQueryClient();
   const [reload, setReload] = useState(1);
 
   const [search, setSearch] = useState('');
@@ -48,7 +47,7 @@ export const MockDevTools = () => {
     [key: string]: string;
   }
 
-  const onTagClick = (route: string[], scenario: string) => {
+  const onTagClick = (route: string, scenario: string) => {
     let settings: Settings = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_MOCK_KEY) || '{}'
     );
@@ -56,17 +55,11 @@ export const MockDevTools = () => {
       settings = {};
     }
 
-    settings[route[0]] = scenario;
+    settings[route] = scenario;
 
     localStorage.setItem(LOCAL_STORAGE_MOCK_KEY, JSON.stringify(settings));
     window.dispatchEvent(new Event('localStorageChange'));
     setReload(Math.random());
-  };
-
-  const onReFetchClick = (key: string) => {
-    queryClient.invalidateQueries({
-      queryKey: [key],
-    });
   };
 
   const onDelayChange = (delay: number) => {
@@ -133,7 +126,7 @@ export const MockDevTools = () => {
               </tr>
             </thead>
             <tbody>
-              {Array.from(availableScenarios.entries())
+              {availableScenarios
                 .filter((item) => {
                   if (!search) {
                     return true;
@@ -145,18 +138,13 @@ export const MockDevTools = () => {
                 })
                 .map(([route, scenarios]) => {
                   return Object.keys(scenarios).length ? (
-                    <tr key={route[0]}>
-                      <td>{route[0]}</td>
+                    <tr key={route}>
+                      <td>{route}</td>
                       <td>
-                        <Button
-                          label='reset'
-                          variant='blue'
-                          onClick={() => onReFetchClick(route[1])}
-                        />
-                        <Button
+                        <SmallButton
                           label='default'
                           variant={
-                            getActiveItem(route[0]) === DEFAULT_STATE
+                            getActiveItem(route) === DEFAULT_STATE
                               ? 'primary'
                               : 'secondary'
                           }
@@ -164,11 +152,11 @@ export const MockDevTools = () => {
                         />
                         {Object.keys(scenarios).map((scenario) => {
                           return (
-                            <Button
+                            <SmallButton
                               key={scenario}
                               label={scenario}
                               variant={
-                                getActiveItem(route[0]) === scenario
+                                getActiveItem(route) === scenario
                                   ? 'primary'
                                   : 'secondary'
                               }
@@ -189,3 +177,10 @@ export const MockDevTools = () => {
     </>
   );
 };
+
+const SmallButton = styled(Button)`
+  height: 20px;
+  margin: 2px;
+  padding: 2px;
+  font-size: 10px;
+`;

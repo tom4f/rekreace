@@ -9,7 +9,7 @@ import { ShowYearTable } from './ShowYearTable';
 import { ShowYearGraph } from './ShowYearGraph';
 import { useLoginStatus } from '../../../features/login/hooks/useGetLoginStatus';
 import { Login } from '../../../features/login';
-import { useGetPocasi } from 'src/features/meteo';
+import { useGetLipno } from 'src/features/meteo';
 
 export type EditMeteoType = {
   editDate: string;
@@ -23,7 +23,7 @@ export type EditMeteoType = {
 export const ModifyPocasi = () => {
   const { data: loginData } = useLoginStatus();
 
-  const { data: pocasi } = useGetPocasi({
+  const { data: pocasi } = useGetLipno({
     start: 0,
     limit: 30,
     requestType: 'amount',

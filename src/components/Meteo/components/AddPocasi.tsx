@@ -1,15 +1,21 @@
 import { useState } from 'react';
 import FormularStyle from './../css/Formular.module.css';
 import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
-import { AddPocasiType } from './TypeDefinition';
-import { useAddLipno, useGetPocasi } from 'src/features/meteo';
+import { useAddLipno, useGetLipno } from 'src/features/meteo';
 import { useLoginStatus } from 'src/features/login';
 import { EditMeteoType } from './ModifyPocasi';
+
+import { ModifyPocasiType } from './TypeDefinition';
+import { LipnoResponse } from 'src/features/meteo';
+
+export type AddPocasiType = ModifyPocasiType & {
+  pocasi: LipnoResponse;
+};
 
 export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
   const { mutate } = useAddLipno();
   const { data: loginData } = useLoginStatus();
-  const { data: pocasiData } = useGetPocasi({
+  const { data: pocasiData } = useGetLipno({
     start: 0,
     limit: 1,
     requestType: 'amount',
@@ -29,11 +35,11 @@ export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
 
   const [newValues, setNewValues] = useState({
     datum: today(new Date()),
-    hladina: 0,
-    pritok: 0,
-    odtok: 0,
-    voda: 0,
-    vzduch: 0,
+    hladina: 723,
+    pritok: 10,
+    odtok: 10,
+    voda: 10,
+    vzduch: 10,
     pocasi: '',
   });
 
@@ -45,6 +51,7 @@ export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
 
   const addLipno = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     mutate(
       {
         datum: newValues.datum,
@@ -72,9 +79,9 @@ export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
     );
   };
 
-  const set = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const set = (e: React.ChangeEvent<HTMLInputElement>, toNumber?: boolean) => {
     const param = e.target.name;
-    const value = e.target.value;
+    const value = toNumber ? parseFloat(e.target.value) : e.target.value;
     setNewValues({ ...newValues, [param]: value });
   };
 
@@ -108,47 +115,47 @@ export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
                 type='text'
                 name='datum'
                 value={newValues.datum}
-                onChange={(e) => set(e)}
+                onChange={set}
               />
             </div>
             <div className={FormularStyle.input_booking}>
               <label>voda:</label>
               <br />
               <input
-                type='text'
+                type='numeric'
                 name='voda'
                 value={newValues.voda || pocasiData[0].voda}
-                onChange={(e) => set(e)}
+                onChange={(e) => set(e, true)}
               />
             </div>
             <div className={FormularStyle.input_booking}>
               <label>vzduch:</label>
               <br />
               <input
-                type='text'
+                type='numeric'
                 name='vzduch'
                 value={newValues.vzduch || pocasiData[0].vzduch}
-                onChange={(e) => set(e)}
+                onChange={(e) => set(e, true)}
               />
             </div>
             <div className={FormularStyle.input_booking}>
               <label>hladina:</label>
               <br />
               <input
-                type='text'
+                type='numeric'
                 name='hladina'
                 value={newValues.hladina || pocasiData[0].hladina}
-                onChange={(e) => set(e)}
+                onChange={(e) => set(e, true)}
               />
             </div>
             <div className={FormularStyle.input_booking}>
               <label>přítok:</label>
               <br />
               <input
-                type='text'
+                type='numeric'
                 name='pritok'
                 value={newValues.pritok || pocasiData[0].pritok}
-                onChange={(e) => set(e)}
+                onChange={(e) => set(e, true)}
               />
             </div>
             <div className={FormularStyle.input_booking}>
@@ -158,7 +165,7 @@ export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
                 type='text'
                 name='odtok'
                 value={newValues.odtok || pocasiData[0].odtok}
-                onChange={(e) => set(e)}
+                onChange={(e) => set(e, true)}
               />
             </div>
             <div className={FormularStyle.input_booking}>
@@ -168,7 +175,7 @@ export const AddPocasi = ({ setEditMeteo }: AddPocasiType) => {
                 type='text'
                 name='pocasi'
                 value={newValues.pocasi || pocasiData[0].pocasi}
-                onChange={(e) => set(e)}
+                onChange={set}
               />
             </div>
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './css/MeteoBarBig.css';
-import { useGetDavis, useGetPocasi } from '../../../features/meteo';
+import { useGetDavis, useGetLipno } from '../../../features/meteo';
 import { Header } from 'src/components/Atoms';
 import styled from 'styled-components';
 
@@ -13,7 +13,7 @@ export const MeteoBarBig = () => {
     sort: 'DESC',
     refetchInterval: 10000,
   });
-  const { data: pocasiData, isFetching: isFetchingPocasi } = useGetPocasi({
+  const { data: pocasiData, isFetching: isFetchingPocasi } = useGetLipno({
     start: 0,
     limit: 1,
     requestType: 'amount',

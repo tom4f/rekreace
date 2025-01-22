@@ -22,10 +22,10 @@ type MeteoAmountRequest = BaseMeteoRequest & {
 
 type MeteoRequest = MeteoDateRequest | MeteoAmountRequest;
 
-export type PocasiResponse = {
+export type LipnoResponse = {
   id: number;
   datum: string;
-  cas: string;
+  cas: string | null;
   hladina: number;
   pritok: number;
   odtok: number;
@@ -34,10 +34,10 @@ export type PocasiResponse = {
   pocasi: string;
 }[];
 
-export const GET_POCASI_ENDPOINT = `${Url.NEW_API}/meteo/read_pocasi.php`;
-export const GET_POCASI_KEY = 'getPocasi';
+export const GET_LIPNO_ENDPOINT = `${Url.NEW_API}/meteo/read_pocasi.php`;
+export const GET_LIPNO_KEY = 'getLipno';
 
-const getPocasi = async (request: MeteoRequest): Promise<PocasiResponse> => {
+const getLipno = async (request: MeteoRequest): Promise<LipnoResponse> => {
   const params = new URLSearchParams();
   if (request?.orderBy !== undefined) {
     params.append('orderBy', request.orderBy);
@@ -65,23 +65,32 @@ const getPocasi = async (request: MeteoRequest): Promise<PocasiResponse> => {
   }
 
   const data = await api.get({
-    url: `${GET_POCASI_ENDPOINT}?${params.toString()}`,
+    url: `${GET_LIPNO_ENDPOINT}?${params.toString()}`,
   });
 
   return data;
 };
 
-export const useGetPocasi = (request: MeteoRequest) => {
+export const useGetLipno = (request: MeteoRequest) => {
   return useQuery({
     queryKey: [
-      GET_POCASI_KEY,
+      GET_LIPNO_KEY,
       request.requestType === 'amount' ? request.start : request.startDate,
       request.requestType === 'amount' ? request.limit : request.endDate,
       request.orderBy,
       request.sort,
     ],
-    queryFn: () => getPocasi(request),
+    queryFn: () => getLipno(request),
     refetchInterval: request.refetchInterval ?? 0,
     placeholderData: keepPreviousData,
+    select: (orig) =>
+      orig.map((item) => ({
+        ...item,
+        hladina: +item.hladina,
+        pritok: +item.pritok,
+        odtok: +item.odtok,
+        voda: +item.voda,
+        vzduch: +item.vzduch,
+      })),
   });
 };

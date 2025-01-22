@@ -1,13 +1,24 @@
-import { LOGIN_ENDPOINT, postLoginScenarios, LOGIN_KEY } from '../login';
-import { GET_FORUM_ENDPOINT, getForumScenarios, GET_FORUM_KEY } from '../forum';
+import { HttpHandler } from 'msw';
+import { LOGIN_ENDPOINT, postLoginScenarios } from '../login';
+import { GET_FORUM_ENDPOINT, getForumScenarios } from '../forum';
+import { GET_BOOKING_ENDPOINT, getBookingScenarios } from '../booking';
 import {
-  GET_BOOKING_ENDPOINT,
-  getBookingScenarios,
-  GET_BOOKING_KEY,
-} from '../booking';
+  MeteoFiles,
+  getTextFileScenarios,
+  getMultipleTextFileScenarios,
+  getDavisScenarios,
+  GET_DAVIS_ENDPOINT,
+  GET_LIPNO_ENDPOINT,
+  getLipnoScenarios,
+} from '../meteo';
 
-export const availableScenarios = new Map<string[], object>([
-  [[LOGIN_ENDPOINT, LOGIN_KEY], postLoginScenarios],
-  [[GET_FORUM_ENDPOINT, GET_FORUM_KEY], getForumScenarios],
-  [[GET_BOOKING_ENDPOINT, GET_BOOKING_KEY], getBookingScenarios],
-]);
+export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
+  [
+    [LOGIN_ENDPOINT, postLoginScenarios],
+    [GET_FORUM_ENDPOINT, getForumScenarios],
+    [GET_BOOKING_ENDPOINT, getBookingScenarios],
+    [MeteoFiles.DOWNLD02, getTextFileScenarios],
+    [GET_DAVIS_ENDPOINT, getDavisScenarios],
+    [GET_LIPNO_ENDPOINT, getLipnoScenarios],
+    ...getMultipleTextFileScenarios,
+  ];

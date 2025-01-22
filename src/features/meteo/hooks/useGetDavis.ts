@@ -30,8 +30,8 @@ export type DavisResponse = {
   temp_high_time: string;
   temp_low: number;
   temp_low_time: string;
-  heat_deg_days: string;
-  cool_deg_days: string;
+  heat_deg_days: number;
+  cool_deg_days: number;
   rain: number;
   wind_speed_avg: number;
   wind_speed_high: number;
@@ -47,9 +47,9 @@ export type DavisResponse = {
   huminidy_min: number;
   huminidy_avg: number;
   huminidy_max: number;
-  air_density_min: string;
-  air_density_avg: string;
-  air_density_max: string;
+  air_density_min: number;
+  air_density_avg: number;
+  air_density_max: number;
   rain_rate_max: number;
 }[];
 

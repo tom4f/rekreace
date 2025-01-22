@@ -64,14 +64,20 @@ export const EditPocasi = ({ editMeteo, setEditMeteo }: ModifyPocasiType) => {
             <input
               type='text'
               name='value'
-              onChange={(e) =>
-                setEditMeteo({
+              onChange={(e) => {
+                let value: number | string = e.target.value;
+
+                if (editKey !== 'pocasi') {
+                  value = +value;
+                }
+
+                return setEditMeteo({
                   ...editMeteo,
                   editDate,
                   editKey,
-                  editValue: e.target.value,
-                })
-              }
+                  editValue: value,
+                });
+              }}
               value={editValue}
             />
           </div>
