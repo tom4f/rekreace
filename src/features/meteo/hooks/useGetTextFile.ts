@@ -2,7 +2,7 @@ import { useQuery, useQueries } from '@tanstack/react-query';
 import { apiGet } from '../../../api/utils/get';
 import { Url } from '../../../api/paths';
 import { useState, useEffect } from 'react';
-import { MeteoKey } from './useLoadWeather';
+import { MeteoGetKey } from './useLoadWeather';
 
 export enum MeteoFiles {
   LIPNONET_METEO = `${Url.DAVIS}/lipnonet_meteo.txt`,
@@ -23,7 +23,7 @@ export const getTextFile = async (url: string): Promise<string> => {
 export const useGetTextFile = (url: string, refetchInterval?: number) => {
   const urlKey = url.split('/').pop();
   return useQuery({
-    queryKey: [MeteoKey.TEXT, urlKey],
+    queryKey: [MeteoGetKey.TEXT, urlKey],
     queryFn: () => getTextFile(url),
     refetchInterval,
   });
@@ -41,12 +41,12 @@ export const useGetNOAA = (year: string, month: string) => {
   const queries = useQueries({
     queries: [
       {
-        queryKey: [MeteoKey.NOAA, NOAAYR.split('/').pop()],
+        queryKey: [MeteoGetKey.NOAA, NOAAYR.split('/').pop()],
         queryFn: () => getTextFile(NOAAYR),
         placeholderData: previousData[0],
       },
       {
-        queryKey: [MeteoKey.NOAA, NOAAMO.split('/').pop()],
+        queryKey: [MeteoGetKey.NOAA, NOAAMO.split('/').pop()],
         queryFn: () => getTextFile(NOAAMO),
         placeholderData: previousData[1],
       },
@@ -77,7 +77,7 @@ export const useGetDownld02 = () => {
   meteoFiles = [...meteoFiles, MeteoFiles.DOWNLD02];
 
   const queries = meteoFiles.map((filePath) => ({
-    queryKey: [MeteoKey.DOWNLD02, filePath.split('/').pop()],
+    queryKey: [MeteoGetKey.DOWNLD02, filePath.split('/').pop()],
     queryFn: () => getTextFile(filePath),
   }));
 

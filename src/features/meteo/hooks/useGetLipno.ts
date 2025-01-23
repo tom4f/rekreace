@@ -1,6 +1,7 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Url } from '../../../api/paths';
 import { api } from '../../../api/utils';
+import { MeteoGetKey } from './useLoadWeather';
 
 type BaseMeteoRequest = {
   orderBy: string;
@@ -35,7 +36,7 @@ export type LipnoResponse = {
 }[];
 
 export const GET_LIPNO_ENDPOINT = `${Url.NEW_API}/meteo/read_pocasi.php`;
-export const GET_LIPNO_KEY = 'getLipno';
+export const GET_LIPNO_KEY = MeteoGetKey.LIPNO;
 
 const getLipno = async (request: MeteoRequest): Promise<LipnoResponse> => {
   const params = new URLSearchParams();
@@ -83,14 +84,5 @@ export const useGetLipno = (request: MeteoRequest) => {
     queryFn: () => getLipno(request),
     refetchInterval: request.refetchInterval ?? 0,
     placeholderData: keepPreviousData,
-    select: (orig) =>
-      orig.map((item) => ({
-        ...item,
-        hladina: +item.hladina,
-        pritok: +item.pritok,
-        odtok: +item.odtok,
-        voda: +item.voda,
-        vzduch: +item.vzduch,
-      })),
   });
 };

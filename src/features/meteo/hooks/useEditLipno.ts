@@ -2,11 +2,22 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { Url } from '../../../api/paths';
 import { api } from '../../../api/utils';
-import { MeteoKey } from './useLoadWeather';
+import { MeteoGetKey } from './useLoadWeather';
 
-type EditLipnoRequest = {
+export const lipnoKeys = <const>[
+  'hladina',
+  'pritok',
+  'odtok',
+  'voda',
+  'vzduch',
+  'pocasi',
+];
+
+export type LipnoKeyType = (typeof lipnoKeys)[number];
+
+export type EditLipnoRequest = {
   datum: string;
-  key: 'hladina' | 'pritok' | 'odtok' | 'voda' | 'vzduch' | 'pocasi';
+  key: LipnoKeyType;
   value: string | number;
   webToken: string;
   webUser: string;
@@ -49,7 +60,7 @@ export const useEditLipno = () => {
     mutationFn: editLipno,
     mutationKey: [EDIT_LIPNO_KEY],
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [MeteoKey.POCASI] });
+      queryClient.invalidateQueries({ queryKey: [MeteoGetKey.LIPNO] });
     },
   });
 };

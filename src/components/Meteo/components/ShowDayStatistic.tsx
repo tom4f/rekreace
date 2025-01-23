@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ChangeDate } from './ChangeDate';
+import { changeDate } from './changeDate';
 import { DateContext } from './DateContext';
 import { Header } from '../../Atoms';
 import { useGetNOAA } from '../../../features/meteo';
@@ -16,7 +16,7 @@ export const ShowDayStatistic = () => {
   const queries = useGetNOAA(year.toString(), month);
 
   const setDate = (period: string, step: 1 | -1) => {
-    reduceDate('davisStat', ChangeDate('davisStat', davisStat, period, step));
+    reduceDate('davisStat', changeDate('davisStat', davisStat, period, step));
   };
 
   return (

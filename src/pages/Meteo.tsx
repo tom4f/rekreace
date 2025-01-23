@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { DateProvider } from '../components/Meteo/components/DateContext';
 import { DavisGraphsDay } from '../components/Meteo/components/DavisGraphsDay';
-import { ModifyPocasi } from '../components/Meteo/components/ModifyPocasi';
+import { ModifyLipno } from '../components/Meteo/components/ModifyLipno';
 import {
   NavBar,
   NavBarDavis,
@@ -61,7 +61,7 @@ export const Meteo = () => {
                 </>
               }
             />
-            <Route path='edit' element={<ModifyPocasi />} />
+            <Route path='edit' element={<ModifyLipno />} />
           </Route>
 
           <Route path='oldStation' element={<NavBarOldStation />}>

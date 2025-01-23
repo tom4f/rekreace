@@ -8,7 +8,7 @@ export type MeteoRequest = {
   endDate?: string;
   orderBy: string;
   sort: string;
-  refetchInterval?: 10000;
+  refetchInterval?: number;
   url: string;
   requestType: 'amounth' | 'date';
 };

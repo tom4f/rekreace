@@ -6,19 +6,19 @@ import {
   PureData,
 } from 'src/components/Meteo/components/OnePage';
 
-export enum MeteoKey {
+export enum MeteoGetKey {
   DAVIS = 'getDavis',
   OLD_STATION = 'getOldStation',
-  POCASI = 'getPocasi',
+  LIPNO = 'getLipno',
   TEXT = 'getText',
   NOAA = 'getTextNoaa',
   DOWNLD02 = 'getTextDownld02',
 }
 
-const urlToMeteoKey: { [key: string]: MeteoKey } = {
-  '/api/meteo/read_davis.php': MeteoKey.DAVIS,
-  '/api/meteo/read_old_station.php': MeteoKey.OLD_STATION,
-  '/api/meteo/read_pocasi.php': MeteoKey.POCASI,
+const urlToMeteoGetKey: { [key: string]: MeteoGetKey } = {
+  '/api/meteo/read_davis.php': MeteoGetKey.DAVIS,
+  '/api/meteo/read_old_station.php': MeteoGetKey.OLD_STATION,
+  '/api/meteo/read_pocasi.php': MeteoGetKey.LIPNO,
 };
 
 export const useLoadWeather = (requests: MeteoRequest[]) => {
@@ -70,7 +70,7 @@ export const useGetWeatherConfigWithData = (
 
     return {
       queryKey: [
-        urlToMeteoKey[graphConfig.common.url],
+        urlToMeteoGetKey[graphConfig.common.url],
         startDate,
         endDate,
         request.orderBy,

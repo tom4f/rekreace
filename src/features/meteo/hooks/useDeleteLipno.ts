@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { Url } from '../../../api/paths';
 import { api } from '../../../api/utils';
-import { MeteoKey } from './useLoadWeather';
+import { MeteoGetKey } from './useLoadWeather';
 
 type DeleteLipnoRequest = {
   datum: string;
@@ -47,7 +47,7 @@ export const useDeleteLipno = () => {
     mutationFn: deleteLipno,
     mutationKey: [DELETE_LIPNO_KEY],
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [MeteoKey.POCASI] });
+      queryClient.invalidateQueries({ queryKey: [MeteoGetKey.LIPNO] });
     },
   });
 };

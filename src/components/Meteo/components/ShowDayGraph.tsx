@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import ShowDayGraphStyle from './../css/ShowDayGraph.module.css';
-import { ChangeDate } from './ChangeDate';
+import { changeDate } from './changeDate';
 import { DateContext } from './DateContext';
 import { Url } from '../../../api/paths';
 import { useLocation, NavLink } from 'react-router-dom';
@@ -30,7 +30,7 @@ export const ShowDayGraph = () => {
     `${Url.DAVIS}/archive/${year}/${type}-${year}-${monthString}-${dayString}.gif`;
 
   const setDate = (period: string, step: 1 | -1) => {
-    reduceDate('daily', ChangeDate('daily', daily, period, step));
+    reduceDate('daily', changeDate('daily', daily, period, step));
   };
 
   return (

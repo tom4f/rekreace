@@ -1,7 +1,7 @@
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Url } from '../../../api/paths';
 import { api } from '../../../api/utils';
-import { MeteoKey } from './useLoadWeather';
+import { MeteoGetKey } from './useLoadWeather';
 
 type BaseMeteoRequest = {
   orderBy: string;
@@ -54,7 +54,7 @@ export type DavisResponse = {
 }[];
 
 export const GET_DAVIS_ENDPOINT = `${Url.NEW_API}/meteo/read_davis.php`;
-export const GET_DAVIS_KEY = MeteoKey.DAVIS;
+export const GET_DAVIS_KEY = MeteoGetKey.DAVIS;
 
 const getDavis = async (request: MeteoRequest): Promise<DavisResponse> => {
   const params = new URLSearchParams();

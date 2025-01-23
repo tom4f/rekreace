@@ -1,11 +1,14 @@
-import { useState } from 'react';
-import ModifyPocasiStyle from './../css/ModifyPocasi.module.css';
-import { ModifyPocasiType } from './TypeDefinition';
+import { useState, useContext } from 'react';
+import ModifyLipnoStyle from './../css/ModifyLipno.module.css';
+import { ModifyLipnoType } from './EditLipno';
 import { useDeleteLipno } from 'src/features/meteo';
 import { Button } from 'src/components/Atoms/Button/Button';
 import { useLoginStatus } from 'src/features/login';
+import { DateContext } from './DateContext';
+import { EditMeteoType } from './ModifyLipno';
 
-export const DeletePocasi = ({ editMeteo, setEditMeteo }: ModifyPocasiType) => {
+export const DeleteLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
+  const { reduceDate } = useContext(DateContext);
   const { mutate } = useDeleteLipno();
   const { data: loginData } = useLoginStatus();
   const { webToken, webUser } = loginData;
@@ -14,20 +17,19 @@ export const DeletePocasi = ({ editMeteo, setEditMeteo }: ModifyPocasiType) => {
   const fotoGalleryOwner = '_ubytovani';
   const [loginResp, setLoginResp] = useState('empty');
 
-  const deleteMySQL = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const deleteLipno = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     mutate(
       { datum: editDate, webToken, webUser, fotoGalleryOwner },
       {
         onSuccess: () => {
-          setEditMeteo({
-            ...editMeteo,
-            dispAdd: false,
-            dispEdit: false,
+          reduceDate('yearSum', new Date());
+          setEditMeteo((orig: EditMeteoType) => ({
+            ...orig,
             dispDelete: false,
             refresh: refresh + 1,
-          });
+          }));
         },
         onError: () => {
           setLoginResp('error');
@@ -37,10 +39,15 @@ export const DeletePocasi = ({ editMeteo, setEditMeteo }: ModifyPocasiType) => {
   };
 
   return (
-    <div className={ModifyPocasiStyle.container}>
+    <div className={ModifyLipnoStyle.container}>
       <div
-        className={ModifyPocasiStyle.closeBtn}
-        onClick={() => setEditMeteo({ ...editMeteo, dispDelete: false })}
+        className={ModifyLipnoStyle.closeBtn}
+        onClick={() =>
+          setEditMeteo((orig: EditMeteoType) => ({
+            ...orig,
+            dispDelete: false,
+          }))
+        }
       >
         <span>x</span>
       </div>
@@ -49,7 +56,7 @@ export const DeletePocasi = ({ editMeteo, setEditMeteo }: ModifyPocasiType) => {
       ) : null}
       <h4>Mažete datum {editDate} </h4>
 
-      <Button label='Opravdu smazat?' onClick={deleteMySQL} />
+      <Button label='Opravdu smazat?' onClick={deleteLipno} />
     </div>
   );
 };

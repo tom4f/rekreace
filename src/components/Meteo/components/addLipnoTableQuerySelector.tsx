@@ -1,16 +1,15 @@
 import { LipnoResponse } from 'src/features/meteo';
-import { EditMeteoType } from './ModifyPocasi';
+import { EditMeteoType } from './ModifyLipno';
 import { SetEditMeteoType } from './TypeDefinition';
+import { LipnoKeyType, lipnoKeys } from 'src/features/meteo/hooks/useEditLipno';
 
 export type AddQuerySelectorType = (
   pocasi: LipnoResponse,
-  editMeteo: EditMeteoType,
   setEditMeteo: SetEditMeteoType
 ) => void;
 
 export const addLipnoTableQuerySelector: AddQuerySelectorType = (
   pocasi,
-  editMeteo,
   setEditMeteo
 ) => {
   const editTermin = (event: MouseEvent) => {
@@ -19,62 +18,43 @@ export const addLipnoTableQuerySelector: AddQuerySelectorType = (
     if (!childsTd) return null;
 
     let prevTd = clickedTd;
-    let clicedColumnNr = 0;
+    let clicedEditColumnNr = 0;
 
     for (let i = childsTd.length - 1; i > 0; i--) {
       if (prevTd.previousElementSibling) {
         prevTd = prevTd.previousElementSibling;
-        clicedColumnNr++;
+        clicedEditColumnNr++;
       }
     }
 
-    const allKeys = ['hladina', 'pritok', 'odtok', 'voda', 'vzduch', 'pocasi'];
-
-    let clickedDate = '';
+    let clickedDeleteDateText = '';
     if (childsTd[0] instanceof HTMLElement) {
-      clickedDate = childsTd[0].innerText;
+      clickedDeleteDateText = childsTd[0].innerText;
     }
 
     const clickedRowNr = pocasi.reduce(
       (total, value, index) =>
-        value.datum === clickedDate ? total + index : total,
+        value.datum === clickedDeleteDateText ? total + index : total,
       0
     );
 
-    const editKey = allKeys[clicedColumnNr - 1] as
-      | 'hladina'
-      | 'pritok'
-      | 'odtok'
-      | 'voda'
-      | 'vzduch'
-      | 'pocasi';
+    const editKey = lipnoKeys[clicedEditColumnNr - 1] as LipnoKeyType;
 
     const { datum: editDate, [editKey]: editValue } = pocasi[clickedRowNr];
 
-    if (clicedColumnNr) {
-      setEditMeteo({
-        ...editMeteo,
-        editDate,
-        editKey,
-        editValue: editValue,
-        dispEdit: true,
-        dispDelete: false,
-      });
-    } else {
-      setEditMeteo({
-        ...editMeteo,
-        editDate,
-        editKey,
-        editValue,
-        dispEdit: false,
-        dispDelete: true,
-      });
-    }
+    setEditMeteo((orig: EditMeteoType) => ({
+      ...orig,
+      editDate,
+      editKey,
+      editValue,
+      dispEdit: !!clicedEditColumnNr,
+      dispDelete: !clicedEditColumnNr,
+    }));
   };
 
   const clickedDiv = document.querySelectorAll('td');
 
   clickedDiv.forEach((div) => {
-    div.addEventListener('click', (e) => editTermin(e));
+    div.addEventListener('click', editTermin);
   });
 };

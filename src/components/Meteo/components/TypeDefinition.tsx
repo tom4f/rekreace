@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
-import { EditMeteoType } from './ModifyPocasi';
+import { EditMeteoType } from './ModifyLipno';
 export interface urlQueryType extends ParsedUrlQuery {
   page: string;
 }
@@ -75,13 +75,6 @@ export type oldPocasiType = {
 export type SetEditMeteoType = React.Dispatch<
   React.SetStateAction<EditMeteoType>
 >;
-
-export type ModifyPocasiType = {
-  editMeteo: EditMeteoType;
-  setEditMeteo: SetEditMeteoType;
-  webToken: string;
-  user: string;
-};
 
 type setUserType = React.Dispatch<React.SetStateAction<string>>;
 type setPasswordType = React.Dispatch<React.SetStateAction<string>>;
