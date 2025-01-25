@@ -70,7 +70,7 @@ export const ModifyLipno = () => {
         <>
           <LipnoModal />
           <Button
-            className='w-full !m-0'
+            className='w-full m-0!'
             label='Nový záznam'
             onClick={() =>
               setEditMeteo((orig: EditMeteoType) => ({
