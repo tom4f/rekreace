@@ -1,13 +1,16 @@
-import { useState, useRef, useContext } from 'react';
-import FormularStyle from './../css/Formular.module.css';
-import ModifyLipnoStyle from './../css/ModifyLipno.module.css';
-import { SetEditMeteoType } from './TypeDefinition';
-import { useEditLipno } from 'src/features/meteo/hooks/useEditLipno';
-import { useLoginStatus } from 'src/features/login';
-import { EditMeteoType } from './ModifyLipno';
-import { DateContext } from './DateContext';
+import { useContext, useRef } from 'react';
+import { Button } from 'src/components/Atoms/Button/Button';
 import { Input } from 'src/components/Atoms/Input/Input';
-import { EditLipnoRequest } from 'src/features/meteo/hooks/useEditLipno';
+import { useLoginStatus } from 'src/features/login';
+import {
+  EditLipnoRequest,
+  useEditLipno,
+} from 'src/features/meteo/hooks/useEditLipno';
+
+import { DateContext } from './DateContext';
+import { EditMeteoType } from './ModifyLipno';
+import { ModifyLipnoModal } from './ModifyLipnoModal';
+import { SetEditMeteoType } from './TypeDefinition';
 
 export type ModifyLipnoType = {
   editMeteo: EditMeteoType;
@@ -21,8 +24,6 @@ export const EditLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
   const { data: loginData } = useLoginStatus();
   const { editDate, editKey, editValue } = editMeteo;
 
-  const [loginResp, setLoginResp] = useState('empty');
-
   const editLipno = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -30,16 +31,14 @@ export const EditLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
 
     const formData = new FormData(formRef.current);
 
-    const value1 = formData.get('value');
+    const value = formData.get('value');
 
-    if (!value1) return;
-
-    const value = editKey === 'pocasi' ? `${value1}` : +value1;
+    if (!value) return;
 
     const payload: EditLipnoRequest = {
       datum: editDate,
       key: editKey,
-      value,
+      value: editKey === 'pocasi' ? `${value}` : +value,
       webToken: loginData.webToken,
       webUser: loginData.webUser,
       fotoGalleryOwner: loginData.webAccess,
@@ -47,42 +46,34 @@ export const EditLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
 
     mutate(payload, {
       onSuccess: () => {
-        console.log('EditLipno - ', new Date());
         reduceDate('yearSum', new Date());
-        setEditMeteo((editMeteo: EditMeteoType) => ({
-          ...editMeteo,
-          dispEdit: false,
+        setEditMeteo((orig: EditMeteoType) => ({
+          ...orig,
+          method: null,
+          methodResult: 'ok',
         }));
       },
       onError: () => {
-        setLoginResp('error');
+        setEditMeteo((orig: EditMeteoType) => ({
+          ...orig,
+          methodResult: 'error',
+        }));
       },
     });
   };
 
   return (
-    <div className={ModifyLipnoStyle.container}>
-      <div
-        className={ModifyLipnoStyle.closeBtn}
-        onClick={() => setEditMeteo({ ...editMeteo, dispEdit: false })}
-      >
-        <span>x</span>
-      </div>
-      {loginResp === 'error' ? <div> Někde nastala chyba :-(</div> : null}
+    <ModifyLipnoModal editMeteo={editMeteo} setEditMeteo={setEditMeteo}>
       <h4>Upravujete datum {editDate} </h4>
       <form ref={formRef} onSubmit={editLipno} autoComplete='off'>
-        <div className={FormularStyle.form_booking}>
-          <Input
-            label={editKey}
-            type='text'
-            name='value'
-            defaultValue={editValue}
-          />
-          <div className={FormularStyle.submit_booking}>
-            <input type='submit' name='odesli' value='Odeslat' />
-          </div>
-        </div>
+        <Input
+          label={editKey}
+          type='text'
+          name='value'
+          defaultValue={editValue}
+        />
+        <Button label='Odeslat' />
       </form>
-    </div>
+    </ModifyLipnoModal>
   );
 };

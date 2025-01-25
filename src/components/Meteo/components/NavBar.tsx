@@ -1,7 +1,8 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { CustomNavLinkType } from './TypeDefinition';
-import { Header } from '../../Atoms';
+import { Header } from 'src/components/Atoms';
 import styled from 'styled-components';
+
+import { CustomNavLinkType } from './TypeDefinition';
 
 const isFullscreen = () => {
   const urlParams = new URLSearchParams(window.location.search);

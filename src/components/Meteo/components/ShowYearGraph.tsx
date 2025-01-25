@@ -1,8 +1,9 @@
 import { useContext } from 'react';
-import { DateContext } from './DateContext';
-import { changeDate } from './changeDate';
-import { Url } from '../../../api/paths';
+import { Url } from 'src/api/paths';
 import { Header } from 'src/components/Atoms';
+
+import { changeDate } from './changeDate';
+import { DateContext } from './DateContext';
 
 export const ShowYearGraph = () => {
   const {

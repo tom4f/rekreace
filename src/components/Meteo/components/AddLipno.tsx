@@ -1,20 +1,20 @@
-import { useState, useRef, useContext } from 'react';
-import FormularStyle from './../css/Formular.module.css';
-import ModifyLipnoStyle from './../css/ModifyLipno.module.css';
-import { useAddLipno, useGetLipno } from 'src/features/meteo';
-import { useLoginStatus } from 'src/features/login';
-import { EditMeteoType } from './ModifyLipno';
-import { Input } from 'src/components/Atoms/Input/Input';
+import { useContext, useRef } from 'react';
 import { Button } from 'src/components/Atoms/Button/Button';
-import { AddLipnoRequest } from 'src/features/meteo';
+import { Input } from 'src/components/Atoms/Input/Input';
+import { useLoginStatus } from 'src/features/login';
+import { AddLipnoRequest, useAddLipno, useGetLipno } from 'src/features/meteo';
+
 import { DateContext } from './DateContext';
+import { EditMeteoType } from './ModifyLipno';
+import { ModifyLipnoModal } from './ModifyLipnoModal';
 import { SetEditMeteoType } from './TypeDefinition';
 
 type AddLipnoType = {
+  editMeteo: EditMeteoType;
   setEditMeteo: SetEditMeteoType;
 };
 
-export const AddLipno = ({ setEditMeteo }: AddLipnoType) => {
+export const AddLipno = ({ editMeteo, setEditMeteo }: AddLipnoType) => {
   const { reduceDate } = useContext(DateContext);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -27,8 +27,6 @@ export const AddLipno = ({ setEditMeteo }: AddLipnoType) => {
     orderBy: 'datum',
     sort: 'DESC',
   });
-
-  const [loginResp, setLoginResp] = useState('empty');
 
   if (!pocasiData) {
     return null;
@@ -70,84 +68,73 @@ export const AddLipno = ({ setEditMeteo }: AddLipnoType) => {
         reduceDate('yearSum', new Date());
         setEditMeteo((editMeteo: EditMeteoType) => ({
           ...editMeteo,
-          dispAdd: false,
+          method: null,
         }));
       },
       onError: () => {
-        setLoginResp('error');
+        setEditMeteo((orig: EditMeteoType) => ({
+          ...orig,
+          methodResult: 'error',
+        }));
       },
     });
   };
 
   return (
-    <>
-      <div className={ModifyLipnoStyle.container}>
-        <div
-          className={ModifyLipnoStyle.closeBtn}
-          onClick={() =>
-            setEditMeteo((editMeteo: EditMeteoType) => ({
-              ...editMeteo,
-              dispAdd: false,
-            }))
-          }
-        >
-          <span>x</span>
+    <ModifyLipnoModal editMeteo={editMeteo} setEditMeteo={setEditMeteo}>
+      <h4>Nový záznam</h4>
+      <form ref={formRef} onSubmit={addLipno} autoComplete='off'>
+        <div className='flex flex-wrap justify-center'>
+          <Input
+            label='datum:'
+            type='date'
+            name='datum'
+            defaultValue={formatDate(new Date())}
+          />
+          <Input
+            label='voda:'
+            type='number'
+            step='any'
+            name='voda'
+            defaultValue={voda}
+          />
+          <Input
+            label='vzduch:'
+            type='number'
+            step='any'
+            name='vzduch'
+            defaultValue={vzduch}
+          />
+          <Input
+            label='hladina:'
+            type='number'
+            step='any'
+            name='hladina'
+            defaultValue={hladina}
+          />
+          <Input
+            label='přítok:'
+            type='number'
+            step='any'
+            name='pritok'
+            defaultValue={pritok}
+          />
+          <Input
+            label='odtok:'
+            type='number'
+            step='any'
+            name='odtok'
+            defaultValue={odtok}
+          />
+          <Input
+            label='komentář:'
+            type='text'
+            name='pocasi'
+            defaultValue={pocasi}
+          />
+          <Button type='submit' label='Odeslat' />
         </div>
-        {loginResp === 'error' ? <div> Někde nastala chyba :-(</div> : null}
-        <h4>Nový záznam</h4>
-        <form ref={formRef} onSubmit={addLipno} autoComplete='off'>
-          <div className={FormularStyle.form_booking}>
-            <Input
-              label='datum:'
-              type='date'
-              name='datum'
-              defaultValue={formatDate(new Date())}
-            />
-            <Input
-              label='voda:'
-              type='number'
-              step='any'
-              name='voda'
-              defaultValue={voda}
-            />
-            <Input
-              label='vzduch:'
-              type='number'
-              step='any'
-              name='vzduch'
-              defaultValue={vzduch}
-            />
-            <Input
-              label='hladina:'
-              type='number'
-              step='any'
-              name='hladina'
-              defaultValue={hladina}
-            />
-            <Input
-              label='přítok:'
-              type='number'
-              step='any'
-              name='pritok'
-              defaultValue={pritok}
-            />
-            <Input
-              label='odtok:'
-              type='number'
-              step='any'
-              name='odtok'
-              defaultValue={odtok}
-            />
-            <Input
-              label='komentář:'
-              type='text'
-              name='pocasi'
-              defaultValue={pocasi}
-            />
-            <Button type='submit' label='Odeslat' />
-          </div>
-        </form>
-      </div>
-    </>
+      </form>
+    </ModifyLipnoModal>
   );
 };

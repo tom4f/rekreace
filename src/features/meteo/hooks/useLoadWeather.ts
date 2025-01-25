@@ -1,10 +1,10 @@
 import { useQueries } from '@tanstack/react-query';
-
-import { universalGet, MeteoRequest } from './useUniversalGet';
 import {
   GraphsDataWithGetDataFn,
   PureData,
 } from 'src/components/Meteo/components/OnePage';
+
+import { MeteoRequest, universalGet } from './useUniversalGet';
 
 export enum MeteoGetKey {
   DAVIS = 'getDavis',

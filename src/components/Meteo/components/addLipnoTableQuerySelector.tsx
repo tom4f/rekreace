@@ -1,7 +1,8 @@
 import { LipnoResponse } from 'src/features/meteo';
+import { lipnoKeys, LipnoKeyType } from 'src/features/meteo/hooks/useEditLipno';
+
 import { EditMeteoType } from './ModifyLipno';
 import { SetEditMeteoType } from './TypeDefinition';
-import { LipnoKeyType, lipnoKeys } from 'src/features/meteo/hooks/useEditLipno';
 
 export type AddQuerySelectorType = (
   pocasi: LipnoResponse,
@@ -49,6 +50,7 @@ export const addLipnoTableQuerySelector: AddQuerySelectorType = (
       editValue,
       dispEdit: !!clicedEditColumnNr,
       dispDelete: !clicedEditColumnNr,
+      method: clicedEditColumnNr ? 'edit' : 'delete',
     }));
   };
 

@@ -1,10 +1,11 @@
 import { useContext, useEffect, useRef, useState } from 'react';
+import { Header } from 'src/components/Atoms';
+import { useLoginStatus } from 'src/features/login';
+import { useGetLipno } from 'src/features/meteo';
+
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
 import { rgbCssType } from './TypeDefinition';
-import { Header } from 'src/components/Atoms';
-import { useGetLipno } from 'src/features/meteo';
-import { useLoginStatus } from 'src/features/login';
 
 export const ShowYearTable = () => {
   const { reduceDate } = useContext(DateContext);

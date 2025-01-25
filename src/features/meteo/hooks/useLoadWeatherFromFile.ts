@@ -1,8 +1,9 @@
-import { useGetDownld02 } from '..';
 import {
-  PureData,
   GraphsDataWithGetDataFn,
-} from '../../../components/Meteo/components/OnePage';
+  PureData,
+} from 'src/components/Meteo/components/OnePage';
+
+import { useGetDownld02 } from '..';
 
 type LoadDataFromFileFunctionType = (
   graphsConfig: GraphsDataWithGetDataFn[]

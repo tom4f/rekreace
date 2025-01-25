@@ -1,30 +1,27 @@
 import { useEffect, useState } from 'react';
-import FormularStyle from './../css/Formular.module.css';
-import ModifyLipnoStyle from './../css/ModifyLipno.module.css';
-import { AddLipno } from './AddLipno';
+import { Button } from 'src/components/Atoms/Button/Button';
 import { addLipnoTableQuerySelector } from 'src/components/Meteo/components/addLipnoTableQuerySelector';
+import { Login } from 'src/features/login';
+import { useLoginStatus } from 'src/features/login/hooks/useGetLoginStatus';
+import { LipnoKeyType, useGetLipno } from 'src/features/meteo';
+
+import { AddLipno } from './AddLipno';
 import { DeleteLipno } from './DeleteLipno';
 import { EditLipno } from './EditLipno';
-import { ShowYearTable } from './ShowYearTable';
 import { ShowYearGraph } from './ShowYearGraph';
-import { useLoginStatus } from '../../../features/login/hooks/useGetLoginStatus';
-import { Login } from '../../../features/login';
-import { useGetLipno } from 'src/features/meteo';
-import { Button } from 'src/components/Atoms/Button/Button';
+import { ShowYearTable } from './ShowYearTable';
 
 export type EditMeteoType = {
   editDate: string;
-  editKey: 'hladina' | 'pritok' | 'odtok' | 'voda' | 'vzduch' | 'pocasi';
+  editKey: LipnoKeyType;
   editValue: string | number;
-  dispEdit: boolean;
-  dispDelete: boolean;
-  dispAdd: boolean;
-  refresh: number;
+  method: 'edit' | 'add' | 'delete' | null;
+  methodResult: 'error' | 'ok' | null;
 };
 export const ModifyLipno = () => {
   const { data: loginData } = useLoginStatus();
 
-  const { data: pocasi } = useGetLipno({
+  const { data: pocasi, isSuccess } = useGetLipno({
     start: 0,
     limit: 30,
     requestType: 'amount',
@@ -32,53 +29,58 @@ export const ModifyLipno = () => {
     sort: 'DESC',
   });
 
-  // edit params
   const [editMeteo, setEditMeteo] = useState<EditMeteoType>({
     editDate: '',
     editKey: 'hladina',
     editValue: '',
-    dispEdit: false,
-    dispDelete: false,
-    dispAdd: false,
-    refresh: 0,
+    method: null,
+    methodResult: null,
   });
 
   useEffect(() => {
-    if (!pocasi) return;
-    addLipnoTableQuerySelector(pocasi, setEditMeteo);
-  }, [pocasi]);
+    if (isSuccess && pocasi.length) {
+      addLipnoTableQuerySelector(pocasi, setEditMeteo);
+    }
+  }, [pocasi, isSuccess]);
+
+  if (!isSuccess && !pocasi?.length) {
+    return null;
+  }
+
+  const LipnoModal = () => {
+    switch (editMeteo.method) {
+      case 'edit':
+        return <EditLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />;
+      case 'add':
+        return <AddLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />;
+      case 'delete':
+        return (
+          <DeleteLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />
+        );
+      default:
+        <></>;
+    }
+  };
 
   return (
     <>
-      <div className={ModifyLipnoStyle.editPocasi}>
-        {!loginData.isLogged && <Login />}
-
-        {editMeteo.dispAdd && pocasi && (
-          <AddLipno setEditMeteo={setEditMeteo} />
-        )}
-
-        {editMeteo.dispEdit && pocasi && (
-          <EditLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />
-        )}
-
-        {editMeteo.dispDelete && (
-          <DeleteLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />
-        )}
-
-        {loginData.isLogged ? (
-          <div className={FormularStyle.form_booking}>
-            <Button
-              label='Nový záznam'
-              onClick={() =>
-                setEditMeteo((orig: EditMeteoType) => ({
-                  ...orig,
-                  dispAdd: true,
-                }))
-              }
-            />
-          </div>
-        ) : null}
-      </div>
+      {!loginData.isLogged ? (
+        <Login />
+      ) : (
+        <>
+          <LipnoModal />
+          <Button
+            className='w-full !m-0'
+            label='Nový záznam'
+            onClick={() =>
+              setEditMeteo((orig: EditMeteoType) => ({
+                ...orig,
+                method: 'add',
+              }))
+            }
+          />
+        </>
+      )}
 
       <ShowYearTable />
       <ShowYearGraph />

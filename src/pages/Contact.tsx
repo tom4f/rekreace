@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { SendMessageRequest, useSendMessage } from 'src/features/contact';
 import 'src/components/Contact/css/contact.css';
+
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { AlertBox } from 'src/components/AlertBox/AlertBox';
-import { Modal } from 'src/components/Modal/Modal';
 import { Header } from 'src/components/Atoms';
+import { Modal } from 'src/components/Modal/Modal';
+import { SendMessageRequest, useSendMessage } from 'src/features/contact';
 
 export const Contact = () => {
   const { mutateAsync, isPending } = useSendMessage();

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { Url } from '../../../api/paths';
-import { api } from '../../../api/utils';
+import { Url } from 'src/api/paths';
+import { api } from 'src/api/utils';
 import { PureData } from 'src/components/Meteo/components/OnePage';
 
 export type MeteoRequest = {

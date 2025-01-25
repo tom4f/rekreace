@@ -1,21 +1,21 @@
-import { useState, useContext } from 'react';
-import ModifyLipnoStyle from './../css/ModifyLipno.module.css';
-import { ModifyLipnoType } from './EditLipno';
-import { useDeleteLipno } from 'src/features/meteo';
+import { useContext } from 'react';
 import { Button } from 'src/components/Atoms/Button/Button';
 import { useLoginStatus } from 'src/features/login';
+import { useDeleteLipno } from 'src/features/meteo';
+
 import { DateContext } from './DateContext';
+import { ModifyLipnoType } from './EditLipno';
 import { EditMeteoType } from './ModifyLipno';
+import { ModifyLipnoModal } from './ModifyLipnoModal';
 
 export const DeleteLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
   const { reduceDate } = useContext(DateContext);
   const { mutate } = useDeleteLipno();
   const { data: loginData } = useLoginStatus();
   const { webToken, webUser } = loginData;
-  const { editDate, refresh } = editMeteo;
+  const { editDate } = editMeteo;
 
   const fotoGalleryOwner = '_ubytovani';
-  const [loginResp, setLoginResp] = useState('empty');
 
   const deleteLipno = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -27,36 +27,24 @@ export const DeleteLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
           reduceDate('yearSum', new Date());
           setEditMeteo((orig: EditMeteoType) => ({
             ...orig,
-            dispDelete: false,
-            refresh: refresh + 1,
+            method: null,
+            methodResult: 'ok',
           }));
         },
         onError: () => {
-          setLoginResp('error');
+          setEditMeteo((orig: EditMeteoType) => ({
+            ...orig,
+            methodResult: 'error',
+          }));
         },
       }
     );
   };
 
   return (
-    <div className={ModifyLipnoStyle.container}>
-      <div
-        className={ModifyLipnoStyle.closeBtn}
-        onClick={() =>
-          setEditMeteo((orig: EditMeteoType) => ({
-            ...orig,
-            dispDelete: false,
-          }))
-        }
-      >
-        <span>x</span>
-      </div>
-      {loginResp === 'error' ? (
-        <div> Někde nastala chyba - {loginResp} :-(</div>
-      ) : null}
+    <ModifyLipnoModal editMeteo={editMeteo} setEditMeteo={setEditMeteo}>
       <h4>Mažete datum {editDate} </h4>
-
       <Button label='Opravdu smazat?' onClick={deleteLipno} />
-    </div>
+    </ModifyLipnoModal>
   );
 };
