@@ -1,9 +1,9 @@
-import { NavLink, Link } from 'react-router-dom';
-import { GoogleAd } from '../GoogleAd/GoogleAd';
-import mainImg from './../../images/main.jpg';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import mainImg from 'src/images/main.jpg';
+
 import { Header } from '../Atoms';
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { GoogleAd } from '../GoogleAd/GoogleAd';
 import { CustomNavLinkType } from '../Meteo/components/TypeDefinition';
 
 export const Top = () => {
