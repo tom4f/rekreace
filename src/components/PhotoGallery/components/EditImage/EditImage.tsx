@@ -1,7 +1,6 @@
-import { Login } from '../../../../features/login';
+import { Login, useLoginStatus } from '../../../../features/login';
 import { editImage } from '../../TypeDefinition';
 import { Formular } from './Formular';
-import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
 
 export const EditImage = ({
   editPhoto,

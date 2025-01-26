@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { Input } from 'src/components/Atoms';
+
 import { imageChangeType, PhotoType } from '../../TypeDefinition';
-import { Input } from '../../../Atoms/Input/Input';
 
 export const ImageChange = ({ setEditPhoto, imgId }: imageChangeType) => {
   const inputFile = useRef<HTMLInputElement>(null);

@@ -1,24 +1,23 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { DateProvider } from '../components/Meteo/components/DateContext';
-import { DavisGraphsDay } from '../components/Meteo/components/DavisGraphsDay';
-import { ModifyLipno } from '../components/Meteo/components/ModifyLipno';
 import {
+  DateProvider,
+  davisGraphsConfig,
+  DavisGraphsDay,
+  lipnoGraphsConfig,
+  ModifyLipno,
   NavBar,
   NavBarDavis,
   NavBarLipno,
   NavBarOldStation,
-} from '../components/Meteo/components/NavBar';
-import { UniversalGraphs } from 'src/components/Meteo/components/UniversalGraphs';
-import { ShowDayGraph } from '../components/Meteo/components/ShowDayGraph';
-import { ShowDayStatistic } from '../components/Meteo/components/ShowDayStatistic';
-import { ShowDayTable } from '../components/Meteo/components/ShowDayTable';
-import { ShowOldStationTable } from '../components/Meteo/components/ShowOldStationTable';
-import { ShowYearGraph } from '../components/Meteo/components/ShowYearGraph';
-import { ShowYearTable } from 'src/components/Meteo/components/ShowYearTable';
-
-import davisGraphsConfig from 'src/components/Meteo/config/davis-graphs.json';
-import lipnoGraphsConfig from 'src/components/Meteo/config/lipno-graphs.json';
-import oldGraphsGraphsConfig from 'src/components/Meteo/config/old-graphs.json';
+  oldGraphsGraphsConfig,
+  ShowDayGraph,
+  ShowDayStatistic,
+  ShowDayTable,
+  ShowOldStationTable,
+  ShowYearGraph,
+  ShowYearTable,
+  UniversalGraphs,
+} from 'src/components/Meteo';
 
 export const Meteo = () => {
   return (

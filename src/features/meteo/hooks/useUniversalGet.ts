@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Url } from 'src/api/paths';
 import { api } from 'src/api/utils';
-import { PureData } from 'src/components/Meteo/components/OnePage';
+import { PureData } from 'src/components/Meteo';
 
 export type MeteoRequest = {
   startDate?: string;

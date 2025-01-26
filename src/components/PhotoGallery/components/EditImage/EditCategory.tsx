@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { AlertBox, Delay } from '../../../AlertBox/AlertBox';
-import { categoryChangeType } from './../../TypeDefinition';
-import { AlertType } from '../../../../features/alert/utils/useAlert';
-import { CategoryNameType } from './../../TypeDefinition';
-import { fotoGalleryOwner } from '../../../../api/paths';
-import { useUpdateCategory } from '../../../../features/photo';
-import { Button } from '../../../Atoms/Button/Button';
-import { EditCategoryToggleType } from './Formular';
-import { Input } from '../../../Atoms/Input/Input';
+import { fotoGalleryOwner } from 'src/api/paths';
+import { AlertBox, Delay } from 'src/components/AlertBox/AlertBox';
+import { Button, Input } from 'src/components/Atoms';
+import { AlertType } from 'src/features/alert';
+import { useUpdateCategory } from 'src/features/photo';
 import styled from 'styled-components';
+
+import { categoryChangeType, CategoryNameType } from './../../TypeDefinition';
+import { EditCategoryToggleType } from './Formular';
 
 export type EditCategoryType = {
   editCategory: EditCategoryToggleType;

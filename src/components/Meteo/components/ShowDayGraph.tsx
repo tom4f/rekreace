@@ -1,10 +1,11 @@
 import { useContext } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { Url } from 'src/api/paths';
+import { Header } from 'src/components/Atoms';
+
 import ShowDayGraphStyle from './../css/ShowDayGraph.module.css';
 import { changeDate } from './changeDate';
 import { DateContext } from './DateContext';
-import { Url } from '../../../api/paths';
-import { useLocation, NavLink } from 'react-router-dom';
-import { Header } from '../../Atoms';
 
 export const ShowDayGraph = () => {
   const { search } = useLocation();

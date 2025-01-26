@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Button } from 'src/components/Atoms/Button/Button';
+import { Button } from 'src/components/Atoms';
 import { useLoginStatus } from 'src/features/login';
 import { useDeleteLipno } from 'src/features/meteo';
 

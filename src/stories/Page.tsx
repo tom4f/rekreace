@@ -1,5 +1,6 @@
-import { Header } from '../components/Atoms';
 import './page.css';
+
+import { Header } from 'src/components/Atoms';
 
 export const Page: React.FC = () => {
   return (

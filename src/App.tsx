@@ -6,7 +6,7 @@ import { Bottom } from './components/Bottom/Bottom';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { Top } from './components/Top/Top';
 import { TopBedrich } from './components/Top/TopBedrich';
-import { useLoginStatus } from './features/login/hooks/useGetLoginStatus';
+import { useLoginStatus } from './features/login/hooks';
 import {
   Apartments,
   Bedrich,
@@ -56,18 +56,18 @@ export const App = () => {
 
         <Routes>
           <Route path='/' element={<Start />} />
-          <Route path='/apartmany/*' element={<Apartments />} />
+          <Route path='/apartmany' element={<Apartments />} />
           <Route path='/objednavka/*' element={<Booking />} />
-          <Route path='/ceny/*' element={<Prices />} />
-          <Route path='/kontakt/*' element={<Contact />} />
-          <Route path='/frymburk/*' element={<Frymburk />} />
+          <Route path='/ceny' element={<Prices />} />
+          <Route path='/kontakt' element={<Contact />} />
+          <Route path='/frymburk' element={<Frymburk />} />
           <Route path='/meteostanice/*' element={<Meteo />} />
-          <Route path='/forum/*' element={<Forum />} />
+          <Route path='/forum' element={<Forum />} />
           <Route path='/fotogalerie/*' element={<PhotoGallery />} />
-          <Route path='/meteoalarm/*' element={<MeteoAlarm />} />
-          <Route path='/kaliste/*' element={<Kaliste />} />
-          <Route path='/windsurfing/*' element={<Windsurfing />} />
-          <Route path='/bedrich/*' element={<Bedrich />} />
+          <Route path='/meteoalarm' element={<MeteoAlarm />} />
+          <Route path='/kaliste' element={<Kaliste />} />
+          <Route path='/windsurfing' element={<Windsurfing />} />
+          <Route path='/bedrich' element={<Bedrich />} />
         </Routes>
         {!hideTopBottom && <Bottom />}
       </ErrorBoundary>

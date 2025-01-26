@@ -1,7 +1,9 @@
 import './SmallImages.css';
+
+import { useLoginStatus } from 'src/features/login';
+
 import { SmallImagesTypes } from '../../TypeDefinition';
 import { StyledDiv } from './StyledDiv.styled';
-import { useLoginStatus } from '../../../../features/login';
 
 export const SmallImages = ({
   eightPhoto,

@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useGetBooking } from 'src/features/booking';
-import { useLoginStatus } from 'src/features/login/hooks/useGetLoginStatus';
-import { Modal } from 'src/components/Modal/Modal';
-import { Edit } from '../Edit';
-import { weekStartAt } from 'src/utils/weekStartAt';
 import './css/showTable.css';
-import { skeletonBookingData } from 'src/features/booking';
+
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Modal } from 'src/components/Modal/Modal';
+import { skeletonBookingData, useGetBooking } from 'src/features/booking';
+import { useLoginStatus } from 'src/features/login';
+import { weekStartAt } from 'src/utils/weekStartAt';
+
+import { Edit } from '../Edit';
 
 export const ShowTable = () => {
   const [apartmentNr, setApartmentNr] = useState<1 | 2 | 3>();

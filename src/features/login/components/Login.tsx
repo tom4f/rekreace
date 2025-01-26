@@ -1,14 +1,12 @@
 import { useRef } from 'react';
-import styled from 'styled-components';
-import { AlertBox } from '../../../components/AlertBox/AlertBox';
-import { useAlert } from '../../alert/utils/useAlert';
-import { usePostLogin } from '../hooks';
-import { fotoGalleryOwner } from '../../../api/paths';
-import { LoginRequest } from '../hooks';
 import { NavLink } from 'react-router-dom';
-import { Input } from '../../../components/Atoms/Input/Input';
-import { Button } from '../../../components/Atoms/Button/Button';
-import { Header } from '../../../components/Atoms';
+import { fotoGalleryOwner } from 'src/api/paths';
+import { AlertBox } from 'src/components/AlertBox/AlertBox';
+import { Button, Header, Input } from 'src/components/Atoms';
+import { useAlert } from 'src/features/alert';
+import styled from 'styled-components';
+
+import { LoginRequest, usePostLogin } from '../hooks';
 
 export type LoginType = {
   setLoginData: React.Dispatch<

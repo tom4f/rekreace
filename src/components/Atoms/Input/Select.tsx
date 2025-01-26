@@ -1,4 +1,5 @@
 import React, { SelectHTMLAttributes } from 'react';
+
 import { StyledInput } from './StyledInput';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {

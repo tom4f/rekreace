@@ -1,9 +1,6 @@
 import { useState } from 'react';
-import { useAddForum } from '../../features/forum/hooks';
-import { Button } from '../Atoms/Button/Button';
-import { Input } from '../Atoms/Input/Input';
-import { Select } from '../Atoms/Input/Select';
-import { Textarea } from '../Atoms/Input/Textarea';
+import { Button, Input, Select, TextArea } from 'src/components/Atoms';
+import { useAddForum } from 'src/features/forum/hooks';
 
 type AddEntryType = {
   categoryFromUrl: number;
@@ -106,7 +103,7 @@ export const AddEntry = ({
               />
             </div>
             <div className='flex justify-center'>
-              <Textarea
+              <TextArea
                 label='text'
                 onChange={myChangeHandler}
                 placeholder='komentář'

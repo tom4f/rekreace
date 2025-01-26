@@ -1,8 +1,6 @@
-import { LipnoResponse } from 'src/features/meteo';
-import { lipnoKeys, LipnoKeyType } from 'src/features/meteo/hooks/useEditLipno';
+import { lipnoKeys, LipnoKeyType, LipnoResponse } from 'src/features/meteo';
 
-import { EditMeteoType } from './ModifyLipno';
-import { SetEditMeteoType } from './TypeDefinition';
+import { EditMeteoType, SetEditMeteoType } from '../components';
 
 export type AddQuerySelectorType = (
   pocasi: LipnoResponse,

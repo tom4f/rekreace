@@ -1,10 +1,11 @@
-import { useLocation } from 'react-router-dom';
+import './css/status.css';
+
+import { NavLink, useLocation } from 'react-router-dom';
+import { Header } from 'src/components/Atoms';
 import { useGetBooking } from 'src/features/booking';
 import { useLoginStatus } from 'src/features/login';
-import './css/status.css';
+
 import { ShowTable } from './ShowTable';
-import { NavLink } from 'react-router-dom';
-import { Header } from 'src/components/Atoms';
 
 export const Status = () => {
   const { data: loginData } = useLoginStatus();

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { Header } from '../components/Atoms/Header/Header';
+import { Header } from 'src/components/Atoms';
 
 const meta = {
   title: 'Example/Header',

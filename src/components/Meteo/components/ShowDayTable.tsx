@@ -1,9 +1,9 @@
-import { useContext, useRef, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Header } from 'src/components/Atoms';
+import { useGetDavis } from 'src/features/meteo';
+
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
-import React from 'react';
-import { Header } from '../../Atoms';
-import { useGetDavis } from 'src/features/meteo';
 
 export const ShowDayTable = () => {
   const { reduceDate } = useContext(DateContext);

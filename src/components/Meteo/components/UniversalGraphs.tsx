@@ -1,10 +1,7 @@
-import { OnePage } from './OnePage';
+import { universalGet, useGetWeatherConfigWithData } from 'src/features/meteo';
+
 import { FullscreenHeader } from './FullscreenHeader';
-import {
-  universalGet,
-  useGetWeatherConfigWithData,
-} from 'src/features/meteo/hooks';
-import { GraphsDataWithGetDataFn } from './OnePage';
+import { GraphsDataWithGetDataFn, OnePage } from './OnePage';
 
 const getTextDateFromNewDate = (updDate: Date) => {
   return `${updDate.getFullYear()}-${('0' + (updDate.getMonth() + 1)).slice(

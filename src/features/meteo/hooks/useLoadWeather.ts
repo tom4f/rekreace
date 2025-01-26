@@ -1,8 +1,5 @@
 import { useQueries } from '@tanstack/react-query';
-import {
-  GraphsDataWithGetDataFn,
-  PureData,
-} from 'src/components/Meteo/components/OnePage';
+import { GraphsDataWithGetDataFn, PureData } from 'src/components/Meteo';
 
 import { MeteoRequest, universalGet } from './useUniversalGet';
 

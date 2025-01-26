@@ -1,25 +1,26 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Form, Status } from 'src/components/Booking';
 import { useLoginStatus } from 'src/features/login';
-import { Form } from 'src/components/Booking/components/Form';
-import { Status } from 'src/components/Booking/components/Status/Status';
 
 export const Booking = () => {
   const { data: loginData } = useLoginStatus();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const isEditPage = pathname === '/objednavka/edit';
+
+  useEffect(() => {
+    if (loginData.isLogged || !isEditPage) {
+      return;
+    }
+    navigate('/bedrich');
+  }, [loginData.isLogged, navigate, isEditPage]);
 
   return (
-    <div>
-      <Routes>
-        <Route path='/' element={<Form />}></Route>
-        <Route
-          path='/edit'
-          element={
-            !loginData?.isLogged ? (
-              <Navigate replace to={'../../bedrich'} />
-            ) : null
-          }
-        />
-      </Routes>
+    <>
+      {!isEditPage && <Form />}
       <Status />
-    </div>
+    </>
   );
 };

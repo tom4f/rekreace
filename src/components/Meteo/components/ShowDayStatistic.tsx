@@ -1,8 +1,9 @@
 import { useContext } from 'react';
+import { Header } from 'src/components/Atoms';
+import { useGetNOAA } from 'src/features/meteo';
+
 import { changeDate } from './changeDate';
 import { DateContext } from './DateContext';
-import { Header } from '../../Atoms';
-import { useGetNOAA } from '../../../features/meteo';
 
 export const ShowDayStatistic = () => {
   const {

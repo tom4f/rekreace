@@ -1,23 +1,22 @@
-import { useRef, useState, SetStateAction, Dispatch } from 'react';
-import { AlertBox, Delay } from '../../../AlertBox/AlertBox';
-import { AlertType } from '../../../../features/alert/utils/useAlert';
-import { PhotoType, SetStateType, CategoryObjType } from '../../TypeDefinition';
-import { LoginResponse } from '../../../../features/login';
 import './../BigImage/CategoryListEdit.css';
-import { EditCategory } from './EditCategory';
-import { ImageChange } from './ImageChange';
-import { fotoGalleryOwner } from '../../../../api/paths';
+
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { fotoGalleryOwner } from 'src/api/paths';
+import { AlertBox, Delay } from 'src/components/AlertBox/AlertBox';
+import { Button, Input, Select, TextArea } from 'src/components/Atoms';
+import { AlertType } from 'src/features/alert';
+import { LoginResponse } from 'src/features/login';
 import {
   useAddPhoto,
-  useUpdatePhoto,
   useDeletePhoto,
   useGetCategory,
-} from '../../../../features/photo';
-import { Input } from '../../../Atoms/Input/Input';
-import { Select } from '../../../Atoms/Input/Select';
-import { Textarea } from '../../../Atoms/Input/Textarea';
-import { Button } from '../../../Atoms/Button/Button';
+  useUpdatePhoto,
+} from 'src/features/photo';
 import styled from 'styled-components';
+
+import { CategoryObjType, PhotoType, SetStateType } from '../../TypeDefinition';
+import { EditCategory } from './EditCategory';
+import { ImageChange } from './ImageChange';
 
 type ChangeType = React.ChangeEvent<
   HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -157,7 +156,7 @@ export const Formular = ({
           name='typ'
         />
 
-        <Textarea
+        <TextArea
           label='Popis'
           value={editPhoto.text ?? 'loading...'}
           onChange={change}

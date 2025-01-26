@@ -1,13 +1,12 @@
-import { useGetForum } from '../features/forum/hooks';
-import { AddEntry } from '../components/Forum/AddEntry';
 import '../components/Forum/css/forum.css';
+
+import { useState } from 'react';
+import { Button, Header, Input, Select } from 'src/components/Atoms';
+
+import { AddEntry } from '../components/Forum/AddEntry';
 import { Messages } from '../components/Forum/Messages';
 import { Paginations } from '../components/Forum/Paginations';
-import { Button } from '../components/Atoms/Button/Button';
-import { Header } from '../components/Atoms';
-import { Input } from 'src/components/Atoms/Input/Input';
-import { Select } from 'src/components/Atoms/Input/Select';
-import { useState } from 'react';
+import { useGetForum } from '../features/forum';
 
 export type ForumParams = {
   begin: number;

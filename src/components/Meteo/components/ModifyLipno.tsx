@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button } from 'src/components/Atoms/Button/Button';
-import { addLipnoTableQuerySelector } from 'src/components/Meteo/components/addLipnoTableQuerySelector';
-import { Login } from 'src/features/login';
-import { useLoginStatus } from 'src/features/login/hooks/useGetLoginStatus';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'src/components/Atoms';
+import { useLoginStatus } from 'src/features/login';
 import { LipnoKeyType, useGetLipno } from 'src/features/meteo';
 
+import { addLipnoTableQuerySelector } from '../utils/addLipnoTableQuerySelector';
 import { AddLipno } from './AddLipno';
 import { DeleteLipno } from './DeleteLipno';
 import { EditLipno } from './EditLipno';
@@ -19,6 +19,7 @@ export type EditMeteoType = {
   methodResult: 'error' | 'ok' | null;
 };
 export const ModifyLipno = () => {
+  const navigate = useNavigate();
   const { data: loginData } = useLoginStatus();
 
   const { data: pocasi, isSuccess } = useGetLipno({
@@ -43,6 +44,12 @@ export const ModifyLipno = () => {
     }
   }, [pocasi, isSuccess]);
 
+  useEffect(() => {
+    if (!loginData.isLogged) {
+      navigate('/bedrich');
+    }
+  }, [loginData.isLogged, navigate]);
+
   if (!isSuccess && !pocasi?.length) {
     return null;
   }
@@ -64,23 +71,17 @@ export const ModifyLipno = () => {
 
   return (
     <>
-      {!loginData.isLogged ? (
-        <Login />
-      ) : (
-        <>
-          <LipnoModal />
-          <Button
-            className='w-full m-0!'
-            label='Nový záznam'
-            onClick={() =>
-              setEditMeteo((orig: EditMeteoType) => ({
-                ...orig,
-                method: 'add',
-              }))
-            }
-          />
-        </>
-      )}
+      <LipnoModal />
+      <Button
+        className='w-full m-0!'
+        label='Nový záznam'
+        onClick={() =>
+          setEditMeteo((orig: EditMeteoType) => ({
+            ...orig,
+            method: 'add',
+          }))
+        }
+      />
 
       <ShowYearTable />
       <ShowYearGraph />

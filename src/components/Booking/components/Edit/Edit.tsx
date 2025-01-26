@@ -1,14 +1,14 @@
-import { useState, useMemo } from 'react';
-import { useAlert } from '../../../../features/alert/utils/useAlert';
-import { useEditBooking, useGetBooking } from '../../../../features/booking';
-import { StyledForm, StyledLogin } from '../../../../features/login';
-import { AlertBox } from '../../../AlertBox/AlertBox';
-import { skeletonBookingData } from '../../../../features/booking';
-import { useLoginStatus } from '../../../../features/login/hooks/useGetLoginStatus';
-import { Input } from '../../../Atoms/Input/Input';
-import { Select } from '../../../Atoms/Input/Select';
-import { Button } from '../../../Atoms/Button/Button';
-import { weekStartAt } from '../../../../utils/weekStartAt';
+import { useMemo, useState } from 'react';
+import { AlertBox } from 'src/components/AlertBox/AlertBox';
+import { Button, Input, Select } from 'src/components/Atoms';
+import { useAlert } from 'src/features/alert';
+import {
+  skeletonBookingData,
+  useEditBooking,
+  useGetBooking,
+} from 'src/features/booking';
+import { StyledForm, StyledLogin, useLoginStatus } from 'src/features/login';
+import { weekStartAt } from 'src/utils/weekStartAt';
 
 type EditType = {
   week: number;
@@ -100,7 +100,9 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
 
             <Select
               name='g_status'
-              onChange={(event) => setGStatus(+event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                setGStatus(+event.target.value)
+              }
               defaultValue={gStatus}
               label='Stav :'
               options={statusOptions}
@@ -108,7 +110,9 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
 
             <Input
               label='Text :'
-              onChange={(event) => setGText(event?.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setGText(event?.target.value)
+              }
               type='text'
               name='g_text'
               value={gText}

@@ -1,9 +1,5 @@
-import { Login } from '../features/login';
 import { Modal } from '../components/Modal/Modal';
-import {
-  useLoginStatus,
-  useLogout,
-} from '../features/login/hooks/useGetLoginStatus';
+import { Login, useLoginStatus, useLogout } from '../features/login';
 
 export const Bedrich = () => {
   const { data: loginData } = useLoginStatus();

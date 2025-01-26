@@ -1,7 +1,4 @@
-import {
-  GraphsDataWithGetDataFn,
-  PureData,
-} from 'src/components/Meteo/components/OnePage';
+import { GraphsDataWithGetDataFn, PureData } from 'src/components/Meteo';
 
 import { useGetDownld02 } from '..';
 

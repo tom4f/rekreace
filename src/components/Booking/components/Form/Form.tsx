@@ -1,8 +1,9 @@
-import { useState } from 'react';
 import './css/formular.css';
-import { useSendBooking } from '../../../../features/booking';
-import { Modal } from '../../../Modal/Modal';
-import { AlertBox } from '../../../AlertBox/AlertBox';
+
+import { useState } from 'react';
+import { AlertBox } from 'src/components/AlertBox/AlertBox';
+import { Modal } from 'src/components/Modal/Modal';
+import { useSendBooking } from 'src/features/booking';
 
 export const Form = () => {
   const { mutateAsync } = useSendBooking();

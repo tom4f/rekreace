@@ -1,6 +1,5 @@
 import { useContext, useRef } from 'react';
-import { Button } from 'src/components/Atoms/Button/Button';
-import { Input } from 'src/components/Atoms/Input/Input';
+import { Button, Input } from 'src/components/Atoms';
 import { useLoginStatus } from 'src/features/login';
 import { AddLipnoRequest, useAddLipno, useGetLipno } from 'src/features/meteo';
 
