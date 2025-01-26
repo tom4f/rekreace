@@ -1,7 +1,7 @@
 import { useContext, useRef } from 'react';
-import { Button, Input } from 'src/components/Atoms';
-import { useLoginStatus } from 'src/features/login';
-import { EditLipnoRequest, useEditLipno } from 'src/features/meteo';
+import { Button, Input } from 'components/Atoms';
+import { useLoginStatus } from 'features/login';
+import { EditLipnoRequest, useEditLipno } from 'features/meteo';
 
 import { DateContext } from './DateContext';
 import { EditMeteoType } from './ModifyLipno';

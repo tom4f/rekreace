@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { fotoGalleryOwner } from 'src/api/paths';
-import { Header } from 'src/components/Atoms';
-import { BigImage } from 'src/components/PhotoGallery/components/BigImage/BigImage';
-import { SmallImages } from 'src/components/PhotoGallery/components/SmallImages';
+import { fotoGalleryOwner } from 'api/paths';
+import { Header } from 'components/Atoms';
+import { BigImage } from 'components/PhotoGallery/components/BigImage/BigImage';
+import { SmallImages } from 'components/PhotoGallery/components/SmallImages';
 import {
   AllPhotoType,
   CategoryObjType,
-} from 'src/components/PhotoGallery/TypeDefinition';
-import { useGetPhoto } from 'src/features/photo';
+} from 'components/PhotoGallery/TypeDefinition';
+import { useGetPhoto } from 'features/photo';
 
 export const PhotoGallery = ({ category }: { category?: number }) => {
   const { data: allPhoto } = useGetPhoto({ fotoGalleryOwner });

@@ -1,8 +1,8 @@
+import { Button } from 'components/Atoms';
+import { useLoginStatus } from 'features/login';
+import { LipnoKeyType, useGetLipno } from 'features/meteo';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'src/components/Atoms';
-import { useLoginStatus } from 'src/features/login';
-import { LipnoKeyType, useGetLipno } from 'src/features/meteo';
 
 import { addLipnoTableQuerySelector } from '../utils/addLipnoTableQuerySelector';
 import { AddLipno } from './AddLipno';

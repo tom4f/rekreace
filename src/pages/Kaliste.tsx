@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
-import { PhotoGallery } from 'src/pages/PhotoGallery';
-import { Forum } from 'src/components/Start/Forum/Forum';
+import { PhotoGallery } from 'pages/PhotoGallery';
+import { Forum } from 'components/Start/Forum/Forum';
 
 export const Kaliste = () => {
   return (

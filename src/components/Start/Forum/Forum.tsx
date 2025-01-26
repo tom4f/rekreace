@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useGetForum } from '../../../features/forum';
-import { Header } from 'src/components/Atoms';
+import { Header } from 'components/Atoms';
 
 export const Forum = ({
   searchCriteria = '',

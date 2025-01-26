@@ -1,4 +1,4 @@
-import { lipnoKeys, LipnoKeyType, LipnoResponse } from 'src/features/meteo';
+import { lipnoKeys, LipnoKeyType, LipnoResponse } from 'features/meteo';
 
 import { EditMeteoType, SetEditMeteoType } from '../components';
 

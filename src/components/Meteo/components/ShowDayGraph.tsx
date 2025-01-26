@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Url } from 'src/api/paths';
-import { Header } from 'src/components/Atoms';
+import { Url } from 'api/paths';
+import { Header } from 'components/Atoms';
 
 import ShowDayGraphStyle from './../css/ShowDayGraph.module.css';
 import { changeDate } from './changeDate';

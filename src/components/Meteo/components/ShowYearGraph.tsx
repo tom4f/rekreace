@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { Url } from 'src/api/paths';
-import { Header } from 'src/components/Atoms';
+import { Url } from 'api/paths';
+import { Header } from 'components/Atoms';
 
 import { changeDate } from './changeDate';
 import { DateContext } from './DateContext';

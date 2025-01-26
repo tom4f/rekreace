@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { fotoGalleryOwner } from 'src/api/paths';
-import { AlertBox } from 'src/components/AlertBox/AlertBox';
-import { Button, Header, Input } from 'src/components/Atoms';
-import { useAlert } from 'src/features/alert';
+import { fotoGalleryOwner } from 'api/paths';
+import { AlertBox } from 'components/AlertBox/AlertBox';
+import { Button, Header, Input } from 'components/Atoms';
+import { useAlert } from 'features/alert';
 import styled from 'styled-components';
 
 import { LoginRequest, usePostLogin } from '../hooks';

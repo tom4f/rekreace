@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { StyledImage, StyledSmallImage } from 'src/pages/Apartments';
-import { Modal } from 'src/components/Modal/Modal';
-import frymburk_old1 from 'src/images/frymburk_old1.jpg';
-import frymburk_old1_small from 'src/images/frymburk_old1_small.jpg';
-import frymburk_old2 from 'src/images/frymburk_old2.jpg';
-import frymburk_old2_small from 'src/images/frymburk_old2_small.jpg';
-import frymburk_old3 from 'src/images/frymburk_old3.jpg';
-import frymburk_old3_small from 'src/images/frymburk_old3_small.jpg';
-import kovarov from 'src/images/kovarov.jpg';
-import kovarov1 from 'src/images/kovarov1.jpg';
-import kovarov_b from 'src/images/kovarov_b.jpg';
+import { StyledImage, StyledSmallImage } from 'pages/Apartments';
+import { Modal } from 'components/Modal/Modal';
+import frymburk_old1 from 'images/frymburk_old1.jpg';
+import frymburk_old1_small from 'images/frymburk_old1_small.jpg';
+import frymburk_old2 from 'images/frymburk_old2.jpg';
+import frymburk_old2_small from 'images/frymburk_old2_small.jpg';
+import frymburk_old3 from 'images/frymburk_old3.jpg';
+import frymburk_old3_small from 'images/frymburk_old3_small.jpg';
+import kovarov from 'images/kovarov.jpg';
+import kovarov1 from 'images/kovarov1.jpg';
+import kovarov_b from 'images/kovarov_b.jpg';
 
 export const Frymburk = () => {
   const [isVisible, setIsVisible] = useState(false);

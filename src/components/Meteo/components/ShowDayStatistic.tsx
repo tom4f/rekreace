@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { Header } from 'src/components/Atoms';
-import { useGetNOAA } from 'src/features/meteo';
+import { Header } from 'components/Atoms';
+import { useGetNOAA } from 'features/meteo';
 
 import { changeDate } from './changeDate';
 import { DateContext } from './DateContext';

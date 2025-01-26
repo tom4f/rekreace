@@ -1,13 +1,13 @@
-import revir_1 from 'src/images/revir_1.jpg';
-import revir_2 from 'src/images/revir_2.jpg';
-import revir_3 from 'src/images/revir_3.jpg';
-import revir_4 from 'src/images/revir_4.jpg';
-import revir_5 from 'src/images/revir_5.jpg';
-import revir_6 from 'src/images/revir_6.jpg';
-import revir_7 from 'src/images/revir_7.jpg';
-import revir_8 from 'src/images/revir_8.jpg';
-import revir_lokality from 'src/images/revir_lokality.jpg';
-import revir_smery from 'src/images/revir_smery.jpg';
+import revir_1 from 'images/revir_1.jpg';
+import revir_2 from 'images/revir_2.jpg';
+import revir_3 from 'images/revir_3.jpg';
+import revir_4 from 'images/revir_4.jpg';
+import revir_5 from 'images/revir_5.jpg';
+import revir_6 from 'images/revir_6.jpg';
+import revir_7 from 'images/revir_7.jpg';
+import revir_8 from 'images/revir_8.jpg';
+import revir_lokality from 'images/revir_lokality.jpg';
+import revir_smery from 'images/revir_smery.jpg';
 
 export const Windsurfing = () => {
   return (

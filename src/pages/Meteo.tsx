@@ -1,4 +1,3 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
 import {
   DateProvider,
   davisGraphsConfig,
@@ -17,7 +16,8 @@ import {
   ShowYearGraph,
   ShowYearTable,
   UniversalGraphs,
-} from 'src/components/Meteo';
+} from 'components/Meteo';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 export const Meteo = () => {
   return (

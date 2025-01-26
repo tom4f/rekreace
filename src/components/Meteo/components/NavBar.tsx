@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Header } from 'src/components/Atoms';
+import { Header } from 'components/Atoms';
 import styled from 'styled-components';
 
 import { CustomNavLinkType } from './TypeDefinition';

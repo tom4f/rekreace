@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Url } from 'src/api/paths';
-import { apiGet } from 'src/api/utils/get';
+import { Url } from 'api/paths';
+import { apiGet } from 'api/utils/get';
 
 import { MeteoGetKey } from './useLoadWeather';
 

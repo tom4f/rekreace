@@ -1,5 +1,5 @@
 .address_and_formular {
-  background: url("/src/images/535b.jpg");
+  background: url('/images/535b.jpg');
   background-position: center;
 }
 
@@ -78,7 +78,7 @@
 
 .address_and_formular .formular input,
 .address_and_formular .formular textarea {
-  font-size: 1.0rem;
+  font-size: 1rem;
   width: 100%;
   background-color: transparent;
   border: none;
@@ -89,8 +89,8 @@
   font-family: Verdana, Helvetica, sans-serif;
 }
 
-.address_and_formular .formular input[type=email]:focus,
-.address_and_formular .formular input[type=text]:focus,
+.address_and_formular .formular input[type='email']:focus,
+.address_and_formular .formular input[type='text']:focus,
 .address_and_formular .formular textarea:focus {
   border: none;
   outline: none;
@@ -110,12 +110,10 @@
   margin: 5px;
   background-color: rgba(0, 255, 0, 0.4);
   width: 40%;
-  
+
   &:hover {
     border: 1px solid black;
   }
-
-
 
   input {
     width: 100%;
@@ -130,10 +128,8 @@
   }
 }
 
-
-
 .maps {
-  background: url("/src/images/281b.jpg");
+  background: url('/images/281b.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }

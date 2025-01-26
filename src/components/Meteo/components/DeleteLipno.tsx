@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { Button } from 'src/components/Atoms';
-import { useLoginStatus } from 'src/features/login';
-import { useDeleteLipno } from 'src/features/meteo';
+import { Button } from 'components/Atoms';
+import { useLoginStatus } from 'features/login';
+import { useDeleteLipno } from 'features/meteo';
 
 import { DateContext } from './DateContext';
 import { ModifyLipnoType } from './EditLipno';

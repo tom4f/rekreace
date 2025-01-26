@@ -1,4 +1,4 @@
-import { Header } from 'src/components/Atoms';
+import { Header } from 'components/Atoms';
 
 export const Bottom = () => {
   return (

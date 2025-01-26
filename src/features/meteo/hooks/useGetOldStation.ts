@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { Url } from 'src/api/paths';
-import { api } from 'src/api/utils';
+import { Url } from 'api/paths';
+import { api } from 'api/utils';
 
 type BaseMeteoRequest = {
   orderBy: string;

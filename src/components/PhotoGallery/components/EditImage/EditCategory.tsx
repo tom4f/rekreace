@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { fotoGalleryOwner } from 'src/api/paths';
-import { AlertBox, Delay } from 'src/components/AlertBox/AlertBox';
-import { Button, Input } from 'src/components/Atoms';
-import { AlertType } from 'src/features/alert';
-import { useUpdateCategory } from 'src/features/photo';
+import { fotoGalleryOwner } from 'api/paths';
+import { AlertBox, Delay } from 'components/AlertBox/AlertBox';
+import { Button, Input } from 'components/Atoms';
+import { AlertType } from 'features/alert';
+import { useUpdateCategory } from 'features/photo';
 import styled from 'styled-components';
 
 import { categoryChangeType, CategoryNameType } from './../../TypeDefinition';

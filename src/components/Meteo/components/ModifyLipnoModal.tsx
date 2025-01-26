@@ -1,5 +1,5 @@
 import { HTMLAttributes, ReactNode } from 'react';
-import { Modal } from 'src/components/Modal/Modal';
+import { Modal } from 'components/Modal/Modal';
 
 import { EditMeteoType } from './ModifyLipno';
 

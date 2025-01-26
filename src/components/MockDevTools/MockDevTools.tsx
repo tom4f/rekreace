@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Button, Input } from 'src/components/Atoms';
+import { Button, Input } from 'components/Atoms';
 import {
   availableScenarios,
   DEFAULT_STATE,
   LOCAL_STORAGE_MOCK_DELAY_KEY,
   LOCAL_STORAGE_MOCK_KEY,
-} from 'src/features/mocks';
+} from 'features/mocks';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const MOCK_DEV_TOOLS_LOCAL_STORAGE_KEY = 'devTools_mocks';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button, Input, Select, TextArea } from 'src/components/Atoms';
-import { useAddForum } from 'src/features/forum/hooks';
+import { Button, Input, Select, TextArea } from 'components/Atoms';
+import { useAddForum } from 'features/forum/hooks';
 
 type AddEntryType = {
   categoryFromUrl: number;

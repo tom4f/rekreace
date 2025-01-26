@@ -1,9 +1,9 @@
+import { Header } from 'components/Atoms';
+import { GoogleAd } from 'components/GoogleAd/GoogleAd';
+import { CustomNavLinkType } from 'components/Meteo';
+import mainImg from 'images/main.jpg';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Header } from 'src/components/Atoms';
-import { GoogleAd } from 'src/components/GoogleAd/GoogleAd';
-import { CustomNavLinkType } from 'src/components/Meteo';
-import mainImg from 'src/images/main.jpg';
 
 export const Top = () => {
   const { pathname } = useLocation();

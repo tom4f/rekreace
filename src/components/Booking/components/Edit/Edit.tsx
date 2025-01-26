@@ -1,14 +1,14 @@
 import { useMemo, useState } from 'react';
-import { AlertBox } from 'src/components/AlertBox/AlertBox';
-import { Button, Input, Select } from 'src/components/Atoms';
-import { useAlert } from 'src/features/alert';
+import { AlertBox } from 'components/AlertBox/AlertBox';
+import { Button, Input, Select } from 'components/Atoms';
+import { useAlert } from 'features/alert';
 import {
   skeletonBookingData,
   useEditBooking,
   useGetBooking,
-} from 'src/features/booking';
-import { StyledForm, StyledLogin, useLoginStatus } from 'src/features/login';
-import { weekStartAt } from 'src/utils/weekStartAt';
+} from 'features/booking';
+import { StyledForm, StyledLogin, useLoginStatus } from 'features/login';
+import { weekStartAt } from 'utils/weekStartAt';
 
 type EditType = {
   week: number;

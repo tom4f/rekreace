@@ -1,4 +1,4 @@
-import { universalGet, useGetWeatherConfigWithData } from 'src/features/meteo';
+import { universalGet, useGetWeatherConfigWithData } from 'features/meteo';
 
 import { FullscreenHeader } from './FullscreenHeader';
 import { GraphsDataWithGetDataFn, OnePage } from './OnePage';

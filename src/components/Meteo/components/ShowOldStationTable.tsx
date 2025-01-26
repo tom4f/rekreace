@@ -3,7 +3,7 @@ import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';
 import { rgbCssType } from './TypeDefinition';
 import React from 'react';
-import { useGetOldStation } from 'src/features/meteo';
+import { useGetOldStation } from 'features/meteo';
 
 export const ShowOldStationTable = () => {
   const { reduceDate } = useContext(DateContext);

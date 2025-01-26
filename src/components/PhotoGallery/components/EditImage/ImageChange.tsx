@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Input } from 'src/components/Atoms';
+import { Input } from 'components/Atoms';
 
 import { imageChangeType, PhotoType } from '../../TypeDefinition';
 

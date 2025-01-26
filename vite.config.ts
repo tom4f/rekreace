@@ -18,6 +18,12 @@ export default defineConfig({
   resolve: {
     alias: {
       src: path.resolve(__dirname, './src'),
+      components: path.resolve(__dirname, './src/components'),
+      images: path.resolve(__dirname, './src/images'),
+      api: path.resolve(__dirname, './src/api'),
+      features: path.resolve(__dirname, './src/features'),
+      utils: path.resolve(__dirname, './src/utils'),
+      pages: path.resolve(__dirname, './src/pages'),
     },
   },
   test: {

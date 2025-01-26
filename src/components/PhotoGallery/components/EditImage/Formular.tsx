@@ -1,17 +1,17 @@
 import './../BigImage/CategoryListEdit.css';
 
 import { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { fotoGalleryOwner } from 'src/api/paths';
-import { AlertBox, Delay } from 'src/components/AlertBox/AlertBox';
-import { Button, Input, Select, TextArea } from 'src/components/Atoms';
-import { AlertType } from 'src/features/alert';
-import { LoginResponse } from 'src/features/login';
+import { fotoGalleryOwner } from 'api/paths';
+import { AlertBox, Delay } from 'components/AlertBox/AlertBox';
+import { Button, Input, Select, TextArea } from 'components/Atoms';
+import { AlertType } from 'features/alert';
+import { LoginResponse } from 'features/login';
 import {
   useAddPhoto,
   useDeletePhoto,
   useGetCategory,
   useUpdatePhoto,
-} from 'src/features/photo';
+} from 'features/photo';
 import styled from 'styled-components';
 
 import { CategoryObjType, PhotoType, SetStateType } from '../../TypeDefinition';

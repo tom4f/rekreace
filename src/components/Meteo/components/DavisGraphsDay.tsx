@@ -1,5 +1,5 @@
-import { graphsConfig } from 'src/components/Meteo';
-import { useLoadWeatherFromFile } from 'src/features/meteo';
+import { graphsConfig } from 'components/Meteo';
+import { useLoadWeatherFromFile } from 'features/meteo';
 
 import DavisGraphsDayStyle from './../css/DavisGraphsDay.module.css';
 import { FullscreenHeader } from './FullscreenHeader';

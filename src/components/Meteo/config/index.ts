@@ -1,4 +1,4 @@
-import graphsConfig from 'src/components/Meteo/config/davis-day-graphs.json';
+import graphsConfig from 'components/Meteo/config/davis-day-graphs.json';
 
 import davisGraphsConfig from './davis-graphs.json';
 import lipnoGraphsConfig from './lipno-graphs.json';

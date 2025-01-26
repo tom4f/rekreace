@@ -1,7 +1,7 @@
 import '../components/Forum/css/forum.css';
 
 import { useState } from 'react';
-import { Button, Header, Input, Select } from 'src/components/Atoms';
+import { Button, Header, Input, Select } from 'components/Atoms';
 
 import { AddEntry } from '../components/Forum/AddEntry';
 import { Messages } from '../components/Forum/Messages';

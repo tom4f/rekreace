@@ -2,10 +2,10 @@ import './css/showTable.css';
 
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Modal } from 'src/components/Modal/Modal';
-import { skeletonBookingData, useGetBooking } from 'src/features/booking';
-import { useLoginStatus } from 'src/features/login';
-import { weekStartAt } from 'src/utils/weekStartAt';
+import { Modal } from 'components/Modal/Modal';
+import { skeletonBookingData, useGetBooking } from 'features/booking';
+import { useLoginStatus } from 'features/login';
+import { weekStartAt } from 'utils/weekStartAt';
 
 import { Edit } from '../Edit';
 
