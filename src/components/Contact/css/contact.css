@@ -1,5 +1,5 @@
 .address_and_formular {
-  background: url('/images/535b.jpg');
+  background: url('images/535b.jpg');
   background-position: center;
 }
 
@@ -126,31 +126,4 @@
       background-color: rgba(0, 255, 0, 0.4);
     }
   }
-}
-
-.maps {
-  background: url('/images/281b.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.maps section {
-  text-align: justify;
-  padding: 10px;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.maps section .img-left {
-  float: left;
-  margin: 0 1rem 1rem 0;
-}
-
-.maps section img {
-  height: auto;
-  max-width: 90%;
-  margin: 1rem;
 }

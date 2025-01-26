@@ -1,6 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { LOGIN_STATUS_KEY, LoginData } from './usePostLogin';
-import { fotoGalleryOwner } from '../../../api/paths';
+import { fotoGalleryOwner } from 'api/paths';
 import { useQueryClient } from '@tanstack/react-query';
 
 const useGetLoginStatus = (): UseQueryResult<LoginData, Error> => {

@@ -1,8 +1,8 @@
 import './SmallImages.css';
 
+import { SmallImagesTypes } from 'components/PhotoGallery';
 import { useLoginStatus } from 'features/login';
 
-import { SmallImagesTypes } from '../../TypeDefinition';
 import { StyledDiv } from './StyledDiv.styled';
 
 export const SmallImages = ({

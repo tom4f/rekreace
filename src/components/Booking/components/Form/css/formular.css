@@ -17,7 +17,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background: url('./../images/604b.jpg');
+  background: url('images/604b.jpg');
   width: 100%;
   padding: 0px;
   color: white;
@@ -85,6 +85,7 @@ http://stackoverflow.com/questions/26573346/ios-safari-messes-up-input-type-date
   display: block;
 
   /* Solution 1 */
+  appearance: textfield;
   -webkit-appearance: textfield;
   -moz-appearance: textfield;
   min-height: 1.2em;

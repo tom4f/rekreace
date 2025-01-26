@@ -1,7 +1,7 @@
+import { HttpStatusCode } from 'enums';
+import { resolveMock } from 'features/mocks';
 import { http, HttpResponse } from 'msw';
 
-import { HttpStatusCode } from '../../../enums';
-import { resolveMock } from '../../mocks/mockResolver';
 import { GET_LIPNO_ENDPOINT, LipnoResponse } from '../hooks';
 
 const handlers = [

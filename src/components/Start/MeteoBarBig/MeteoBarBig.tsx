@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
 import './css/MeteoBarBig.css';
-import { useGetDavis, useGetLipno } from '../../../features/meteo';
+
 import { Header } from 'components/Atoms';
+import { useGetDavis, useGetLipno } from 'features/meteo';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const MeteoBarBig = () => {

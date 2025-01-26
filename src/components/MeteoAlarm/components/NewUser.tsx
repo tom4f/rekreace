@@ -1,10 +1,10 @@
-import axios from "axios";
-import React, { useState } from "react";
+import { Url } from 'api/paths';
+import axios from 'axios';
+import React, { useState } from 'react';
 
-import { Url } from "../../../api/paths";
-import { AlertBox, Delay } from "./AlertBox";
+import { AlertBox, Delay } from './AlertBox';
 
-const NewUser: React.FC = (): React.ReactElement => {
+export const NewUser: React.FC = (): React.ReactElement => {
   interface newUserTypes {
     username: string;
     email: string;
@@ -16,13 +16,13 @@ const NewUser: React.FC = (): React.ReactElement => {
     text: string;
     color?: string;
   }
-  const [alert, setAlert] = useState<alertTypes>({ header: "", text: "" });
+  const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
   // if 'alert' changed - wait 5s and clear 'alert'
   Delay(alert, setAlert);
 
   const [newUser, setNewUser] = useState<newUserTypes>({
-    username: "",
-    email: "",
+    username: '',
+    email: '',
   });
 
   const createUser = () => {
@@ -30,8 +30,8 @@ const NewUser: React.FC = (): React.ReactElement => {
 
     if (!username || !email) {
       setAlert({
-        header: "Uživatelské jméno / email",
-        text: "vyplňte údaje",
+        header: 'Uživatelské jméno / email',
+        text: 'vyplňte údaje',
       });
       return null;
     }
@@ -39,8 +39,8 @@ const NewUser: React.FC = (): React.ReactElement => {
     // check if min 3 characters
     if (!/^[a-zA-Z0-9.\-_]{3,10}$/.test(username)) {
       setAlert({
-        header: "Špatné uživatelské jméno",
-        text: "vyplňte údaje",
+        header: 'Špatné uživatelské jméno',
+        text: 'vyplňte údaje',
       });
       return null;
     }
@@ -57,7 +57,7 @@ const NewUser: React.FC = (): React.ReactElement => {
     // check email
     //or without possibility of more @:  /\S+@\S+\.\S+/;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-      setAlert({ header: "Špatný email", text: "vyplňte údaje" });
+      setAlert({ header: 'Špatný email', text: 'vyplňte údaje' });
       return null;
     }
 
@@ -68,34 +68,34 @@ const NewUser: React.FC = (): React.ReactElement => {
         const resp = res.data[0] || res.data;
 
         // if error in response
-        if (typeof resp.sms_new === "string") {
-          if (resp.sms_new === "user_exists") {
-            setAlert({ header: "", text: "" });
-            setAlert({ header: "Error !", text: "user exists..." });
+        if (typeof resp.sms_new === 'string') {
+          if (resp.sms_new === 'user_exists') {
+            setAlert({ header: '', text: '' });
+            setAlert({ header: 'Error !', text: 'user exists...' });
           }
-          if (resp.sms_new === "email_exists") {
-            setAlert({ header: "", text: "" });
-            setAlert({ header: "Error !", text: "email exists..." });
+          if (resp.sms_new === 'email_exists') {
+            setAlert({ header: '', text: '' });
+            setAlert({ header: 'Error !', text: 'email exists...' });
           }
-          if (resp.sms_new === "error") {
-            setAlert({ header: "", text: "" });
+          if (resp.sms_new === 'error') {
+            setAlert({ header: '', text: '' });
             setAlert({
-              header: "Error !",
-              text: "heslo se nepodařilo odeslat...",
+              header: 'Error !',
+              text: 'heslo se nepodařilo odeslat...',
             });
           }
-          if (resp.sms_new === "user_added") {
-            setAlert({ header: "", text: "" });
+          if (resp.sms_new === 'user_added') {
+            setAlert({ header: '', text: '' });
             setAlert({
               header: `Heslo pro ${resp.username} odesláno na`,
               text: `${resp.email}...`,
-              color: "lime",
+              color: 'lime',
             });
           }
         } else {
           setAlert({
-            header: "unknown Error !",
-            text: "try later...",
+            header: 'unknown Error !',
+            text: 'try later...',
           });
         }
       })
@@ -103,22 +103,22 @@ const NewUser: React.FC = (): React.ReactElement => {
         if (err.response) {
           // client received an error response (5xx, 4xx)
           setAlert({
-            header: "Failed !",
-            text: "error response (5xx, 4xx)",
+            header: 'Failed !',
+            text: 'error response (5xx, 4xx)',
           });
           console.log(err.response);
         } else if (err.request) {
           // client never received a response, or request never left
           setAlert({
-            header: "Failed !",
-            text: "never received a response, or request never left",
+            header: 'Failed !',
+            text: 'never received a response, or request never left',
           });
           console.log(err.request);
         } else {
           // anything else
           setAlert({
-            header: "Failed !",
-            text: "Error: anything else",
+            header: 'Failed !',
+            text: 'Error: anything else',
           });
           console.log(err);
         }
@@ -126,20 +126,20 @@ const NewUser: React.FC = (): React.ReactElement => {
   };
 
   return (
-    <article className="container-new-user">
-      <header className="header-label">Registrace</header>
+    <article className='container-new-user'>
+      <header className='header-label'>Registrace</header>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           createUser();
         }}
-        name="formular"
-        encType="multipart/form-data"
+        name='formular'
+        encType='multipart/form-data'
       >
-        <section className="input-section">
+        <section className='input-section'>
           <label>Zadejte uživatelské jméno:</label>
           <input
-            placeholder="your new username..."
+            placeholder='your new username...'
             onChange={(e) =>
               setNewUser((current) => ({
                 ...current,
@@ -149,10 +149,10 @@ const NewUser: React.FC = (): React.ReactElement => {
             value={newUser.username}
           />
         </section>
-        <section className="input-section">
+        <section className='input-section'>
           <label>Zadejte emailovou adresu:</label>
           <input
-            placeholder="your email..."
+            placeholder='your email...'
             onChange={(e) =>
               setNewUser((current) => ({
                 ...current,
@@ -163,12 +163,10 @@ const NewUser: React.FC = (): React.ReactElement => {
           />
         </section>
         {alert.header ? <AlertBox alert={alert} /> : null}
-        <div className="submit-section">
-          <input type="submit" name="odesli" value="create user" />
+        <div className='submit-section'>
+          <input type='submit' name='odesli' value='create user' />
         </div>
       </form>
     </article>
   );
 };
-
-export default NewUser;

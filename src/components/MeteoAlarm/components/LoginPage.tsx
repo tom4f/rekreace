@@ -1,7 +1,7 @@
+import { Url } from 'api/paths';
 import axios from 'axios';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { Url } from '../../../api/paths';
 import { AlertBox, Delay } from './AlertBox';
 
 type myItems = {
@@ -22,7 +22,7 @@ interface LoginPageTypes {
   setItems: Dispatch<SetStateAction<myItems>>;
   loginStatus: (status: boolean) => void;
 }
-const LoginPage = ({
+export const LoginPage = ({
   setOrigSettings,
   setItems,
   loginStatus,
@@ -270,5 +270,3 @@ const LoginPage = ({
     </article>
   );
 };
-
-export default LoginPage;

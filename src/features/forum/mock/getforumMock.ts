@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
-import { HttpStatusCode } from '../../../enums';
-import { resolveMock } from '../../mocks/mockResolver';
+import { HttpStatusCode } from 'enums';
+import { resolveMock } from 'features/mocks';
 import { GET_FORUM_ENDPOINT, ForumResponse } from '../hooks';
 
 const handlers = [

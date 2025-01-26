@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { SetStateType, CategoryObjType } from './../../TypeDefinition';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import './CategoryList.css';
-import { useGetCategory } from '../../../../features/photo';
-import { fotoGalleryOwner } from '../../../../api/paths';
+
+import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fotoGalleryOwner } from 'api/paths';
+import { CategoryObjType, SetStateType } from 'components/PhotoGallery';
+import { useGetCategory } from 'features/photo';
+import { useState } from 'react';
 
 interface eightPhotoTypes {
   setImgPosition: SetStateType;

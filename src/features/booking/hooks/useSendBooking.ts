@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { Url } from '../../../api/paths';
-import { api } from '../../../api/utils';
+import { Url } from 'api/paths';
+import { api } from 'api/utils';
 import { AxiosError } from 'axios';
 
 export type SendBookingRequest = {

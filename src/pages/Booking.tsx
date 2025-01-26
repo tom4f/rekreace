@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, Status } from 'components/Booking';
 import { useLoginStatus } from 'features/login';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Booking = () => {
   const { data: loginData } = useLoginStatus();

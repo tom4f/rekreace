@@ -1,4 +1,4 @@
-import { OneGraph } from './../components/OneGraph';
+import { OneGraph } from 'components/Meteo';
 import { Fragment } from 'react';
 
 export type PureData = {

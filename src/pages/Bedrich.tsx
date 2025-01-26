@@ -1,5 +1,5 @@
-import { Modal } from '../components/Modal/Modal';
-import { Login, useLoginStatus, useLogout } from '../features/login';
+import { Modal } from 'components/Modal';
+import { Login, useLoginStatus, useLogout } from 'features/login';
 
 export const Bedrich = () => {
   const { data: loginData } = useLoginStatus();

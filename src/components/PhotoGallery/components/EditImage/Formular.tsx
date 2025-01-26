@@ -1,9 +1,11 @@
-import './../BigImage/CategoryListEdit.css';
-
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox, Delay } from 'components/AlertBox/AlertBox';
 import { Button, Input, Select, TextArea } from 'components/Atoms';
+import {
+  CategoryObjType,
+  PhotoType,
+  SetStateType,
+} from 'components/PhotoGallery';
 import { AlertType } from 'features/alert';
 import { LoginResponse } from 'features/login';
 import {
@@ -12,9 +14,9 @@ import {
   useGetCategory,
   useUpdatePhoto,
 } from 'features/photo';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { CategoryObjType, PhotoType, SetStateType } from '../../TypeDefinition';
 import { EditCategory } from './EditCategory';
 import { ImageChange } from './ImageChange';
 

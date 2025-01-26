@@ -1,14 +1,16 @@
+import './index.css';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { LOCAL_STORAGE_MOCK_KEY } from 'features/mocks';
+import { SetupWorker } from 'msw/browser';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
+
 import { App } from './App';
-import './index.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { APP_MOCKS, ENV_MODE } from './env';
-import { LOCAL_STORAGE_MOCK_KEY } from './features/mocks';
-import { SetupWorker } from 'msw/browser';
 import { MockDevTools } from './components/MockDevTools';
+import { APP_MOCKS, ENV_MODE } from './env';
 
 let worker: SetupWorker | null;
 
@@ -18,7 +20,7 @@ const enableMocking = async () => {
   }
 
   const { setupWorker } = await import('msw/browser');
-  const { resolveHandlers } = await import('./features/mocks/handlers');
+  const { resolveHandlers } = await import('features/mocks');
   worker = setupWorker(...resolveHandlers());
 
   await worker.start({

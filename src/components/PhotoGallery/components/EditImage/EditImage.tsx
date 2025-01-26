@@ -1,5 +1,6 @@
-import { Login, useLoginStatus } from '../../../../features/login';
-import { editImage } from '../../TypeDefinition';
+import { editImage } from 'components/PhotoGallery';
+import { Login, useLoginStatus } from 'features/login';
+
 import { Formular } from './Formular';
 
 export const EditImage = ({

@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox, Delay } from 'components/AlertBox/AlertBox';
 import { Button, Input } from 'components/Atoms';
+import { categoryChangeType, CategoryNameType } from 'components/PhotoGallery';
 import { AlertType } from 'features/alert';
 import { useUpdateCategory } from 'features/photo';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-import { categoryChangeType, CategoryNameType } from './../../TypeDefinition';
 import { EditCategoryToggleType } from './Formular';
 
 export type EditCategoryType = {

@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { StyledImage, StyledSmallImage } from 'pages/Apartments';
-import { Modal } from 'components/Modal/Modal';
+import { Modal } from 'components/Modal';
 import frymburk_old1 from 'images/frymburk_old1.jpg';
 import frymburk_old1_small from 'images/frymburk_old1_small.jpg';
 import frymburk_old2 from 'images/frymburk_old2.jpg';
@@ -8,8 +6,10 @@ import frymburk_old2_small from 'images/frymburk_old2_small.jpg';
 import frymburk_old3 from 'images/frymburk_old3.jpg';
 import frymburk_old3_small from 'images/frymburk_old3_small.jpg';
 import kovarov from 'images/kovarov.jpg';
-import kovarov1 from 'images/kovarov1.jpg';
 import kovarov_b from 'images/kovarov_b.jpg';
+import kovarov1 from 'images/kovarov1.jpg';
+import { StyledImage, StyledSmallImage } from 'pages/Apartments';
+import { useState } from 'react';
 
 export const Frymburk = () => {
   const [isVisible, setIsVisible] = useState(false);

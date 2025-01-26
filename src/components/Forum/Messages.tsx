@@ -1,4 +1,4 @@
-import { OneMessage } from '../../features/forum/hooks';
+import { OneMessage } from 'features/forum';
 
 type MessagesType = {
   entries: OneMessage[];

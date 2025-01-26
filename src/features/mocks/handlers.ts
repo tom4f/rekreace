@@ -1,15 +1,15 @@
 import { delay, http } from 'msw';
-import { postLoginMock } from '../login';
-import { getForumMock } from '../forum';
+
 import { getBookingMock } from '../booking';
+import { getForumMock } from '../forum';
+import { postLoginMock } from '../login';
 import {
-  getTextFileMock,
-  getMultipleTextFileMock,
   getDavisMock,
   getLipnoMock,
+  getMultipleTextFileMock,
   getOldStationMock,
+  getTextFileMock,
 } from '../meteo';
-
 import { LOCAL_STORAGE_MOCK_DELAY_KEY } from './mockResolver';
 
 const globalDelay = http.all('/api/*', async () => {

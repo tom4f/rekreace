@@ -1,13 +1,15 @@
 import 'components/MeteoAlarm/css/index.css';
 
+import {
+  About,
+  ForgetPassword,
+  LoginPage,
+  Menu,
+  NewUser,
+  ShowValues,
+} from 'components/MeteoAlarm';
+import windsurfImg from 'images/windsurf.jpg';
 import React, { useState } from 'react';
-import About from 'components/MeteoAlarm/components/About';
-import ForgetPassword from 'components/MeteoAlarm/components/ForgetPassword';
-import LoginPage from 'components/MeteoAlarm/components/LoginPage';
-import Menu from 'components/MeteoAlarm/components/Menu';
-import NewUser from 'components/MeteoAlarm/components/NewUser';
-import ShowValues from 'components/MeteoAlarm/components/ShowValues';
-import windsurfImg from 'src/images/windsurf.jpg';
 
 export const MeteoAlarm: React.FC = () => {
   const initItems = {

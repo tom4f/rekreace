@@ -1,5 +1,5 @@
-import { ForumParams } from '../../pages/Forum';
-import { ForumResponse } from '../../features/forum/hooks';
+import { ForumResponse } from 'features/forum/hooks';
+import { ForumParams } from 'pages/Forum';
 import { useState } from 'react';
 
 type PaginationsType = {

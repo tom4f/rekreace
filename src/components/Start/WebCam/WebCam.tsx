@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { MeteoBarSmall } from "./MeteoBarSmall";
-import { RangeSlider } from "./RangeSlider";
-import { ShowWebCam } from "./ShowWebCam";
-import { WebCamSlideShow } from "./WebCamSlideShow";
-import "./css/webcam-archive.css";
+import './css/webcam-archive.css';
+
+import { useState } from 'react';
+
+import { MeteoBarSmall, RangeSlider, ShowWebCam, WebCamSlideShow } from './';
 
 export type WebCamState = {
   day: number;
@@ -35,19 +34,19 @@ export const WebCam = () => {
     timer: undefined,
     liveImgTimer: 0,
     isLiveImg: true,
-    webAuthor: "empty",
+    webAuthor: 'empty',
   });
 
   return (
     <>
-      <div className="header">
+      <div className='header'>
         <b>
-          <a href="https://www.ipcamlive.com/62d9a9a2cb1ff">
+          <a href='https://www.ipcamlive.com/62d9a9a2cb1ff'>
             Live kamera --&gt; klikněte zde!
           </a>
         </b>
       </div>
-      <div className="webcam-container">
+      <div className='webcam-container'>
         <WebCamSlideShow state={state} reactChange={reactChange} />
         <RangeSlider state={state} reactChange={reactChange} />
         <ShowWebCam state={state} />

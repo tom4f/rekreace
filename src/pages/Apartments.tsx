@@ -1,3 +1,5 @@
+import { Url } from 'api/paths';
+import { Modal } from 'components/Modal';
 import g1 from 'images/g1.jpg';
 import g1b from 'images/g1b.jpg';
 import g2 from 'images/g2.jpg';
@@ -51,9 +53,6 @@ import z4b from 'images/z4b.jpg';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { Url } from '../api/paths';
-import { Modal } from '../components/Modal/Modal';
 
 export const StyledImage = styled.div<{ url: string }>`
   background: url(${(props) => props.url});

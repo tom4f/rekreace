@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Url } from "../../../api/paths";
+import { useEffect, useState } from 'react';
+import { Url } from 'api/paths';
 
 type ShowWebCamState = {
   day: number;
@@ -23,7 +23,7 @@ export const ShowWebCam = ({ state }: { state: ShowWebCamState }) => {
       const iFrame = `<iframe src='${Url.GET_IP_KAMERA}?id=${randomId}' />`;
       const iFrameDiv = (
         <div
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           dangerouslySetInnerHTML={{ __html: `${iFrame}` }}
         />
       );
@@ -35,18 +35,18 @@ export const ShowWebCam = ({ state }: { state: ShowWebCamState }) => {
   };
 
   const imgDateText =
-    `${("0" + day).slice(-2)}-` +
-    `${("0" + hour).slice(-2)}-` +
-    `${("0" + minute).slice(-2)}`;
+    `${('0' + day).slice(-2)}-` +
+    `${('0' + hour).slice(-2)}-` +
+    `${('0' + minute).slice(-2)}`;
 
   useEffect(updateImage, []);
 
   return (
     <>
-      <div className="archive_cam">
+      <div className='archive_cam'>
         <a href={`${Url.KAMERA}/archive/ip_kamera_full_hd_${imgDateText}.jpg`}>
           {isLiveImg ? (
-            <img src={liveImgSrc} alt="WebCam" />
+            <img src={liveImgSrc} alt='WebCam' />
           ) : (
             /*                         <img
                             src={`${Url.KAMERA}/archive/lipnonet_full_hd_00001.jpg`}
@@ -54,7 +54,7 @@ export const ShowWebCam = ({ state }: { state: ShowWebCamState }) => {
                         /> */
             <img
               src={`${Url.KAMERA}/archive/ip_kamera_${imgDateText}.jpg`}
-              alt="WebCam"
+              alt='WebCam'
             />
           )}
         </a>

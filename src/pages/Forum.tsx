@@ -1,12 +1,9 @@
-import '../components/Forum/css/forum.css';
+import 'components/Forum/css/forum.css';
 
-import { useState } from 'react';
 import { Button, Header, Input, Select } from 'components/Atoms';
-
-import { AddEntry } from '../components/Forum/AddEntry';
-import { Messages } from '../components/Forum/Messages';
-import { Paginations } from '../components/Forum/Paginations';
-import { useGetForum } from '../features/forum';
+import { AddEntry, Messages, Paginations } from 'components/Forum';
+import { useGetForum } from 'features/forum';
+import { useState } from 'react';
 
 export type ForumParams = {
   begin: number;

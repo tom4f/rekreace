@@ -5,7 +5,7 @@ import {
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { imgPositionType, SetStateType } from './../../TypeDefinition';
+import { imgPositionType, SetStateType } from 'components/PhotoGallery';
 
 interface eightPhotoTypes {
   imgPosition: imgPositionType;

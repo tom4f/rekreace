@@ -1,12 +1,12 @@
 import './css/main.css';
 
+import { useLoginStatus } from 'features/login/hooks';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 import { Bottom } from './components/Bottom/Bottom';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { Top } from './components/Top/Top';
 import { TopBedrich } from './components/Top/TopBedrich';
-import { useLoginStatus } from './features/login/hooks';
 import {
   Apartments,
   Bedrich,

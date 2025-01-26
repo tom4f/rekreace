@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
-import { HttpStatusCode } from '../../../enums';
-import { resolveMock } from '../../mocks/mockResolver';
+import { HttpStatusCode } from 'enums';
+import { resolveMock } from 'features/mocks';
 import { MeteoFiles } from '../hooks';
 import downld02 from './mockFiles/downld02.txt?raw';
 

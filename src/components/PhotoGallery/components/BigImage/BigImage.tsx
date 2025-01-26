@@ -1,14 +1,15 @@
+import './BigImages.css';
+
+import { Modal } from 'components/Modal';
+import { BigImageType, EditImage } from 'components/PhotoGallery';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { BigImageType } from '../../TypeDefinition';
-import { EditImage } from './../EditImage/EditImage';
-import './BigImages.css';
+
 import { BigImg } from './BigImg.styled';
 import { CategoryList } from './CategoryList';
 import { ChangeImage } from './ChangeImage';
 import { InfoText } from './InfoText';
 import { Presentation } from './Presentation';
-import { Modal } from '../../../Modal/Modal';
 
 export const BigImage = ({
   bigPhoto,

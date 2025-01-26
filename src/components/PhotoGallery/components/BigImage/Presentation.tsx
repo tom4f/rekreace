@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { SetStateType } from '../../TypeDefinition';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlayCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SetStateType } from 'components/PhotoGallery';
+import { useState } from 'react';
 
 interface eightPhotoTypes {
   setImgPosition: SetStateType;

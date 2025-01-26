@@ -1,35 +1,35 @@
-import axios from "axios";
-import React, { useState } from "react";
+import { Url } from 'api/paths';
+import axios from 'axios';
+import React, { useState } from 'react';
 
-import { Url } from "../../../api/paths";
-import { AlertBox, Delay } from "./AlertBox";
+import { AlertBox, Delay } from './AlertBox';
 
-const ForgetPassword: React.FC = (): React.ReactElement => {
+export const ForgetPassword: React.FC = (): React.ReactElement => {
   // alert definition
   interface alertTypes {
     header: string;
     text: string;
     color?: string;
   }
-  const [alert, setAlert] = useState<alertTypes>({ header: "", text: "" });
+  const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
   // if 'alert' changed - wait 5s and clear 'alert'
   Delay(alert, setAlert);
 
-  const [identification, setIdentification] = useState("");
+  const [identification, setIdentification] = useState('');
 
   const getPasw = () => {
     if (!identification) {
       setAlert({
-        header: "Uživatelské jméno / email",
-        text: "vyplňte údaje",
+        header: 'Uživatelské jméno / email',
+        text: 'vyplňte údaje',
       });
       return null;
     }
 
     if (!/^[a-zA-Z0-9.\-_@]{3,}$/.test(identification)) {
       setAlert({
-        header: "Špatné uživatelské jméno / email",
-        text: "vyplňte údaje",
+        header: 'Špatné uživatelské jméno / email',
+        text: 'vyplňte údaje',
       });
       return null;
     }
@@ -47,42 +47,42 @@ const ForgetPassword: React.FC = (): React.ReactElement => {
         console.log(typeof resp.sms_pasw);
 
         // if error in response
-        if (typeof resp.sms_pasw === "string") {
-          resp.sms_pasw === "error" &&
+        if (typeof resp.sms_pasw === 'string') {
+          resp.sms_pasw === 'error' &&
             setAlert({
-              header: "Error !",
-              text: "heslo se nepodařilo odeslat...",
+              header: 'Error !',
+              text: 'heslo se nepodařilo odeslat...',
             });
-          resp.sms_pasw === "password_sent" &&
+          resp.sms_pasw === 'password_sent' &&
             setAlert({
-              header: "Heslo bylo odesláno na email:",
+              header: 'Heslo bylo odesláno na email:',
               text: `${resp.email}...`,
-              color: "lime",
+              color: 'lime',
             });
           return null;
         }
-        setAlert({ header: "unknown Error !", text: "try later..." });
+        setAlert({ header: 'unknown Error !', text: 'try later...' });
       })
       .catch((err) => {
         if (err.response) {
           // client received an error response (5xx, 4xx)
           setAlert({
-            header: "Failed !",
-            text: "error response (5xx, 4xx)",
+            header: 'Failed !',
+            text: 'error response (5xx, 4xx)',
           });
           console.log(err.response);
         } else if (err.request) {
           // client never received a response, or request never left
           setAlert({
-            header: "Failed !",
-            text: "never received a response, or request never left",
+            header: 'Failed !',
+            text: 'never received a response, or request never left',
           });
           console.log(err.request);
         } else {
           // anything else
           setAlert({
-            header: "Failed !",
-            text: "Error: anything else",
+            header: 'Failed !',
+            text: 'Error: anything else',
           });
           console.log(err);
         }
@@ -90,31 +90,29 @@ const ForgetPassword: React.FC = (): React.ReactElement => {
   };
 
   return (
-    <article className="container-forget-password">
-      <header className="header-label">Zapomenuté heslo</header>
+    <article className='container-forget-password'>
+      <header className='header-label'>Zapomenuté heslo</header>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           getPasw();
         }}
-        name="formular"
-        encType="multipart/form-data"
+        name='formular'
+        encType='multipart/form-data'
       >
-        <section className="input-section">
+        <section className='input-section'>
           <label>Zadeje uživatelské jméno, nebo email</label>
           <input
-            placeholder="Username or Email..."
+            placeholder='Username or Email...'
             onChange={(e) => setIdentification(e.target.value)}
             value={identification}
           />
         </section>
         {alert.header ? <AlertBox alert={alert} /> : null}
-        <div className="submit-section">
-          <input type="submit" name="odesli" value="Send Password" />
+        <div className='submit-section'>
+          <input type='submit' name='odesli' value='Send Password' />
         </div>
       </form>
     </article>
   );
 };
-
-export default ForgetPassword;

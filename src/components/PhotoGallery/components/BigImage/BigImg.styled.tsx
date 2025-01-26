@@ -1,6 +1,10 @@
+import { Url } from 'api/paths';
+import {
+  AllPhotoType,
+  imgPositionType,
+  PhotoType,
+} from 'components/PhotoGallery';
 import styled, { css } from 'styled-components';
-import { Url } from '../../../../api/paths';
-import { AllPhotoType, imgPositionType, PhotoType } from '../../TypeDefinition';
 
 type BigImgType = {
   $editPhoto: PhotoType;

@@ -24,6 +24,7 @@ export default defineConfig({
       features: path.resolve(__dirname, './src/features'),
       utils: path.resolve(__dirname, './src/utils'),
       pages: path.resolve(__dirname, './src/pages'),
+      enums: path.resolve(__dirname, './src/enums'),
     },
   },
   test: {

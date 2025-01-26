@@ -1,7 +1,6 @@
+import { Forum, MeteoBarBig, WebCam } from 'components/Start';
+
 import { PhotoGallery } from './PhotoGallery';
-import { Forum } from 'components/Start/Forum/Forum';
-import { MeteoBarBig } from 'components/Start/MeteoBarBig/MeteoBarBig';
-import { WebCam } from 'components/Start/WebCam/WebCam';
 
 export const Start = () => {
   return (

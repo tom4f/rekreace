@@ -1,7 +1,7 @@
 import { http, HttpResponse, HttpHandler } from 'msw';
 
-import { HttpStatusCode } from '../../../enums';
-import { resolveMock } from '../../mocks/mockResolver';
+import { HttpStatusCode } from 'enums';
+import { resolveMock } from 'features/mocks';
 import { MeteoFiles } from '../hooks';
 import downld02_0 from './mockFiles/archive/downld02-0.txt?raw';
 import downld02_1 from './mockFiles/archive/downld02-1.txt?raw';
