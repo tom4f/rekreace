@@ -19,7 +19,7 @@ export const MeteoAlarm = () => {
   const [activeMenu, setActiveMenu] = useState<ActiveMenu>('login');
 
   useEffect(() => {
-    if (config.isLogged) {
+    if (config?.isLogged) {
       setActiveMenu('values');
     }
   }, [config]);
