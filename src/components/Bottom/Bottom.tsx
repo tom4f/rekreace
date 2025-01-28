@@ -4,9 +4,7 @@ export const Bottom = () => {
   return (
     <>
       <Header>
-        <a href='https://tomas-blog.vercel.app/'>
-          © 1998-2025 Created by Tomáš Kučera
-        </a>
+        <a href='https://tomas-blog.vercel.app/'>© 1998-2025 Tomáš Kučera</a>
         <br />
         <a href='http://www.lipnonet.cz/'>LIPNOnet.cz</a> |
         <a href='http://www.lipno.net/'> LIPNO.net</a> |

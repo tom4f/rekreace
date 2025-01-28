@@ -1,32 +1,35 @@
-import { Url } from 'api/paths';
-import axios from 'axios';
-import { useAlarmConfig } from 'features/meteoalarm';
+import {
+  ALARM_LOGIN_SESSION_CONFIG,
+  useAlarmConfig,
+  useUpdateAlarm,
+} from 'features/meteoalarm';
 import React, { useState } from 'react';
 
-import { AlertBox, Delay } from './AlertBox';
-import { ShowRainConfig } from './ShowRainConfig';
-import { ShowTodayRainLimit } from './ShowTodayRainLimit';
-import { ShowWindDays } from './ShowWindDays';
-import { ShowWindSpeed } from './ShowWindSpeed';
+import {
+  AlertBox,
+  Delay,
+  ShowRainConfig,
+  ShowTodayRainLimit,
+  ShowWindDays,
+  ShowWindSpeed,
+} from './';
 
-interface alertTypes {
+interface AlertTypes {
   header: string;
   text: string;
   color?: string;
 }
 
 export const ShowValues = () => {
-  // alert definition
+  const { mutate: updateAlarm } = useUpdateAlarm();
   const { data } = useAlarmConfig();
-  const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
-  // if 'alert' changed - wait 5s and clear 'alert'
+  const [alert, setAlert] = useState<AlertTypes>({ header: '', text: '' });
   Delay(alert, setAlert);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordAgain, setShowPasswordAgain] = useState(false);
   const [items, setItems] = useState(data);
 
-  // storage of selected values in multiSelectItems
   const [passwordAgain, setPasswordAgain] = useState(
     items?.password?.toString()
   );
@@ -39,68 +42,32 @@ export const ShowValues = () => {
   }
 
   const updateData = () => {
-    axios
-      .post(`${Url.API}/pdo_update_sms.php`, items, { timeout: 5000 })
-      .then((res) => {
-        // allForum = JSON.parse(res.data); --> for native xhr.onload
-        // in axios res.data is already object
-        const resp = res.data;
-
-        if (typeof resp.smsResult === 'string') {
-          if (resp.smsResult === 'value_changed') {
-            setAlert({
-              header: 'Success !',
-              text: 'data updated...',
-              color: 'lime',
-            });
-            sessionStorage.setItem('clientAlarm', JSON.stringify(items));
-          } else
-            setAlert({
-              header: 'Error...resp.smsResult',
-              text: 'Please try later...',
-            });
-        } else {
+    updateAlarm(items, {
+      onSuccess: (successResponse) => {
+        if (successResponse.smsResult === 'value_changed') {
           setAlert({
-            header: 'Error...other...',
-            text: 'Please try later...',
+            header: 'Success !',
+            text: 'data updated...',
+            color: 'lime',
           });
+          sessionStorage.setItem(
+            ALARM_LOGIN_SESSION_CONFIG,
+            JSON.stringify(items)
+          );
         }
-      })
-      .catch((err) => {
-        if (err.response) {
-          // client received an error response (5xx, 4xx)
-          setAlert({
-            header: 'Failed !',
-            text: 'error response (5xx, 4xx)',
-          });
-          console.log(err.response);
-        } else if (err.request) {
-          // client never received a response, or request never left
-          setAlert({
-            header: 'Failed !',
-            text: 'never received a response, or request never left',
-          });
-          console.log(err.request);
-        } else {
-          // anything else
-          setAlert({
-            header: 'Failed !',
-            text: 'Error: anything else',
-          });
-          console.log(err);
-        }
-      });
+      },
+      onError: () => {
+        setAlert({
+          header: 'Error...other...',
+          text: 'Please try later...',
+        });
+      },
+    });
   };
 
   const sendEdit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    //if (origSettings === items) {
-    // setAlert({ header: 'Žádná změna!', text: 'neni co odesílat' });
-    // return null;
-    //}
-
-    // password validation
     if (passwordAgain !== items.password) {
       setAlert({
         header: 'Špatné heslo!',
@@ -115,7 +82,7 @@ export const ShowValues = () => {
       });
       return null;
     }
-    // email validation
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(items.email)) {
       setAlert({ header: 'Špatný email', text: 'zadejte platný email' });
       return null;

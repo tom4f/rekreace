@@ -1,6 +1,10 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
-import { ALARM_LOGIN_CONFIG_KEY, AlarmResponse } from './useAlarmLogin';
+import {
+  ALARM_LOGIN_CONFIG_KEY,
+  ALARM_LOGIN_SESSION_CONFIG,
+  AlarmResponse,
+} from './useAlarmLogin';
 
 const useGetAlarmConfig = (): UseQueryResult<AlarmResponse, Error> => {
   return useQuery({
@@ -8,7 +12,7 @@ const useGetAlarmConfig = (): UseQueryResult<AlarmResponse, Error> => {
     //queryFn:
     //enabled: false,
     select: (data: AlarmResponse) => {
-      const clientJSON = sessionStorage.getItem('clientAlarm');
+      const clientJSON = sessionStorage.getItem(ALARM_LOGIN_SESSION_CONFIG);
       if (!clientJSON) {
         return {
           data,
@@ -30,7 +34,7 @@ export const useAlarmConfig = () => {
     isSuccess,
   } = useGetAlarmConfig();
 
-  const clientJSON = sessionStorage.getItem('clientAlarm');
+  const clientJSON = sessionStorage.getItem(ALARM_LOGIN_SESSION_CONFIG);
 
   const loginData = clientJSON ? JSON.parse(clientJSON) : loginRQData;
 

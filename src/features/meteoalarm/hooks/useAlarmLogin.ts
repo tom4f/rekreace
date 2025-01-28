@@ -37,6 +37,7 @@ export type LoginErrorResponse = AxiosError & {
 export const ALARM_LOGIN_ENDPOINT = `${Url.NEW_API}/meteoalarm/alarm_login.php`;
 export const ALARM_LOGIN_KEY = 'alarmLogin';
 export const ALARM_LOGIN_CONFIG_KEY = 'alarmConfig';
+export const ALARM_LOGIN_SESSION_CONFIG = 'clientAlarm';
 
 const alarmLogin = async (request: LoginRequest): Promise<AlarmResponse> => {
   const { data } = await api
@@ -58,7 +59,23 @@ export const useAlarmLogin = () => {
     mutationKey: [ALARM_LOGIN_KEY],
     onSuccess: (data) => {
       queryClient.setQueryData([ALARM_LOGIN_CONFIG_KEY], data);
-      sessionStorage.setItem('clientAlarm', JSON.stringify(data));
+      sessionStorage.setItem(ALARM_LOGIN_SESSION_CONFIG, JSON.stringify(data));
     },
   });
+};
+
+export const useAlarmLogout = () => {
+  const queryClient = useQueryClient();
+
+  const removeSession = () => {
+    sessionStorage.removeItem(ALARM_LOGIN_SESSION_CONFIG);
+  };
+
+  const invalidateQuery = () => {
+    queryClient.invalidateQueries({
+      queryKey: [ALARM_LOGIN_CONFIG_KEY],
+    });
+  };
+
+  return { removeSession, invalidateQuery };
 };

@@ -11,23 +11,23 @@ export const LoginPage = () => {
     password: '',
   });
 
-  const { mutate } = useAlarmLogin();
+  const { mutate: login } = useAlarmLogin();
 
-  // alert definition
   interface alertTypes {
     header: string;
     text: string;
     color?: string;
   }
   const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
-  // if 'alert' changed - wait 5s and clear 'alert'
+
   Delay(alert, setAlert);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showOnPhone, setShowOnPhone] = useState('');
   const [showRainOnPhone, setShowRainOnPhone] = useState('');
 
-  const getData = () => {
+  const getData = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!loginParams.username || !loginParams.password) {
       setAlert({
         header: 'Uživatelské jméno / heslo',
@@ -53,7 +53,7 @@ export const LoginPage = () => {
     }
 
     if (loginParams.username && loginParams.password) {
-      mutate(loginParams);
+      login(loginParams);
     }
   };
 
@@ -63,16 +63,13 @@ export const LoginPage = () => {
     axios
       .post(`${Url.API}/pdo_sms_counter.php`)
       .then((res) => {
-        // allForum = JSON.parse(res.data); --> for native xhr.onload
         const resp = res.data[0] || res.data;
         setCounter(resp.count);
       })
       .catch((err) => {
         if (err.response) {
-          // client received an error response (5xx, 4xx)
           console.log(err.response);
         } else if (err.request) {
-          // client never received a response, or request never left
           console.log(err.request);
         } else {
           // anything else
@@ -82,16 +79,11 @@ export const LoginPage = () => {
 
   useEffect(getCounter, []);
 
-  // get wind data shown in mobile
   const getLastSmsData = () => {
     fetch(`${Url.DAVIS}/data_davis.txt`)
       .then((res) => res.text())
       .then((lastData) => {
-        const limitedText = lastData
-          // Select from string 'Vitr' included
-          .split(/(?=Vitr)/)[1]
-          // Till character '_'
-          .split('_')[0];
+        const limitedText = lastData.split(/(?=Vitr)/)[1].split('_')[0];
         setShowOnPhone(limitedText);
       })
       .catch((error) => console.log(error));
@@ -99,7 +91,6 @@ export const LoginPage = () => {
 
   useEffect(getLastSmsData, []);
 
-  // get rain data shown in mobile
   const getLastRainData = () => {
     fetch(`${Url.DAVIS}/data_davis_json.txt`)
       .then((res) => res.text())
@@ -118,15 +109,7 @@ export const LoginPage = () => {
   return (
     <article className='container-login'>
       <header className='header-label'>Přihlášení uživatele</header>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          getData();
-          //setLoginParams({ username: '', password: '' });
-        }}
-        name='formular'
-        encType='multipart/form-data'
-      >
+      <form onSubmit={getData}>
         <section className='input-section'>
           <label>Zadejte uživatelské jméno</label>
           <input
