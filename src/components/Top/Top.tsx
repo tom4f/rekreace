@@ -7,10 +7,13 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 
 export const Top = () => {
   const { pathname } = useLocation();
-
+  console.log(pathname);
   const [counter, setCounter] = useState(0);
 
-  useEffect(() => setCounter((orig) => orig + 1), [pathname]);
+  useEffect(
+    () => setCounter((orig) => (pathname !== '/' ? orig + 1 : orig)),
+    [pathname]
+  );
 
   const CustomNavLink: CustomNavLinkType = ({ to, header }) => (
     <NavLink className={({ isActive }) => (isActive ? 'bg-black' : '')} to={to}>

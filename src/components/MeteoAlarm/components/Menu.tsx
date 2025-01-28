@@ -1,77 +1,33 @@
-// for Dispatch<SetStateAction<showStatusType>>
+import { useAlarmConfig } from 'features/meteoalarm';
+import { ActiveMenu } from 'pages';
 import { Dispatch, SetStateAction } from 'react';
 import { NavLink } from 'react-router-dom';
 
-// alias
 type Dispatcher<S> = Dispatch<SetStateAction<S>>;
 
-type showStatusType = {
-  login: boolean;
-  forget: boolean;
-  new: boolean;
-  about: boolean;
-  values: boolean;
-};
-
 interface HeaderTypes {
-  isLogged: boolean;
-  initShow: showStatusType;
-  showStatus: showStatusType;
-  // define useState type from parent
-  // setShowStatus: (value: showStatusType | ((prevVar: showStatusType) => showStatusType)) => void;
-  // or:
-  setShowStatus: Dispatcher<showStatusType>;
-  // or without alias:
-  // setShowStatus: Dispatch<SetStateAction<showStatusType>>;
-  loginStatus: (status: boolean) => void;
+  setActiveMenu: Dispatcher<ActiveMenu>;
 }
 
-export const Menu = ({
-  isLogged,
-  showStatus,
-  setShowStatus,
-  loginStatus,
-  initShow,
-}: HeaderTypes) => {
+export const Menu = ({ setActiveMenu }: HeaderTypes) => {
+  const { data: config } = useAlarmConfig();
+
   return (
     <header className='menu_meteoalarm'>
       <span>
         <NavLink to='/'>Zpět</NavLink>
       </span>
-      {isLogged ? (
-        !showStatus.values ? (
-          <span onClick={() => setShowStatus({ ...initShow, values: true })}>
-            nastavení
-          </span>
-        ) : (
-          <span onClick={() => loginStatus(false)}>odhlášení</span>
-        )
+
+      {!config?.isLogged ? (
+        <span onClick={() => setActiveMenu('login')}>přihlášení</span>
       ) : (
-        <span
-          onClick={() =>
-            setShowStatus({ ...initShow, login: !showStatus.login })
-          }
-        >
-          přihlášení
-        </span>
+        <span onClick={() => setActiveMenu('values')}>nastavení</span>
       )}
-      <span
-        onClick={() =>
-          setShowStatus({ ...initShow, forget: !showStatus.forget })
-        }
-      >
-        zapomenuté heslo?
-      </span>
-      <span
-        onClick={() => setShowStatus({ ...initShow, new: !showStatus.new })}
-      >
-        registrace
-      </span>
-      <span
-        onClick={() => setShowStatus({ ...initShow, about: !showStatus.about })}
-      >
-        info
-      </span>
+
+      <span onClick={() => console.log('odhlaseni')}>odhlášení</span>
+      <span onClick={() => setActiveMenu('forget')}>zapomenuté heslo?</span>
+      <span onClick={() => setActiveMenu('new')}>registrace</span>
+      <span onClick={() => setActiveMenu('about')}>info</span>
     </header>
   );
 };

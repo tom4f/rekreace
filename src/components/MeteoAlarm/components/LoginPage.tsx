@@ -1,41 +1,17 @@
 import { Url } from 'api/paths';
 import axios from 'axios';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useAlarmLogin } from 'features/meteoalarm';
+import { useEffect, useState } from 'react';
 
 import { AlertBox, Delay } from './AlertBox';
 
-type myItems = {
-  date: string;
-  days: number;
-  email: string;
-  id: number;
-  name: string;
-  password: string;
-  sms: number;
-  username: string;
-  todayRainLimit: number;
-  todayRainSent: number;
-};
-
-interface LoginPageTypes {
-  setOrigSettings: Dispatch<SetStateAction<myItems>>;
-  setItems: Dispatch<SetStateAction<myItems>>;
-  loginStatus: (status: boolean) => void;
-}
-export const LoginPage = ({
-  setOrigSettings,
-  setItems,
-  loginStatus,
-}: LoginPageTypes) => {
-  // login definition
-  interface loginParamsTypes {
-    username: string;
-    password: string;
-  }
-  const [loginParams, setLoginParams] = useState<loginParamsTypes>({
+export const LoginPage = () => {
+  const [loginParams, setLoginParams] = useState({
     username: '',
     password: '',
   });
+
+  const { mutate } = useAlarmLogin();
 
   // alert definition
   interface alertTypes {
@@ -76,65 +52,9 @@ export const LoginPage = ({
       return null;
     }
 
-    axios
-      .post(`${Url.API}/pdo_read_sms.php`, loginParams, { timeout: 5000 })
-      .then((res) => {
-        // allForum = JSON.parse(res.data); --> for native xhr.onload
-        const resp = res.data[0] || res.data;
-
-        // if error in response
-        if (typeof resp.sms_read === 'string') {
-          resp.sms_read === 'error' &&
-            setAlert({
-              header: 'Přihlášení se nepovedlo !',
-              text: 'zkuste později...',
-            });
-          return null;
-        }
-
-        // if no user data
-        if (typeof resp.id === 'string' || typeof resp.id === 'number') {
-          // convert string from mySQL to number
-          resp.days = +resp.days;
-          resp.id = +resp.id;
-          resp.sms = +resp.sms;
-          resp.todayRainLimit = +resp.todayRainLimit;
-          resp.todayRainSent = +resp.todayRainSent;
-          setOrigSettings(resp);
-          setItems(resp);
-          loginStatus(true);
-          return null;
-        }
-
-        console.log(typeof resp.id);
-        setAlert({
-          header: 'Neznámá chyba !',
-          text: 'zkuste později...',
-        });
-      })
-      .catch((err) => {
-        if (err.response) {
-          // client received an error response (5xx, 4xx)
-          setAlert({
-            header: 'Neznámá chyba !',
-            text: 'error response (5xx, 4xx)',
-          });
-          console.log(err.response);
-        } else if (err.request) {
-          // client never received a response, or request never left
-          setAlert({
-            header: 'Neznámá chyba !',
-            text: 'never received a response, or request never left',
-          });
-          console.log(err.request);
-        } else {
-          // anything else
-          setAlert({
-            header: 'Neznámá chyba !',
-            text: 'Error: anything else',
-          });
-        }
-      });
+    if (loginParams.username && loginParams.password) {
+      mutate(loginParams);
+    }
   };
 
   const [counter, setCounter] = useState(0);

@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { Url } from 'api/paths';
+import { fotoGalleryOwner, Url } from 'api/paths';
 import { api } from 'api/utils';
-import { fotoGalleryOwner } from 'api/paths';
+import { AxiosError } from 'axios';
 
 export type LoginRequest = {
   user: string;
@@ -17,7 +16,7 @@ export type LoginResponse = {
   isLogged: boolean;
 };
 
-export type LoginData = LoginResponse & { isLogged: boolean };
+export type LoginData = LoginResponse;
 
 export type LoginErrorResponse = AxiosError & {
   data: { result: string };

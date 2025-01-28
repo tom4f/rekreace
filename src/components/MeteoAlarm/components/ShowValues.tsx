@@ -1,6 +1,7 @@
 import { Url } from 'api/paths';
 import axios from 'axios';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useAlarmConfig } from 'features/meteoalarm';
+import React, { useState } from 'react';
 
 import { AlertBox, Delay } from './AlertBox';
 import { ShowRainConfig } from './ShowRainConfig';
@@ -8,59 +9,34 @@ import { ShowTodayRainLimit } from './ShowTodayRainLimit';
 import { ShowWindDays } from './ShowWindDays';
 import { ShowWindSpeed } from './ShowWindSpeed';
 
-// alias
-type Dispatcher<S> = Dispatch<SetStateAction<S>>;
-
-type myItems = {
-  date: string;
-  days: number;
-  email: string;
-  id: number;
-  name: string;
-  password: string;
-  sms: number;
-  username: string;
-  todayRainLimit: number;
-  todayRainSent: number;
-};
-
-interface ShowValuesTypes {
-  items: myItems;
-  setItems: Dispatcher<myItems>;
-  origSettings: myItems;
-  setOrigSettings: Dispatcher<myItems>;
+interface alertTypes {
+  header: string;
+  text: string;
+  color?: string;
 }
 
-export const ShowValues = ({
-  items,
-  setItems,
-  origSettings,
-  setOrigSettings,
-}: ShowValuesTypes) => {
+export const ShowValues = () => {
   // alert definition
-  interface alertTypes {
-    header: string;
-    text: string;
-    color?: string;
-  }
+  const { data } = useAlarmConfig();
   const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
   // if 'alert' changed - wait 5s and clear 'alert'
   Delay(alert, setAlert);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordAgain, setShowPasswordAgain] = useState(false);
-
-  //{ items, setItems, origSettings, setOrigSettings }: ShowValuesTypes = props;
+  const [items, setItems] = useState(data);
 
   // storage of selected values in multiSelectItems
-  const [passwordAgain, setPasswordAgain] = useState(items.password.toString());
+  const [passwordAgain, setPasswordAgain] = useState(
+    items?.password?.toString()
+  );
 
   const changePassword = (textValue: string) =>
-    setItems(
-      // currentItems => ({ currentItems, password: textValue })
-      // or same :
-      { ...items, password: textValue }
-    );
+    setItems({ ...items, password: textValue });
+
+  if (!items) {
+    return null;
+  }
 
   const updateData = () => {
     axios
@@ -72,12 +48,12 @@ export const ShowValues = ({
 
         if (typeof resp.smsResult === 'string') {
           if (resp.smsResult === 'value_changed') {
-            setOrigSettings(items);
             setAlert({
               header: 'Success !',
               text: 'data updated...',
               color: 'lime',
             });
+            sessionStorage.setItem('clientAlarm', JSON.stringify(items));
           } else
             setAlert({
               header: 'Error...resp.smsResult',
@@ -119,10 +95,10 @@ export const ShowValues = ({
   const sendEdit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (origSettings === items) {
-      setAlert({ header: 'Žádná změna!', text: 'neni co odesílat' });
-      return null;
-    }
+    //if (origSettings === items) {
+    // setAlert({ header: 'Žádná změna!', text: 'neni co odesílat' });
+    // return null;
+    //}
 
     // password validation
     if (passwordAgain !== items.password) {

@@ -8,40 +8,21 @@ import {
   NewUser,
   ShowValues,
 } from 'components/MeteoAlarm';
+import { useAlarmConfig } from 'features/meteoalarm';
 import windsurfImg from 'images/windsurf.jpg';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export const MeteoAlarm: React.FC = () => {
-  const initItems = {
-    date: '',
-    days: 0,
-    email: '',
-    id: 0,
-    name: '',
-    password: '',
-    sms: 0,
-    username: '',
-    todayRainLimit: 0,
-    todayRainSent: 0,
-  };
+export type ActiveMenu = 'login' | 'forget' | 'new' | 'about' | 'values';
 
-  const initShow = {
-    login: false,
-    forget: false,
-    new: false,
-    about: false,
-    values: false,
-  };
+export const MeteoAlarm = () => {
+  const { data: config } = useAlarmConfig();
+  const [activeMenu, setActiveMenu] = useState<ActiveMenu>('login');
 
-  const [items, setItems] = useState(initItems);
-  const [origSettings, setOrigSettings] = useState(initItems);
-  const [isLogged, setIsLogged] = useState(false);
-  const [showStatus, setShowStatus] = useState({ ...initShow, login: true });
-
-  const loginStatus = (status: boolean): void => {
-    setIsLogged(status);
-    setShowStatus({ ...initShow, values: status, login: !status });
-  };
+  useEffect(() => {
+    if (config.isLogged) {
+      setActiveMenu('values');
+    }
+  }, [config]);
 
   return (
     <div
@@ -53,34 +34,14 @@ export const MeteoAlarm: React.FC = () => {
         height: '100vh',
       }}
     >
-      <Menu
-        isLogged={isLogged}
-        showStatus={showStatus}
-        setShowStatus={setShowStatus}
-        loginStatus={loginStatus}
-        initShow={initShow}
-      />
+      <Menu setActiveMenu={setActiveMenu} />
       <header className='header-main'>Lipno Meteo Alarm</header>
       <div>
-        {showStatus.values ? (
-          <ShowValues
-            items={items}
-            setItems={setItems}
-            origSettings={origSettings}
-            setOrigSettings={setOrigSettings}
-          />
-        ) : null}
-
-        {showStatus.login ? (
-          <LoginPage
-            setOrigSettings={setOrigSettings}
-            setItems={setItems}
-            loginStatus={loginStatus}
-          />
-        ) : null}
-        {showStatus.forget ? <ForgetPassword /> : null}
-        {showStatus.new ? <NewUser /> : null}
-        {showStatus.about ? <About /> : null}
+        {activeMenu === 'values' && <ShowValues />}
+        {activeMenu === 'login' && <LoginPage />}
+        {activeMenu === 'forget' && <ForgetPassword />}
+        {activeMenu === 'new' && <NewUser />}
+        {activeMenu === 'about' && <About />}
       </div>
     </div>
   );
