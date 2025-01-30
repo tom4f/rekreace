@@ -1,53 +1,33 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-
-type myItems = {
-  date: string;
-  days: number;
-  email: string;
-  id: number;
-  name: string;
-  password: string;
-  sms: number;
-  username: string;
-  todayRainLimit: number;
-  todayRainSent: number;
-};
+import { AlarmResponse } from 'features/meteoalarm';
+import { Dispatch, SetStateAction } from 'react';
 
 interface ShowTodayRainLimitTypes {
-  items: myItems;
-  setItems: Dispatch<SetStateAction<myItems>>;
+  items: AlarmResponse;
+  setItems: Dispatch<SetStateAction<AlarmResponse>>;
 }
+
+const optionList = Array.from({ length: 14 }, (_, index) => {
+  const value = index;
+  return (
+    <option key={value} value={value}>
+      {value > 0 ? `> ${value} mm` : '- vypnuto -  '}
+    </option>
+  );
+});
 
 export const ShowTodayRainLimit = ({
   items,
   setItems,
 }: ShowTodayRainLimitTypes) => {
-  // storage of selected values in multiSelectItems
-  const [selectedTodayRainLimit, setSelectedTodayRainLimit] = useState(
-    items.todayRainLimit
-  );
-  // generate <option> list
-  const optionList = [];
-  for (let i = 0; i < 21; i++) {
-    const showInList = i > 0 ? `> ${i} mm` : '- vypnuto -  ';
-    optionList[i] = (
-      <option key={i} value={i}>
-        {showInList}
-      </option>
-    );
-  }
-
-  const setTodayRainLimit = (value: number) => {
-    setItems({ ...items, todayRainLimit: value });
-    setSelectedTodayRainLimit(value);
-  };
-
   return (
     <section className='input-section'>
-      <label>Limit deště (dnes)</label>
+      <label htmlFor='rain-limit-select'>Limit deště (dnes)</label>
       <select
-        value={selectedTodayRainLimit}
-        onChange={(event) => setTodayRainLimit(+event.target.value)}
+        id='rain-limit-select'
+        value={items.todayRainLimit}
+        onChange={(event) =>
+          setItems({ ...items, todayRainLimit: +event.target.value })
+        }
       >
         {optionList}
       </select>

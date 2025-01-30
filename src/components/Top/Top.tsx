@@ -7,7 +7,6 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 
 export const Top = () => {
   const { pathname } = useLocation();
-  console.log(pathname);
   const [counter, setCounter] = useState(0);
 
   useEffect(

@@ -1,5 +1,3 @@
-import './css/MeteoBarBig.css';
-
 import { Header } from 'components/Atoms';
 import { useGetDavis, useGetLipno } from 'features/meteo';
 import { Link } from 'react-router-dom';
@@ -23,7 +21,8 @@ export const MeteoBarBig = () => {
     refetchInterval: 10000,
   });
 
-  if (!davisData?.length || !pocasiData?.length) return null;
+  if (!davisData?.length || !pocasiData?.length)
+    return <div style={{ color: 'white' }}>Loading...</div>;
 
   const MeteoTable = () => {
     const {
@@ -66,8 +65,8 @@ export const MeteoBarBig = () => {
     } = pocasiData[0];
 
     return (
-      <section className='happyMeteo'>
-        <fieldset>
+      <MainSection>
+        <Fieldset>
           <legend>Vítr</legend>
           <section>
             <header>
@@ -93,8 +92,8 @@ export const MeteoBarBig = () => {
               {wind_speed_high} m/s
             </article>
           </section>
-        </fieldset>
-        <fieldset>
+        </Fieldset>
+        <Fieldset>
           <legend>Teplota</legend>
           <section>
             <header>
@@ -112,8 +111,8 @@ export const MeteoBarBig = () => {
               {temp_high} &deg;C
             </article>
           </section>
-        </fieldset>
-        <fieldset>
+        </Fieldset>
+        <Fieldset>
           <legend>Tlak</legend>
           <section>
             <header>
@@ -131,8 +130,8 @@ export const MeteoBarBig = () => {
               {bar_max} hPa
             </article>
           </section>
-        </fieldset>
-        <fieldset>
+        </Fieldset>
+        <Fieldset>
           <legend>Rel. vlhkost</legend>
           <section>
             <header>
@@ -150,8 +149,8 @@ export const MeteoBarBig = () => {
               {huminidy_max} %
             </article>
           </section>
-        </fieldset>
-        <fieldset>
+        </Fieldset>
+        <Fieldset>
           <legend>Srážky</legend>
           <section>
             <header>
@@ -165,8 +164,8 @@ export const MeteoBarBig = () => {
               {rain_rate_max} mm/h
             </article>
           </section>
-        </fieldset>
-        <fieldset>
+        </Fieldset>
+        <Fieldset>
           <legend>Voda na Lipně</legend>
           <section>
             <header>
@@ -188,8 +187,8 @@ export const MeteoBarBig = () => {
               {hladina} m n.m.
             </article>
           </section>
-        </fieldset>
-      </section>
+        </Fieldset>
+      </MainSection>
     );
   };
 
@@ -226,5 +225,37 @@ const FadeInText = styled.span<{ $isFetching: boolean }>`
     100% {
       color: lime;
     }
+  }
+`;
+
+const MainSection = styled.section`
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+`;
+
+const Fieldset = styled.fieldset`
+  margin: 3px;
+  padding: 3px;
+  font-size: 0.7rem;
+  border: 2px solid green;
+  border-radius: 8px;
+
+  section {
+    display: flex;
+    width: auto;
+  }
+
+  section header {
+    text-align: right;
+    padding-right: 3px;
+    border-right: 1px dotted #00b300;
+  }
+
+  section article {
+    text-align: left;
+    padding-left: 3px;
   }
 `;

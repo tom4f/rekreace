@@ -1,8 +1,8 @@
-import { http, HttpResponse } from 'msw';
-
 import { HttpStatusCode } from 'enums';
 import { resolveMock } from 'features/mocks';
-import { GET_DAVIS_ENDPOINT, DavisResponse } from '../hooks';
+import { http, HttpResponse } from 'msw';
+
+import { DavisResponse, GET_DAVIS_ENDPOINT } from '../hooks';
 
 const handlers = [
   http.get(GET_DAVIS_ENDPOINT, async () => {

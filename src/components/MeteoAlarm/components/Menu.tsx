@@ -24,13 +24,13 @@ export const Menu = ({ setActiveMenu }: HeaderTypes) => {
         <NavLink to='/'>Zpět</NavLink>
       </span>
 
-      {!config?.isLogged ? (
-        <span onClick={() => setActiveMenu('login')}>přihlášení</span>
-      ) : (
+      {config?.isLogged ? (
         <>
           <span onClick={() => setActiveMenu('values')}>nastavení</span>
           <span onClick={logout}>odhlášení</span>
         </>
+      ) : (
+        <span onClick={() => setActiveMenu('login')}>přihlášení</span>
       )}
       <span onClick={() => setActiveMenu('forget')}>zapomenuté heslo?</span>
       <span onClick={() => setActiveMenu('new')}>registrace</span>

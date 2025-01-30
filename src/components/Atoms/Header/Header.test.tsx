@@ -1,11 +1,9 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Header } from './Header';
-import { NavLink } from 'react-router-dom';
-
-import { BrowserRouter } from 'react-router-dom';
-
 import { ReactNode } from 'react';
+import { BrowserRouter, NavLink } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
+
+import { Header } from './Header';
 
 const RouterWrapper = ({ children }: { children: ReactNode }) => {
   return <BrowserRouter>{children}</BrowserRouter>;

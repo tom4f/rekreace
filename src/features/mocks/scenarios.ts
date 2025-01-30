@@ -1,17 +1,18 @@
 import { HttpHandler } from 'msw';
-import { LOGIN_ENDPOINT, postLoginScenarios } from '../login';
-import { GET_FORUM_ENDPOINT, getForumScenarios } from '../forum';
+
 import { GET_BOOKING_ENDPOINT, getBookingScenarios } from '../booking';
+import { GET_FORUM_ENDPOINT, getForumScenarios } from '../forum';
+import { LOGIN_ENDPOINT, postLoginScenarios } from '../login';
 import {
-  MeteoFiles,
-  getTextFileScenarios,
-  getMultipleTextFileScenarios,
-  getDavisScenarios,
   GET_DAVIS_ENDPOINT,
   GET_LIPNO_ENDPOINT,
-  getLipnoScenarios,
   GET_OLD_STATION_ENDPOINT,
+  getDavisScenarios,
+  getLipnoScenarios,
+  getMultipleTextFileScenarios,
   getOldStationScenarios,
+  getTextFileScenarios,
+  MeteoFiles,
 } from '../meteo';
 
 export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =

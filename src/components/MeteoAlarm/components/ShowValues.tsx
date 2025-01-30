@@ -3,12 +3,11 @@ import {
   useAlarmConfig,
   useUpdateAlarm,
 } from 'features/meteoalarm';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   AlertBox,
   Delay,
-  ShowRainConfig,
   ShowTodayRainLimit,
   ShowWindDays,
   ShowWindSpeed,
@@ -19,6 +18,9 @@ interface AlertTypes {
   text: string;
   color?: string;
 }
+type ChangeType = React.ChangeEvent<
+  HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+>;
 
 export const ShowValues = () => {
   const { mutate: updateAlarm } = useUpdateAlarm();
@@ -26,16 +28,47 @@ export const ShowValues = () => {
   const [alert, setAlert] = useState<AlertTypes>({ header: '', text: '' });
   Delay(alert, setAlert);
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordAgain, setShowPasswordAgain] = useState(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordAgainRef = useRef<HTMLInputElement>(null);
+
+  const handleMouse = (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>
+  ) => {
+    const target = (event.target as HTMLSpanElement).dataset.input;
+    const inputType = event.type === 'mouseover' ? 'text' : 'password';
+
+    if (target === 'password' && passwordRef.current) {
+      passwordRef.current.type = inputType;
+    }
+    if (target === 'passwordAgain' && passwordAgainRef.current) {
+      passwordAgainRef.current.type = inputType;
+    }
+  };
+
   const [items, setItems] = useState(data);
 
   const [passwordAgain, setPasswordAgain] = useState(
     items?.password?.toString()
   );
 
-  const changePassword = (textValue: string) =>
-    setItems({ ...items, password: textValue });
+  if (!items) {
+    return null;
+  }
+  const change = (e: ChangeType) =>
+    setItems((orig) => {
+      if (!orig) {
+        return orig;
+      }
+
+      const value =
+        e.target.name === 'todayRainSent'
+          ? (e.target as HTMLInputElement).checked
+            ? 1
+            : 0
+          : e.target.value;
+
+      return { ...orig, [e.target.name]: value };
+    });
 
   if (!items) {
     return null;
@@ -106,35 +139,57 @@ export const ShowValues = () => {
         encType='multipart/form-data'
       >
         <ShowWindDays items={items} setItems={setItems} />
-        <ShowWindSpeed items={items} setItems={setItems} />
+        {items && <ShowWindSpeed items={items} setItems={setItems} />}
+
         <ShowTodayRainLimit items={items} setItems={setItems} />
-        <ShowRainConfig items={items} setItems={setItems} />
+        <section className='input-section'>
+          <label>Nastavení deště</label>
+          <ul>
+            <li>
+              <label>
+                <input
+                  name='todayRainSent'
+                  type='checkbox'
+                  onChange={change}
+                  checked={!!items.todayRainSent}
+                />
+                dnešní zpráva již poslána
+              </label>
+            </li>
+          </ul>
+        </section>
+
         <section className='input-section password'>
           <label>Heslo:</label>
           <br />
           <input
-            type={showPassword ? 'text' : 'password'}
+            name='password'
+            ref={passwordRef}
+            type='password'
             placeholder='heslo...'
-            onChange={(e) => changePassword(e.target.value)}
+            onChange={change}
             value={items.password}
             autoComplete='on'
           />
           <span
-            onMouseOver={() => setShowPassword(true)}
-            onMouseOut={() => setShowPassword(false)}
+            data-input='password'
+            onMouseOver={handleMouse}
+            onMouseOut={handleMouse}
           >
             Show
           </span>
           <input
-            type={showPasswordAgain ? 'text' : 'password'}
+            ref={passwordAgainRef}
+            type='password'
             placeholder='heslo znovu...'
             onChange={(e) => setPasswordAgain(e.target.value)}
             value={passwordAgain}
             autoComplete='on'
           />
           <span
-            onMouseOver={() => setShowPasswordAgain(true)}
-            onMouseOut={() => setShowPasswordAgain(false)}
+            data-input='passwordAgain'
+            onMouseOver={handleMouse}
+            onMouseOut={handleMouse}
           >
             Show
           </span>
@@ -143,8 +198,9 @@ export const ShowValues = () => {
         <section className='input-section'>
           <label>Celé jméno:</label>
           <input
+            name='name'
             placeholder='Full Name...'
-            onChange={(e) => setItems({ ...items, name: e.target.value })}
+            onChange={change}
             value={items.name}
           />
         </section>
@@ -152,8 +208,9 @@ export const ShowValues = () => {
         <section className='input-section'>
           <label>E-mail</label>
           <input
+            name='email'
             placeholder='Email...'
-            onChange={(e) => setItems({ ...items, email: e.target.value })}
+            onChange={change}
             value={items.email}
           />
         </section>

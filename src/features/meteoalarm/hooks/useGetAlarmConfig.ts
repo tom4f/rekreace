@@ -11,18 +11,6 @@ const useGetAlarmConfig = (): UseQueryResult<AlarmResponse, Error> => {
     queryKey: [ALARM_LOGIN_CONFIG_KEY],
     //queryFn:
     //enabled: false,
-    select: (data: AlarmResponse) => {
-      const clientJSON = sessionStorage.getItem(ALARM_LOGIN_SESSION_CONFIG);
-      if (!clientJSON) {
-        return {
-          data,
-        };
-      }
-
-      const clientObj = JSON.parse(clientJSON);
-
-      return clientObj;
-    },
   });
 };
 
@@ -34,9 +22,10 @@ export const useAlarmConfig = () => {
     isSuccess,
   } = useGetAlarmConfig();
 
-  const clientJSON = sessionStorage.getItem(ALARM_LOGIN_SESSION_CONFIG);
+  const clientJSON = sessionStorage.getItem(ALARM_LOGIN_SESSION_CONFIG) || '{}';
+  const sessionData: AlarmResponse = JSON.parse(clientJSON);
 
-  const loginData = clientJSON ? JSON.parse(clientJSON) : loginRQData;
+  const loginData = sessionData || loginRQData;
 
   return { data: loginData, error, isLoading, isSuccess };
 };

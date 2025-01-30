@@ -1,49 +1,28 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-
-type myItems = {
-  date: string;
-  days: number;
-  email: string;
-  id: number;
-  name: string;
-  password: string;
-  sms: number;
-  username: string;
-  todayRainLimit: number;
-  todayRainSent: number;
-};
+import { AlarmResponse } from 'features/meteoalarm';
+import { Dispatch, SetStateAction } from 'react';
 
 interface ShowWindSpeedTypes {
-  items: myItems;
-  setItems: Dispatch<SetStateAction<myItems>>;
+  items: AlarmResponse;
+  setItems: Dispatch<SetStateAction<AlarmResponse>>;
 }
 
+const optionList = Array.from({ length: 14 }, (_, index) => {
+  const value = index + 4;
+  return (
+    <option key={value} value={value}>
+      {value < 17 ? `> ${value} m/s` : '- vypnuto -'}
+    </option>
+  );
+});
+
 export const ShowWindSpeed = ({ items, setItems }: ShowWindSpeedTypes) => {
-  // storage of selected values in multiSelectItems
-  const [selectedWindSpeed, setSelectedWindSpeed] = useState(items.sms);
-
-  // generate <option> list
-  const optionList = [];
-  for (let i = 4; i < 18; i++) {
-    const textInList = i < 17 ? `> ${i} m/s` : '- vypnuto -  ';
-    optionList[i] = (
-      <option key={i} value={i}>
-        {textInList}
-      </option>
-    );
-  }
-
-  const setWindSpeed = (value: number) => {
-    setItems({ ...items, sms: value });
-    setSelectedWindSpeed(value);
-  };
-
   return (
     <section className='input-section'>
-      <label>Limit větru</label>
+      <label htmlFor='wind-speed-select'>Limit větru</label>
       <select
-        value={selectedWindSpeed}
-        onChange={(event) => setWindSpeed(+event.target.value)}
+        id='wind-speed-select'
+        value={items.sms}
+        onChange={(event) => setItems({ ...items, sms: +event.target.value })}
       >
         {optionList}
       </select>

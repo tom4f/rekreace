@@ -72,9 +72,11 @@ export const useAlarmLogout = () => {
   };
 
   const invalidateQuery = () => {
-    queryClient.invalidateQueries({
-      queryKey: [ALARM_LOGIN_CONFIG_KEY],
-    });
+    // queryClient.invalidateQueries({
+    //  queryKey: [ALARM_LOGIN_CONFIG_KEY],
+    // });
+    // queryClient.removeQueries({ queryKey: [ALARM_LOGIN_CONFIG_KEY] });
+    queryClient.setQueryData([ALARM_LOGIN_CONFIG_KEY], null);
   };
 
   return { removeSession, invalidateQuery };

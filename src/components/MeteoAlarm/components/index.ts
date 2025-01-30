@@ -5,7 +5,6 @@ export * from './LoginPage';
 export * from './Menu';
 export * from './NewUser';
 export * from './ShowOneValue';
-export * from './ShowRainConfig';
 export * from './ShowTodayRainLimit';
 export * from './ShowValues';
 export * from './ShowWindDays';

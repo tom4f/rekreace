@@ -1,26 +1,11 @@
+import { AlarmResponse } from 'features/meteoalarm';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 import { ShowOneValue } from './ShowOneValue';
 
-// alias
-// type Dispatcher<S> = Dispatch<SetStateAction<S>>;
-
-type myItems = {
-  date: string;
-  days: number;
-  email: string;
-  id: number;
-  name: string;
-  password: string;
-  sms: number;
-  username: string;
-  todayRainLimit: number;
-  todayRainSent: number;
-};
-
 interface ShowWindDaysTypes {
-  items: myItems;
-  setItems: Dispatch<SetStateAction<myItems>>;
+  items: AlarmResponse;
+  setItems: Dispatch<SetStateAction<AlarmResponse>>;
 }
 
 export const ShowWindDays = ({ items, setItems }: ShowWindDaysTypes) => {
@@ -41,7 +26,7 @@ export const ShowWindDays = ({ items, setItems }: ShowWindDaysTypes) => {
   // create initial multiselect array based on MySQL
   const initSelect = (days: number) => {
     // dec to binary
-    if (days === 0) return [];
+    if (!days) return [];
     const bin = days.toString(2);
     // bin to array
     const arr = [...bin].reverse();
