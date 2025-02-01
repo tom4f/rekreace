@@ -1,9 +1,8 @@
-import 'components/MeteoAlarm/css/index.css';
-
 import {
   About,
   ForgetPassword,
   LoginPage,
+  MainHeader,
   Menu,
   NewUser,
   ShowValues,
@@ -27,15 +26,14 @@ export const MeteoAlarm = () => {
   return (
     <div
       style={{
-        background: `url(${windsurfImg})`,
-        backgroundRepeat: 'no-repeat',
+        backgroundImage: `url(${windsurfImg})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         height: '100vh',
       }}
     >
       <Menu setActiveMenu={setActiveMenu} />
-      <header className='header-main'>Lipno Meteo Alarm</header>
+      <MainHeader>Lipno Meteo Alarm</MainHeader>
       <div>
         {activeMenu === 'values' && <ShowValues />}
         {activeMenu === 'login' && <LoginPage />}

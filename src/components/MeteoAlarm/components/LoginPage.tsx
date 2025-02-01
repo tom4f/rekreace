@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useAlarmLogin } from 'features/meteoalarm';
 import { useEffect, useState } from 'react';
 
+import { Article, Header, Section, Submit } from '../css';
 import { AlertBox, Delay } from './AlertBox';
 
 export const LoginPage = () => {
@@ -107,10 +108,10 @@ export const LoginPage = () => {
   useEffect(getLastRainData, []);
 
   return (
-    <article className='container-login'>
-      <header className='header-label'>Přihlášení uživatele</header>
+    <Article>
+      <Header>Přihlášení uživatele</Header>
       <form onSubmit={getData}>
-        <section className='input-section'>
+        <Section>
           <label>Zadejte uživatelské jméno</label>
           <input
             type='text'
@@ -123,11 +124,11 @@ export const LoginPage = () => {
             }
             value={loginParams.username}
           />
-        </section>
-        <section className='input-section password'>
+        </Section>
+        <Section>
           <label>Zadejte heslo</label>
-          <br />
           <input
+            style={{ width: '70%' }}
             type={showPassword ? 'text' : 'password'}
             placeholder='Password...'
             onChange={(e) =>
@@ -145,31 +146,31 @@ export const LoginPage = () => {
           >
             Show
           </span>
-        </section>
+        </Section>
         {alert.header ? <AlertBox alert={alert} /> : null}
-        <section className='submit-section'>
-          <input type='submit' name='odesli' value='Přihlásit' />
-        </section>
+        <Submit>
+          <button>Přihlásit</button>
+        </Submit>
       </form>
-      <header className='header-counter'>Počet uživatelů: {counter}</header>
-      <section className='input-section '>
+      <header style={{ textAlign: 'center' }}>
+        Počet uživatelů: {counter}
+      </header>
+      <Section>
         <label>Zobrazení větru na mobilu / emailu:</label>
-        <span className='smsText'>
-          <br />
+        <code className='smsText'>
           From: 4f@lipno.net
           <br />
           Text: {showOnPhone}
-        </span>
-      </section>
-      <section className='input-section '>
+        </code>
+      </Section>
+      <Section>
         <label>Zobrazení deště na mobilu / emailu:</label>
-        <span className='smsText'>
-          <br />
+        <code className='smsText'>
           From: 4f@lipno.net
           <br />
           Text: {showRainOnPhone}
-        </span>
-      </section>
-    </article>
+        </code>
+      </Section>
+    </Article>
   );
 };

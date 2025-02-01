@@ -1,18 +1,13 @@
 import {
   ALARM_LOGIN_SESSION_CONFIG,
+  AlarmResponse,
   useAlarmConfig,
   useUpdateAlarm,
 } from 'features/meteoalarm';
-import React, { useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 
-import {
-  AlertBox,
-  Delay,
-  ShowTodayRainLimit,
-  ShowWindDays,
-  ShowWindSpeed,
-} from './';
-
+import { Article, Header, Section, Submit } from '../css';
+import { AlertBox, Delay } from './';
 interface AlertTypes {
   header: string;
   text: string;
@@ -22,14 +17,29 @@ type ChangeType = React.ChangeEvent<
   HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 >;
 
+export type HandleItemType = {
+  items: AlarmResponse;
+  setItems: Dispatch<SetStateAction<AlarmResponse>>;
+};
+
+export type HandleItemType2 = {
+  items: AlarmResponse;
+  change: (e: ChangeType) => void;
+};
+
 export const ShowValues = () => {
   const { mutate: updateAlarm } = useUpdateAlarm();
   const { data } = useAlarmConfig();
   const [alert, setAlert] = useState<AlertTypes>({ header: '', text: '' });
-  Delay(alert, setAlert);
+  const [items, setItems] = useState(data);
+  const [passwordAgain, setPasswordAgain] = useState(
+    items?.password?.toString()
+  );
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordAgainRef = useRef<HTMLInputElement>(null);
+
+  Delay(alert, setAlert);
 
   const handleMouse = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>
@@ -45,34 +55,28 @@ export const ShowValues = () => {
     }
   };
 
-  const [items, setItems] = useState(data);
-
-  const [passwordAgain, setPasswordAgain] = useState(
-    items?.password?.toString()
-  );
-
   if (!items) {
     return null;
   }
+
   const change = (e: ChangeType) =>
     setItems((orig) => {
-      if (!orig) {
-        return orig;
+      const { name, value: origValue } = e.target;
+
+      let value: string | number = '';
+
+      const numericFields = ['todayRainLimit', 'sms'];
+
+      if (name === 'todayRainSent') {
+        value = (e.target as HTMLInputElement).checked ? 1 : 0;
+      } else if (numericFields.includes(name)) {
+        value = +origValue;
+      } else {
+        value = origValue;
       }
 
-      const value =
-        e.target.name === 'todayRainSent'
-          ? (e.target as HTMLInputElement).checked
-            ? 1
-            : 0
-          : e.target.value;
-
-      return { ...orig, [e.target.name]: value };
+      return { ...orig, [name]: value };
     });
-
-  if (!items) {
-    return null;
-  }
 
   const updateData = () => {
     updateAlarm(items, {
@@ -124,45 +128,101 @@ export const ShowValues = () => {
     updateData();
   };
 
+  const conditions = [
+    'neděle',
+    'pondělí',
+    'úterý',
+    'středa',
+    'čtvrtek',
+    'pátek',
+    'sobota',
+    '[1] jedna zpráva za den',
+    '[2] dnešní zpráva již poslána',
+    'jen při sílící tendenci, vypíná [1] a [2]',
+  ];
+
   return (
-    <article className='container-show-values'>
-      <header className='header-label'>
-        Administrace -{' '}
-        <label>
-          <small>uživatel :</small> {items.username}{' '}
-        </label>
-      </header>
-
-      <form
-        onSubmit={(event) => sendEdit(event)}
-        name='formular'
-        encType='multipart/form-data'
-      >
-        <ShowWindDays items={items} setItems={setItems} />
-        {items && <ShowWindSpeed items={items} setItems={setItems} />}
-
-        <ShowTodayRainLimit items={items} setItems={setItems} />
-        <section className='input-section'>
+    <Article>
+      <Header>
+        Administrace - <small>uživatel :</small> {items.username}{' '}
+      </Header>
+      <form onSubmit={sendEdit}>
+        <Section>
+          <label>Nastavení větru</label>
+          <ul>
+            {conditions.map((conditionText, conditionBit) => {
+              const conditionNumber = 1 << conditionBit;
+              const isChecked = !!(items.days & conditionNumber);
+              return (
+                <li key={conditionBit}>
+                  <input
+                    type='checkbox'
+                    name={conditionBit.toString()}
+                    onChange={() =>
+                      setItems((config) => ({
+                        ...config,
+                        days: config.days ^ conditionNumber,
+                      }))
+                    }
+                    checked={isChecked}
+                  />
+                  {conditionText}
+                </li>
+              );
+            })}
+          </ul>
+        </Section>
+        <Section>
+          <label htmlFor='wind-speed-select'>Limit větru</label>
+          <select
+            name='sms'
+            id='wind-speed-select'
+            value={items.sms}
+            onChange={change}
+          >
+            {Array.from({ length: 14 }, (_, index) => {
+              const value = index + 4;
+              return (
+                <option key={value} value={value}>
+                  {value < 17 ? `> ${value} m/s` : '- vypnuto -'}
+                </option>
+              );
+            })}
+          </select>
+        </Section>
+        <Section>
+          <label htmlFor='rain-limit-select'>Limit deště (dnes)</label>
+          <select
+            name='todayRainLimit'
+            id='rain-limit-select'
+            value={items.todayRainLimit}
+            onChange={change}
+          >
+            {Array.from({ length: 14 }, (_, index) => (
+              <option key={index} value={index}>
+                {index > 0 ? `> ${index} mm` : '- vypnuto -  '}
+              </option>
+            ))}
+          </select>
+        </Section>
+        <Section>
           <label>Nastavení deště</label>
           <ul>
             <li>
-              <label>
-                <input
-                  name='todayRainSent'
-                  type='checkbox'
-                  onChange={change}
-                  checked={!!items.todayRainSent}
-                />
-                dnešní zpráva již poslána
-              </label>
+              <input
+                name='todayRainSent'
+                type='checkbox'
+                onChange={change}
+                checked={!!items.todayRainSent}
+              />
+              dnešní zpráva již poslána
             </li>
           </ul>
-        </section>
-
-        <section className='input-section password'>
+        </Section>
+        <Section>
           <label>Heslo:</label>
-          <br />
           <input
+            style={{ width: '70%' }}
             name='password'
             ref={passwordRef}
             type='password'
@@ -179,6 +239,7 @@ export const ShowValues = () => {
             Show
           </span>
           <input
+            style={{ width: '70%' }}
             ref={passwordAgainRef}
             type='password'
             placeholder='heslo znovu...'
@@ -193,9 +254,8 @@ export const ShowValues = () => {
           >
             Show
           </span>
-        </section>
-
-        <section className='input-section'>
+        </Section>
+        <Section>
           <label>Celé jméno:</label>
           <input
             name='name'
@@ -203,9 +263,8 @@ export const ShowValues = () => {
             onChange={change}
             value={items.name}
           />
-        </section>
-
-        <section className='input-section'>
+        </Section>
+        <Section>
           <label>E-mail</label>
           <input
             name='email'
@@ -213,12 +272,12 @@ export const ShowValues = () => {
             onChange={change}
             value={items.email}
           />
-        </section>
-        {alert.header ? <AlertBox alert={alert} /> : null}
-        <section className='submit-section'>
-          <input type='submit' />
-        </section>
+        </Section>
+        {alert.header && <AlertBox alert={alert} />}
+        <Submit>
+          <button>Odeslat</button>
+        </Submit>
       </form>
-    </article>
+    </Article>
   );
 };

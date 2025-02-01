@@ -2,6 +2,7 @@ import { Url } from 'api/paths';
 import axios from 'axios';
 import React, { useState } from 'react';
 
+import { Article, Header, Section, Submit } from '../css';
 import { AlertBox, Delay } from './AlertBox';
 
 export const NewUser: React.FC = (): React.ReactElement => {
@@ -10,14 +11,13 @@ export const NewUser: React.FC = (): React.ReactElement => {
     email: string;
   }
 
-  // alert definition
   interface alertTypes {
     header: string;
     text: string;
     color?: string;
   }
   const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
-  // if 'alert' changed - wait 5s and clear 'alert'
+
   Delay(alert, setAlert);
 
   const [newUser, setNewUser] = useState<newUserTypes>({
@@ -36,7 +36,6 @@ export const NewUser: React.FC = (): React.ReactElement => {
       return null;
     }
 
-    // check if min 3 characters
     if (!/^[a-zA-Z0-9.\-_]{3,10}$/.test(username)) {
       setAlert({
         header: 'Špatné uživatelské jméno',
@@ -45,17 +44,6 @@ export const NewUser: React.FC = (): React.ReactElement => {
       return null;
     }
 
-    // !
-    //  /^
-    //      [^\s@]+  - ^..negate, \s...all space variant, +...one or more occurance(same as {1,})
-    //      @
-    //      [^\s@]+
-    //      \.
-    //      [^\s@]+
-    //  $/
-
-    // check email
-    //or without possibility of more @:  /\S+@\S+\.\S+/;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       setAlert({ header: 'Špatný email', text: 'vyplňte údaje' });
       return null;
@@ -64,10 +52,8 @@ export const NewUser: React.FC = (): React.ReactElement => {
     axios
       .post(`${Url.API}/pdo_sms_new.php`, newUser, { timeout: 5000 })
       .then((res) => {
-        // allForum = JSON.parse(res.data); --> for native xhr.onload
         const resp = res.data[0] || res.data;
 
-        // if error in response
         if (typeof resp.sms_new === 'string') {
           if (resp.sms_new === 'user_exists') {
             setAlert({ header: '', text: '' });
@@ -101,21 +87,18 @@ export const NewUser: React.FC = (): React.ReactElement => {
       })
       .catch((err) => {
         if (err.response) {
-          // client received an error response (5xx, 4xx)
           setAlert({
             header: 'Failed !',
             text: 'error response (5xx, 4xx)',
           });
           console.log(err.response);
         } else if (err.request) {
-          // client never received a response, or request never left
           setAlert({
             header: 'Failed !',
             text: 'never received a response, or request never left',
           });
           console.log(err.request);
         } else {
-          // anything else
           setAlert({
             header: 'Failed !',
             text: 'Error: anything else',
@@ -126,17 +109,15 @@ export const NewUser: React.FC = (): React.ReactElement => {
   };
 
   return (
-    <article className='container-new-user'>
-      <header className='header-label'>Registrace</header>
+    <Article>
+      <Header>Registrace</Header>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           createUser();
         }}
-        name='formular'
-        encType='multipart/form-data'
       >
-        <section className='input-section'>
+        <Section>
           <label>Zadejte uživatelské jméno:</label>
           <input
             placeholder='your new username...'
@@ -148,8 +129,8 @@ export const NewUser: React.FC = (): React.ReactElement => {
             }
             value={newUser.username}
           />
-        </section>
-        <section className='input-section'>
+        </Section>
+        <Section>
           <label>Zadejte emailovou adresu:</label>
           <input
             placeholder='your email...'
@@ -161,12 +142,12 @@ export const NewUser: React.FC = (): React.ReactElement => {
             }
             value={newUser.email}
           />
-        </section>
+        </Section>
         {alert.header ? <AlertBox alert={alert} /> : null}
-        <div className='submit-section'>
-          <input type='submit' name='odesli' value='create user' />
-        </div>
+        <Submit>
+          <button>Odeslat</button>
+        </Submit>
       </form>
-    </article>
+    </Article>
   );
 };

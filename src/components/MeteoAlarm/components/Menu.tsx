@@ -3,6 +3,8 @@ import { ActiveMenu } from 'pages';
 import { Dispatch, SetStateAction } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { TopBar } from '../css';
+
 type Dispatcher<S> = Dispatch<SetStateAction<S>>;
 
 interface HeaderTypes {
@@ -19,7 +21,7 @@ export const Menu = ({ setActiveMenu }: HeaderTypes) => {
   };
 
   return (
-    <header className='menu_meteoalarm'>
+    <TopBar>
       <span>
         <NavLink to='/'>Zpět</NavLink>
       </span>
@@ -35,6 +37,6 @@ export const Menu = ({ setActiveMenu }: HeaderTypes) => {
       <span onClick={() => setActiveMenu('forget')}>zapomenuté heslo?</span>
       <span onClick={() => setActiveMenu('new')}>registrace</span>
       <span onClick={() => setActiveMenu('about')}>info</span>
-    </header>
+    </TopBar>
   );
 };

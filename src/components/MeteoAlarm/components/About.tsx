@@ -1,14 +1,10 @@
-import React from 'react';
+import { Article, Header, Section } from '../css';
 
-//const About = () => {
-// but why "npm test" did not works with :
-export const About: React.FC = (): React.ReactElement => {
+export const About = () => {
   return (
-    <article className='container-about about-specific'>
-      <header className='header-label'>
-        Posílání informací o počasí dle nastavených limitů.
-      </header>
-      <section className='input-section'>
+    <Article style={{ maxWidth: '800px' }}>
+      <Header>Posílání informací o počasí dle nastavených limitů.</Header>
+      <Section>
         <label>Úvodem:</label>
         <p>
           Aplikace je v provozu od cca roku 2000 na adrese &nbsp;
@@ -26,8 +22,8 @@ export const About: React.FC = (): React.ReactElement => {
             www.t-mobile.cz/e-mail-do-sms
           </a>
         </p>
-      </section>
-      <section className='input-section'>
+      </Section>
+      <Section>
         <label>Jak to funguje:</label>
         <ul>
           <li>
@@ -51,8 +47,8 @@ export const About: React.FC = (): React.ReactElement => {
           </li>
           <li>[6] Data se v současné době neposílají v noci</li>
         </ul>
-      </section>
-      <section className='input-section'>
+      </Section>
+      <Section>
         <label>Připravujeme:</label>
         <ul>
           <li>
@@ -61,8 +57,10 @@ export const About: React.FC = (): React.ReactElement => {
           </li>
           <li>[2] možnost nastavit čas posílání (např. od 15:00 do 18:00)</li>
         </ul>
-      </section>
-      Tomáš Kučera - tom4f@seznam.cz - ubytovani@lipnonet.cz
-    </article>
+      </Section>
+      <div style={{ textAlign: 'center' }}>
+        Tomáš Kučera - tom4f@seznam.cz - ubytovani@lipnonet.cz
+      </div>
+    </Article>
   );
 };
