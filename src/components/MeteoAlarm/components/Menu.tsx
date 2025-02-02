@@ -32,10 +32,13 @@ export const Menu = ({ setActiveMenu }: HeaderTypes) => {
           <span onClick={logout}>odhlášení</span>
         </>
       ) : (
-        <span onClick={() => setActiveMenu('login')}>přihlášení</span>
+        <>
+          <span onClick={() => setActiveMenu('login')}>přihlášení</span>
+          <span onClick={() => setActiveMenu('forget')}>zapomenuté heslo?</span>
+          <span onClick={() => setActiveMenu('new')}>registrace</span>
+        </>
       )}
-      <span onClick={() => setActiveMenu('forget')}>zapomenuté heslo?</span>
-      <span onClick={() => setActiveMenu('new')}>registrace</span>
+
       <span onClick={() => setActiveMenu('about')}>info</span>
     </TopBar>
   );

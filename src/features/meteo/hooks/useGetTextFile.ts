@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import { Url } from 'api/paths';
 import { apiGet } from 'api/utils/get';
+import { useEffect, useState } from 'react';
 
 import { MeteoGetKey } from './useLoadWeather';
 
@@ -11,6 +11,8 @@ export enum MeteoFiles {
   NOAAYR = `${Url.DAVIS}/archive/{{year}}/NOAAYR-{{year}}.TXT`,
   DOWNLD02_NR = `${Url.DAVIS}/archive/downld02-{{meteoFileId}}.txt`,
   DOWNLD02 = `${Url.DAVIS}/downld02.txt`,
+  DATA_DAVIS = `${Url.DAVIS}/data_davis.txt`,
+  DATA_DAVIS_JSON = `${Url.DAVIS}/data_davis_json.txt`,
 }
 
 export const getTextFile = async (url: string): Promise<string> => {

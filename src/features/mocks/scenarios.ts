@@ -1,3 +1,11 @@
+import {
+  ALARM_LOGIN_ENDPOINT,
+  alarmCounterScenarios,
+  alarmLoginScenarios,
+  GET_ALARM_COUNTER_ENDPOINT,
+  getDavisDataJsonScenarios,
+  getDavisDataScenarios,
+} from 'features/meteoalarm';
 import { HttpHandler } from 'msw';
 
 import { GET_BOOKING_ENDPOINT, getBookingScenarios } from '../booking';
@@ -24,5 +32,9 @@ export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
     [GET_DAVIS_ENDPOINT, getDavisScenarios],
     [GET_LIPNO_ENDPOINT, getLipnoScenarios],
     [GET_OLD_STATION_ENDPOINT, getOldStationScenarios],
+    [ALARM_LOGIN_ENDPOINT, alarmLoginScenarios],
+    [GET_ALARM_COUNTER_ENDPOINT, alarmCounterScenarios],
+    [MeteoFiles.DATA_DAVIS, getDavisDataScenarios],
+    [MeteoFiles.DATA_DAVIS_JSON, getDavisDataJsonScenarios],
     ...getMultipleTextFileScenarios,
   ];

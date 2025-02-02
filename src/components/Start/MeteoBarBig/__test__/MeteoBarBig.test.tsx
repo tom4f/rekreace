@@ -5,8 +5,8 @@ import { describe, expect, it } from 'vitest';
 import { MeteoBarBig } from '../MeteoBarBig';
 
 describe('MeteoBarBig', () => {
-  it('displays loading text', async () => {
-    await renderWithProviders(<MeteoBarBig />);
+  it('displays loading text', () => {
+    renderWithProviders(<MeteoBarBig />);
 
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });

@@ -1,33 +1,34 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
-interface AlertBoxProps {
-    alert: {
-        header: string
-        text: string
-        color?: string
-    }
-}
+export type AlertType = {
+  header: string;
+  text: string;
+  color?: string;
+};
+type AlertBoxType = {
+  alert: AlertType;
+};
 
 export const AlertBox = ({
-    alert: { header = '', text = '', color = 'red' },
-}: AlertBoxProps) => {
-    return header ? (
-        <article className="alert" style={{ color }}>
-            <header className="header">{`${header}`}</header>
-            <header className="text"> {`${text}`}</header>
-        </article>
-    ) : null
-}
+  alert: { header = '', text = '', color = 'red' },
+}: AlertBoxType) => {
+  return header ? (
+    <article className='alert' style={{ color }}>
+      <header className='header'>{`${header}`}</header>
+      <header className='text'> {`${text}`}</header>
+    </article>
+  ) : null;
+};
 
 export const Delay = (
-    alert = { header: '', text: '' },
-    setAlert: Function
+  alert = { header: '', text: '' },
+  setAlert: (alert: AlertType) => void
 ): void => {
-    const delay = () => {
-        const timeout = setTimeout(() => {
-            setAlert({ header: '', text: '' })
-        }, 5000)
-        return () => clearTimeout(timeout)
-    }
-    useEffect(delay, [alert, setAlert])
-}
+  const delay = () => {
+    const timeout = setTimeout(() => {
+      setAlert({ header: '', text: '' });
+    }, 5000);
+    return () => clearTimeout(timeout);
+  };
+  useEffect(delay, [alert, setAlert]);
+};

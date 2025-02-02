@@ -1,31 +1,25 @@
-import { Url } from 'api/paths';
-import axios from 'axios';
-import { useAlarmLogin } from 'features/meteoalarm';
-import { useEffect, useState } from 'react';
+import { MeteoFiles, useGetTextFile } from 'features/meteo';
+import { useAlarmLogin, useGetAlarmCounter } from 'features/meteoalarm';
+import { useState } from 'react';
 
 import { Article, Header, Section, Submit } from '../css';
-import { AlertBox, Delay } from './AlertBox';
+import { AlertBox, AlertType, Delay } from './AlertBox';
 
-export const LoginPage = () => {
+export const Login = () => {
+  const { data: counter } = useGetAlarmCounter();
+  const { data: showOnPhone } = useGetTextFile(MeteoFiles.DATA_DAVIS);
+  const { data: showRainOnPhone } = useGetTextFile(MeteoFiles.DATA_DAVIS_JSON);
+  const { mutate: login } = useAlarmLogin();
+
   const [loginParams, setLoginParams] = useState({
     username: '',
     password: '',
   });
-
-  const { mutate: login } = useAlarmLogin();
-
-  interface alertTypes {
-    header: string;
-    text: string;
-    color?: string;
-  }
-  const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
+  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
 
   Delay(alert, setAlert);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showOnPhone, setShowOnPhone] = useState('');
-  const [showRainOnPhone, setShowRainOnPhone] = useState('');
 
   const getData = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,54 +52,16 @@ export const LoginPage = () => {
     }
   };
 
-  const [counter, setCounter] = useState(0);
+  const getLastWindText = () =>
+    showOnPhone?.split(/(?=Vitr)/)[1].split('_')[0] || 'wind loading...';
 
-  const getCounter = () => {
-    axios
-      .post(`${Url.API}/pdo_sms_counter.php`)
-      .then((res) => {
-        const resp = res.data[0] || res.data;
-        setCounter(resp.count);
-      })
-      .catch((err) => {
-        if (err.response) {
-          console.log(err.response);
-        } else if (err.request) {
-          console.log(err.request);
-        } else {
-          // anything else
-        }
-      });
+  const getLastRainText = () => {
+    if (!showRainOnPhone) {
+      return 'rain loading...';
+    }
+    const { raincelk, Rain_rate_max } = JSON.parse(showRainOnPhone);
+    return `todayRain : ${raincelk}mm, todayRainMaxRate : ${Rain_rate_max}mm/h, LIPNO.net`;
   };
-
-  useEffect(getCounter, []);
-
-  const getLastSmsData = () => {
-    fetch(`${Url.DAVIS}/data_davis.txt`)
-      .then((res) => res.text())
-      .then((lastData) => {
-        const limitedText = lastData.split(/(?=Vitr)/)[1].split('_')[0];
-        setShowOnPhone(limitedText);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  useEffect(getLastSmsData, []);
-
-  const getLastRainData = () => {
-    fetch(`${Url.DAVIS}/data_davis_json.txt`)
-      .then((res) => res.text())
-      .then((lastData) => {
-        const { raincelk, Rain_rate_max } = JSON.parse(lastData);
-
-        setShowRainOnPhone(
-          `todayRain : ${raincelk}mm, todayRainMaxRate : ${Rain_rate_max}mm/h, LIPNO.net`
-        );
-      })
-      .catch((error) => console.log(error));
-  };
-
-  useEffect(getLastRainData, []);
 
   return (
     <Article>
@@ -153,22 +109,22 @@ export const LoginPage = () => {
         </Submit>
       </form>
       <header style={{ textAlign: 'center' }}>
-        Počet uživatelů: {counter}
+        Počet uživatelů: {counter?.count || 'loading...'}
       </header>
       <Section>
         <label>Zobrazení větru na mobilu / emailu:</label>
-        <code className='smsText'>
+        <code>
           From: 4f@lipno.net
           <br />
-          Text: {showOnPhone}
+          Text: {getLastWindText()}
         </code>
       </Section>
       <Section>
         <label>Zobrazení deště na mobilu / emailu:</label>
-        <code className='smsText'>
+        <code>
           From: 4f@lipno.net
           <br />
-          Text: {showRainOnPhone}
+          Text: {getLastRainText()}
         </code>
       </Section>
     </Article>

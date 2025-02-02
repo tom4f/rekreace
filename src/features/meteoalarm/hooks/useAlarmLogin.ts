@@ -26,6 +26,7 @@ type DataResponse = {
   username: string;
   todayRainLimit: number;
   todayRainSent: number;
+  lastUpdate?: string;
 };
 
 export type AlarmResponse = LoginResponse & DataResponse;

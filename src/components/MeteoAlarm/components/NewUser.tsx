@@ -1,31 +1,22 @@
-import { Url } from 'api/paths';
-import axios from 'axios';
-import React, { useState } from 'react';
+import { RegisterRequest, useAlarmRegister } from 'features/meteoalarm';
+import { useState } from 'react';
 
 import { Article, Header, Section, Submit } from '../css';
-import { AlertBox, Delay } from './AlertBox';
+import { AlertBox, AlertType, Delay } from './AlertBox';
 
-export const NewUser: React.FC = (): React.ReactElement => {
-  interface newUserTypes {
-    username: string;
-    email: string;
-  }
-
-  interface alertTypes {
-    header: string;
-    text: string;
-    color?: string;
-  }
-  const [alert, setAlert] = useState<alertTypes>({ header: '', text: '' });
+export const NewUser = () => {
+  const { mutate: register } = useAlarmRegister();
+  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
 
   Delay(alert, setAlert);
 
-  const [newUser, setNewUser] = useState<newUserTypes>({
+  const [newUser, setNewUser] = useState<RegisterRequest>({
     username: '',
     email: '',
   });
 
-  const createUser = () => {
+  const createUser = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const { username, email } = newUser;
 
     if (!username || !email) {
@@ -49,29 +40,22 @@ export const NewUser: React.FC = (): React.ReactElement => {
       return null;
     }
 
-    axios
-      .post(`${Url.API}/pdo_sms_new.php`, newUser, { timeout: 5000 })
-      .then((res) => {
-        const resp = res.data[0] || res.data;
-
+    register(newUser, {
+      onSuccess: (resp) => {
         if (typeof resp.sms_new === 'string') {
           if (resp.sms_new === 'user_exists') {
-            setAlert({ header: '', text: '' });
             setAlert({ header: 'Error !', text: 'user exists...' });
           }
           if (resp.sms_new === 'email_exists') {
-            setAlert({ header: '', text: '' });
             setAlert({ header: 'Error !', text: 'email exists...' });
           }
           if (resp.sms_new === 'error') {
-            setAlert({ header: '', text: '' });
             setAlert({
               header: 'Error !',
               text: 'heslo se nepodařilo odeslat...',
             });
           }
           if (resp.sms_new === 'user_added') {
-            setAlert({ header: '', text: '' });
             setAlert({
               header: `Heslo pro ${resp.username} odesláno na`,
               text: `${resp.email}...`,
@@ -84,8 +68,8 @@ export const NewUser: React.FC = (): React.ReactElement => {
             text: 'try later...',
           });
         }
-      })
-      .catch((err) => {
+      },
+      onError: (err) => {
         if (err.response) {
           setAlert({
             header: 'Failed !',
@@ -105,21 +89,18 @@ export const NewUser: React.FC = (): React.ReactElement => {
           });
           console.log(err);
         }
-      });
+      },
+    });
   };
 
   return (
     <Article>
       <Header>Registrace</Header>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          createUser();
-        }}
-      >
+      <form onSubmit={createUser}>
         <Section>
-          <label>Zadejte uživatelské jméno:</label>
+          <label htmlFor='username'>Zadejte uživatelské jméno:</label>
           <input
+            id='username'
             placeholder='your new username...'
             onChange={(e) =>
               setNewUser((current) => ({
@@ -131,8 +112,9 @@ export const NewUser: React.FC = (): React.ReactElement => {
           />
         </Section>
         <Section>
-          <label>Zadejte emailovou adresu:</label>
+          <label htmlFor='emsil'>Zadejte emailovou adresu:</label>
           <input
+            id='email'
             placeholder='your email...'
             onChange={(e) =>
               setNewUser((current) => ({
@@ -143,7 +125,7 @@ export const NewUser: React.FC = (): React.ReactElement => {
             value={newUser.email}
           />
         </Section>
-        {alert.header ? <AlertBox alert={alert} /> : null}
+        {alert.header && <AlertBox alert={alert} />}
         <Submit>
           <button>Odeslat</button>
         </Submit>

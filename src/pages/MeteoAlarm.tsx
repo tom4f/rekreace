@@ -1,7 +1,7 @@
 import {
   About,
   ForgetPassword,
-  LoginPage,
+  Login,
   MainHeader,
   Menu,
   NewUser,
@@ -36,7 +36,7 @@ export const MeteoAlarm = () => {
       <MainHeader>Lipno Meteo Alarm</MainHeader>
       <div>
         {activeMenu === 'values' && <ShowValues />}
-        {activeMenu === 'login' && <LoginPage />}
+        {activeMenu === 'login' && <Login />}
         {activeMenu === 'forget' && <ForgetPassword />}
         {activeMenu === 'new' && <NewUser />}
         {activeMenu === 'about' && <About />}

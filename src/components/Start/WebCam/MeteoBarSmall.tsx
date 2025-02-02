@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import './css/MeteoBarSmall.css';
-import { useGetTextFile, MeteoFiles } from 'features/meteo';
+
+import { MeteoFiles, useGetTextFile } from 'features/meteo';
+import { useEffect, useState } from 'react';
 
 export const MeteoBarSmall = () => {
   const [cssTransitionOut, setCssTransitionOut] = useState(
