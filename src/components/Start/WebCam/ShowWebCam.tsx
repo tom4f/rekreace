@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Url } from 'api/paths';
+import { useEffect, useState } from 'react';
 
 type ShowWebCamState = {
   day: number;

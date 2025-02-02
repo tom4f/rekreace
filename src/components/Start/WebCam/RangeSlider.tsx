@@ -1,6 +1,6 @@
-import { SliderWithText } from './css/slider-dynamic-css';
 import './css/slider.css';
 
+import { SliderWithText } from './css/slider-dynamic-css';
 import { WebCamState } from './WebCam';
 
 type RangeSliderType = {

@@ -1,4 +1,5 @@
 import { http, HttpHandler, HttpResponse } from 'msw';
+
 import { resolveMock } from '../mockResolver';
 
 const mockHandler: HttpHandler[] = [

@@ -1,6 +1,6 @@
-import { InputHTMLAttributes } from 'react';
+import React, { forwardRef,InputHTMLAttributes  } from 'react';
+
 import { StyledInput } from './StyledInput';
-import React, { forwardRef } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string | React.JSX.Element;

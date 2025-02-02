@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { Url } from 'api/paths';
 import { api } from 'api/utils';
+import { AxiosError } from 'axios';
+
 import { GET_FORUM_KEY } from './useGetForum';
 
 type AddForumRequest = {

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Url } from 'api/paths';
 import { api } from 'api/utils';
+
 import { PhotoRequest } from './useGetPhoto';
 
 export type CategoryName = { [key: string]: string };

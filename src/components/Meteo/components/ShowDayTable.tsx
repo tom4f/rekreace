@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Header } from 'components/Atoms';
 import { useGetDavis } from 'features/meteo';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import TableStyle from './../css/Table.module.css';
 import { DateContext } from './DateContext';

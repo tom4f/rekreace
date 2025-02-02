@@ -1,9 +1,9 @@
 import './css/status.css';
 
-import { NavLink, useLocation } from 'react-router-dom';
 import { Header } from 'components/Atoms';
 import { useGetBooking } from 'features/booking';
 import { useLoginStatus } from 'features/login';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import { ShowTable } from './ShowTable';
 

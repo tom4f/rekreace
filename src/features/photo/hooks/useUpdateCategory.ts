@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { Url } from 'api/paths';
 import { api } from 'api/utils';
-import { GET_CATEGORY_KEY } from './useGetCategory';
-import { CategoryName } from './useGetCategory';
+import { AxiosError } from 'axios';
+
+import { CategoryName,GET_CATEGORY_KEY  } from './useGetCategory';
+
 
 type UpdateCategoryRequest = {
   categoryName: CategoryName;

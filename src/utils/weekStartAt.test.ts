@@ -1,4 +1,5 @@
 import { describe, expect } from 'vitest';
+
 import { weekStartAt } from './weekStartAt';
 
 type TestCases = [string, number | undefined, string, string, number, number];

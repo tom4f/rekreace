@@ -1,4 +1,4 @@
-import axios, { AxiosError, isAxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig,isAxiosError } from 'axios';
 
 type PostErrorType = {
   status: string;

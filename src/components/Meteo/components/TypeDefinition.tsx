@@ -1,4 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
+
 import { EditMeteoType } from './ModifyLipno';
 export interface urlQueryType extends ParsedUrlQuery {
   page: string;

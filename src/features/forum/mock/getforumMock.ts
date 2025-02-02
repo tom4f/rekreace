@@ -1,8 +1,8 @@
-import { http, HttpResponse } from 'msw';
-
 import { HttpStatusCode } from 'enums';
 import { resolveMock } from 'features/mocks';
-import { GET_FORUM_ENDPOINT, ForumResponse } from '../hooks';
+import { http, HttpResponse } from 'msw';
+
+import { ForumResponse,GET_FORUM_ENDPOINT } from '../hooks';
 
 const handlers = [
   http.get(GET_FORUM_ENDPOINT, async () => {

@@ -1,5 +1,5 @@
-import { SpecificGraphType, LoadDataFunctionType, PureData } from './OnePage';
 import { OneGraphDataWithGetDataFn } from './OneGraph';
+import { LoadDataFunctionType, PureData,SpecificGraphType } from './OnePage';
 export default class Draw {
   dataOrig: PureData[];
   dataReduced: PureData[];

@@ -1,7 +1,9 @@
+import './css/WebCamSlideShow.css';
+
 import { faPlayCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import './css/WebCamSlideShow.css';
+
 import { WebCamState } from './WebCam';
 
 export const WebCamSlideShow = ({

@@ -1,5 +1,5 @@
-import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { LoginResponse } from 'features/login';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 export interface AllPhotoType {
   id: string;
