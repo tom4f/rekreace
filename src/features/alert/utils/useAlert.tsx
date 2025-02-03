@@ -8,18 +8,18 @@ export type AlertType = {
 
 export type SetAlertType = Dispatch<SetStateAction<AlertType>>;
 
-export const useAlert = (description = { header: '', text: '' }) => {
-  const [alert, setAlert] = useState<AlertType>(description);
+export const useAlert = (seconds = 5) => {
+  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
 
   const delay = () => {
     if (alert.header) {
       const timeout = setTimeout(() => {
         setAlert({ header: '', text: '' });
-      }, 5000);
+      }, seconds * 1000);
       return () => clearTimeout(timeout);
     }
   };
-  useEffect(delay, [alert, setAlert]);
+  useEffect(delay, [alert, setAlert, seconds]);
 
   return {
     alert,

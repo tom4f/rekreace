@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from 'utils/test/testHelpers';
-import { describe, expect, it } from 'vitest';
 
 import { Login } from '../Login';
 

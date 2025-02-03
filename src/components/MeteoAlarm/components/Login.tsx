@@ -1,23 +1,21 @@
+import { AlertBox } from 'components/AlertBox/AlertBox';
+import { useAlert } from 'features/alert';
 import { MeteoFiles, useGetTextFile } from 'features/meteo';
 import { useAlarmLogin, useGetAlarmCounter } from 'features/meteoalarm';
 import { useState } from 'react';
 
 import { Article, Header, Section, Submit } from '../css';
-import { AlertBox, AlertType, Delay } from './AlertBox';
 
 export const Login = () => {
   const { data: counter } = useGetAlarmCounter();
   const { data: showOnPhone } = useGetTextFile(MeteoFiles.DATA_DAVIS);
   const { data: showRainOnPhone } = useGetTextFile(MeteoFiles.DATA_DAVIS_JSON);
   const { mutate: login } = useAlarmLogin();
-
+  const { alert, setAlert } = useAlert();
   const [loginParams, setLoginParams] = useState({
     username: '',
     password: '',
   });
-  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
-
-  Delay(alert, setAlert);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -48,7 +46,14 @@ export const Login = () => {
     }
 
     if (loginParams.username && loginParams.password) {
-      login(loginParams);
+      login(loginParams, {
+        onError: () => {
+          setAlert({
+            header: 'Přihlášení se nepovedlo !',
+            text: 'zkuste později...',
+          });
+        },
+      });
     }
   };
 

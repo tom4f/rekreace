@@ -7,7 +7,7 @@ import { ALARM_LOGIN_CONFIG_KEY, AlarmResponse } from './useAlarmLogin';
 
 export type UpdateAlarmRequest = AlarmResponse;
 
-type UpdateAlarmResponse = { smsResult: 'value_changed' };
+export type UpdateAlarmResponse = { smsResult: 'value_changed' };
 
 export type UpdateAlarmErrorResponse = AxiosError & {
   data: { result: string };

@@ -8,17 +8,6 @@ import styled from 'styled-components';
 
 import { LoginRequest, usePostLogin } from '../hooks';
 
-export type LoginType = {
-  setLoginData: React.Dispatch<
-    React.SetStateAction<{
-      isLogged: boolean;
-      webToken: string;
-      webAccess: string;
-      webUser: string;
-    }>
-  >;
-};
-
 export const Login = () => {
   const { mutate } = usePostLogin();
   const { alert, setAlert } = useAlert();
@@ -62,8 +51,13 @@ export const Login = () => {
     }
 
     mutate(object, {
-      onSuccess: () => {
-        //setLoginData(respObj);
+      onSuccess: (data) => {
+        if (!data.isLogged) {
+          setAlert({
+            header: 'Přihlášení se nepovedlo !',
+            text: 'zkuste později...',
+          });
+        }
       },
       onError: () => {
         setAlert({
@@ -86,15 +80,18 @@ export const Login = () => {
             type='text'
           />
           <Input
-            label='E-mail'
+            label='Heslo'
             placeholder='Zadejte heslo'
             required
             name='password'
             type='password'
             autoComplete='off'
           />
-          <AlertBox alert={alert} />
           <Button label='Odeslat' />
+          <AlertBox
+            style={{ width: '100%', textAlign: 'center' }}
+            alert={alert}
+          />
         </StyledForm>
       </form>
       <Header>

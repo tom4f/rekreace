@@ -5,6 +5,8 @@ import {
   GET_ALARM_COUNTER_ENDPOINT,
   getDavisDataJsonScenarios,
   getDavisDataScenarios,
+  UPDATE_ALARM_ENDPOINT,
+  updateAlarmMock,
 } from 'features/meteoalarm';
 import { HttpHandler } from 'msw';
 
@@ -36,5 +38,6 @@ export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
     [GET_ALARM_COUNTER_ENDPOINT, alarmCounterScenarios],
     [MeteoFiles.DATA_DAVIS, getDavisDataScenarios],
     [MeteoFiles.DATA_DAVIS_JSON, getDavisDataJsonScenarios],
+    [UPDATE_ALARM_ENDPOINT, updateAlarmMock],
     ...getMultipleTextFileScenarios,
   ];

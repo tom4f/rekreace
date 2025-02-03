@@ -1,15 +1,14 @@
+import { AlertBox } from 'components/AlertBox/AlertBox';
+import { useAlert } from 'features/alert';
 import { PasswordRequest, useAlarmPassword } from 'features/meteoalarm';
 import React, { useState } from 'react';
 
 import { Article, Header, Section, Submit } from '../css';
-import { AlertBox, AlertType, Delay } from './AlertBox';
 
 export const ForgetPassword = () => {
   const { mutate: sendPassword } = useAlarmPassword();
 
-  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
-
-  Delay(alert, setAlert);
+  const { alert, setAlert } = useAlert();
 
   const [id, setId] = useState<PasswordRequest>({
     identification: '',

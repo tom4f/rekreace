@@ -1,14 +1,13 @@
+import { AlertBox } from 'components/AlertBox/AlertBox';
+import { useAlert } from 'features/alert';
 import { RegisterRequest, useAlarmRegister } from 'features/meteoalarm';
 import { useState } from 'react';
 
 import { Article, Header, Section, Submit } from '../css';
-import { AlertBox, AlertType, Delay } from './AlertBox';
 
 export const NewUser = () => {
   const { mutate: register } = useAlarmRegister();
-  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
-
-  Delay(alert, setAlert);
+  const { alert, setAlert } = useAlert();
 
   const [newUser, setNewUser] = useState<RegisterRequest>({
     username: '',
@@ -112,7 +111,7 @@ export const NewUser = () => {
           />
         </Section>
         <Section>
-          <label htmlFor='emsil'>Zadejte emailovou adresu:</label>
+          <label htmlFor='email'>Zadejte emailovou adresu:</label>
           <input
             id='email'
             placeholder='your email...'

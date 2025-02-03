@@ -1,12 +1,12 @@
 import { fotoGalleryOwner } from 'api/paths';
-import { AlertBox, Delay } from 'components/AlertBox/AlertBox';
+import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input, Select, TextArea } from 'components/Atoms';
 import {
   CategoryObjType,
   PhotoType,
   SetStateType,
 } from 'components/PhotoGallery';
-import { AlertType } from 'features/alert';
+import { useAlert } from 'features/alert';
 import { LoginResponse } from 'features/login';
 import {
   useAddPhoto,
@@ -57,8 +57,7 @@ export const Formular = ({
   const { mutate: updatePhoto } = useUpdatePhoto();
   const { mutate: deletePhoto } = useDeletePhoto();
 
-  const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
-  Delay(alert, setAlert);
+  const { alert, setAlert } = useAlert();
 
   const [isCategory, setIsCategory] = useState(false);
   const editCategory: EditCategoryToggleType = (event) => {

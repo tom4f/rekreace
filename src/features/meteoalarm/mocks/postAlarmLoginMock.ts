@@ -12,7 +12,7 @@ const handlers = [
       email: '603200316@SMS.t-mobile.cz',
       sms: 4,
       username: 'Tom4F MOCK',
-      password: 'oli',
+      password: '1w1w1w1w',
       days: 1023,
       date: '2021-02-25 22:07:08',
       todayRainLimit: 2,
@@ -28,7 +28,7 @@ const handlers = [
 
 export const alarmLoginScenarios = {
   error: [
-    http.get(ALARM_LOGIN_ENDPOINT, async () => {
+    http.post(ALARM_LOGIN_ENDPOINT, async () => {
       return new HttpResponse(null, {
         status: HttpStatusCode.INTERNAL_SERVER_ERROR_500,
       });

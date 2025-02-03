@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { ReactNode } from 'react';
 import { BrowserRouter, NavLink } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
 
 import { Header } from './Header';
 

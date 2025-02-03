@@ -1,3 +1,5 @@
+import { AlertBox } from 'components/AlertBox/AlertBox';
+import { useAlert } from 'features/alert';
 import {
   ALARM_LOGIN_SESSION_CONFIG,
   AlarmResponse,
@@ -7,12 +9,7 @@ import {
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 
 import { Article, Header, Section, Submit } from '../css';
-import { AlertBox, Delay } from './';
-interface AlertTypes {
-  header: string;
-  text: string;
-  color?: string;
-}
+
 type ChangeType = React.ChangeEvent<
   HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 >;
@@ -30,7 +27,7 @@ export type HandleItemType2 = {
 export const ShowValues = () => {
   const { mutate: updateAlarm } = useUpdateAlarm();
   const { data } = useAlarmConfig();
-  const [alert, setAlert] = useState<AlertTypes>({ header: '', text: '' });
+  const { alert, setAlert } = useAlert();
   const [items, setItems] = useState(data);
   const [passwordAgain, setPasswordAgain] = useState(
     items?.password?.toString()
@@ -38,8 +35,6 @@ export const ShowValues = () => {
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordAgainRef = useRef<HTMLInputElement>(null);
-
-  Delay(alert, setAlert);
 
   const handleMouse = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>

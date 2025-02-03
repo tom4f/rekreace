@@ -1,5 +1,4 @@
 export * from './About';
-export * from './AlertBox';
 export * from './ForgetPassword';
 export * from './Login';
 export * from './Menu';

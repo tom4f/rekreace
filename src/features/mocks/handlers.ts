@@ -3,6 +3,7 @@ import {
   getDavisDataJsonMock,
   getDavisDataMock,
   postAlarmLoginMock,
+  putUpdateAlarmMock,
 } from 'features/meteoalarm';
 import { delay, http } from 'msw';
 
@@ -44,4 +45,5 @@ export const resolveHandlers = () => [
   ...getAlarmCounterMock(),
   ...getDavisDataMock(),
   ...getDavisDataJsonMock(),
+  ...putUpdateAlarmMock(),
 ];
