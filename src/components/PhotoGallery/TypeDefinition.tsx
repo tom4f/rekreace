@@ -1,8 +1,8 @@
 import { LoginResponse } from 'features/login';
-import { PhotoResponse } from 'features/photo';
+import { OnePhotoResponse } from 'features/photo';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-export interface PhotoType extends PhotoResponse {
+export interface PhotoType extends OnePhotoResponse {
   url?: string | ArrayBuffer | null;
 }
 
@@ -28,7 +28,7 @@ export type categoryChangeType =
   | ChangeEvent<HTMLSelectElement>;
 
 export type SmallImagesTypes = {
-  eightPhoto: Array<PhotoResponse>;
+  eightPhoto: Array<OnePhotoResponse>;
   imgPosition: imgPositionType;
   bigPhoto: PhotoType;
   setImgPosition: SetStateType;
@@ -43,11 +43,10 @@ export type FormularType = {
   loginData: LoginResponse;
 };
 
-export type editImage = {
+export type EditImageType = {
   editPhoto: PhotoType;
   setEditPhoto: Dispatch<SetStateAction<PhotoType>>;
   setImgPosition: SetStateType;
-  categoryObj: CategoryObjType;
 };
 
 export type imageChangeType = {
@@ -59,6 +58,5 @@ export type BigImageType = {
   imgPosition: imgPositionType;
   setImgPosition: SetStateType;
   bigPhoto: PhotoType;
-  categoryObj: CategoryObjType;
   length: number;
 };

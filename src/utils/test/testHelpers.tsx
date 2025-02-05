@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render } from '@testing-library/react';
+import { render, renderHook } from '@testing-library/react';
 import { resolveHandlers } from 'features/mocks';
 import { setupServer } from 'msw/node';
 import { FC, PropsWithChildren, ReactElement } from 'react';
@@ -40,4 +40,26 @@ export const renderWithProviders = (
     );
   };
   return { ...render(component, { wrapper }) };
+};
+
+export const renderHookWithProviders = <Result, Props>(
+  hook: (initialProps: Props) => Result
+) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+        retry: false,
+      },
+    },
+  });
+
+  const wrapper: FC<PropsWithChildren<object>> = ({ children }) => {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </QueryClientProvider>
+    );
+  };
+  return { ...renderHook(hook, { wrapper }) };
 };

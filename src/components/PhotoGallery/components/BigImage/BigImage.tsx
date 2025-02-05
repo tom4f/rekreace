@@ -15,7 +15,6 @@ export const BigImage = ({
   bigPhoto,
   imgPosition,
   setImgPosition,
-  categoryObj,
   length,
 }: BigImageType) => {
   const [fadeIn, setFadeIn] = useState(true);
@@ -78,7 +77,7 @@ export const BigImage = ({
         imgPosition={imgPosition}
       />
       <Presentation setImgPosition={setImgPosition} length={length} />
-      <CategoryList setImgPosition={setImgPosition} categoryObj={categoryObj} />
+      <CategoryList setImgPosition={setImgPosition} />
       {pathname === '/fotogalerie/edit' && (
         <Modal
           customStyle={{
@@ -91,7 +90,6 @@ export const BigImage = ({
         >
           <EditImage
             setImgPosition={setImgPosition}
-            categoryObj={categoryObj}
             editPhoto={editPhoto}
             setEditPhoto={setEditPhoto}
           />

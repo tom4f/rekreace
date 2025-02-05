@@ -1,11 +1,7 @@
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input, Select, TextArea } from 'components/Atoms';
-import {
-  CategoryObjType,
-  PhotoType,
-  SetStateType,
-} from 'components/PhotoGallery';
+import { PhotoType, SetStateType } from 'components/PhotoGallery';
 import { useAlert } from 'features/alert';
 import { LoginResponse } from 'features/login';
 import {
@@ -37,7 +33,6 @@ type FormularType = {
   editPhoto: PhotoType;
   setEditPhoto: Dispatch<SetStateAction<PhotoType>>;
   setImgPosition: SetStateType;
-  categoryObj: CategoryObjType;
   loginData: LoginResponse;
 };
 

@@ -10,6 +10,12 @@ import {
   UPDATE_ALARM_ENDPOINT,
   updateAlarmMock,
 } from 'features/meteoalarm';
+import {
+  GET_CATEGORY_ENDPOINT,
+  GET_PHOTO_ENDPOINT,
+  getCategoryScenarios,
+  getPhotoScenarios,
+} from 'features/photo';
 import { HttpHandler } from 'msw';
 
 import { GET_BOOKING_ENDPOINT, getBookingScenarios } from '../booking';
@@ -42,5 +48,8 @@ export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
     [MeteoFiles.DATA_DAVIS_JSON, getDavisDataJsonScenarios],
     [UPDATE_ALARM_ENDPOINT, updateAlarmMock],
     [ALARM_PASSWORD_ENDPOINT, alarmPasswordMock],
+    [GET_CATEGORY_ENDPOINT, getCategoryScenarios],
+
+    [GET_PHOTO_ENDPOINT, getPhotoScenarios],
     ...getMultipleTextFileScenarios,
   ];

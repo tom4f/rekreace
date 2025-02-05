@@ -1,11 +1,11 @@
 import { Url } from 'api/paths';
 import { imgPositionType, PhotoType } from 'components/PhotoGallery';
-import { PhotoResponse } from 'features/photo';
+import { OnePhotoResponse } from 'features/photo';
 import styled, { css } from 'styled-components';
 
 type BigImgType = {
   $editPhoto: PhotoType;
-  $bigPhoto: PhotoResponse;
+  $bigPhoto: OnePhotoResponse;
   $fadeIn: boolean;
   $imgPosition: imgPositionType;
 };
@@ -24,13 +24,13 @@ ${({ $bigPhoto, $editPhoto, $fadeIn, $imgPosition }) =>
     }
 
     &::after {
-      background-image: url(${($editPhoto?.url as string) ||
-      `${Url.FOTOGALERIE}/${$bigPhoto?.id}b.${$bigPhoto?.imgType}?${$imgPosition.reload}`});
-      background-position: ${($editPhoto?.rotate === '0' && 'top    center') ||
-      ($editPhoto?.rotate === '90' && 'center center') ||
-      ($editPhoto?.rotate === '180' && 'bottom center') ||
-      ($editPhoto?.rotate === '270' && 'center center')};
-      transform: rotate(${-$editPhoto?.rotate}deg);
+      background-image: url(${($editPhoto.url as string) ||
+      `${Url.FOTOGALERIE}/${$bigPhoto.id}b.${$bigPhoto.imgType}?${$imgPosition.reload}`});
+      background-position: ${($editPhoto.rotate === '0' && 'top    center') ||
+      ($editPhoto.rotate === '90' && 'center center') ||
+      ($editPhoto.rotate === '180' && 'bottom center') ||
+      ($editPhoto.rotate === '270' && 'center center')};
+      transform: rotate(${-($editPhoto?.rotate ?? 0)}deg);
     }
   `}
 }

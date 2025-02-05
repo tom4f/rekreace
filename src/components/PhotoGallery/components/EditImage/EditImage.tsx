@@ -1,4 +1,4 @@
-import { editImage } from 'components/PhotoGallery';
+import { EditImageType } from 'components/PhotoGallery';
 import { Login, useLoginStatus } from 'features/login';
 
 import { Formular } from './Formular';
@@ -7,8 +7,7 @@ export const EditImage = ({
   editPhoto,
   setEditPhoto,
   setImgPosition,
-  categoryObj,
-}: editImage) => {
+}: EditImageType) => {
   const { data: loginData } = useLoginStatus();
 
   return (
@@ -19,7 +18,6 @@ export const EditImage = ({
           setEditPhoto={setEditPhoto}
           loginData={loginData}
           setImgPosition={setImgPosition}
-          categoryObj={categoryObj}
         />
       ) : (
         <Login />

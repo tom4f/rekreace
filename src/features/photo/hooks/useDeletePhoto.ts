@@ -13,7 +13,7 @@ type DeletePhotoRequestToDo = {
 
 type DeletePhotoRequest = FormData;
 
-type DeletePhotoPhotoResponse = {
+type DeletePhotoOnePhotoResponse = {
   result: string;
 };
 
@@ -26,7 +26,7 @@ export const DELETE_PHOTO_KEY = 'updatePhoto';
 
 const deletePhoto = async (
   request: DeletePhotoRequest
-): Promise<DeletePhotoPhotoResponse> => {
+): Promise<DeletePhotoOnePhotoResponse> => {
   const { data } = await api
     .post({
       url: DELETE_PHOTO_ENDPOINT,
@@ -42,7 +42,7 @@ const deletePhoto = async (
 export const useDeletePhoto = () => {
   const queryClient = useQueryClient();
   return useMutation<
-    DeletePhotoPhotoResponse,
+    DeletePhotoOnePhotoResponse,
     DeletePhotoErrorResponse,
     DeletePhotoRequest
   >({

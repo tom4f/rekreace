@@ -25,7 +25,7 @@ export type UpdatePhotoRequestToDo = {
 
 type UpdatePhotoRequest = FormData;
 
-type UpdatePhotoResponse = {
+type UpdateOnePhotoResponse = {
   result: string;
 };
 
@@ -38,7 +38,7 @@ export const UPDATE_PHOTO_KEY = 'updatePhoto';
 
 const updatePhoto = async (
   request: UpdatePhotoRequest
-): Promise<UpdatePhotoResponse> => {
+): Promise<UpdateOnePhotoResponse> => {
   const { data } = await api
     .post({
       url: UPDATE_PHOTO_ENDPOINT,
@@ -54,7 +54,7 @@ const updatePhoto = async (
 export const useUpdatePhoto = () => {
   const queryClient = useQueryClient();
   return useMutation<
-    UpdatePhotoResponse,
+    UpdateOnePhotoResponse,
     UpdatePhotoErrorResponse,
     UpdatePhotoRequest
   >({

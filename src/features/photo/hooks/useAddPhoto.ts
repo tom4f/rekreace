@@ -23,7 +23,7 @@ type AddPhotoRequestToDo = {
 
 type AddPhotoRequest = FormData;
 
-type AddPhotoResponse = {
+type AddOnePhotoResponse = {
   result: string;
 };
 
@@ -36,7 +36,7 @@ export const ADD_PHOTO_KEY = 'addPhoto';
 
 const addPhoto = async (
   request: AddPhotoRequest
-): Promise<AddPhotoResponse> => {
+): Promise<AddOnePhotoResponse> => {
   const { data } = await api
     .post({
       url: ADD_PHOTO_ENDPOINT,
@@ -51,7 +51,11 @@ const addPhoto = async (
 
 export const useAddPhoto = () => {
   const queryClient = useQueryClient();
-  return useMutation<AddPhotoResponse, AddPhotoErrorResponse, AddPhotoRequest>({
+  return useMutation<
+    AddOnePhotoResponse,
+    AddPhotoErrorResponse,
+    AddPhotoRequest
+  >({
     mutationFn: addPhoto,
     mutationKey: [ADD_PHOTO_KEY],
     onSuccess: () => {

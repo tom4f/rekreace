@@ -6,7 +6,7 @@ export type PhotoRequest = {
   fotoGalleryOwner: string;
 };
 
-export type PhotoResponse = {
+export type OnePhotoResponse = {
   id: number;
   text: string;
   autor: string;
@@ -16,14 +16,16 @@ export type PhotoResponse = {
   header: string;
   insertDate: string;
   date: string;
-  rotate: string;
+  rotate?: string;
   imgType: string;
 };
+
+export type PhotoResponse = OnePhotoResponse[];
 
 export const GET_PHOTO_ENDPOINT = `${Url.NEW_API}/photo/read.php?{fotoGalleryOwner}`;
 export const GET_PHOTO_KEY = 'getPhoto';
 
-const getPhoto = async (request: PhotoRequest): Promise<PhotoResponse[]> => {
+const getPhoto = async (request: PhotoRequest): Promise<PhotoResponse> => {
   const data = await api.get({
     url: GET_PHOTO_ENDPOINT.replace(
       '{fotoGalleryOwner}',

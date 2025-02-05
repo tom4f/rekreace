@@ -2,31 +2,25 @@ import './CategoryList.css';
 
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { fotoGalleryOwner } from 'api/paths';
-import { CategoryObjType, SetStateType } from 'components/PhotoGallery';
-import { useGetCategory } from 'features/photo';
+import { SetStateType } from 'components/PhotoGallery';
+import { useCategoryCounter } from 'features/photo';
 import { useState } from 'react';
 
 interface eightPhotoTypes {
   setImgPosition: SetStateType;
-  categoryObj: CategoryObjType;
 }
 
-export const CategoryList = ({
-  setImgPosition,
-  categoryObj,
-}: eightPhotoTypes) => {
-  const { data: categoryNames, isSuccess } = useGetCategory({
-    fotoGalleryOwner,
-  });
+export const CategoryList = ({ setImgPosition }: eightPhotoTypes) => {
+  const { categoryCounter, categoryNames, isCategorySuccess } =
+    useCategoryCounter();
 
   const [showCategory, setShowCategory] = useState(false);
 
-  if (!isSuccess) return null;
+  if (!isCategorySuccess || !categoryNames) return null;
 
   const category = [];
 
-  for (const [key, value] of Object.entries(categoryObj)) {
+  for (const [key, value] of Object.entries(categoryCounter)) {
     const changeCategory = () =>
       setImgPosition((prev) => ({
         ...prev,
@@ -36,7 +30,7 @@ export const CategoryList = ({
       }));
     category.push(
       <div className='oneCategory' key={key} onClick={changeCategory}>
-        <header>{categoryNames?.[+key] ?? 'loading'}</header>
+        <header>{categoryNames[+key] ?? 'loading'}</header>
         <article>{value}</article>
       </div>
     );

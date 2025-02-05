@@ -3,14 +3,14 @@ import { MeteoAlarm } from 'pages/MeteoAlarm';
 import { renderWithProviders } from 'utils/test/testHelpers';
 
 describe('MeteoAlarm Login page', () => {
-  it.skip('render <Login> component in loading phase', () => {
+  it('render <Login> component in loading phase', () => {
     renderWithProviders(<MeteoAlarm />);
     expect(screen.getByText(/Počet uživatelů: loading.../)).toBeInTheDocument();
     expect(screen.getByText(/Text: wind loading.../)).toBeInTheDocument();
     expect(screen.getByText(/rain loading.../)).toBeInTheDocument();
   });
 
-  it.skip('render <Login> component in loaded phase + test all 3 ReactQuery APIs', async () => {
+  it('render <Login> component in loaded phase + test all 3 ReactQuery APIs', async () => {
     await renderWithProviders(<MeteoAlarm />);
 
     await waitFor(() => {
