@@ -1,7 +1,7 @@
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input } from 'components/Atoms';
-import { categoryChangeType, CategoryNameType } from 'components/PhotoGallery';
+import { categoryChangeType, CategoryNamesType } from 'components/PhotoGallery';
 import { useAlert } from 'features/alert';
 import { useUpdateCategory } from 'features/photo';
 import { useState } from 'react';
@@ -11,42 +11,42 @@ import { EditCategoryToggleType } from './Formular';
 
 export type EditCategoryType = {
   editCategory: EditCategoryToggleType;
-  categoryName: { [key: string]: string } | null;
+  categoryNames: { [key: string]: string } | null;
 };
 
 type categoryLogicType = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
 export const EditCategory = ({
-  categoryName: initialCategoryName,
+  categoryNames: initialCategoryNames,
   editCategory,
 }: EditCategoryType) => {
   const { mutate: updateCategory } = useUpdateCategory();
-  const [categoryName, setCategoryName] = useState<CategoryNameType | null>(
-    initialCategoryName
+  const [categoryNames, setCategoryNames] = useState<CategoryNamesType | null>(
+    initialCategoryNames
   );
   const { alert, setAlert } = useAlert();
 
-  if (!categoryName) return null;
+  if (!categoryNames) return null;
 
   const categoryChange = (e: categoryChangeType) => {
     const { name, value } = e.target;
     if (name.startsWith('name-')) {
       const key = name.replace('name-', '');
-      setCategoryName((orig) => ({ ...orig, [key]: value }));
+      setCategoryNames((orig) => ({ ...orig, [key]: value }));
     }
   };
 
   const editCategoryLogic: categoryLogicType = (event) => {
     event.preventDefault();
 
-    if (!categoryName) return;
+    if (!categoryNames) return;
     setAlert({
       header: 'Ukládám změny',
       text: 'malý moment...',
       color: 'lime',
     });
     updateCategory(
-      { categoryName, fotoGalleryOwner },
+      { categoryNames, fotoGalleryOwner },
       {
         onSuccess: () => setAlert({ header: 'OK', text: ':-)', color: 'lime' }),
         onError: (err) =>
@@ -58,7 +58,7 @@ export const EditCategory = ({
   const addCategoryLogic: categoryLogicType = (event) => {
     event.preventDefault();
 
-    setCategoryName((orig) => {
+    setCategoryNames((orig) => {
       if (!orig) return orig;
       const highestKey = Math.max(
         ...Object.keys(orig).map((key) => (key !== '99999' ? +key : 0))
@@ -86,11 +86,11 @@ export const EditCategory = ({
         )}
       </StyledCategory>
       <StyledCategory>
-        {Object.entries(categoryName).map(([key]) => (
+        {Object.entries(categoryNames).map(([key]) => (
           <Input
             key={key}
             label={key}
-            value={categoryName?.[+key] ?? ''}
+            value={categoryNames?.[+key] ?? ''}
             onChange={categoryChange}
             name={`name-${key}`}
             placeholder='text'

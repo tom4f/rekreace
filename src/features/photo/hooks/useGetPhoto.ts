@@ -7,11 +7,12 @@ export type PhotoRequest = {
 };
 
 export type PhotoResponse = {
-  id: string;
+  id: number;
   text: string;
   autor: string;
   email: string;
-  typ: string;
+  typ: number;
+  votes: number;
   header: string;
   insertDate: string;
   date: string;

@@ -19,11 +19,9 @@ import styled from 'styled-components';
 
 import { EditCategory } from './EditCategory';
 import { ImageChange } from './ImageChange';
-
 type ChangeType = React.ChangeEvent<
   HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 >;
-
 type EditType = React.MouseEvent<
   HTMLButtonElement | HTMLInputElement,
   MouseEvent
@@ -49,9 +47,10 @@ export const Formular = ({
   setImgPosition,
   loginData,
 }: FormularType) => {
-  const { data: categoryName, isSuccess } = useGetCategory({
-    fotoGalleryOwner,
-  });
+  const { data: categoryNamesData, isSuccess: isSuccessCategoryNames } =
+    useGetCategory({
+      fotoGalleryOwner,
+    });
 
   const { mutate: addPhoto } = useAddPhoto();
   const { mutate: updatePhoto } = useUpdatePhoto();
@@ -70,7 +69,7 @@ export const Formular = ({
 
   const form = useRef<HTMLFormElement>(null);
 
-  const category = Object.entries(categoryName ?? {})
+  const category = Object.entries(categoryNamesData ?? {})
     .filter(([key]) => key !== '99999')
     .map(([key, value]) => ({ value: key, label: value }));
 
@@ -125,8 +124,15 @@ export const Formular = ({
     }
   };
 
-  return isSuccess && isCategory ? (
-    <EditCategory categoryName={categoryName} editCategory={editCategory} />
+  if (!isSuccessCategoryNames && !categoryNamesData) {
+    return null;
+  }
+
+  return isCategory ? (
+    <EditCategory
+      categoryNames={categoryNamesData}
+      editCategory={editCategory}
+    />
   ) : (
     <form ref={form}>
       <StyledForm>

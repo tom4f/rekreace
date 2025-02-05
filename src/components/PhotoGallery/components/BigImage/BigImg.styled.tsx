@@ -1,14 +1,11 @@
 import { Url } from 'api/paths';
-import {
-  AllPhotoType,
-  imgPositionType,
-  PhotoType,
-} from 'components/PhotoGallery';
+import { imgPositionType, PhotoType } from 'components/PhotoGallery';
+import { PhotoResponse } from 'features/photo';
 import styled, { css } from 'styled-components';
 
 type BigImgType = {
   $editPhoto: PhotoType;
-  $bigPhoto: AllPhotoType;
+  $bigPhoto: PhotoResponse;
   $fadeIn: boolean;
   $imgPosition: imgPositionType;
 };

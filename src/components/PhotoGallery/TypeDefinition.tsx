@@ -1,20 +1,8 @@
 import { LoginResponse } from 'features/login';
+import { PhotoResponse } from 'features/photo';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-export interface AllPhotoType {
-  id: string;
-  text: string;
-  autor: string;
-  email: string;
-  typ: string;
-  header: string;
-  insertDate: string;
-  date: string;
-  rotate: string;
-  imgType: string;
-}
-
-export interface PhotoType extends AllPhotoType {
+export interface PhotoType extends PhotoResponse {
   url?: string | ArrayBuffer | null;
 }
 
@@ -32,7 +20,7 @@ export type SetStateType = React.Dispatch<
 
 export type CategoryObjType = { [key: string]: number };
 
-export type CategoryNameType = { [key: string]: string };
+export type CategoryNamesType = { [key: string]: string };
 
 export type categoryChangeType =
   | ChangeEvent<HTMLInputElement>
@@ -40,7 +28,7 @@ export type categoryChangeType =
   | ChangeEvent<HTMLSelectElement>;
 
 export type SmallImagesTypes = {
-  eightPhoto: Array<AllPhotoType>;
+  eightPhoto: Array<PhotoResponse>;
   imgPosition: imgPositionType;
   bigPhoto: PhotoType;
   setImgPosition: SetStateType;
@@ -64,7 +52,7 @@ export type editImage = {
 
 export type imageChangeType = {
   setEditPhoto: React.Dispatch<React.SetStateAction<PhotoType>>;
-  imgId?: string;
+  imgId?: number;
 };
 
 export type BigImageType = {

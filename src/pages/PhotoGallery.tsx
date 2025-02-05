@@ -1,12 +1,11 @@
 import { fotoGalleryOwner } from 'api/paths';
 import { Header } from 'components/Atoms';
 import {
-  AllPhotoType,
   BigImage,
   CategoryObjType,
   SmallImages,
 } from 'components/PhotoGallery';
-import { useGetPhoto } from 'features/photo';
+import { PhotoResponse, useGetPhoto } from 'features/photo';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -41,7 +40,7 @@ export const PhotoGallery = ({ category }: { category?: number }) => {
     imgPosition.smallImgStart + imgPosition.smallImgsSize
   );
 
-  const reducer = (sumPerCat: CategoryObjType, oneEntry: AllPhotoType) => {
+  const reducer = (sumPerCat: CategoryObjType, oneEntry: PhotoResponse) => {
     sumPerCat[oneEntry.typ] =
       oneEntry.typ in sumPerCat ? ++sumPerCat[oneEntry.typ] : 1;
     return sumPerCat;

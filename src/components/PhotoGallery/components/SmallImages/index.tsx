@@ -17,7 +17,7 @@ export const SmallImages = ({
       {eightPhoto?.map((img) => (
         <StyledDiv
           key={img.id}
-          $imgId={img.id}
+          $imgId={img.id.toString()}
           $imgType={img.imgType}
           $arrIndexFromImgId={arrIndexFromImgId}
           $imgPosition={imgPosition}

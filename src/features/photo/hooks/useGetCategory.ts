@@ -4,10 +4,10 @@ import { api } from 'api/utils';
 
 import { PhotoRequest } from './useGetPhoto';
 
-export type CategoryName = { [key: string]: string };
+export type CategoryNames = { [key: string]: string };
 
 export type CategoryResponse = {
-  categoryName: CategoryName;
+  categoryNames: CategoryNames;
   fotoGalleryOwner: string;
 };
 
@@ -31,6 +31,6 @@ export const useGetCategory = (request: PhotoRequest) => {
   return useQuery({
     queryKey: [GET_CATEGORY_KEY, request.fotoGalleryOwner],
     queryFn: () => getCategory(request),
-    select: (data) => data.categoryName,
+    select: (data) => data.categoryNames,
   });
 };

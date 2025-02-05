@@ -3,11 +3,10 @@ import { Url } from 'api/paths';
 import { api } from 'api/utils';
 import { AxiosError } from 'axios';
 
-import { CategoryName,GET_CATEGORY_KEY  } from './useGetCategory';
-
+import { CategoryNames, GET_CATEGORY_KEY } from './useGetCategory';
 
 type UpdateCategoryRequest = {
-  categoryName: CategoryName;
+  categoryNames: CategoryNames;
   fotoGalleryOwner: string;
 };
 

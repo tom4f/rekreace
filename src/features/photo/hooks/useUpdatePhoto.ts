@@ -5,12 +5,13 @@ import { AxiosError } from 'axios';
 
 import { GET_PHOTO_KEY } from './useGetPhoto';
 
-type UpdatePhotoRequestToDo = {
-  id: string;
+export type UpdatePhotoRequestToDo = {
+  id: number;
   text: string;
   autor: string;
   email: string;
-  typ: string;
+  typ: number;
+  votes: number;
   header: string;
   insertDate: string;
   date: string;

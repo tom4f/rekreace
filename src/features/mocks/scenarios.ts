@@ -1,7 +1,9 @@
 import {
   ALARM_LOGIN_ENDPOINT,
+  ALARM_PASSWORD_ENDPOINT,
   alarmCounterScenarios,
   alarmLoginScenarios,
+  alarmPasswordMock,
   GET_ALARM_COUNTER_ENDPOINT,
   getDavisDataJsonScenarios,
   getDavisDataScenarios,
@@ -39,5 +41,6 @@ export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
     [MeteoFiles.DATA_DAVIS, getDavisDataScenarios],
     [MeteoFiles.DATA_DAVIS_JSON, getDavisDataJsonScenarios],
     [UPDATE_ALARM_ENDPOINT, updateAlarmMock],
+    [ALARM_PASSWORD_ENDPOINT, alarmPasswordMock],
     ...getMultipleTextFileScenarios,
   ];
