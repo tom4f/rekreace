@@ -16,11 +16,13 @@ export const CategoryList = ({
   setImgPosition,
   categoryObj,
 }: eightPhotoTypes) => {
-  const { data: categoryName } = useGetCategory({
+  const { data: categoryNames, isSuccess } = useGetCategory({
     fotoGalleryOwner,
   });
 
   const [showCategory, setShowCategory] = useState(false);
+
+  if (!isSuccess) return null;
 
   const category = [];
 
@@ -34,7 +36,7 @@ export const CategoryList = ({
       }));
     category.push(
       <div className='oneCategory' key={key} onClick={changeCategory}>
-        <header>{categoryName?.[+key] ?? 'loading'}</header>
+        <header>{categoryNames?.[+key] ?? 'loading'}</header>
         <article>{value}</article>
       </div>
     );
@@ -47,7 +49,7 @@ export const CategoryList = ({
         icon={faAlignJustify}
         onMouseOver={() => setShowCategory(true)}
       />
-      {showCategory ? (
+      {showCategory && (
         <div
           className='categoryList'
           onMouseLeave={() => setShowCategory(false)}
@@ -57,7 +59,7 @@ export const CategoryList = ({
             <section>{category}</section>
           </fieldset>
         </div>
-      ) : null}
+      )}
     </>
   );
 };
