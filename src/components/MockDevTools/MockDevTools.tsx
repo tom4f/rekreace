@@ -1,10 +1,5 @@
 import { Button, Input } from 'components/Atoms';
-import {
-  availableScenarios,
-  DEFAULT_STATE,
-  LOCAL_STORAGE_MOCK_DELAY_KEY,
-  LOCAL_STORAGE_MOCK_KEY,
-} from 'features/mocks';
+import { availableScenarios, MockResolver } from 'features/mocks';
 import { useState } from 'react';
 import styled from 'styled-components';
 
@@ -15,7 +10,9 @@ export const MockDevTools = () => {
 
   const [search, setSearch] = useState('');
   const [delay, setDelay] = useState(
-    parseInt(localStorage.getItem(LOCAL_STORAGE_MOCK_DELAY_KEY) || '0')
+    parseInt(
+      localStorage.getItem(MockResolver.LOCAL_STORAGE_MOCK_DELAY_KEY) || '0'
+    )
   );
 
   let isVisibleCurrentState = false;
@@ -47,7 +44,7 @@ export const MockDevTools = () => {
 
   const onTagClick = (route: string, scenario: string) => {
     let settings: Settings = JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_MOCK_KEY) || '{}'
+      localStorage.getItem(MockResolver.LOCAL_STORAGE_MOCK_KEY) || '{}'
     );
     if (!settings) {
       settings = {};
@@ -55,13 +52,19 @@ export const MockDevTools = () => {
 
     settings[route] = scenario;
 
-    localStorage.setItem(LOCAL_STORAGE_MOCK_KEY, JSON.stringify(settings));
+    localStorage.setItem(
+      MockResolver.LOCAL_STORAGE_MOCK_KEY,
+      JSON.stringify(settings)
+    );
     window.dispatchEvent(new Event('localStorageChange'));
     setReload(Math.random());
   };
 
   const onDelayChange = (delay: number) => {
-    localStorage.setItem(LOCAL_STORAGE_MOCK_DELAY_KEY, JSON.stringify(delay));
+    localStorage.setItem(
+      MockResolver.LOCAL_STORAGE_MOCK_DELAY_KEY,
+      JSON.stringify(delay)
+    );
     window.dispatchEvent(new Event('localStorageChange'));
     setReload(Math.random());
     setDelay(delay);
@@ -69,21 +72,24 @@ export const MockDevTools = () => {
 
   const getActiveItem = (key: string) => {
     const settings = JSON.parse(
-      localStorage.getItem(LOCAL_STORAGE_MOCK_KEY) || '{}'
+      localStorage.getItem(MockResolver.LOCAL_STORAGE_MOCK_KEY) || '{}'
     );
     if (!settings) {
-      return DEFAULT_STATE;
+      return MockResolver.DEFAULT_STATE;
     }
 
     if (settings[key]) {
       return settings[key];
     }
 
-    return DEFAULT_STATE;
+    return MockResolver.DEFAULT_STATE;
   };
 
   const onResetClick = () => {
-    localStorage.setItem(LOCAL_STORAGE_MOCK_KEY, JSON.stringify({}));
+    localStorage.setItem(
+      MockResolver.LOCAL_STORAGE_MOCK_KEY,
+      JSON.stringify({})
+    );
     window.dispatchEvent(new Event('localStorageChange'));
     setReload(Math.random());
   };
@@ -142,11 +148,13 @@ export const MockDevTools = () => {
                         <SmallButton
                           label='default'
                           variant={
-                            getActiveItem(route) === DEFAULT_STATE
+                            getActiveItem(route) === MockResolver.DEFAULT_STATE
                               ? 'primary'
                               : 'secondary'
                           }
-                          onClick={() => onTagClick(route, DEFAULT_STATE)}
+                          onClick={() =>
+                            onTagClick(route, MockResolver.DEFAULT_STATE)
+                          }
                         />
                         {Object.keys(scenarios).map((scenario) => {
                           return (

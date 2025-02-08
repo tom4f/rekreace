@@ -2,7 +2,7 @@ import './index.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { LOCAL_STORAGE_MOCK_KEY } from 'features/mocks';
+import { MockResolver } from 'features/mocks';
 import { SetupWorker } from 'msw/browser';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -40,7 +40,7 @@ const reinitializeMocking = async () => {
 };
 
 window.addEventListener('localStorageChange', async () => {
-  if (localStorage.getItem(LOCAL_STORAGE_MOCK_KEY)) {
+  if (localStorage.getItem(MockResolver.LOCAL_STORAGE_MOCK_KEY)) {
     await reinitializeMocking();
   }
 });

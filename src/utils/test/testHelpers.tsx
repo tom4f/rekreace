@@ -42,9 +42,11 @@ export const renderWithProviders = (
   return { ...render(component, { wrapper }) };
 };
 
-export const renderHookWithProviders = <Result, Props>(
+export const renderHookWithProviders = <Props, Result>(
   hook: (initialProps: Props) => Result
 ) => {
+  server.use(...resolveHandlers());
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -61,5 +63,6 @@ export const renderHookWithProviders = <Result, Props>(
       </QueryClientProvider>
     );
   };
+
   return { ...renderHook(hook, { wrapper }) };
 };

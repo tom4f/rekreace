@@ -11,19 +11,17 @@ export type CategoryResponse = {
   fotoGalleryOwner: string;
 };
 
-export const GET_CATEGORY_ENDPOINT = `${Url.NEW_API}/photo/read_category.php?{fotoGalleryOwner}`;
+export const GET_CATEGORY_ENDPOINT = `${Url.NEW_API}/photo/read_category.php`;
 export const GET_CATEGORY_KEY = 'getCategory';
 
 const getCategory = async (
   request: PhotoRequest
 ): Promise<CategoryResponse> => {
+  const params = new URLSearchParams();
+  params.append('fotoGalleryOwner', request.fotoGalleryOwner.toString());
   const data = await api.get({
-    url: GET_CATEGORY_ENDPOINT.replace(
-      '{fotoGalleryOwner}',
-      `fotoGalleryOwner=${request.fotoGalleryOwner}`
-    ),
+    url: `${GET_CATEGORY_ENDPOINT}?${params.toString()}`,
   });
-
   return data;
 };
 

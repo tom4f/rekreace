@@ -5,27 +5,31 @@ import { OnePhotoResponse, useGetCategory, useGetPhoto } from './';
 export type CategoryObjType = { [key: string]: number };
 
 export const useCategoryCounter = () => {
-  const { data: allPhoto } = useGetPhoto({
+  const { data: photos, isSuccess: isGetPhotoSuccess } = useGetPhoto({
     fotoGalleryOwner,
   });
-  const { data: categoryNames, isSuccess: isCategoryNamesSuccess } =
+  const { data: categoryNames, isSuccess: isGetCategorySuccess } =
     useGetCategory({
       fotoGalleryOwner,
     });
 
-  const reducer = (sumPerCat: CategoryObjType, oneEntry: OnePhotoResponse) => ({
+  const photoReducer = (
+    sumPerCat: CategoryObjType,
+    oneEntry: OnePhotoResponse
+  ) => ({
     ...sumPerCat,
     [oneEntry.typ]: (sumPerCat[oneEntry.typ] || 0) + 1,
   });
 
-  const categoryCounter: { [key: string]: number } = allPhoto?.length
-    ? allPhoto.reduce(reducer, {
-        99999: allPhoto.length,
+  const categoryCounter: { [key: string]: number } = photos?.length
+    ? photos.reduce(photoReducer, {
+        99999: photos.length,
       })
     : {};
 
   return {
-    isCategorySuccess: isCategoryNamesSuccess,
+    isGetCategorySuccess,
+    isGetPhotoSuccess,
     categoryCounter,
     categoryNames,
   };

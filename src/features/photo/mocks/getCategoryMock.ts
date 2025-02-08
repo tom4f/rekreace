@@ -1,46 +1,28 @@
 import { HttpStatusCode } from 'enums';
 import { resolveMock } from 'features/mocks';
+import { CategoryScenarios } from 'features/mocks/enums/scenariosEnums';
 import { http, HttpResponse } from 'msw';
 
 import { CategoryResponse, GET_CATEGORY_ENDPOINT } from '../hooks';
+import limitedCategories from './mockFiles/limitedCategories.json';
+import manyCategories from './mockFiles/manyCategories.json';
 
 const handlers = [
   http.get(GET_CATEGORY_ENDPOINT, async () => {
-    return HttpResponse.json<CategoryResponse>({
-      categoryNames: {
-        '0': 'Ubytování',
-        '1': 'Lipenská přehrada',
-        '2': 'Příroda',
-        '3': 'Obce',
-        '4': 'Historie',
-        '5': 'Sport',
-        '6': 'Ostatní',
-        '10': 'Kaliště - kniha',
-        '11': 'Kaliště',
-        '12': 'Jawa450',
-        '13': '13 13 13',
-        '14': '14',
-        '15': 'value',
-        '16': 'value1',
-        '99999': 'Všechny',
-      },
-      fotoGalleryOwner: '_ubytovani',
-    });
+    return HttpResponse.json<CategoryResponse>(manyCategories);
   }),
 ];
 
 export const getCategoryScenarios = {
-  e500: [
+  [CategoryScenarios.LIMITED_CATEGORIES]: [
+    http.get(GET_CATEGORY_ENDPOINT, async () => {
+      return HttpResponse.json<CategoryResponse>(limitedCategories);
+    }),
+  ],
+  [CategoryScenarios.ERROR_500]: [
     http.get(GET_CATEGORY_ENDPOINT, async () => {
       return new HttpResponse(null, {
         status: HttpStatusCode.INTERNAL_SERVER_ERROR_500,
-      });
-    }),
-  ],
-  e401: [
-    http.get(GET_CATEGORY_ENDPOINT, async () => {
-      return new HttpResponse(null, {
-        status: HttpStatusCode.UNAUTHORIZED_401,
       });
     }),
   ],

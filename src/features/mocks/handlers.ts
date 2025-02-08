@@ -19,11 +19,13 @@ import {
   getOldStationMock,
   getTextFileMock,
 } from '../meteo';
-import { LOCAL_STORAGE_MOCK_DELAY_KEY } from './mockResolver';
+import { MockResolver } from './mockResolver';
 
 const globalDelay = http.all('/api/*', async () => {
   await delay(
-    parseInt(localStorage.getItem(LOCAL_STORAGE_MOCK_DELAY_KEY) || '0')
+    parseInt(
+      localStorage.getItem(MockResolver.LOCAL_STORAGE_MOCK_DELAY_KEY) || '0'
+    )
   );
 });
 

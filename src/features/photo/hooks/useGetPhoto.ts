@@ -22,17 +22,15 @@ export type OnePhotoResponse = {
 
 export type PhotoResponse = OnePhotoResponse[];
 
-export const GET_PHOTO_ENDPOINT = `${Url.NEW_API}/photo/read.php?{fotoGalleryOwner}`;
+export const GET_PHOTO_ENDPOINT = `${Url.NEW_API}/photo/read.php`;
 export const GET_PHOTO_KEY = 'getPhoto';
 
 const getPhoto = async (request: PhotoRequest): Promise<PhotoResponse> => {
+  const params = new URLSearchParams();
+  params.append('fotoGalleryOwner', request.fotoGalleryOwner.toString());
   const data = await api.get({
-    url: GET_PHOTO_ENDPOINT.replace(
-      '{fotoGalleryOwner}',
-      `fotoGalleryOwner=${request.fotoGalleryOwner}`
-    ),
+    url: `${GET_PHOTO_ENDPOINT}?${params.toString()}`,
   });
-
   return data;
 };
 

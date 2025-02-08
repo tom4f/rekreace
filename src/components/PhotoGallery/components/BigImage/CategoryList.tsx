@@ -11,12 +11,12 @@ interface eightPhotoTypes {
 }
 
 export const CategoryList = ({ setImgPosition }: eightPhotoTypes) => {
-  const { categoryCounter, categoryNames, isCategorySuccess } =
+  const { categoryCounter, categoryNames, isGetCategorySuccess } =
     useCategoryCounter();
 
   const [showCategory, setShowCategory] = useState(false);
 
-  if (!isCategorySuccess || !categoryNames) return null;
+  if (!isGetCategorySuccess || !categoryNames) return null;
 
   const category = [];
 

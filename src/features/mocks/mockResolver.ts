@@ -1,8 +1,10 @@
 import { HttpHandler } from 'msw';
 
-export const DEFAULT_STATE = 'default';
-export const LOCAL_STORAGE_MOCK_KEY = 'mocks';
-export const LOCAL_STORAGE_MOCK_DELAY_KEY = 'mocks_delay';
+export enum MockResolver {
+  DEFAULT_STATE = 'default',
+  LOCAL_STORAGE_MOCK_KEY = 'mocks',
+  LOCAL_STORAGE_MOCK_DELAY_KEY = 'mocks_delay',
+}
 
 export const resolveMock = (
   handler: HttpHandler[],
@@ -10,7 +12,7 @@ export const resolveMock = (
   endpoint: string
 ) => {
   const settings = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_MOCK_KEY) || '{}'
+    localStorage.getItem(MockResolver.LOCAL_STORAGE_MOCK_KEY) || '{}'
   );
 
   if (
@@ -19,7 +21,7 @@ export const resolveMock = (
     settings[endpoint] &&
     //scenarios &&
     scenarios[settings[endpoint]] &&
-    settings[endpoint] !== DEFAULT_STATE
+    settings[endpoint] !== MockResolver.DEFAULT_STATE
   ) {
     return scenarios[settings[endpoint]];
   }
