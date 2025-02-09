@@ -15,6 +15,7 @@ beforeAll(() => {
 
 afterEach(() => {
   server.resetHandlers();
+  localStorage.removeItem('mocks');
 });
 
 afterAll(() => server.close());
@@ -43,8 +44,13 @@ export const renderWithProviders = (
 };
 
 export const renderHookWithProviders = <Props, Result>(
-  hook: (initialProps: Props) => Result
+  hook: (initialProps: Props) => Result,
+  endpointsConfig?: { [key: string]: string }
 ) => {
+  if (endpointsConfig) {
+    localStorage.setItem('mocks', JSON.stringify(endpointsConfig));
+  }
+
   server.use(...resolveHandlers());
 
   const queryClient = new QueryClient({

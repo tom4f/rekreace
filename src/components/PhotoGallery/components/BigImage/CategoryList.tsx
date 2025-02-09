@@ -6,11 +6,11 @@ import { SetStateType } from 'components/PhotoGallery';
 import { useCategoryCounter } from 'features/photo';
 import { useState } from 'react';
 
-interface eightPhotoTypes {
+type SetImgPosition = {
   setImgPosition: SetStateType;
-}
+};
 
-export const CategoryList = ({ setImgPosition }: eightPhotoTypes) => {
+export const CategoryList = ({ setImgPosition }: SetImgPosition) => {
   const { categoryCounter, categoryNames, isGetCategorySuccess } =
     useCategoryCounter();
 
@@ -39,12 +39,14 @@ export const CategoryList = ({ setImgPosition }: eightPhotoTypes) => {
   return (
     <>
       <FontAwesomeIcon
+        data-testid='category-icon'
         className='category'
         icon={faAlignJustify}
         onMouseOver={() => setShowCategory(true)}
       />
       {showCategory && (
         <div
+          data-testid='category-list'
           className='categoryList'
           onMouseLeave={() => setShowCategory(false)}
         >

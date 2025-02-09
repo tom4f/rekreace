@@ -11,8 +11,8 @@ import { useCategoryCounter } from '../useCategoryCounter';
 import { CategoryResponse, GET_CATEGORY_ENDPOINT } from '../useGetCategory';
 import { GET_PHOTO_ENDPOINT } from '../useGetPhoto';
 
-const categoryData: CategoryResponse = JSON.parse(manyCategories);
-const categoryData2: CategoryResponse = JSON.parse(limitedCategories);
+const manyCategoryData: CategoryResponse = JSON.parse(manyCategories);
+const limitedCategoriesData: CategoryResponse = JSON.parse(limitedCategories);
 
 describe('useCategoryCounter hook', () => {
   test('should return default values initially', () => {
@@ -24,14 +24,10 @@ describe('useCategoryCounter hook', () => {
   });
 
   test('test scenario error500', async () => {
-    localStorage.setItem(
-      'mocks',
-      JSON.stringify({
-        [GET_CATEGORY_ENDPOINT]: CategoryScenarios.ERROR_500,
-        [GET_PHOTO_ENDPOINT]: PhotoScenarios.ERROR_500,
-      })
-    );
-    const { result } = renderHookWithProviders(useCategoryCounter);
+    const { result } = renderHookWithProviders(useCategoryCounter, {
+      [GET_CATEGORY_ENDPOINT]: CategoryScenarios.ERROR_500,
+      [GET_PHOTO_ENDPOINT]: PhotoScenarios.ERROR_500,
+    });
     await waitFor(() => expect(result.current.categoryCounter).toEqual({}));
     expect(result.current.isGetCategorySuccess).toBe(false);
     expect(result.current.isGetPhotoSuccess).toBe(false);
@@ -39,14 +35,10 @@ describe('useCategoryCounter hook', () => {
   });
 
   test('test default mock', async () => {
-    localStorage.setItem(
-      'mocks',
-      JSON.stringify({
-        [GET_CATEGORY_ENDPOINT]: CategoryScenarios.DEFAULT,
-        [GET_PHOTO_ENDPOINT]: PhotoScenarios.DEFAULT,
-      })
-    );
-    const { result } = renderHookWithProviders(useCategoryCounter);
+    const { result } = renderHookWithProviders(useCategoryCounter, {
+      [GET_CATEGORY_ENDPOINT]: CategoryScenarios.DEFAULT,
+      [GET_PHOTO_ENDPOINT]: PhotoScenarios.DEFAULT,
+    });
     await waitFor(() =>
       expect(result.current.categoryCounter).toEqual({
         '1': 1,
@@ -57,18 +49,16 @@ describe('useCategoryCounter hook', () => {
     );
     expect(result.current.isGetCategorySuccess).toBe(true);
     expect(result.current.isGetPhotoSuccess).toBe(true);
-    expect(result.current.categoryNames).toEqual(categoryData.categoryNames);
+    expect(result.current.categoryNames).toEqual(
+      manyCategoryData.categoryNames
+    );
   });
 
   test('test scenario mock', async () => {
-    localStorage.setItem(
-      'mocks',
-      JSON.stringify({
-        [GET_CATEGORY_ENDPOINT]: CategoryScenarios.LIMITED_CATEGORIES,
-        [GET_PHOTO_ENDPOINT]: PhotoScenarios.MANY_PHOTOS,
-      })
-    );
-    const { result } = renderHookWithProviders(useCategoryCounter);
+    const { result } = renderHookWithProviders(useCategoryCounter, {
+      [GET_CATEGORY_ENDPOINT]: CategoryScenarios.LIMITED_CATEGORIES,
+      [GET_PHOTO_ENDPOINT]: PhotoScenarios.MANY_PHOTOS,
+    });
     await waitFor(() =>
       expect(result.current.categoryCounter).toEqual({
         '1': 3,
@@ -81,6 +71,8 @@ describe('useCategoryCounter hook', () => {
     );
     expect(result.current.isGetCategorySuccess).toBe(true);
     expect(result.current.isGetPhotoSuccess).toBe(true);
-    expect(result.current.categoryNames).toEqual(categoryData2.categoryNames);
+    expect(result.current.categoryNames).toEqual(
+      limitedCategoriesData.categoryNames
+    );
   });
 });
