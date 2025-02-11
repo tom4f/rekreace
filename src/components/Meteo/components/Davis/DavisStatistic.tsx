@@ -1,23 +1,36 @@
 import { Header } from 'components/Atoms';
+import {
+  changeDate,
+  PeriodType,
+  StepType,
+  useDateContext,
+} from 'components/Meteo/context';
 import { useGetNOAA } from 'features/meteo';
-import { useContext } from 'react';
 
-import { changeDate } from './changeDate';
-import { DateContext } from './DateContext';
-
-export const ShowDayStatistic = () => {
+export const DavisStatistic = () => {
   const {
-    date: { davisStat },
-    reduceDate,
-  } = useContext(DateContext);
+    date: { davisTextSummary },
+    dispatch,
+  } = useDateContext();
 
-  const year = davisStat.getFullYear();
-  const month = `0${davisStat.getMonth() + 1}`.slice(-2);
+  const year = davisTextSummary.getFullYear();
+  const month = `0${davisTextSummary.getMonth() + 1}`.slice(-2);
 
   const queries = useGetNOAA(year.toString(), month);
 
-  const setDate = (period: string, step: 1 | -1) => {
-    reduceDate('davisStat', changeDate('davisStat', davisStat, period, step));
+  const setDate = (period: PeriodType, step: StepType) => {
+    dispatch({
+      type: 'UPDATE_DATE',
+      payload: {
+        meteoDataSource: 'davisTextSummary',
+        meteoDate: changeDate(
+          'davisTextSummary',
+          davisTextSummary,
+          period,
+          step
+        ),
+      },
+    });
   };
 
   return (

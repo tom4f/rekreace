@@ -14,5 +14,11 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ['..\\public'],
+  docs: {
+    autodocs: true,
+  },
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
+  },
 };
 export default config;

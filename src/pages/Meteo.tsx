@@ -1,22 +1,22 @@
 import {
-  DateProvider,
+  DavisGraph,
   davisGraphsConfig,
   DavisGraphsDay,
+  DavisStatistic,
+  DavisTable,
+  LipnoGraph,
   lipnoGraphsConfig,
+  LipnoTable,
   ModifyLipno,
   NavBar,
   NavBarDavis,
   NavBarLipno,
   NavBarOldStation,
   oldGraphsGraphsConfig,
-  ShowDayGraph,
-  ShowDayStatistic,
-  ShowDayTable,
-  ShowOldStationTable,
-  ShowYearGraph,
-  ShowYearTable,
+  OldStationTable,
   UniversalGraphs,
 } from 'components/Meteo';
+import { DateProvider } from 'components/Meteo/context/DateProvider';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 export const Meteo = () => {
@@ -37,12 +37,12 @@ export const Meteo = () => {
               path='table'
               element={
                 <>
-                  <ShowDayTable />
-                  <ShowDayGraph />
+                  <DavisTable />
+                  <DavisGraph />
                 </>
               }
             />
-            <Route path='statistics' element={<ShowDayStatistic />} />
+            <Route path='statistics' element={<DavisStatistic />} />
           </Route>
 
           <Route path='lipno' element={<NavBarLipno />}>
@@ -55,8 +55,8 @@ export const Meteo = () => {
               path='table'
               element={
                 <>
-                  <ShowYearTable />
-                  <ShowYearGraph />
+                  <LipnoTable />
+                  <LipnoGraph />
                 </>
               }
             />
@@ -75,7 +75,7 @@ export const Meteo = () => {
                 />
               }
             />
-            <Route path='table' element={<ShowOldStationTable />} />
+            <Route path='table' element={<OldStationTable />} />
           </Route>
         </Routes>
       </DateProvider>

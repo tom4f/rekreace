@@ -1,6 +1,6 @@
 import { ParsedUrlQuery } from 'querystring';
 
-import { EditMeteoType } from './ModifyLipno';
+import { EditMeteoType } from './Lipno';
 export interface urlQueryType extends ParsedUrlQuery {
   page: string;
 }
@@ -27,26 +27,9 @@ export type CustomNavLinkType = ({
   header: string;
 }) => React.JSX.Element;
 
-export type dateType = {
-  [key in 'daily' | 'yearSum' | 'davisStat' | 'oldStation']: Date;
-};
-
-export type reducerActionType = {
-  type: string;
-  payload: {
-    param: string;
-    value: Date;
-  };
-};
-
 export type reduceDateType = (param: string, value: Date) => void;
 
-export type providerType = {
-  date: dateType;
-  reduceDate: reduceDateType;
-};
-
-export type rgbCssType = (
+export type RgbCssType = (
   r: number,
   g: number,
   b: number,

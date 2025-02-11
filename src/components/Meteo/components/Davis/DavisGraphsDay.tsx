@@ -1,9 +1,6 @@
-import { graphsConfig } from 'components/Meteo';
+import { FullscreenHeader, graphsConfig, OnePage } from 'components/Meteo';
+import DavisGraphsDayStyle from 'components/Meteo/css/DavisGraphsDay.module.css';
 import { useLoadWeatherFromFile } from 'features/meteo';
-
-import DavisGraphsDayStyle from './../css/DavisGraphsDay.module.css';
-import { FullscreenHeader } from './FullscreenHeader';
-import { OnePage } from './OnePage';
 
 export const DavisGraphsDay = () => {
   const { graphsData, isFetching, isSuccess, isSuccessPercentage } =

@@ -1,9 +1,9 @@
 import { Url } from 'api/paths';
-import { imgPositionType } from 'components/PhotoGallery';
+import { ImgPositionType } from 'components/PhotoGallery';
 import styled, { css } from 'styled-components';
 
 interface StyledDivTypes {
-  $imgPosition: imgPositionType;
+  $imgPosition: ImgPositionType;
   $arrIndexFromImgId: (clickedId: number) => number;
   $imgId: string;
   $imgType: string;

@@ -11,7 +11,7 @@ enum ServerUrl {
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const target = dev ? ServerUrl.LOCALHOST : '';
+const target = dev ? ServerUrl.LIVE : '';
 
 export default defineConfig({
   plugins: [react()],
@@ -25,6 +25,8 @@ export default defineConfig({
       utils: path.resolve(__dirname, './src/utils'),
       pages: path.resolve(__dirname, './src/pages'),
       enums: path.resolve(__dirname, './src/enums'),
+      stories: path.resolve(__dirname, './src/stories'),
+      css: path.resolve(__dirname, './src/css'),
     },
   },
   test: {

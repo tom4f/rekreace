@@ -6,7 +6,7 @@ export interface PhotoType extends OnePhotoResponse {
   url?: string | ArrayBuffer | null;
 }
 
-export type imgPositionType = {
+export type ImgPositionType = {
   smallImgStart: number;
   smallImgsSize: number;
   current: number;
@@ -15,7 +15,7 @@ export type imgPositionType = {
 };
 
 export type SetStateType = React.Dispatch<
-  React.SetStateAction<imgPositionType>
+  React.SetStateAction<ImgPositionType>
 >;
 
 export type CategoryObjType = { [key: string]: number };
@@ -29,7 +29,7 @@ export type categoryChangeType =
 
 export type SmallImagesTypes = {
   eightPhoto: Array<OnePhotoResponse>;
-  imgPosition: imgPositionType;
+  imgPosition: ImgPositionType;
   bigPhoto: PhotoType;
   setImgPosition: SetStateType;
   arrIndexFromImgId: (clickedId: number) => number;
@@ -55,7 +55,7 @@ export type imageChangeType = {
 };
 
 export type BigImageType = {
-  imgPosition: imgPositionType;
+  imgPosition: ImgPositionType;
   setImgPosition: SetStateType;
   bigPhoto: PhotoType;
   length: number;

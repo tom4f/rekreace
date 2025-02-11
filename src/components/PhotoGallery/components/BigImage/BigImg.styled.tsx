@@ -1,5 +1,5 @@
 import { Url } from 'api/paths';
-import { imgPositionType, PhotoType } from 'components/PhotoGallery';
+import { ImgPositionType, PhotoType } from 'components/PhotoGallery';
 import { OnePhotoResponse } from 'features/photo';
 import styled, { css } from 'styled-components';
 
@@ -7,7 +7,7 @@ type BigImgType = {
   $editPhoto: PhotoType;
   $bigPhoto: OnePhotoResponse;
   $fadeIn: boolean;
-  $imgPosition: imgPositionType;
+  $imgPosition: ImgPositionType;
 };
 
 export const BigImg = styled.main<BigImgType>`

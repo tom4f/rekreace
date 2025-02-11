@@ -4,12 +4,10 @@ import { LipnoKeyType, useGetLipno } from 'features/meteo';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { addLipnoTableQuerySelector } from '../utils/addLipnoTableQuerySelector';
+import { LipnoGraph, LipnoTable } from './';
 import { AddLipno } from './AddLipno';
 import { DeleteLipno } from './DeleteLipno';
 import { EditLipno } from './EditLipno';
-import { ShowYearGraph } from './ShowYearGraph';
-import { ShowYearTable } from './ShowYearTable';
 
 export type EditMeteoType = {
   editDate: string;
@@ -39,39 +37,26 @@ export const ModifyLipno = () => {
   });
 
   useEffect(() => {
-    if (isSuccess && pocasi.length) {
-      addLipnoTableQuerySelector(pocasi, setEditMeteo);
-    }
-  }, [pocasi, isSuccess]);
-
-  useEffect(() => {
     if (!loginData.isLogged) {
       navigate('/bedrich');
     }
   }, [loginData.isLogged, navigate]);
 
-  if (!isSuccess && !pocasi?.length) {
+  if (!isSuccess || !pocasi?.length || !loginData) {
     return null;
   }
 
-  const LipnoModal = () => {
-    switch (editMeteo.method) {
-      case 'edit':
-        return <EditLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />;
-      case 'add':
-        return <AddLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />;
-      case 'delete':
-        return (
-          <DeleteLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />
-        );
-      default:
-        <></>;
-    }
-  };
-
   return (
     <>
-      <LipnoModal />
+      {editMeteo.method === 'edit' && (
+        <EditLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />
+      )}
+      {editMeteo.method === 'add' && (
+        <AddLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />
+      )}
+      {editMeteo.method === 'delete' && (
+        <DeleteLipno editMeteo={editMeteo} setEditMeteo={setEditMeteo} />
+      )}
       <Button
         className='w-full m-0!'
         label='Nový záznam'
@@ -83,8 +68,8 @@ export const ModifyLipno = () => {
         }
       />
 
-      <ShowYearTable />
-      <ShowYearGraph />
+      <LipnoTable setEditMeteo={setEditMeteo} />
+      <LipnoGraph />
     </>
   );
 };

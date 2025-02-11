@@ -11,7 +11,7 @@ export const WebCamSlideShow = ({
   reactChange,
 }: {
   state: WebCamState;
-  reactChange: (value: any) => void;
+  reactChange: React.Dispatch<React.SetStateAction<WebCamState>>;
 }) => {
   const [startButton, setStartButton] = useState(true);
 

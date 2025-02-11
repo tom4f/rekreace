@@ -1,16 +1,21 @@
 import { Header } from 'components/Atoms';
+import {
+  changeDate,
+  getDaysFromNow,
+  PeriodType,
+  StepType,
+} from 'components/Meteo/context';
+import { useDateContext } from 'components/Meteo/context/DateContext';
+import TableStyle from 'components/Meteo/css/Table.module.css';
 import { useGetDavis } from 'features/meteo';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
-import TableStyle from './../css/Table.module.css';
-import { DateContext } from './DateContext';
+export const DavisTable = () => {
+  const {
+    date: { davisDaily },
+    dispatch,
+  } = useDateContext();
 
-export const ShowDayTable = () => {
-  const { reduceDate } = useContext(DateContext);
-
-  const reduceDateRef = useRef(reduceDate);
-
-  const [start, setStart] = useState(0);
   const [orderBy, setOrderBy] = useState({
     value: 'date',
     order: 'DESC',
@@ -19,20 +24,16 @@ export const ShowDayTable = () => {
   const limit = 30;
 
   const { data: davis } = useGetDavis({
-    start,
+    start: getDaysFromNow(davisDaily),
     limit,
     requestType: 'amount',
     orderBy: orderBy.value,
     sort: orderBy.order,
   });
 
-  useEffect(() => {
-    if (davis?.length) {
-      const [year, month, day] = davis[0].date.split('-');
-      const clickedDate = new Date(+year, +month - 1, +day);
-      reduceDateRef.current('daily', clickedDate);
-    }
-  }, [start, orderBy, davis]);
+  if (!davis?.length) {
+    return null;
+  }
 
   const rgbCss = (r: number, g: number, b: number, value: number) => ({
     background: `rgba(${r}, ${g}, ${b}, ${value})`,
@@ -47,9 +48,26 @@ export const ShowDayTable = () => {
     const clickedText = (e.target as HTMLTableCellElement).innerText;
     const [year, month, day] = clickedText.split('-');
     const clickedDate = new Date(+year, +month - 1, +day);
-    reduceDate('daily', clickedDate);
-    // go to graph location
+
+    dispatch({
+      type: 'UPDATE_DATE',
+      payload: {
+        meteoDataSource: 'davisDaily',
+        meteoDate: clickedDate,
+      },
+    });
+
     window.location.href = '#detail_graphs';
+  };
+
+  const setDate = (period: PeriodType, step: StepType) => {
+    dispatch({
+      type: 'UPDATE_DATE',
+      payload: {
+        meteoDataSource: 'davisDaily',
+        meteoDate: changeDate('davisDaily', davisDaily, period, step),
+      },
+    });
   };
 
   const printDavis = () => {
@@ -116,26 +134,76 @@ export const ShowDayTable = () => {
     });
   };
 
+  const year = davisDaily.getFullYear();
+  const month = davisDaily.getMonth() + 1;
+  const day = davisDaily.getDate();
+
+  const monthString = month < 10 ? `0${month}` : `${month}`;
+  const dayString = day < 10 ? `0${day}` : `${day}`;
+
   return (
     <>
-      <Header>
-        Historie:&nbsp;
+      <Header id='detail_graphs'>
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('day', -1)}
+        >
+          &nbsp;
+          {'<'}&nbsp;
+        </button>
+        {dayString}
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('day', +1)}
+        >
+          &nbsp;
+          {'>'}&nbsp;
+        </button>
+        .
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('month', -1)}
+        >
+          &nbsp;
+          {'<'}&nbsp;
+        </button>
+        {monthString}
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('month', +1)}
+        >
+          &nbsp;
+          {'>'}&nbsp;
+        </button>
+        .
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('year', -1)}
+        >
+          &nbsp;
+          {'<'}&nbsp;
+        </button>
+        {year}
+        <button
+          className='text-zinc-500 hover:text-orange-400'
+          onClick={() => setDate('year', +1)}
+        >
+          &nbsp;
+          {'>'}&nbsp;
+        </button>
         <button
           className='text-zinc-500 hover:text-orange-400'
           onClick={() =>
-            davis?.length === limit ? setStart(start + limit) : null
+            dispatch({
+              type: 'RESET_DATE',
+              payload: {
+                meteoDataSource: 'davisDaily',
+              },
+            })
           }
         >
-          &nbsp;{'<'}&nbsp;
+          Reset
         </button>
-        {start}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => (start - limit >= 0 ? setStart(start - limit) : null)}
-        >
-          &nbsp;{'>'}&nbsp;
-        </button>
-        dní
       </Header>
       <section className={TableStyle.davisTable}>
         <table>
