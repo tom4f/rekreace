@@ -31,10 +31,6 @@ export const DavisTable = () => {
     sort: orderBy.order,
   });
 
-  if (!davis?.length) {
-    return null;
-  }
-
   const rgbCss = (r: number, g: number, b: number, value: number) => ({
     background: `rgba(${r}, ${g}, ${b}, ${value})`,
   });
@@ -71,58 +67,61 @@ export const DavisTable = () => {
   };
 
   const printDavis = () => {
+    if (!davis?.length) {
+      return null;
+    }
     const output: React.JSX.Element[] = [];
-    if (davis !== undefined)
-      davis.forEach((one, index) => {
-        output.push(
-          <tr key={index}>
-            <td className={TableStyle.link} onClick={(e) => setDay(e)}>
-              {one.date}
-            </td>
-            {/*<td className="link" >{one.date}</td>*/}
 
-            <td style={rgbCss(0, 255, 0, one.wind3 / 1285)}>{one.wind3}</td>
-            <td style={rgbCss(0, 255, 0, one.wind6 / 500)}>{one.wind6}</td>
-            <td style={rgbCss(0, 255, 0, one.wind9 / 100)}>{one.wind9}</td>
-            <td style={rgbCss(0, 255, 0, one.wind_speed_avg / 10)}>
-              {one.wind_speed_avg}
-            </td>
-            <td style={rgbCss(0, 255, 0, one.wind_speed_high / 30)}>
-              {one.wind_speed_high}
-            </td>
-            <td>{one.dir}</td>
+    davis.forEach((one, index) => {
+      output.push(
+        <tr key={index}>
+          <td className={TableStyle.link} onClick={(e) => setDay(e)}>
+            {one.date}
+          </td>
+          {/*<td className="link" >{one.date}</td>*/}
 
-            <td style={rgbCssT(one.temp_low)}>{one.temp_low}</td>
-            <td style={rgbCssT(one.temp_mean)}>{one.temp_mean}</td>
-            <td style={rgbCssT(one.temp_high)}>{one.temp_high}</td>
+          <td style={rgbCss(0, 255, 0, one.wind3 / 1285)}>{one.wind3}</td>
+          <td style={rgbCss(0, 255, 0, one.wind6 / 500)}>{one.wind6}</td>
+          <td style={rgbCss(0, 255, 0, one.wind9 / 100)}>{one.wind9}</td>
+          <td style={rgbCss(0, 255, 0, one.wind_speed_avg / 10)}>
+            {one.wind_speed_avg}
+          </td>
+          <td style={rgbCss(0, 255, 0, one.wind_speed_high / 30)}>
+            {one.wind_speed_high}
+          </td>
+          <td>{one.dir}</td>
 
-            <td style={rgbCss(255, 0, 255, one.rain / 30)}>{one.rain}</td>
-            <td style={rgbCss(255, 0, 255, one.rain_rate_max / 50)}>
-              {one.rain_rate_max}
-            </td>
+          <td style={rgbCssT(one.temp_low)}>{one.temp_low}</td>
+          <td style={rgbCssT(one.temp_mean)}>{one.temp_mean}</td>
+          <td style={rgbCssT(one.temp_high)}>{one.temp_high}</td>
 
-            <td style={rgbCss(255, 127, 0, 1 - (1050 - one.bar_min) / 40)}>
-              {one.bar_min}
-            </td>
-            <td style={rgbCss(255, 127, 0, 1 - (1050 - one.bar_avg) / 40)}>
-              {one.bar_avg}
-            </td>
-            <td style={rgbCss(255, 127, 0, 1 - (1050 - one.bar_max) / 40)}>
-              {one.bar_max}
-            </td>
+          <td style={rgbCss(255, 0, 255, one.rain / 30)}>{one.rain}</td>
+          <td style={rgbCss(255, 0, 255, one.rain_rate_max / 50)}>
+            {one.rain_rate_max}
+          </td>
 
-            <td style={rgbCss(0, 127, 127, (100 - one.huminidy_min) / 150)}>
-              {one.huminidy_min}
-            </td>
-            <td style={rgbCss(0, 127, 127, (100 - one.huminidy_avg) / 150)}>
-              {one.huminidy_avg}
-            </td>
-            <td style={rgbCss(0, 127, 127, (100 - one.huminidy_max) / 150)}>
-              {one.huminidy_max}
-            </td>
-          </tr>
-        );
-      });
+          <td style={rgbCss(255, 127, 0, 1 - (1050 - one.bar_min) / 40)}>
+            {one.bar_min}
+          </td>
+          <td style={rgbCss(255, 127, 0, 1 - (1050 - one.bar_avg) / 40)}>
+            {one.bar_avg}
+          </td>
+          <td style={rgbCss(255, 127, 0, 1 - (1050 - one.bar_max) / 40)}>
+            {one.bar_max}
+          </td>
+
+          <td style={rgbCss(0, 127, 127, (100 - one.huminidy_min) / 150)}>
+            {one.huminidy_min}
+          </td>
+          <td style={rgbCss(0, 127, 127, (100 - one.huminidy_avg) / 150)}>
+            {one.huminidy_avg}
+          </td>
+          <td style={rgbCss(0, 127, 127, (100 - one.huminidy_max) / 150)}>
+            {one.huminidy_max}
+          </td>
+        </tr>
+      );
+    });
     return output;
   };
 

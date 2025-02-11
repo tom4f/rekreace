@@ -49,15 +49,13 @@ export const changeDate = (
   return now;
 };
 
-const currentDate1 = new Date();
-
 export const getDaysFromNow = (
   dateString: Date,
-  currentDate = currentDate1
+  referenceDate = new Date()
 ): number => {
   const inputDate = new Date(dateString);
 
-  const diffTime = inputDate.getTime() - currentDate.getTime();
+  const diffTime = inputDate.getTime() - referenceDate.getTime();
 
   return Math.abs(Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 };

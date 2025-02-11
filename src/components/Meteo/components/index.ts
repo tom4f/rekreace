@@ -2,6 +2,7 @@ export * from './Davis';
 export * from './Draw1';
 export * from './FullscreenHeader';
 export * from './Lipno';
+export * from './MeteoComponents';
 export * from './NavBar';
 export * from './OldStation';
 export * from './OneGraph';

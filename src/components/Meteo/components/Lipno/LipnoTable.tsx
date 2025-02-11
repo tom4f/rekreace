@@ -35,9 +35,10 @@ export const LipnoTable = ({
   });
 
   const limit = 30;
+  const start = getDaysFromNow(lipnoDaily);
 
   const { data: pocasi } = useGetLipno({
-    start: getDaysFromNow(lipnoDaily),
+    start,
     limit,
     requestType: 'amount',
     orderBy: orderBy.value,
@@ -91,10 +92,6 @@ export const LipnoTable = ({
     [setEditMeteo, pocasi]
   );
 
-  if (!pocasi?.length) {
-    return null;
-  }
-
   const setDate = (period: PeriodType, step: StepType) => {
     dispatch({
       type: 'UPDATE_DATE',
@@ -115,6 +112,9 @@ export const LipnoTable = ({
   };
 
   const PrintPocasi = () => {
+    if (!pocasi?.length) {
+      return null;
+    }
     const output: React.JSX.Element[] = [];
     pocasi?.forEach((one, index) =>
       output.push(
@@ -159,7 +159,7 @@ export const LipnoTable = ({
     return output;
   };
 
-  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const sort = (e: React.MouseEvent<HTMLButtonElement>) => {
     const clickedName = (e.target as HTMLButtonElement).name;
     setOrderBy({
       value: clickedName,
@@ -248,7 +248,7 @@ export const LipnoTable = ({
             </tr>
             <tr>
               <th>
-                <button name='datum' onClick={sort}>
+                <button name='datum' onClick={(e) => sort(e)}>
                   datum
                 </button>
               </th>

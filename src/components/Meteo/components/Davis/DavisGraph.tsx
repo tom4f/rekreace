@@ -6,28 +6,30 @@ import {
   StepType,
   useDateContext,
 } from 'components/Meteo/context';
-import ShowDayGraphStyle from 'components/Meteo/css/ShowDayGraph.module.css';
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+
+import { DateButton, GraphObject } from '../MeteoComponents';
 
 export const DavisGraph = () => {
   const { search } = useLocation();
-  const isFullscreen =
-    new URLSearchParams(search).get('fullscreen') === 'true' || false;
+  const isFullscreen = new URLSearchParams(search).get('fullscreen') === 'true';
 
-  const toggleFullscreen = isFullscreen
-    ? '?fullscreen=false'
-    : '?fullscreen=true';
+  const toggleFullscreen = `?fullscreen=${!isFullscreen}`;
   const {
     date: { davisDaily },
     dispatch,
   } = useDateContext();
 
-  const year = davisDaily.getFullYear();
-  const month = davisDaily.getMonth() + 1;
-  const day = davisDaily.getDate();
+  const [renderCounter, setRenderCounter] = useState(0);
 
-  const monthString = month < 10 ? `0${month}` : `${month}`;
-  const dayString = day < 10 ? `0${day}` : `${day}`;
+  useEffect(() => {
+    setRenderCounter((orig) => orig + 1);
+  }, [davisDaily]);
+
+  const year = davisDaily.getFullYear();
+  const monthString = String(davisDaily.getMonth() + 1).padStart(2, '0');
+  const dayString = String(davisDaily.getDate()).padStart(2, '0');
 
   const imgUrl = (type: string) =>
     `${Url.DAVIS}/archive/${year}/${type}-${year}-${monthString}-${dayString}.gif`;
@@ -45,53 +47,15 @@ export const DavisGraph = () => {
   return (
     <>
       <Header id='detail_graphs'>
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('day', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
+        <DateButton onClick={() => setDate('day', -1)}>{'<'}</DateButton>
         {dayString}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('day', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        .
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
+        <DateButton onClick={() => setDate('day', +1)}>{'>'}</DateButton>.
+        <DateButton onClick={() => setDate('month', -1)}>{'<'}</DateButton>
         {monthString}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        .
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
+        <DateButton onClick={() => setDate('month', +1)}>{'>'}</DateButton>.
+        <DateButton onClick={() => setDate('year', -1)}>{'<'}</DateButton>
         {year}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
+        <DateButton onClick={() => setDate('year', +1)}>{'>'};</DateButton>
         <button
           className='text-zinc-500 hover:text-orange-400'
           onClick={() =>
@@ -106,13 +70,18 @@ export const DavisGraph = () => {
           Reset
         </button>
       </Header>
-      <article className={ShowDayGraphStyle.dayGraph}>
-        <NavLink className='menu' to={toggleFullscreen}>
-          <img alt='wind' src={imgUrl('wind')} />
-          <img alt='temp' src={imgUrl('temp')} />
-          <img alt='bar' src={imgUrl('bar')} />
-        </NavLink>
-      </article>
+      <NavLink
+        key={renderCounter}
+        to={toggleFullscreen}
+        className='text-zinc-500 hover:text-orange-400'
+      >
+        <GraphObject src={imgUrl('wind')} altText='Wind graph not exists' />
+        <GraphObject
+          src={imgUrl('temp')}
+          altText='Temperature graph not exists'
+        />
+        <GraphObject src={imgUrl('bar')} altText='Bar graph not exists' />
+      </NavLink>
     </>
   );
 };
