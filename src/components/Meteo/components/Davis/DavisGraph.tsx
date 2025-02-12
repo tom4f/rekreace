@@ -1,15 +1,15 @@
-import { Url } from 'api/paths';
 import { Header } from 'components/Atoms';
+import { DateChangeBlock, DavisGraphTypes } from 'components/Meteo';
 import {
   changeDate,
   PeriodType,
   StepType,
   useDateContext,
 } from 'components/Meteo/context';
-import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { getDateParts } from 'utils';
 
-import { DateButton, GraphObject } from '../MeteoComponents';
+import { DavisGifGraph } from './DavisGifGraph';
 
 export const DavisGraph = () => {
   const { search } = useLocation();
@@ -21,18 +21,7 @@ export const DavisGraph = () => {
     dispatch,
   } = useDateContext();
 
-  const [renderCounter, setRenderCounter] = useState(0);
-
-  useEffect(() => {
-    setRenderCounter((orig) => orig + 1);
-  }, [davisDaily]);
-
-  const year = davisDaily.getFullYear();
-  const monthString = String(davisDaily.getMonth() + 1).padStart(2, '0');
-  const dayString = String(davisDaily.getDate()).padStart(2, '0');
-
-  const imgUrl = (type: string) =>
-    `${Url.DAVIS}/archive/${year}/${type}-${year}-${monthString}-${dayString}.gif`;
+  const { year, month, day } = getDateParts(davisDaily);
 
   const setDate = (period: PeriodType, step: StepType) => {
     dispatch({
@@ -47,15 +36,9 @@ export const DavisGraph = () => {
   return (
     <>
       <Header id='detail_graphs'>
-        <DateButton onClick={() => setDate('day', -1)}>{'<'}</DateButton>
-        {dayString}
-        <DateButton onClick={() => setDate('day', +1)}>{'>'}</DateButton>.
-        <DateButton onClick={() => setDate('month', -1)}>{'<'}</DateButton>
-        {monthString}
-        <DateButton onClick={() => setDate('month', +1)}>{'>'}</DateButton>.
-        <DateButton onClick={() => setDate('year', -1)}>{'<'}</DateButton>
-        {year}
-        <DateButton onClick={() => setDate('year', +1)}>{'>'};</DateButton>
+        <DateChangeBlock setDate={setDate} period='day' day={day} />.
+        <DateChangeBlock setDate={setDate} period='month' day={month} />.
+        <DateChangeBlock setDate={setDate} period='year' day={year} />.
         <button
           className='text-zinc-500 hover:text-orange-400'
           onClick={() =>
@@ -67,20 +50,22 @@ export const DavisGraph = () => {
             })
           }
         >
-          Reset
+          &nbsp;Reset
         </button>
       </Header>
-      <NavLink
-        key={renderCounter}
-        to={toggleFullscreen}
-        className='text-zinc-500 hover:text-orange-400'
-      >
-        <GraphObject src={imgUrl('wind')} altText='Wind graph not exists' />
-        <GraphObject
-          src={imgUrl('temp')}
-          altText='Temperature graph not exists'
+      <NavLink to={toggleFullscreen}>
+        <DavisGifGraph
+          davisDaily={davisDaily}
+          graphType={DavisGraphTypes.WIND}
         />
-        <GraphObject src={imgUrl('bar')} altText='Bar graph not exists' />
+        <DavisGifGraph
+          davisDaily={davisDaily}
+          graphType={DavisGraphTypes.TEMP}
+        />
+        <DavisGifGraph
+          davisDaily={davisDaily}
+          graphType={DavisGraphTypes.BAR}
+        />
       </NavLink>
     </>
   );
