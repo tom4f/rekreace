@@ -15,15 +15,15 @@ const DateButton = ({
 export const DateChangeBlock = ({
   setDate,
   period,
-  day,
+  text,
 }: {
   setDate: (period: PeriodType, step: StepType) => void;
   period: PeriodType;
-  day: string;
+  text: string;
 }) => (
   <span>
     <DateButton onClick={() => setDate(period, -1)}>{'<'}</DateButton>
-    {day}
+    {text}
     <DateButton onClick={() => setDate(period, +1)}>{'>'}</DateButton>
   </span>
 );

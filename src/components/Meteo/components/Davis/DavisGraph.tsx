@@ -36,9 +36,9 @@ export const DavisGraph = () => {
   return (
     <>
       <Header id='detail_graphs'>
-        <DateChangeBlock setDate={setDate} period='day' day={day} />.
-        <DateChangeBlock setDate={setDate} period='month' day={month} />.
-        <DateChangeBlock setDate={setDate} period='year' day={year} />.
+        <DateChangeBlock setDate={setDate} period='day' text={day} />.
+        <DateChangeBlock setDate={setDate} period='month' text={month} />.
+        <DateChangeBlock setDate={setDate} period='year' text={year} />.
         <button
           className='text-zinc-500 hover:text-orange-400'
           onClick={() =>
