@@ -1,6 +1,6 @@
 import { universalGet, useGetWeatherConfigWithData } from 'features/meteo';
 
-import { FullscreenHeader } from './FullscreenHeader';
+import { FullscreenHeader } from '../FullscreenHeader';
 import { GraphsDataWithGetDataFn, OnePage } from './OnePage';
 
 const getTextDateFromNewDate = (updDate: Date) => {

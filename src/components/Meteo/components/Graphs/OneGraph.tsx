@@ -1,22 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import oneGraphStyles from './../css/OneGraph.module.css';
+import oneGraphStyles from './../../css/OneGraph.module.css';
 import Draw from './Draw1';
 import { CommonDataWithGetDataFnType, SpecificGraphType } from './OnePage';
-
-export type OneGraphDataWithGetDataFn = {
-  common: CommonDataWithGetDataFnType;
-  specific: SpecificGraphType;
-};
-type OneGraphType = {
-  graphData: OneGraphDataWithGetDataFn;
-};
-
-export type showGraphType = (
-  canvas: HTMLCanvasElement,
-  canvas_pointer: HTMLCanvasElement
-) => void;
 
 export const OneGraph = ({ graphData }: OneGraphType) => {
   const { search } = useLocation();
@@ -66,3 +53,16 @@ export const OneGraph = ({ graphData }: OneGraphType) => {
     </article>
   );
 };
+
+export type OneGraphDataWithGetDataFn = {
+  common: CommonDataWithGetDataFnType;
+  specific: SpecificGraphType;
+};
+type OneGraphType = {
+  graphData: OneGraphDataWithGetDataFn;
+};
+
+export type showGraphType = (
+  canvas: HTMLCanvasElement,
+  canvas_pointer: HTMLCanvasElement
+) => void;

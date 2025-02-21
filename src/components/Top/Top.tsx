@@ -1,9 +1,8 @@
-import { Header } from 'components/Atoms';
+import { CustomNavLink, Header } from 'components/Atoms';
 import { GoogleAd } from 'components/GoogleAd/GoogleAd';
-import { CustomNavLinkType } from 'components/Meteo';
 import mainImg from 'images/main.jpg';
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export const Top = () => {
   const { pathname } = useLocation();
@@ -12,12 +11,6 @@ export const Top = () => {
   useEffect(
     () => setCounter((orig) => (pathname !== '/' ? orig + 1 : orig)),
     [pathname]
-  );
-
-  const CustomNavLink: CustomNavLinkType = ({ to, header }) => (
-    <NavLink className={({ isActive }) => (isActive ? 'bg-black' : '')} to={to}>
-      {header}
-    </NavLink>
   );
 
   return (

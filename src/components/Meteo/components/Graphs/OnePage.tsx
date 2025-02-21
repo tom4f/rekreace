@@ -1,5 +1,28 @@
-import { OneGraph } from 'components/Meteo';
 import { Fragment } from 'react';
+
+import { OneGraph } from './OneGraph';
+
+export const OnePage = ({ graphsDataWithGetDataFn }: OnePageType) => {
+  return (
+    <>
+      {graphsDataWithGetDataFn?.map((graphData, index) => {
+        return (
+          <Fragment key={index}>
+            {graphData.specific?.map((oneSpecific, index1) => (
+              <OneGraph
+                key={index1}
+                graphData={{
+                  ...graphData,
+                  specific: oneSpecific,
+                }}
+              />
+            ))}
+          </Fragment>
+        );
+      })}
+    </>
+  );
+};
 
 export type PureData = {
   [key: string]: number | string;
@@ -39,26 +62,4 @@ export type GraphsDataWithGetDataFn = {
 
 type OnePageType = {
   graphsDataWithGetDataFn: GraphsDataWithGetDataFn[];
-};
-
-export const OnePage = ({ graphsDataWithGetDataFn }: OnePageType) => {
-  return (
-    <>
-      {graphsDataWithGetDataFn?.map((graphData, index) => {
-        return (
-          <Fragment key={index}>
-            {graphData.specific?.map((oneSpecific, index1) => (
-              <OneGraph
-                key={index1}
-                graphData={{
-                  ...graphData,
-                  specific: oneSpecific,
-                }}
-              />
-            ))}
-          </Fragment>
-        );
-      })}
-    </>
-  );
 };

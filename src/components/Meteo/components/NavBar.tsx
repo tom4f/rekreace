@@ -1,79 +1,71 @@
 import { Header } from 'components/Atoms';
-import { NavLink, Outlet } from 'react-router-dom';
+import { MeteoNavLink } from 'components/Atoms/CustomNavLink/CustomNavLink';
+import { useIsFullscreen } from 'features/meteo';
+import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { CustomNavLinkType } from './TypeDefinition';
+export const NavBar = () => {
+  const isFullscreen = useIsFullscreen();
 
-const isFullscreen = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('fullscreen') === 'true';
-};
+  if (isFullscreen) return null;
 
-const CustomNavLink: CustomNavLinkType = ({ to, header }) => (
-  <NavLink
-    style={({ isActive }) =>
-      isActive ? { backgroundColor: 'gray', color: 'white' } : undefined
-    }
-    to={to}
-  >
-    {header}
-  </NavLink>
-);
-
-export const NavBar = () => (
-  <>
-    {!isFullscreen() && (
-      <>
-        <Header>Meteostanice u Kučerů</Header>
-        <StyledHeader>
-          <CustomNavLink to='/meteostanice/frymburk' header='Meteo Frymburk' />
-          <CustomNavLink to='/meteostanice/lipno' header='Meteo Lipno' />
-          <CustomNavLink to='/meteostanice/oldStation' header='Meteo původní' />
-        </StyledHeader>
-      </>
-    )}
-  </>
-);
-
-export const NavBarDavis = () => {
   return (
     <>
-      {!isFullscreen() && (
-        <StyledHeader>
-          <CustomNavLink to='week' header='Týden' />
-          <CustomNavLink to='year' header='od roku 2012' />
-          <CustomNavLink to='table' header='tabulka' />
-          <CustomNavLink to='statistics' header='statistiky' />
-        </StyledHeader>
-      )}
+      <Header>Meteostanice u Kučerů</Header>
+      <StyledHeader>
+        <MeteoNavLink to='/meteostanice/frymburk' header='Meteo Frymburk' />
+        <MeteoNavLink to='/meteostanice/lipno' header='Meteo Lipno' />
+        <MeteoNavLink to='/meteostanice/oldStation' header='Meteo původní' />
+      </StyledHeader>
+    </>
+  );
+};
+
+export const NavBarDavis = () => {
+  const isFullscreen = useIsFullscreen();
+
+  if (isFullscreen) return <Outlet />;
+
+  return (
+    <>
+      <StyledHeader>
+        <MeteoNavLink to='week' header='Týden' />
+        <MeteoNavLink to='year' header='od roku 2012' />
+        <MeteoNavLink to='table' header='tabulka' />
+        <MeteoNavLink to='statistics' header='statistiky' />
+      </StyledHeader>
       <Outlet />
     </>
   );
 };
 
 export const NavBarLipno = () => {
+  const isFullscreen = useIsFullscreen();
+
+  if (isFullscreen) return <Outlet />;
+
   return (
     <>
-      {!isFullscreen() && (
-        <StyledHeader>
-          <CustomNavLink to='graphs' header='grafy od roku 2000' />
-          <CustomNavLink to='table' header='tabulka' />
-        </StyledHeader>
-      )}
+      <StyledHeader>
+        <MeteoNavLink to='graphs' header='grafy od roku 2000' />
+        <MeteoNavLink to='table' header='tabulka' />
+      </StyledHeader>
       <Outlet />
     </>
   );
 };
 
 export const NavBarOldStation = () => {
+  const isFullscreen = useIsFullscreen();
+
+  if (isFullscreen) return <Outlet />;
+
   return (
     <>
-      {!isFullscreen() && (
-        <StyledHeader>
-          <CustomNavLink to='graphs' header='grafy do roku 2000' />
-          <CustomNavLink to='table' header='tabulka' />
-        </StyledHeader>
-      )}
+      <StyledHeader>
+        <MeteoNavLink to='graphs' header='grafy do roku 2000' />
+        <MeteoNavLink to='table' header='tabulka' />
+      </StyledHeader>
       <Outlet />
     </>
   );
@@ -82,32 +74,19 @@ export const NavBarOldStation = () => {
 const StyledHeader = styled(Header)`
   display: flex;
   gap: 4px;
+  background: black;
 
   @media screen and (max-width: 500px) {
     flex-wrap: wrap;
   }
 
   a {
-    height: 100%;
     width: 100%;
-    text-align: center;
-    text-decoration: none;
-    background-color: white;
     color: black;
+    background: white;
 
-    &:visited {
-      color: black;
-    }
-
-    a.active {
-      background-color: gray;
-      color: white;
-    }
-
-    &:hover,
-    &:active,
-    &:focus {
-      background-color: gray;
+    &:hover {
+      background-color: #555555 !important;
       color: white;
     }
   }
