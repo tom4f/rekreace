@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import oneGraphStyles from './../../css/OneGraph.module.css';
-import Draw from './Draw1';
+import Draw from './Draw';
 import { CommonDataWithGetDataFnType, SpecificGraphType } from './OnePage';
 
 export const OneGraph = ({ graphData }: OneGraphType) => {

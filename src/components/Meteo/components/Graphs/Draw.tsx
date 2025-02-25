@@ -1,5 +1,6 @@
+import styles from './css/OneGraph.module.css';
 import { OneGraphDataWithGetDataFn } from './OneGraph';
-import { LoadDataFunctionType, PureData,SpecificGraphType } from './OnePage';
+import { LoadDataFunctionType, PureData, SpecificGraphType } from './OnePage';
 export default class Draw {
   dataOrig: PureData[];
   dataReduced: PureData[];
@@ -255,9 +256,9 @@ export default class Draw {
         const { startPrev, startNext, endPrev, endNext } = isXinButton(x);
 
         if (startPrev || startNext || endPrev || endNext) {
-          this.canvas_pointer.classList.add('pointerOnGrab');
+          this.canvas_pointer.classList.add(styles.pointerCursor);
         } else {
-          this.canvas_pointer.classList.remove('pointerOnGrab');
+          this.canvas_pointer.classList.remove(styles.pointerCursor);
         }
         if (startPrev) {
           dispBtn(btnX.startPrev, '<', 0.9);
@@ -292,7 +293,7 @@ export default class Draw {
       if (isXinGraph) return null;
 
       // remove onGrab pointer outside button & graph
-      this.canvas_pointer.classList.remove('pointerOnGrab');
+      this.canvas_pointer.classList.remove(styles.pointerCursor);
       // decrease opacity of button outside button & graph
       dispBtn(btnX.startPrev, '<', 0.5);
       dispBtn(btnX.startNext, '>', 0.5);
@@ -393,7 +394,7 @@ export default class Draw {
       this.yForInfo = yPos;
 
       // enable cursor
-      this.canvas_pointer.classList.add('pointerOn');
+      this.canvas_pointer.classList.add(styles.crosshairCursor);
 
       // clear whole canvas
       this.ctx_pointer.clearRect(0, 0, this.clientWidth, this.clientHeight);
@@ -537,7 +538,7 @@ export default class Draw {
     }
 
     // disable cursor
-    this.canvas_pointer.classList.remove('pointerOn');
+    this.canvas_pointer.classList.remove(styles.crosshairCursor);
   }
 
   axesXY(graphNumber: number) {

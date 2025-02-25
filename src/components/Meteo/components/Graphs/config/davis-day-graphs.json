@@ -4,7 +4,7 @@
       "index": 0,
       "dateField": "Date",
       "isAllDownloaded": true,
-      "url": "meteo/read_davis.php",
+      "url": "",
       "title": "Meteostanice Frymburk",
       "navName": "Frymburk",
       "data": [{}]
