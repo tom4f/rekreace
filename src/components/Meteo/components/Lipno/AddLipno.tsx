@@ -1,5 +1,5 @@
 import { Button, Input } from 'components/Atoms';
-import { useDateContext } from 'components/Meteo/context';
+import { useDateStore } from 'components/Meteo/zustandStore/useMeteoStore';
 import { useLoginStatus } from 'features/login';
 import { AddLipnoRequest, useAddLipno, useGetLipno } from 'features/meteo';
 import { useRef } from 'react';
@@ -14,7 +14,8 @@ type AddLipnoType = {
 };
 
 export const AddLipno = ({ editMeteo, setEditMeteo }: AddLipnoType) => {
-  const { dispatch } = useDateContext();
+  const { updateDate } = useDateStore();
+
   const formRef = useRef<HTMLFormElement>(null);
 
   const { mutate } = useAddLipno();
@@ -64,13 +65,7 @@ export const AddLipno = ({ editMeteo, setEditMeteo }: AddLipnoType) => {
     mutate(payload, {
       onSuccess: () => {
         console.log('AddLipno - ', new Date());
-        dispatch({
-          type: 'UPDATE_DATE',
-          payload: {
-            meteoDataSource: 'lipnoDaily',
-            meteoDate: new Date(),
-          },
-        });
+        updateDate('lipnoDaily', new Date());
         setEditMeteo((editMeteo: EditMeteoType) => ({
           ...editMeteo,
           method: null,

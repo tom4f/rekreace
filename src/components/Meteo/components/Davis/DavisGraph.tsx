@@ -1,36 +1,35 @@
 import { Header } from 'components/Atoms';
-import { DateChangeBlock, DavisGraphTypes } from 'components/Meteo';
+import {
+  DateButton,
+  DateChangeBlock,
+  DavisGifGraph,
+  DavisGraphTypes,
+} from 'components/Meteo';
 import {
   changeDate,
   PeriodType,
   StepType,
-  useDateContext,
-} from 'components/Meteo/context';
+  useDateStore,
+} from 'components/Meteo/zustandStore';
 import { NavLink, useLocation } from 'react-router-dom';
 import { getDateParts } from 'utils';
-
-import { DavisGifGraph } from './DavisGifGraph';
 
 export const DavisGraph = () => {
   const { search } = useLocation();
   const isFullscreen = new URLSearchParams(search).get('fullscreen') === 'true';
 
   const toggleFullscreen = `?fullscreen=${!isFullscreen}`;
-  const {
-    date: { davisDaily },
-    dispatch,
-  } = useDateContext();
+
+  const { updateDate, resetDate } = useDateStore();
+  const davisDaily = useDateStore((state) => state.dates.davisDaily);
 
   const { year, month, day } = getDateParts(davisDaily);
 
   const setDate = (period: PeriodType, step: StepType) => {
-    dispatch({
-      type: 'UPDATE_DATE',
-      payload: {
-        meteoDataSource: 'davisDaily',
-        meteoDate: changeDate('davisDaily', davisDaily, period, step),
-      },
-    });
+    updateDate(
+      'davisDaily',
+      changeDate('davisDaily', davisDaily, period, step)
+    );
   };
 
   return (
@@ -39,19 +38,7 @@ export const DavisGraph = () => {
         <DateChangeBlock setDate={setDate} period='day' text={day} />.
         <DateChangeBlock setDate={setDate} period='month' text={month} />.
         <DateChangeBlock setDate={setDate} period='year' text={year} />.
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() =>
-            dispatch({
-              type: 'RESET_DATE',
-              payload: {
-                meteoDataSource: 'davisDaily',
-              },
-            })
-          }
-        >
-          &nbsp;Reset
-        </button>
+        <DateButton onClick={() => resetDate('davisDaily')}>Reset</DateButton>
       </Header>
       <NavLink to={toggleFullscreen}>
         <DavisGifGraph

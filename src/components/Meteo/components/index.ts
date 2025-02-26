@@ -1,4 +1,4 @@
-export * from './DateChangeBlock';
+export * from './DateChange';
 export * from './Davis';
 export * from './FullscreenHeader';
 export * from './Graphs';

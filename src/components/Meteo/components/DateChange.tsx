@@ -1,6 +1,6 @@
-import { PeriodType, StepType } from '../context';
+import { PeriodType, StepType } from 'components/Meteo/zustandStore';
 
-const DateButton = ({
+export const DateButton = ({
   onClick,
   children,
 }: {

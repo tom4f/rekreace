@@ -1,5 +1,5 @@
 import { Button } from 'components/Atoms';
-import { useDateContext } from 'components/Meteo/context';
+import { useDateStore } from 'components/Meteo/zustandStore/useMeteoStore';
 import { useLoginStatus } from 'features/login';
 import { useDeleteLipno } from 'features/meteo';
 
@@ -8,7 +8,7 @@ import { EditMeteoType } from './ModifyLipno';
 import { ModifyLipnoModal } from './ModifyLipnoModal';
 
 export const DeleteLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
-  const { dispatch } = useDateContext();
+  const { updateDate } = useDateStore();
   const { mutate } = useDeleteLipno();
   const { data: loginData } = useLoginStatus();
   const { webToken, webUser } = loginData;
@@ -23,13 +23,8 @@ export const DeleteLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
       { datum: editDate, webToken, webUser, fotoGalleryOwner },
       {
         onSuccess: () => {
-          dispatch({
-            type: 'UPDATE_DATE',
-            payload: {
-              meteoDataSource: 'lipnoDaily',
-              meteoDate: new Date(),
-            },
-          });
+          updateDate('lipnoDaily', new Date());
+
           setEditMeteo((orig: EditMeteoType) => ({
             ...orig,
             method: null,

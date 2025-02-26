@@ -1,62 +1,32 @@
 import { Url } from 'api/paths';
 import { Header } from 'components/Atoms';
+import { DateButton, DateChangeBlock } from 'components/Meteo';
 import {
   changeDate,
   PeriodType,
   StepType,
-  useDateContext,
-} from 'components/Meteo/context/';
+  useDateStore,
+} from 'components/Meteo/zustandStore';
+import { getDateParts } from 'utils';
 
 export const LipnoGraph = () => {
-  const {
-    date: { lipnoDaily },
-    dispatch,
-  } = useDateContext();
+  const { updateDate, resetDate } = useDateStore();
+  const lipnoDaily = useDateStore((state) => state.dates.lipnoDaily);
 
-  const year = lipnoDaily.getFullYear();
-  const ms = lipnoDaily.getMilliseconds();
+  const { year, ms } = getDateParts(lipnoDaily);
 
   const setDate = (period: PeriodType, step: StepType) => {
-    dispatch({
-      type: 'UPDATE_DATE',
-      payload: {
-        meteoDataSource: 'lipnoDaily',
-        meteoDate: changeDate('lipnoDaily', lipnoDaily, period, step),
-      },
-    });
+    updateDate(
+      'lipnoDaily',
+      changeDate('lipnoDaily', lipnoDaily, period, step)
+    );
   };
 
   return (
     <>
       <Header>
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
-        {year}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() =>
-            dispatch({
-              type: 'RESET_DATE',
-              payload: {
-                meteoDataSource: 'lipnoDaily',
-              },
-            })
-          }
-        >
-          Reset
-        </button>
+        <DateChangeBlock setDate={setDate} period='year' text={year} />.
+        <DateButton onClick={() => resetDate('lipnoDaily')}>Reset</DateButton>
       </Header>
       <article className='flex flex-wrap justify-center pt-4'>
         <img alt='voda' src={`${Url.GRAPHS}/graph_voda_${year}.gif?${ms}`} />

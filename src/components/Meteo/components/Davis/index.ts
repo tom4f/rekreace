@@ -1,3 +1,4 @@
+export * from './DavisGifGraph';
 export * from './DavisGraph';
 export * from './DavisGraphsDay';
 export * from './DavisStatistic';

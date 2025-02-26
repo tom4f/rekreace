@@ -1,21 +1,23 @@
 import { Header } from 'components/Atoms';
+import { DateButton, DateChangeBlock } from 'components/Meteo';
 import { RgbCssType } from 'components/Meteo/components/TypeDefinition';
+import TableStyle from 'components/Meteo/css/Table.module.css';
 import {
   changeDate,
   getDaysFromNow,
   PeriodType,
   StepType,
-  useDateContext,
-} from 'components/Meteo/context';
-import TableStyle from 'components/Meteo/css/Table.module.css';
+  useDateStore,
+} from 'components/Meteo/zustandStore';
 import { useGetOldStation } from 'features/meteo';
 import React, { useState } from 'react';
+import { getDateParts } from 'utils';
 
 export const OldStationTable = () => {
-  const {
-    date: { oldStationDaily },
-    dispatch,
-  } = useDateContext();
+  const { updateDate, resetDate } = useDateStore();
+  const oldStationDaily = useDateStore((state) => state.dates.oldStationDaily);
+
+  const { year, month, day } = getDateParts(oldStationDaily);
 
   const [orderBy, setOrderBy] = useState({
     value: 'date',
@@ -35,13 +37,10 @@ export const OldStationTable = () => {
   });
 
   const setDate = (period: PeriodType, step: StepType) => {
-    dispatch({
-      type: 'UPDATE_DATE',
-      payload: {
-        meteoDataSource: 'oldStationDaily',
-        meteoDate: changeDate('oldStationDaily', oldStationDaily, period, step),
-      },
-    });
+    updateDate(
+      'oldStationDaily',
+      changeDate('oldStationDaily', oldStationDaily, period, step)
+    );
   };
 
   const rgbCss: RgbCssType = (r, g, b, value) => {
@@ -89,76 +88,15 @@ export const OldStationTable = () => {
     });
   };
 
-  const year = oldStationDaily.getFullYear();
-  const month = oldStationDaily.getMonth() + 1;
-  const day = oldStationDaily.getDate();
-
-  const monthString = month < 10 ? `0${month}` : `${month}`;
-  const dayString = day < 10 ? `0${day}` : `${day}`;
-
   return (
     <>
       <Header id='detail_graphs'>
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('day', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
-        {dayString}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('day', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        .
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
-        {monthString}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        .
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
-        {year}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() =>
-            dispatch({
-              type: 'RESET_DATE',
-              payload: {
-                meteoDataSource: 'oldStationDaily',
-              },
-            })
-          }
-        >
+        <DateChangeBlock setDate={setDate} period='day' text={day} />.
+        <DateChangeBlock setDate={setDate} period='month' text={month} />.
+        <DateChangeBlock setDate={setDate} period='year' text={year} />.
+        <DateButton onClick={() => resetDate('oldStationDaily')}>
           Reset
-        </button>
+        </DateButton>
       </Header>
       <section className={TableStyle.davisTable}>
         <table>

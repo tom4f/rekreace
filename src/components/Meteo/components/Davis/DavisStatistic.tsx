@@ -1,83 +1,39 @@
 import { Header } from 'components/Atoms';
+import { DateButton, DateChangeBlock } from 'components/Meteo/';
 import {
   changeDate,
   PeriodType,
   StepType,
-  useDateContext,
-} from 'components/Meteo/context';
+  useDateStore,
+} from 'components/Meteo/zustandStore';
 import { useGetNOAA } from 'features/meteo';
+import { getDateParts } from 'utils';
 
 export const DavisStatistic = () => {
-  const {
-    date: { davisTextSummary },
-    dispatch,
-  } = useDateContext();
+  const { updateDate, resetDate } = useDateStore();
+  const davisTextSummary = useDateStore(
+    (state) => state.dates.davisTextSummary
+  );
 
-  const year = davisTextSummary.getFullYear();
-  const month = `0${davisTextSummary.getMonth() + 1}`.slice(-2);
+  const { year, month } = getDateParts(davisTextSummary);
 
   const queries = useGetNOAA(year.toString(), month);
 
   const setDate = (period: PeriodType, step: StepType) => {
-    dispatch({
-      type: 'UPDATE_DATE',
-      payload: {
-        meteoDataSource: 'davisTextSummary',
-        meteoDate: changeDate(
-          'davisTextSummary',
-          davisTextSummary,
-          period,
-          step
-        ),
-      },
-    });
+    updateDate(
+      'davisTextSummary',
+      changeDate('davisTextSummary', davisTextSummary, period, step)
+    );
   };
 
   return (
     <>
       <Header>
-        {
-          <span style={{ color: queries[0].isFetching ? 'lime' : 'unset' }}>
-            Rok
-          </span>
-        }{' '}
-        /{' '}
-        {
-          <span style={{ color: queries[1].isFetching ? 'lime' : 'unset' }}>
-            měsíc &nbsp;
-          </span>
-        }
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', -1)}
-        >
-          {' '}
-          {'<'}{' '}
-        </button>
-        &nbsp;{month}&nbsp;
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', +1)}
-        >
-          {' '}
-          {'>'}{' '}
-        </button>
-        &nbsp;/&nbsp;
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', -1)}
-        >
-          {' '}
-          {'<'}{' '}
-        </button>
-        &nbsp;{year}&nbsp;
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', +1)}
-        >
-          {' '}
-          {'>'}{' '}
-        </button>
+        <DateChangeBlock setDate={setDate} period='month' text={month} />.
+        <DateChangeBlock setDate={setDate} period='year' text={year} />.
+        <DateButton onClick={() => resetDate('davisTextSummary')}>
+          Reset
+        </DateButton>
       </Header>
 
       <article className='w-fit'>
@@ -88,27 +44,10 @@ export const DavisStatistic = () => {
       </article>
 
       <Header>
-        {
-          <span style={{ color: queries[0].isFetching ? 'lime' : 'unset' }}>
-            Rok
-          </span>
-        }
-        &nbsp;
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', -1)}
-        >
-          {' '}
-          {'<'}{' '}
-        </button>
-        {year}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', +1)}
-        >
-          {' '}
-          {'>'}{' '}
-        </button>
+        <DateChangeBlock setDate={setDate} period='year' text={year} />.
+        <DateButton onClick={() => resetDate('davisTextSummary')}>
+          Reset
+        </DateButton>
       </Header>
 
       <article className='w-fit'>

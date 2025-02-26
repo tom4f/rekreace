@@ -1,28 +1,27 @@
 import { Header } from 'components/Atoms';
+import { DateButton, DateChangeBlock, RgbCssType } from 'components/Meteo';
+import TableStyle from 'components/Meteo/css/Table.module.css';
 import {
   changeDate,
   getDaysFromNow,
   PeriodType,
   StepType,
-  useDateContext,
-} from 'components/Meteo/context';
-import TableStyle from 'components/Meteo/css/Table.module.css';
+  useDateStore,
+} from 'components/Meteo/zustandStore';
 import { useLoginStatus } from 'features/login';
 import { lipnoKeys, LipnoKeyType, useGetLipno } from 'features/meteo';
 import { useCallback, useState } from 'react';
+import { getDateParts } from 'utils';
 
-import { RgbCssType } from '../TypeDefinition';
-import { EditMeteoType } from './ModifyLipno';
+import { EditMeteoType } from './';
 
 export const LipnoTable = ({
   setEditMeteo,
 }: {
   setEditMeteo?: React.Dispatch<React.SetStateAction<EditMeteoType>>;
 }) => {
-  const {
-    date: { lipnoDaily },
-    dispatch,
-  } = useDateContext();
+  const { updateDate, resetDate } = useDateStore();
+  const lipnoDaily = useDateStore((state) => state.dates.lipnoDaily);
 
   const { data: loginData } = useLoginStatus();
 
@@ -93,13 +92,10 @@ export const LipnoTable = ({
   );
 
   const setDate = (period: PeriodType, step: StepType) => {
-    dispatch({
-      type: 'UPDATE_DATE',
-      payload: {
-        meteoDataSource: 'lipnoDaily',
-        meteoDate: changeDate('lipnoDaily', lipnoDaily, period, step),
-      },
-    });
+    updateDate(
+      'lipnoDaily',
+      changeDate('lipnoDaily', lipnoDaily, period, step)
+    );
   };
 
   const rgbCss: RgbCssType = (r, g, b, value) => {
@@ -166,77 +162,15 @@ export const LipnoTable = ({
       order: orderBy.order === 'DESC' ? 'ASC' : 'DESC',
     });
   };
-
-  const year = lipnoDaily.getFullYear();
-  const month = lipnoDaily.getMonth() + 1;
-  const day = lipnoDaily.getDate();
-
-  const monthString = month < 10 ? `0${month}` : `${month}`;
-  const dayString = day < 10 ? `0${day}` : `${day}`;
+  const { year, month, day } = getDateParts(lipnoDaily);
 
   return (
     <>
-      <Header id='detail_graphs'>
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('day', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
-        {dayString}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('day', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        .
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
-        {monthString}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('month', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        .
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', -1)}
-        >
-          &nbsp;
-          {'<'}&nbsp;
-        </button>
-        {year}
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() => setDate('year', +1)}
-        >
-          &nbsp;
-          {'>'}&nbsp;
-        </button>
-        <button
-          className='text-zinc-500 hover:text-orange-400'
-          onClick={() =>
-            dispatch({
-              type: 'RESET_DATE',
-              payload: {
-                meteoDataSource: 'lipnoDaily',
-              },
-            })
-          }
-        >
-          Reset
-        </button>
+      <Header>
+        <DateChangeBlock setDate={setDate} period='day' text={day} />.
+        <DateChangeBlock setDate={setDate} period='month' text={month} />.
+        <DateChangeBlock setDate={setDate} period='year' text={year} />.
+        <DateButton onClick={() => resetDate('lipnoDaily')}>Reset</DateButton>
       </Header>
       <section className={TableStyle.davisTable}>
         <table>
