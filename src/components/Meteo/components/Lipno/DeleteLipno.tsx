@@ -1,5 +1,8 @@
 import { Button } from 'components/Atoms';
-import { useDateStore } from 'components/Meteo/zustandStore/useMeteoStore';
+import {
+  MeteoDates,
+  useDateStore,
+} from 'components/Meteo/zustandStore/useMeteoStore';
 import { useLoginStatus } from 'features/login';
 import { useDeleteLipno } from 'features/meteo';
 
@@ -23,7 +26,7 @@ export const DeleteLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
       { datum: editDate, webToken, webUser, fotoGalleryOwner },
       {
         onSuccess: () => {
-          updateDate('lipnoDaily', new Date());
+          updateDate(MeteoDates.LIPNO_DAILY, new Date());
 
           setEditMeteo((orig: EditMeteoType) => ({
             ...orig,

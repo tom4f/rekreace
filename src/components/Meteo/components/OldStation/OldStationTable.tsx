@@ -5,6 +5,7 @@ import TableStyle from 'components/Meteo/css/Table.module.css';
 import {
   changeDate,
   getDaysFromNow,
+  MeteoDates,
   PeriodType,
   StepType,
   useDateStore,
@@ -38,8 +39,8 @@ export const OldStationTable = () => {
 
   const setDate = (period: PeriodType, step: StepType) => {
     updateDate(
-      'oldStationDaily',
-      changeDate('oldStationDaily', oldStationDaily, period, step)
+      MeteoDates.OLD_STATION_DAILY,
+      changeDate(MeteoDates.OLD_STATION_DAILY, oldStationDaily, period, step)
     );
   };
 
@@ -94,7 +95,7 @@ export const OldStationTable = () => {
         <DateChangeBlock setDate={setDate} period='day' text={day} />.
         <DateChangeBlock setDate={setDate} period='month' text={month} />.
         <DateChangeBlock setDate={setDate} period='year' text={year} />.
-        <DateButton onClick={() => resetDate('oldStationDaily')}>
+        <DateButton onClick={() => resetDate(MeteoDates.OLD_STATION_DAILY)}>
           Reset
         </DateButton>
       </Header>

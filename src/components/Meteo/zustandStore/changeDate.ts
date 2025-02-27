@@ -1,4 +1,4 @@
-import { MeteoDataSourceType } from '../zustandStore/useMeteoStore';
+import { MeteoDataSourceType, MeteoDates } from '../zustandStore/useMeteoStore';
 
 export type PeriodType = 'day' | 'month' | 'year';
 export type StepType = -1 | 1;
@@ -10,16 +10,16 @@ export const changeDate = (
 ) => {
   let start: Date;
   switch (meteoDataSource) {
-    case 'davisDaily':
+    case MeteoDates.DAVIS_DAILY:
       start = new Date(2012, 7, 22);
       break;
-    case 'lipnoDaily':
+    case MeteoDates.LIPNO_DAILY:
       start = new Date(2000, 10, 20);
       break;
-    case 'davisTextSummary':
+    case MeteoDates.DAVIS_TEXT_SUMMARY:
       start = new Date(2012, 9, 1);
       break;
-    case 'oldStationDaily':
+    case MeteoDates.OLD_STATION_DAILY:
       start = new Date(2001, 7, 13);
       break;
     default:

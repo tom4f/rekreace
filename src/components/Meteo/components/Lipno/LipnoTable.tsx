@@ -4,6 +4,7 @@ import TableStyle from 'components/Meteo/css/Table.module.css';
 import {
   changeDate,
   getDaysFromNow,
+  MeteoDates,
   PeriodType,
   StepType,
   useDateStore,
@@ -93,8 +94,8 @@ export const LipnoTable = ({
 
   const setDate = (period: PeriodType, step: StepType) => {
     updateDate(
-      'lipnoDaily',
-      changeDate('lipnoDaily', lipnoDaily, period, step)
+      MeteoDates.LIPNO_DAILY,
+      changeDate(MeteoDates.LIPNO_DAILY, lipnoDaily, period, step)
     );
   };
 
@@ -170,7 +171,9 @@ export const LipnoTable = ({
         <DateChangeBlock setDate={setDate} period='day' text={day} />.
         <DateChangeBlock setDate={setDate} period='month' text={month} />.
         <DateChangeBlock setDate={setDate} period='year' text={year} />.
-        <DateButton onClick={() => resetDate('lipnoDaily')}>Reset</DateButton>
+        <DateButton onClick={() => resetDate(MeteoDates.LIPNO_DAILY)}>
+          Reset
+        </DateButton>
       </Header>
       <section className={TableStyle.davisTable}>
         <table>

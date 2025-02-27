@@ -9,6 +9,8 @@ const defaultDate: DateType = {
   oldStationDaily: new Date(2012, 8, 22),
 };
 
+export const LOCAL_STORAGE_KEY = 'date-storage';
+
 export const useDateStore = create(
   persist<DateStore>(
     (set) => ({
@@ -23,12 +25,14 @@ export const useDateStore = create(
         set(
           produce((state: DateStore) => {
             state.dates[key] =
-              key === 'oldStationDaily' ? new Date(2012, 7, 22) : new Date();
+              key === MeteoDates.OLD_STATION_DAILY
+                ? new Date(2012, 7, 22)
+                : new Date();
           })
         ),
     }),
     {
-      name: 'date-storage',
+      name: LOCAL_STORAGE_KEY,
       storage: createJSONStorage(() => localStorage, {
         reviver: (_key, value) => {
           if (typeof value === 'string' && !isNaN(Date.parse(value))) {
@@ -41,11 +45,14 @@ export const useDateStore = create(
   )
 );
 
-export type MeteoDataSourceType =
-  | 'davisDaily'
-  | 'lipnoDaily'
-  | 'davisTextSummary'
-  | 'oldStationDaily';
+export enum MeteoDates {
+  DAVIS_DAILY = 'davisDaily',
+  LIPNO_DAILY = 'lipnoDaily',
+  DAVIS_TEXT_SUMMARY = 'davisTextSummary',
+  OLD_STATION_DAILY = 'oldStationDaily',
+}
+
+export type MeteoDataSourceType = `${MeteoDates}`;
 
 type DateType = {
   [key in MeteoDataSourceType]: Date;

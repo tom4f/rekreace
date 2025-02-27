@@ -2,6 +2,7 @@ import { Header } from 'components/Atoms';
 import { DateButton, DateChangeBlock } from 'components/Meteo/';
 import {
   changeDate,
+  MeteoDates,
   PeriodType,
   StepType,
   useDateStore,
@@ -21,8 +22,8 @@ export const DavisStatistic = () => {
 
   const setDate = (period: PeriodType, step: StepType) => {
     updateDate(
-      'davisTextSummary',
-      changeDate('davisTextSummary', davisTextSummary, period, step)
+      MeteoDates.DAVIS_TEXT_SUMMARY,
+      changeDate(MeteoDates.DAVIS_TEXT_SUMMARY, davisTextSummary, period, step)
     );
   };
 
@@ -31,7 +32,7 @@ export const DavisStatistic = () => {
       <Header>
         <DateChangeBlock setDate={setDate} period='month' text={month} />.
         <DateChangeBlock setDate={setDate} period='year' text={year} />.
-        <DateButton onClick={() => resetDate('davisTextSummary')}>
+        <DateButton onClick={() => resetDate(MeteoDates.DAVIS_TEXT_SUMMARY)}>
           Reset
         </DateButton>
       </Header>
@@ -45,7 +46,7 @@ export const DavisStatistic = () => {
 
       <Header>
         <DateChangeBlock setDate={setDate} period='year' text={year} />.
-        <DateButton onClick={() => resetDate('davisTextSummary')}>
+        <DateButton onClick={() => resetDate(MeteoDates.DAVIS_TEXT_SUMMARY)}>
           Reset
         </DateButton>
       </Header>

@@ -3,6 +3,7 @@ import { Header } from 'components/Atoms';
 import { DateButton, DateChangeBlock } from 'components/Meteo';
 import {
   changeDate,
+  MeteoDates,
   PeriodType,
   StepType,
   useDateStore,
@@ -17,8 +18,8 @@ export const LipnoGraph = () => {
 
   const setDate = (period: PeriodType, step: StepType) => {
     updateDate(
-      'lipnoDaily',
-      changeDate('lipnoDaily', lipnoDaily, period, step)
+      MeteoDates.LIPNO_DAILY,
+      changeDate(MeteoDates.LIPNO_DAILY, lipnoDaily, period, step)
     );
   };
 
@@ -26,7 +27,9 @@ export const LipnoGraph = () => {
     <>
       <Header>
         <DateChangeBlock setDate={setDate} period='year' text={year} />.
-        <DateButton onClick={() => resetDate('lipnoDaily')}>Reset</DateButton>
+        <DateButton onClick={() => resetDate(MeteoDates.LIPNO_DAILY)}>
+          Reset
+        </DateButton>
       </Header>
       <article className='flex flex-wrap justify-center pt-4'>
         <img alt='voda' src={`${Url.GRAPHS}/graph_voda_${year}.gif?${ms}`} />
