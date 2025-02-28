@@ -1,15 +1,12 @@
 import { Url } from 'api/paths';
 import { useEffect, useState } from 'react';
+import { useWebCamStore } from 'store';
 
-type ShowWebCamState = {
-  day: number;
-  hour: number;
-  minute: number;
-  isLiveImg: boolean;
-};
+export const ShowWebCam = () => {
+  const {
+    webCam: { day, hour, minute, state },
+  } = useWebCamStore();
 
-export const ShowWebCam = ({ state }: { state: ShowWebCamState }) => {
-  const { day, hour, minute, isLiveImg } = state;
   const [liveImgSrc, setLiveImgSrc] = useState(
     `${Url.KAMERA}/archive/ip_kamera.jpg`
   );
@@ -45,7 +42,7 @@ export const ShowWebCam = ({ state }: { state: ShowWebCamState }) => {
     <>
       <div className='archive_cam'>
         <a href={`${Url.KAMERA}/archive/ip_kamera_full_hd_${imgDateText}.jpg`}>
-          {isLiveImg ? (
+          {state === 'live' ? (
             <img src={liveImgSrc} alt='WebCam' />
           ) : (
             /*                         <img

@@ -1,21 +1,29 @@
 import { Header } from 'components/Atoms';
 import { useGetDavis, useGetLipno } from 'features/meteo';
 import { Link } from 'react-router-dom';
+import { useWebCamStore } from 'store';
 import styled from 'styled-components';
+import { getDateParts } from 'utils';
 
 export const MeteoBarBig = () => {
+  const {
+    webCam: { day: webCamDay, month: webCamMonth },
+  } = useWebCamStore();
+
+  const sliderToDavisDate = `${new Date().getFullYear()}-${webCamMonth}-${webCamDay}`;
+
   const { data: davisData, isFetching: isFetchingDavis } = useGetDavis({
-    start: 0,
-    limit: 1,
-    requestType: 'amount',
+    startDate: sliderToDavisDate,
+    endDate: sliderToDavisDate,
+    requestType: 'date',
     orderBy: 'date',
     sort: 'DESC',
     refetchInterval: 10000,
   });
   const { data: pocasiData, isFetching: isFetchingPocasi } = useGetLipno({
-    start: 0,
-    limit: 1,
-    requestType: 'amount',
+    startDate: sliderToDavisDate,
+    endDate: sliderToDavisDate,
+    requestType: 'date',
     orderBy: 'datum',
     sort: 'DESC',
     refetchInterval: 10000,
@@ -24,46 +32,46 @@ export const MeteoBarBig = () => {
   if (!davisData?.length || !pocasiData?.length)
     return <div style={{ color: 'white' }}>Loading...</div>;
 
+  const {
+    date: davisDate,
+    temp_mean,
+    temp_high,
+    // temp_high_time,
+    temp_low,
+    // temp_low_time,
+    // heat_deg_days,
+    // cool_deg_days,
+    rain,
+    wind_speed_avg,
+    wind_speed_high,
+    // wind_speed_high_time,
+    // dir,
+    wind3,
+    wind6,
+    wind9,
+    // wind12,
+    bar_min,
+    bar_avg,
+    bar_max,
+    huminidy_min,
+    huminidy_avg,
+    huminidy_max,
+    // air_density_min,
+    // air_density_avg,
+    // air_density_max,
+    rain_rate_max,
+  } = davisData[0];
+
+  const {
+    //id, datum, cas,
+    hladina,
+    pritok,
+    odtok,
+    //vzduch,
+    voda,
+  } = pocasiData[0];
+
   const MeteoTable = () => {
-    const {
-      // date,
-      temp_mean,
-      temp_high,
-      // temp_high_time,
-      temp_low,
-      // temp_low_time,
-      // heat_deg_days,
-      // cool_deg_days,
-      rain,
-      wind_speed_avg,
-      wind_speed_high,
-      // wind_speed_high_time,
-      // dir,
-      wind3,
-      wind6,
-      wind9,
-      // wind12,
-      bar_min,
-      bar_avg,
-      bar_max,
-      huminidy_min,
-      huminidy_avg,
-      huminidy_max,
-      // air_density_min,
-      // air_density_avg,
-      // air_density_max,
-      rain_rate_max,
-    } = davisData[0];
-
-    const {
-      //id, datum, cas,
-      hladina,
-      pritok,
-      odtok,
-      //vzduch,
-      voda,
-    } = pocasiData[0];
-
     return (
       <MainSection>
         <Fieldset>
@@ -192,12 +200,16 @@ export const MeteoBarBig = () => {
     );
   };
 
+  if (!davisDate) return <div style={{ color: 'white' }}>Loading...</div>;
+
+  const { day, month, year } = getDateParts(new Date(davisDate));
+
   return (
     <>
       <Header>
         <Link to='/meteostanice'>
           <FadeInText $isFetching={isFetchingDavis || isFetchingPocasi}>
-            METEOSTANICE dnes
+            METEOSTANICE {day}.{month}.{year}
           </FadeInText>
         </Link>
       </Header>

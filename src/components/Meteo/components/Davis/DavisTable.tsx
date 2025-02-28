@@ -7,7 +7,7 @@ import {
   PeriodType,
   StepType,
   useDateStore,
-} from 'components/Meteo/zustandStore';
+} from 'store';
 import { useGetDavis } from 'features/meteo';
 import React, { useState } from 'react';
 import { getDateParts } from 'utils';

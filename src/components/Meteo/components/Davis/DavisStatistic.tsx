@@ -6,7 +6,7 @@ import {
   PeriodType,
   StepType,
   useDateStore,
-} from 'components/Meteo/zustandStore';
+} from 'store';
 import { useGetNOAA } from 'features/meteo';
 import { getDateParts } from 'utils';
 

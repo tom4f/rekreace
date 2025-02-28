@@ -11,8 +11,8 @@ type BaseMeteoRequest = {
 };
 
 type MeteoDateRequest = BaseMeteoRequest & {
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   requestType: 'date';
 };
 
@@ -64,6 +64,10 @@ const getDavis = async (request: MeteoRequest): Promise<DavisResponse> => {
   }
   if (request?.sort !== undefined) {
     params.append('sort', request.sort);
+  }
+
+  if (request?.requestType !== undefined) {
+    params.append('requestType', request.requestType);
   }
 
   if (request.requestType === 'amount') {

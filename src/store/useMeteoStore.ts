@@ -7,6 +7,7 @@ const defaultDate: DateType = {
   lipnoDaily: new Date(),
   davisTextSummary: new Date(),
   oldStationDaily: new Date(2012, 8, 22),
+  webCam: new Date(),
 };
 
 export const LOCAL_STORAGE_KEY = 'date-storage';
@@ -50,6 +51,7 @@ export enum MeteoDates {
   LIPNO_DAILY = 'lipnoDaily',
   DAVIS_TEXT_SUMMARY = 'davisTextSummary',
   OLD_STATION_DAILY = 'oldStationDaily',
+  WEBCAM_DATE = 'webCam',
 }
 
 export type MeteoDataSourceType = `${MeteoDates}`;

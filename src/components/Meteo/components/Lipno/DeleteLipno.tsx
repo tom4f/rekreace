@@ -1,8 +1,5 @@
 import { Button } from 'components/Atoms';
-import {
-  MeteoDates,
-  useDateStore,
-} from 'components/Meteo/zustandStore/useMeteoStore';
+import { MeteoDates, useDateStore } from 'store/useMeteoStore';
 import { useLoginStatus } from 'features/login';
 import { useDeleteLipno } from 'features/meteo';
 

@@ -8,7 +8,7 @@ import {
   PeriodType,
   StepType,
   useDateStore,
-} from 'components/Meteo/zustandStore';
+} from 'store';
 import { useLoginStatus } from 'features/login';
 import { lipnoKeys, LipnoKeyType, useGetLipno } from 'features/meteo';
 import { useCallback, useState } from 'react';

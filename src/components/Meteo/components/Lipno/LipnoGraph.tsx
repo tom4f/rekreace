@@ -7,7 +7,7 @@ import {
   PeriodType,
   StepType,
   useDateStore,
-} from 'components/Meteo/zustandStore';
+} from 'store';
 import { getDateParts } from 'utils';
 
 export const LipnoGraph = () => {

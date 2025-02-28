@@ -1,7 +1,10 @@
 import { act, renderHook } from '@testing-library/react';
+import {
+  LOCAL_STORAGE_KEY,
+  MeteoDates,
+  useDateStore,
+} from 'store/useMeteoStore';
 import { beforeEach, describe, expect, it } from 'vitest';
-
-import { LOCAL_STORAGE_KEY, MeteoDates, useDateStore } from '../useMeteoStore';
 
 describe('useDateStore', () => {
   beforeEach(() => {

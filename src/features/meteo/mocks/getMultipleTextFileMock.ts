@@ -1,6 +1,6 @@
 import { HttpStatusCode } from 'enums';
 import { resolveMock } from 'features/mocks';
-import { http, HttpHandler,HttpResponse } from 'msw';
+import { http, HttpHandler, HttpResponse } from 'msw';
 
 import { MeteoFiles } from '../hooks';
 import downld02_0 from './mockFiles/archive/downld02-0.txt?raw';
@@ -60,10 +60,12 @@ const getOneTextFileMock = (fileNr: number) => () =>
 
 export const getMultipleTextFileScenarios = [0, 1, 2, 3, 4, 5, 6].map(
   (fileNr) => {
+    console.log(fileNr);
     const data: [string, { [key: string]: HttpHandler[] }] = [
       getmMteoFileUrl(fileNr),
       getOneTextFileScenarios(fileNr),
     ];
+
     return data;
   }
 );

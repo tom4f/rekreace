@@ -4,9 +4,9 @@
   max-width: 724px;
   height: auto;
   background-color: rgba(0, 0, 0, 0.4);
-  left: 220px;
+  left: 185px;
   transition: bottom 2s, color 2s, transform 2s;
-  bottom: 13%;
+  bottom: 60px;
   transform: translate(-50%, -50%);
   color: white;
   white-space: nowrap;

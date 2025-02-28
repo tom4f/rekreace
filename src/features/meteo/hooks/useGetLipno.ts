@@ -48,6 +48,10 @@ const getLipno = async (request: MeteoRequest): Promise<LipnoResponse> => {
     params.append('sort', request.sort);
   }
 
+  if (request?.requestType !== undefined) {
+    params.append('requestType', request.requestType);
+  }
+
   if (request.requestType === 'amount') {
     if (request?.start !== undefined) {
       params.append('start', request.start.toString());

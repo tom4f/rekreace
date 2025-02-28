@@ -1,55 +1,61 @@
 import './css/slider.css';
 
-import { SliderWithText } from './css/SliderWithText';
-import { WebCamState } from './WebCam';
+import { SliderWithText } from 'components/Start/WebCam/css/SliderWithText';
+import { useWebCamStore } from 'store';
 
-type RangeSliderType = {
-  state: WebCamState;
-  reactChange: React.Dispatch<React.SetStateAction<WebCamState>>;
-};
-
-export const RangeSlider = ({
-  state: { day, hour, minute },
-  reactChange,
-}: RangeSliderType) => {
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === 'day') {
-      reactChange((prevState) => ({
-        ...prevState,
-        day: +value,
-        isLiveImg: false,
-      }));
-    } else if (name === 'time') {
-      const totalMinutes = parseInt(value);
-      const selectedHour = Math.floor(totalMinutes / 60);
-      const selectedMinute = totalMinutes % 60;
-      reactChange((prevState) => ({
-        ...prevState,
-        hour: selectedHour,
-        minute: selectedMinute,
-        isLiveImg: false,
-      }));
-    }
-  };
-
+const sliderToDavisMonth = (
+  sliderDay: number,
+  sliderHour: number,
+  sliderMinutes: number
+) => {
   const now = new Date();
   const currentMonth = now.getMonth() + 1;
 
   const sliderDate = new Date();
-  sliderDate.setDate(day);
-  sliderDate.setHours(hour, minute);
+  sliderDate.setDate(sliderDay);
+  sliderDate.setHours(sliderHour, sliderMinutes);
 
-  const formattedDate =
-    now > sliderDate
-      ? `${day}.${currentMonth}.`
-      : `${day}.${currentMonth !== 1 ? currentMonth - 1 : 12}.`;
+  return now > sliderDate
+    ? currentMonth
+    : currentMonth !== 1
+    ? currentMonth - 1
+    : 12;
+};
+
+export const RangeSlider = () => {
+  const {
+    updateWebCam,
+    webCam: { day, hour, minute },
+  } = useWebCamStore();
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'day') {
+      updateWebCam({
+        month: sliderToDavisMonth(+value, hour, minute),
+        day: +value,
+        state: 'slideShowStopped',
+      });
+    } else if (name === 'time') {
+      const totalMinutes = parseInt(value);
+      const selectedHour = Math.floor(totalMinutes / 60);
+      const selectedMinute = totalMinutes % 60;
+      updateWebCam({
+        month: sliderToDavisMonth(day, selectedHour, selectedMinute),
+        hour: selectedHour,
+        minute: selectedMinute,
+        state: 'slideShowStopped',
+      });
+    }
+  };
+
+  const currentMonth = sliderToDavisMonth(day, hour, minute);
 
   return (
     <div className='sliders-container'>
       <div className='slide-container'>
         <SliderWithText
-          $time={formattedDate}
+          $time={`${day}.${currentMonth}.`}
           className='slider'
           type='range'
           name='day'

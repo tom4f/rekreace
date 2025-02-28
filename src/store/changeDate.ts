@@ -1,4 +1,4 @@
-import { MeteoDataSourceType, MeteoDates } from '../zustandStore/useMeteoStore';
+import { MeteoDataSourceType, MeteoDates } from 'store';
 
 export type PeriodType = 'day' | 'month' | 'year';
 export type StepType = -1 | 1;

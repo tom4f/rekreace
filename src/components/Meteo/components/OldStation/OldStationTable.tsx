@@ -9,7 +9,7 @@ import {
   PeriodType,
   StepType,
   useDateStore,
-} from 'components/Meteo/zustandStore';
+} from 'store';
 import { useGetOldStation } from 'features/meteo';
 import React, { useState } from 'react';
 import { getDateParts } from 'utils';

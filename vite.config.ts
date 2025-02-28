@@ -27,6 +27,7 @@ export default defineConfig({
       enums: path.resolve(__dirname, './src/enums'),
       stories: path.resolve(__dirname, './src/stories'),
       css: path.resolve(__dirname, './src/css'),
+      store: path.resolve(__dirname, './src/store'),
     },
   },
   test: {

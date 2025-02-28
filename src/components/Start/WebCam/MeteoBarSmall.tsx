@@ -2,8 +2,13 @@ import './css/MeteoBarSmall.css';
 
 import { MeteoFiles, useGetTextFile } from 'features/meteo';
 import { useEffect, useState } from 'react';
+import { useWebCamStore } from 'store';
 
 export const MeteoBarSmall = () => {
+  const {
+    webCam: { state },
+  } = useWebCamStore();
+
   const [cssTransitionOut, setCssTransitionOut] = useState(
     'meteo_box_transition_out'
   );
@@ -29,6 +34,10 @@ export const MeteoBarSmall = () => {
     return <div>Error fetching the text file: {error.message}</div>;
   }
 
+  if (state !== 'live') {
+    return null;
+  }
+
   const meteoBox = (meteoText: string) => {
     if (!meteoText) return;
 
@@ -40,8 +49,8 @@ export const MeteoBarSmall = () => {
       huminidy,
       presure,
       wind,
-      dir,
       ,
+      // dir,
       dewPoint,
       windChill,
     ] = meteoText.split('|');
@@ -68,10 +77,10 @@ export const MeteoBarSmall = () => {
           <legend>Vítr</legend>
           {wind}m/s
         </fieldset>
-        <fieldset className='meteo_value'>
+        {/*         <fieldset className='meteo_value'>
           <legend>Směr</legend>
           {dir}&deg;
-        </fieldset>
+        </fieldset> */}
         <fieldset className='meteo_value'>
           <legend>Ros. bod</legend>
           {dewPoint}&deg;C

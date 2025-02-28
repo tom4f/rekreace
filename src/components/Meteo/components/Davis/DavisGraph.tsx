@@ -5,13 +5,8 @@ import {
   DavisGifGraph,
   DavisGraphTypes,
 } from 'components/Meteo';
-import {
-  changeDate,
-  PeriodType,
-  StepType,
-  useDateStore,
-} from 'components/Meteo/zustandStore';
 import { NavLink, useLocation } from 'react-router-dom';
+import { changeDate, PeriodType, StepType, useDateStore } from 'store';
 import { getDateParts } from 'utils';
 
 export const DavisGraph = () => {
