@@ -10,7 +10,7 @@ import { useRef } from 'react';
 import { useWebCamStore } from 'store';
 
 export const WebCamSlideShow = () => {
-  const { updateWebCam, webCam } = useWebCamStore();
+  const { updateWebCam, resetWebCam, webCam } = useWebCamStore();
 
   let { day, hour, minute } = webCam;
   const { state } = webCam;
@@ -57,7 +57,7 @@ export const WebCamSlideShow = () => {
           className='slide-reset'
           size='3x'
           icon={faVideo}
-          onClick={() => updateWebCam({ state: 'live' })}
+          onClick={() => resetWebCam()}
         />
       )}
 

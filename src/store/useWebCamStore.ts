@@ -24,7 +24,7 @@ const minutesNormailzed = () => {
   }
 };
 
-const initialWebCamState = {
+const initialWebCamState: WebCamType = {
   month: new Date().getMonth() + 1,
   day: new Date().getDate(),
   hour: Math.floor(minutesNormailzed() / 60),
@@ -41,10 +41,12 @@ export const useWebCamStore = create<WebCamStoreType>()(
           state.webCam = { ...state.webCam, ...updatedValues };
         })
       ),
+    resetWebCam: () => set(() => ({ webCam: initialWebCamState })),
   }))
 );
 
 export type WebCamStoreType = {
   webCam: WebCamType;
   updateWebCam: (updatedValues: Partial<WebCamType>) => void;
+  resetWebCam: () => void;
 };
