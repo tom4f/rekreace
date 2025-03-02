@@ -5,6 +5,8 @@ import { useWebCamStore } from 'store';
 import styled from 'styled-components';
 import { getDateParts } from 'utils';
 
+import { DavisMeteoBar, LipnoMeteoBar } from '.';
+
 export const MeteoBarBig = () => {
   const {
     webCam: { day: webCamDay, month: webCamMonth },
@@ -12,7 +14,12 @@ export const MeteoBarBig = () => {
 
   const sliderToDavisDate = `${new Date().getFullYear()}-${webCamMonth}-${webCamDay}`;
 
-  const { data: davisData, isFetching: isFetchingDavis } = useGetDavis({
+  const {
+    data: davisSpecificDateData,
+    isSuccess: isDavisSuccess,
+    isFetching: isDavisFetching,
+    isError: isDavisError,
+  } = useGetDavis({
     startDate: sliderToDavisDate,
     endDate: sliderToDavisDate,
     requestType: 'date',
@@ -20,200 +27,83 @@ export const MeteoBarBig = () => {
     sort: 'DESC',
     refetchInterval: 10000,
   });
-  const { data: pocasiData, isFetching: isFetchingPocasi } = useGetLipno({
+
+  const { data: davisLatestData } = useGetDavis({
+    start: 0,
+    limit: 1,
+    requestType: 'amount',
+    orderBy: 'date',
+    sort: 'DESC',
+    enabled: (isDavisSuccess && !davisSpecificDateData?.length) || isDavisError,
+  });
+
+  const {
+    data: lipnoSpecificDateData,
+    isSuccess: isLipnoSuccess,
+    isError: isLipnoError,
+  } = useGetLipno({
     startDate: sliderToDavisDate,
     endDate: sliderToDavisDate,
     requestType: 'date',
     orderBy: 'datum',
     sort: 'DESC',
-    refetchInterval: 10000,
   });
 
-  if (!davisData?.length || !pocasiData?.length)
-    return <div style={{ color: 'white' }}>Loading...</div>;
+  const { data: lipnoLatestData } = useGetLipno({
+    start: 0,
+    limit: 1,
+    requestType: 'amount',
+    orderBy: 'datum',
+    sort: 'DESC',
+    enabled: (isLipnoSuccess && !lipnoSpecificDateData?.length) || isLipnoError,
+  });
 
-  const {
-    date: davisDate,
-    temp_mean,
-    temp_high,
-    // temp_high_time,
-    temp_low,
-    // temp_low_time,
-    // heat_deg_days,
-    // cool_deg_days,
-    rain,
-    wind_speed_avg,
-    wind_speed_high,
-    // wind_speed_high_time,
-    // dir,
-    wind3,
-    wind6,
-    wind9,
-    // wind12,
-    bar_min,
-    bar_avg,
-    bar_max,
-    huminidy_min,
-    huminidy_avg,
-    huminidy_max,
-    // air_density_min,
-    // air_density_avg,
-    // air_density_max,
-    rain_rate_max,
-  } = davisData[0];
+  const davisData =
+    (davisSpecificDateData &&
+      davisSpecificDateData?.length > 0 &&
+      davisSpecificDateData[0].date &&
+      davisSpecificDateData[0]) ||
+    (davisLatestData &&
+      davisLatestData?.length > 0 &&
+      davisLatestData[0].date &&
+      davisLatestData[0]);
 
-  const {
-    //id, datum, cas,
-    hladina,
-    pritok,
-    odtok,
-    //vzduch,
-    voda,
-  } = pocasiData[0];
+  const lipnoData =
+    (lipnoSpecificDateData &&
+      lipnoSpecificDateData?.length > 0 &&
+      lipnoSpecificDateData[0].datum &&
+      lipnoSpecificDateData[0]) ||
+    (lipnoLatestData &&
+      lipnoLatestData?.length > 0 &&
+      lipnoLatestData[0].datum &&
+      lipnoLatestData[0]);
 
-  const MeteoTable = () => {
-    return (
-      <MainSection>
-        <Fieldset>
-          <legend>Vítr</legend>
-          <section>
-            <header>
-              &gt;3 m/s
-              <p />
-              &gt;6 m/s
-              <p />
-              &gt;9 m/s
-              <p />
-              avg
-              <p />
-              max
-            </header>
-            <article>
-              {wind3} min
-              <p />
-              {wind6} min
-              <p />
-              {wind9} min
-              <p />
-              {wind_speed_avg} m/s
-              <p />
-              {wind_speed_high} m/s
-            </article>
-          </section>
-        </Fieldset>
-        <Fieldset>
-          <legend>Teplota</legend>
-          <section>
-            <header>
-              min
-              <p />
-              avg
-              <p />
-              max
-            </header>
-            <article>
-              {temp_low} &deg;C
-              <p />
-              {temp_mean} &deg;C
-              <p />
-              {temp_high} &deg;C
-            </article>
-          </section>
-        </Fieldset>
-        <Fieldset>
-          <legend>Tlak</legend>
-          <section>
-            <header>
-              min
-              <p />
-              avg
-              <p />
-              max
-            </header>
-            <article>
-              {bar_min} hPa
-              <p />
-              {bar_avg} hPa
-              <p />
-              {bar_max} hPa
-            </article>
-          </section>
-        </Fieldset>
-        <Fieldset>
-          <legend>Rel. vlhkost</legend>
-          <section>
-            <header>
-              min
-              <p />
-              avg
-              <p />
-              max
-            </header>
-            <article>
-              {huminidy_min} %
-              <p />
-              {huminidy_avg} %
-              <p />
-              {huminidy_max} %
-            </article>
-          </section>
-        </Fieldset>
-        <Fieldset>
-          <legend>Srážky</legend>
-          <section>
-            <header>
-              celk
-              <p />
-              max
-            </header>
-            <article>
-              {rain} mm
-              <p />
-              {rain_rate_max} mm/h
-            </article>
-          </section>
-        </Fieldset>
-        <Fieldset>
-          <legend>Voda na Lipně</legend>
-          <section>
-            <header>
-              teplota
-              <p />
-              přítok
-              <p />
-              odtok
-              <p />
-              hladina
-            </header>
-            <article>
-              {voda} &deg;C
-              <p />
-              {pritok} m3
-              <p />
-              {odtok} m3
-              <p />
-              {hladina} m n.m.
-            </article>
-          </section>
-        </Fieldset>
-      </MainSection>
-    );
-  };
+  console.log({ davisData }, { lipnoData });
 
-  if (!davisDate) return <div style={{ color: 'white' }}>Loading...</div>;
-
-  const { day, month, year } = getDateParts(new Date(davisDate));
+  const dateParts =
+    davisData && davisData?.date && getDateParts(new Date(davisData.date));
 
   return (
     <>
       <Header>
         <Link to='/meteostanice'>
-          <FadeInText $isFetching={isFetchingDavis || isFetchingPocasi}>
-            METEOSTANICE {day}.{month}.{year}
+          <FadeInText $isFetching={isDavisFetching}>
+            METEOSTANICE{' '}
+            {dateParts && (
+              <>
+                {dateParts.day}.{dateParts.month}.{dateParts.year}
+              </>
+            )}
           </FadeInText>
         </Link>
       </Header>
-      {MeteoTable()}
+      <MainSection>
+        {!davisData && !lipnoData && (
+          <div style={{ color: 'white' }}>Loading...</div>
+        )}
+        {davisData && <DavisMeteoBar davisData={davisData} />}
+        {lipnoData && <LipnoMeteoBar lipnoData={lipnoData} />}
+      </MainSection>
     </>
   );
 };
@@ -246,28 +136,4 @@ const MainSection = styled.section`
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-`;
-
-const Fieldset = styled.fieldset`
-  margin: 3px;
-  padding: 3px;
-  font-size: 0.7rem;
-  border: 2px solid green;
-  border-radius: 8px;
-
-  section {
-    display: flex;
-    width: auto;
-  }
-
-  section header {
-    text-align: right;
-    padding-right: 3px;
-    border-right: 1px dotted #00b300;
-  }
-
-  section article {
-    text-align: left;
-    padding-left: 3px;
-  }
 `;

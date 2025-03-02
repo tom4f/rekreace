@@ -8,6 +8,7 @@ type BaseMeteoRequest = {
   orderBy: string;
   sort: string;
   refetchInterval?: number;
+  enabled?: boolean;
 };
 
 type MeteoDateRequest = BaseMeteoRequest & {
@@ -24,7 +25,7 @@ type MeteoAmountRequest = BaseMeteoRequest & {
 
 type MeteoRequest = MeteoDateRequest | MeteoAmountRequest;
 
-export type DavisResponse = {
+export type DavisItem = {
   date: string;
   temp_mean: number;
   temp_high: number;
@@ -52,7 +53,8 @@ export type DavisResponse = {
   air_density_avg: number;
   air_density_max: number;
   rain_rate_max: number;
-}[];
+};
+export type DavisResponse = DavisItem[];
 
 export const GET_DAVIS_ENDPOINT = `${Url.NEW_API}/meteo/read_davis.php`;
 export const GET_DAVIS_KEY = MeteoGetKey.DAVIS;
@@ -107,5 +109,6 @@ export const useGetDavis = (request: MeteoRequest) => {
     queryFn: () => getDavis(request),
     refetchInterval: request.refetchInterval ?? 0,
     placeholderData: keepPreviousData,
+    enabled: request.enabled,
   });
 };

@@ -8,6 +8,7 @@ type BaseMeteoRequest = {
   orderBy: string;
   sort: 'DESC' | 'ASC';
   refetchInterval?: 10000;
+  enabled?: boolean;
 };
 
 type MeteoDateRequest = BaseMeteoRequest & {
@@ -24,7 +25,7 @@ type MeteoAmountRequest = BaseMeteoRequest & {
 
 type MeteoRequest = MeteoDateRequest | MeteoAmountRequest;
 
-export type LipnoResponse = {
+export type LipnoItem = {
   id: number;
   datum: string;
   cas: string | null;
@@ -34,7 +35,9 @@ export type LipnoResponse = {
   voda: number;
   vzduch: number;
   pocasi: string;
-}[];
+};
+
+export type LipnoResponse = LipnoItem[];
 
 export const GET_LIPNO_ENDPOINT = `${Url.NEW_API}/meteo/read_pocasi.php`;
 export const GET_LIPNO_KEY = MeteoGetKey.LIPNO;
@@ -89,5 +92,6 @@ export const useGetLipno = (request: MeteoRequest) => {
     queryFn: () => getLipno(request),
     refetchInterval: request.refetchInterval ?? 0,
     placeholderData: keepPreviousData,
+    enabled: request.enabled,
   });
 };

@@ -6,12 +6,14 @@ import path from 'path';
 
 enum ServerUrl {
   LOCALHOST = 'http://localhost:80',
+  // for docker
+  // LOCALHOST = 'http://localhost:8080',
   LIVE = 'https://www.frymburk.com',
 }
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const target = dev ? ServerUrl.LOCALHOST : '';
+const target = dev ? ServerUrl.LIVE : '';
 
 export default defineConfig({
   plugins: [react()],
