@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Lint') {
             steps {
-                sh 'pnpm run lint:check'
+                sh 'pnpm run lint'
             }
         }
         stage('Test') {
