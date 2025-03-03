@@ -18,7 +18,6 @@ const Template: StoryFn = (args) => {
     <CategoryList
       {...args}
       setImgPosition={(newState) => {
-        console.log('Category clicked, new state:', newState);
         setArgs({ imgPosition: newState });
       }}
     />

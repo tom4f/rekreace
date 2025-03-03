@@ -7,9 +7,14 @@ pipeline {
                 echo 'Hello, Jenkins! Running the build step.'
             }
         }
+        stage('Lint') {
+            steps {
+                sh 'pnpm run lint:check'
+            }
+        }
         stage('Test') {
             steps {
-                echo 'Running tests...'
+               sh 'pnpm run test'
             }
         }
         stage('Deploy') {

@@ -2,6 +2,8 @@ import { Header } from 'components/Atoms';
 import { DateButton, DateChangeBlock } from 'components/Meteo';
 import { RgbCssType } from 'components/Meteo/components/TypeDefinition';
 import TableStyle from 'components/Meteo/css/Table.module.css';
+import { useGetOldStation } from 'features/meteo';
+import React, { useState } from 'react';
 import {
   changeDate,
   getDaysFromNow,
@@ -10,8 +12,6 @@ import {
   StepType,
   useDateStore,
 } from 'store';
-import { useGetOldStation } from 'features/meteo';
-import React, { useState } from 'react';
 import { getDateParts } from 'utils';
 
 export const OldStationTable = () => {
@@ -82,7 +82,6 @@ export const OldStationTable = () => {
   };
   const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const clickedName = (e.target as HTMLButtonElement).id;
-    console.log(e.target);
     setOrderBy({
       value: clickedName,
       order: orderBy.order === 'DESC' ? 'ASC' : 'DESC',

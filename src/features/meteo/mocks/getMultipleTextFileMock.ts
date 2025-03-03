@@ -60,7 +60,6 @@ const getOneTextFileMock = (fileNr: number) => () =>
 
 export const getMultipleTextFileScenarios = [0, 1, 2, 3, 4, 5, 6].map(
   (fileNr) => {
-    console.log(fileNr);
     const data: [string, { [key: string]: HttpHandler[] }] = [
       getmMteoFileUrl(fileNr),
       getOneTextFileScenarios(fileNr),

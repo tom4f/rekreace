@@ -45,8 +45,6 @@ export const ImageChange = ({ setEditPhoto, imgId }: imageChangeType) => {
       type: imgType,
     });
 
-    console.log(imgExtensionFromType(imgType));
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadstart = () => setIsLoading(true);

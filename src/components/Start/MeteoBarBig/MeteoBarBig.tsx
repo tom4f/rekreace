@@ -78,8 +78,6 @@ export const MeteoBarBig = () => {
       lipnoLatestData[0].datum &&
       lipnoLatestData[0]);
 
-  console.log({ davisData }, { lipnoData });
-
   const dateParts =
     davisData && davisData?.date && getDateParts(new Date(davisData.date));
 
