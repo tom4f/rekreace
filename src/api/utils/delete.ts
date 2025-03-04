@@ -5,7 +5,7 @@ interface Props {
   query?: Record<string, string | number>;
   body?: Record<string, string | number>;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const apiDelete = <IResponse = any>({
   url,
   query = {},

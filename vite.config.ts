@@ -43,6 +43,11 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       outDir: 'dist/rekreace',
     },
     server: {
+      host: true, // Allows access from outside the container
+      watch: {
+        usePolling: true, // Ensures file changes are detected inside Docker
+        interval: 100, // Faster file change detection
+      },
       proxy: {
         '/davis': {
           target,

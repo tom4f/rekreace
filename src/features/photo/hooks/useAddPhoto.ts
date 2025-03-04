@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 
 import { GET_PHOTO_KEY } from './useGetPhoto';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type AddPhotoRequestToDo = {
   text: string;
   autor: string;

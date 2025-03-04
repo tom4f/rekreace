@@ -1,6 +1,8 @@
 import { Header } from 'components/Atoms';
 import { DateButton, DateChangeBlock } from 'components/Meteo';
 import TableStyle from 'components/Meteo/css/Table.module.css';
+import { useGetDavis } from 'features/meteo';
+import React, { useState } from 'react';
 import {
   changeDate,
   getDaysFromNow,
@@ -8,8 +10,6 @@ import {
   StepType,
   useDateStore,
 } from 'store';
-import { useGetDavis } from 'features/meteo';
-import React, { useState } from 'react';
 import { getDateParts } from 'utils';
 
 export const DavisTable = () => {

@@ -1,5 +1,6 @@
 import { Header } from 'components/Atoms';
 import { DateButton, DateChangeBlock } from 'components/Meteo/';
+import { useGetNOAA } from 'features/meteo';
 import {
   changeDate,
   MeteoDates,
@@ -7,7 +8,6 @@ import {
   StepType,
   useDateStore,
 } from 'store';
-import { useGetNOAA } from 'features/meteo';
 import { getDateParts } from 'utils';
 
 export const DavisStatistic = () => {

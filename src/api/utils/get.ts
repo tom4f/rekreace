@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig,isAxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, isAxiosError } from 'axios';
 
 type PostErrorType = {
   status: string;
@@ -13,6 +13,7 @@ interface GetRequestConfig extends AxiosRequestConfig {
 
 export async function apiGet({ url, ...config }: GetRequestConfig) {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await axios.get<any>(url, config);
     return response.data;
   } catch (error) {

@@ -27,7 +27,7 @@ import {
   GET_OLD_STATION_ENDPOINT,
   getDavisScenarios,
   getLipnoScenarios,
-  getMultipleTextFileScenarios,
+  //getMultipleTextFileScenarios,
   getOldStationScenarios,
   getTextFileScenarios,
   MeteoFiles,
@@ -51,5 +51,5 @@ export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
     [GET_CATEGORY_ENDPOINT, getCategoryScenarios],
 
     [GET_PHOTO_ENDPOINT, getPhotoScenarios],
-    ...getMultipleTextFileScenarios,
+    //...getMultipleTextFileScenarios,
   ];

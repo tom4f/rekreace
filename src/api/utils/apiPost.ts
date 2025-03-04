@@ -1,7 +1,8 @@
-import axios, { AxiosError,AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 interface AxiosRequest {
   url: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
 }
 

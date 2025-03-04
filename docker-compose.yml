@@ -1,0 +1,17 @@
+services:
+  frontend:
+    build:
+      context: C:/repos/rekreace
+      dockerfile: Dockerfile.frontend
+    container_name: frontend
+    ports:
+      - '5173:5173'
+    networks:
+      - my-network
+    volumes:
+      - C:/repos/rekreace:/app
+      - /app/node_modules # Prevents overriding node_modules inside the container
+
+networks:
+  my-network:
+    driver: bridge

@@ -1,22 +1,43 @@
 pipeline {
-    agent any  // Run on any available agent (e.g., your local machine)
+    agent any
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Hello, Jenkins! Running the build step.'
+                checkout scm
             }
         }
+
+        stage('Setup') {
+            steps {
+                sh 'pnpm install'
+            }
+        }
+
         stage('Lint') {
             steps {
                 sh 'pnpm run lint'
             }
         }
-        stage('Test') {
+
+        stage('Build') {
             steps {
-               sh 'pnpm run test'
+                sh 'pnpm run build'
             }
         }
+
+        stage('Build Storybook') {
+            steps {
+                sh 'pnpm build-storybook'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh 'pnpm run test'
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying the application...'
