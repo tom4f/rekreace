@@ -2,7 +2,11 @@ import { produce } from 'immer';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-export type WebCamState = 'live' | 'slideShowStarted' | 'slideShowStopped';
+export type WebCamState =
+  | 'live'
+  | 'minutesSlideShow'
+  | 'daysSlideShow'
+  | 'stopped';
 
 export type WebCamType = {
   year?: number;

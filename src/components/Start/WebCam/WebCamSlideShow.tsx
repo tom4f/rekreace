@@ -6,40 +6,42 @@ import {
   faVideo,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRef } from 'react';
-import { useWebCamStore } from 'store';
+import { useEffect, useRef } from 'react';
+import { useWebCamStore, WebCamState } from 'store';
+
+import { addStep, sliderToDavisMonth } from './utils';
 
 export const WebCamSlideShow = () => {
   const { updateWebCam, resetWebCam, webCam } = useWebCamStore();
-
-  let { day, hour, minute } = webCam;
   const { state } = webCam;
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const startShow = () => {
-    const presentation = () => {
-      const add15minutes = () => {
-        if (minute < 45) return (minute += 15);
-        minute = 12;
-        if (hour < 22) return hour++;
-        hour = 7;
-        if (day < 31) return day++;
-        day = 1;
-      };
-      add15minutes();
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  const startShow = (interval: IntervalType) => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    intervalRef.current = setInterval(() => {
+      const { day, hour, minute } = useWebCamStore.getState().webCam;
+      const updatedTime = addStep(day, hour, minute, interval);
 
       updateWebCam({
-        day,
-        hour,
-        minute,
-        state: 'slideShowStarted',
+        month: sliderToDavisMonth(
+          updatedTime.day,
+          updatedTime.hour,
+          updatedTime.minute
+        ),
+        ...updatedTime,
+        state: interval === 'days' ? 'daysSlideShow' : 'minutesSlideShow',
       });
-    };
-
-    if (!intervalRef.current) {
-      intervalRef.current = setInterval(() => presentation(), 2000);
-    }
+    }, 2000);
   };
 
   const stopShow = () => {
@@ -47,35 +49,62 @@ export const WebCamSlideShow = () => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
-    updateWebCam({ state: 'slideShowStopped' });
+    updateWebCam({ state: 'stopped' });
   };
 
   return (
-    <div>
-      {state === 'slideShowStopped' && (
+    <div className='slide-show-container'>
+      {state === 'stopped' && (
         <FontAwesomeIcon
           className='slide-reset'
           size='3x'
           icon={faVideo}
-          onClick={() => resetWebCam()}
+          onClick={resetWebCam}
         />
       )}
 
-      {state === 'slideShowStopped' || state === 'live' ? (
-        <FontAwesomeIcon
-          className='slide-show'
-          size='3x'
-          icon={faPlayCircle}
-          onClick={() => startShow()}
-        />
+      {state === 'minutesSlideShow' || state === 'daysSlideShow' ? (
+        <StopShow webCamState={state} onClick={stopShow} />
       ) : (
-        <FontAwesomeIcon
-          className='slide-show'
-          size='3x'
-          icon={faStopCircle}
-          onClick={() => stopShow()}
-        />
+        <>
+          <StartShow interval='days' onClick={startShow} />
+          <StartShow interval='minutes' onClick={startShow} />
+        </>
       )}
     </div>
   );
 };
+
+export type IntervalType = 'minutes' | 'days';
+
+const StartShow = ({
+  onClick,
+  interval,
+}: {
+  onClick: (interval: IntervalType) => void;
+  interval: IntervalType;
+}) => (
+  <FontAwesomeIcon
+    className={`slide-show-${interval}`}
+    size='2x'
+    icon={faPlayCircle}
+    onClick={() => onClick(interval)}
+  />
+);
+
+const StopShow = ({
+  onClick,
+  webCamState,
+}: {
+  onClick: () => void;
+  webCamState: WebCamState;
+}) => (
+  <FontAwesomeIcon
+    className={
+      webCamState === 'daysSlideShow' ? 'slide-show-days' : 'slide-show-minutes'
+    }
+    size='2x'
+    icon={faStopCircle}
+    onClick={onClick}
+  />
+);

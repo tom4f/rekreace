@@ -1,19 +1,33 @@
-.slide-show {
+.slide-show-days {
   position: absolute;
-  bottom: 50px;
-  right: -10px;
+  bottom: 22px;
+  left: 30px;
   transform: translate(-50%, -50%);
   color: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+
+  &:hover {
+    color: white;
+  }
 }
 
-.slide-show:hover {
-  color: white;
+.slide-show-minutes {
+  position: absolute;
+  bottom: -15px;
+  left: 30px;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+
+  &:hover {
+    color: white;
+  }
 }
 
 .slide-reset {
   position: absolute;
   bottom: 50px;
-  left: 40px;
+  right: 0px;
   transform: translate(-50%, -50%);
   color: rgba(255, 255, 255, 0.5);
 

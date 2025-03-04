@@ -3,24 +3,7 @@ import './css/slider.css';
 import { SliderWithText } from 'components/Start/WebCam/css/SliderWithText';
 import { useWebCamStore } from 'store';
 
-const sliderToDavisMonth = (
-  sliderDay: number,
-  sliderHour: number,
-  sliderMinutes: number
-) => {
-  const now = new Date();
-  const currentMonth = now.getMonth() + 1;
-
-  const sliderDate = new Date();
-  sliderDate.setDate(sliderDay);
-  sliderDate.setHours(sliderHour, sliderMinutes);
-
-  return now > sliderDate
-    ? currentMonth
-    : currentMonth !== 1
-    ? currentMonth - 1
-    : 12;
-};
+import { sliderToDavisMonth } from './utils';
 
 export const RangeSlider = () => {
   const {
@@ -34,7 +17,7 @@ export const RangeSlider = () => {
       updateWebCam({
         month: sliderToDavisMonth(+value, hour, minute),
         day: +value,
-        state: 'slideShowStopped',
+        state: 'stopped',
       });
     } else if (name === 'time') {
       const totalMinutes = parseInt(value);
@@ -44,7 +27,7 @@ export const RangeSlider = () => {
         month: sliderToDavisMonth(day, selectedHour, selectedMinute),
         hour: selectedHour,
         minute: selectedMinute,
-        state: 'slideShowStopped',
+        state: 'stopped',
       });
     }
   };

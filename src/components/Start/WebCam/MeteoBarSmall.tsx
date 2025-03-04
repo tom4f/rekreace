@@ -50,7 +50,7 @@ export const MeteoBarSmall = () => {
       presure,
       wind,
       ,
-      // dir,
+      ,
       dewPoint,
       windChill,
     ] = meteoText.split('|');
