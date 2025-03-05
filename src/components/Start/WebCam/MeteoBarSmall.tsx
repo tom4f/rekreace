@@ -1,5 +1,4 @@
-import './css/MeteoBarSmall.css';
-
+import styled from '@emotion/styled';
 import { MeteoFiles, useGetTextFile } from 'features/meteo';
 import { useEffect, useState } from 'react';
 import { useWebCamStore } from 'store';
@@ -9,9 +8,7 @@ export const MeteoBarSmall = () => {
     webCam: { state },
   } = useWebCamStore();
 
-  const [cssTransitionOut, setCssTransitionOut] = useState(
-    'meteo_box_transition_out'
-  );
+  const [cssTransitionOut, setCssTransitionOut] = useState(true);
 
   const {
     data: meteoText,
@@ -21,81 +18,74 @@ export const MeteoBarSmall = () => {
 
   useEffect(() => {
     if (meteoText) {
-      setCssTransitionOut('meteo_box_transition_out');
-      setTimeout(() => setCssTransitionOut(''), 2000);
+      setCssTransitionOut(true);
+      setTimeout(() => setCssTransitionOut(false), 2000);
     }
   }, [meteoText]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching the text file: {error.message}</div>;
+  if (state !== 'live' || !meteoText) return null;
 
-  if (error) {
-    return <div>Error fetching the text file: {error.message}</div>;
-  }
-
-  if (state !== 'live') {
-    return null;
-  }
-
-  const meteoBox = (meteoText: string) => {
-    if (!meteoText) return;
-
-    const [
-      ,
-      date,
-      time,
-      temp,
-      huminidy,
-      presure,
-      wind,
-      ,
-      ,
-      dewPoint,
-      windChill,
-    ] = meteoText.split('|');
-
-    return (
-      <>
-        <fieldset className='meteo_value'>
-          <legend>{('0' + date).slice(-8).slice(0, 6)}</legend>
-          {time}
-        </fieldset>
-        <fieldset className='meteo_value'>
-          <legend>Teplota</legend>
-          {temp}&deg;C
-        </fieldset>
-        <fieldset className='meteo_value'>
-          <legend>Vlhkost</legend>
-          {huminidy}%
-        </fieldset>
-        <fieldset className='meteo_value'>
-          <legend>Tlak</legend>
-          {presure}hPa
-        </fieldset>
-        <fieldset className='meteo_value'>
-          <legend>Vítr</legend>
-          {wind}m/s
-        </fieldset>
-        {/*         <fieldset className='meteo_value'>
-          <legend>Směr</legend>
-          {dir}&deg;
-        </fieldset> */}
-        <fieldset className='meteo_value'>
-          <legend>Ros. bod</legend>
-          {dewPoint}&deg;C
-        </fieldset>
-        <fieldset className='meteo_value'>
-          <legend>Pocit.tep.</legend>
-          {windChill}&deg;C
-        </fieldset>
-      </>
-    );
-  };
+  const [, date, time, temp, huminidy, presure, wind, , , dewPoint, windChill] =
+    meteoText.split('|');
 
   return (
-    <div className={`meteo_box ${cssTransitionOut}`}>
-      {meteoText ? meteoBox(meteoText) : null}
-    </div>
+    <FieldSetWrapper $cssTransitionOut={cssTransitionOut}>
+      <fieldset>
+        <legend>{date.padStart(8, '0').slice(0, 6)}</legend>
+        {time}
+      </fieldset>
+      <fieldset>
+        <legend>Teplota</legend>
+        {temp}&deg;C
+      </fieldset>
+      <fieldset>
+        <legend>Vlhkost</legend>
+        {huminidy}%
+      </fieldset>
+      <fieldset>
+        <legend>Tlak</legend>
+        {presure}hPa
+      </fieldset>
+      <fieldset>
+        <legend>Vítr</legend>
+        {wind}m/s
+      </fieldset>
+      <fieldset>
+        <legend>Ros. bod</legend>
+        {dewPoint}&deg;C
+      </fieldset>
+      <fieldset>
+        <legend>Pocit.tep.</legend>
+        {windChill}&deg;C
+      </fieldset>
+    </FieldSetWrapper>
   );
 };
+
+const FieldSetWrapper = styled.div<{ $cssTransitionOut: boolean }>`
+  position: absolute;
+  max-width: 724px;
+  background-color: rgba(0, 0, 0, 0.4);
+  left: 185px;
+  transition: bottom 2s, color 2s, transform 2s;
+  white-space: nowrap;
+  border-radius: 8px;
+  padding: 0px 5px;
+
+  bottom: ${({ $cssTransitionOut }) => ($cssTransitionOut ? '100px' : '60px')};
+  color: ${({ $cssTransitionOut }) =>
+    $cssTransitionOut ? 'transparent' : 'white'};
+  transform: ${({ $cssTransitionOut }) =>
+    $cssTransitionOut ? 'rotate(180deg)' : 'translate(-50%, -50%)'};
+
+  fieldset {
+    font-size: 10px;
+    display: inline;
+    padding: 1px 3px;
+    margin-right: 1px;
+    border: 2px solid green;
+    border-radius: 8px;
+  }
+`;

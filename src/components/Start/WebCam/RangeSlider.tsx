@@ -1,8 +1,7 @@
-import './css/slider.css';
-
-import { SliderWithText } from 'components/Start/WebCam/css/SliderWithText';
+import styled from '@emotion/styled';
 import { useWebCamStore } from 'store';
 
+import { SliderWithText } from './';
 import { sliderToDavisMonth } from './utils';
 
 export const RangeSlider = () => {
@@ -35,32 +34,36 @@ export const RangeSlider = () => {
   const currentMonth = sliderToDavisMonth(day, hour, minute);
 
   return (
-    <div className='sliders-container'>
-      <div className='slide-container'>
-        <SliderWithText
-          $time={`${day}.${currentMonth}.`}
-          className='slider'
-          type='range'
-          name='day'
-          min='1'
-          max='31'
-          onChange={handleSliderChange}
-          value={day}
-        />
-      </div>
-      <div className='slide-container'>
-        <SliderWithText
-          $time={`${hour}:${minute}`}
-          className='slider'
-          type='range'
-          name='time'
-          min={7 * 60 + 12}
-          max={22 * 60 + 57}
-          step='15'
-          onChange={handleSliderChange}
-          value={hour * 60 + minute}
-        />
-      </div>
-    </div>
+    <SlidersWrapper>
+      <SliderWithText
+        $time={`${day}.${currentMonth}.`}
+        type='range'
+        name='day'
+        min='1'
+        max='31'
+        onChange={handleSliderChange}
+        value={day}
+      />
+
+      <SliderWithText
+        $time={`${hour}:${minute}`}
+        type='range'
+        name='time'
+        min={7 * 60 + 12}
+        max={22 * 60 + 57}
+        step='15'
+        onChange={handleSliderChange}
+        value={hour * 60 + minute}
+      />
+    </SlidersWrapper>
   );
 };
+
+const SlidersWrapper = styled.div`
+  margin-left: 60px;
+  position: absolute;
+  width: calc(100% - 60px);
+  bottom: 0px;
+  display: flex;
+  flex-direction: column;
+`;
