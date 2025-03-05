@@ -1,6 +1,6 @@
 import './css/webcam-archive.css';
 
-import { MeteoBarSmall, RangeSlider, ShowWebCam, WebCamSlideShow } from './';
+import { MeteoBarSmall, RangeSlider, ShowWebCam, SlideShow } from './';
 
 export const WebCam = () => {
   return (
@@ -13,7 +13,7 @@ export const WebCam = () => {
         </b>
       </div>
       <div className='webcam-container'>
-        <WebCamSlideShow />
+        <SlideShow />
         <RangeSlider />
         <ShowWebCam />
         <MeteoBarSmall />

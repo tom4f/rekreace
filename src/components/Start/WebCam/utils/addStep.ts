@@ -1,4 +1,4 @@
-import { IntervalType } from '../WebCamSlideShow';
+import { IntervalType } from '../SlideShow';
 
 export const addStep = (
   day: number,
