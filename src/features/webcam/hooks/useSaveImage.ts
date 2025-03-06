@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { Url } from 'api/paths';
 import { api } from 'api/utils';
 
@@ -22,5 +22,6 @@ export const useSaveImage = () => {
     queryKey: [GET_WEBCAM_KEY],
     queryFn: () => saveImage(),
     refetchInterval: 10000,
+    placeholderData: keepPreviousData,
   });
 };
