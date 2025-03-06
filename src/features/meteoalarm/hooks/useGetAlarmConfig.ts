@@ -1,4 +1,8 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import {
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from '@tanstack/react-query';
 
 import {
   ALARM_LOGIN_CONFIG_KEY,
@@ -7,10 +11,12 @@ import {
 } from './useAlarmLogin';
 
 const useGetAlarmConfig = (): UseQueryResult<AlarmResponse, Error> => {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: [ALARM_LOGIN_CONFIG_KEY],
-    //queryFn:
-    //enabled: false,
+    queryFn: async () =>
+      queryClient.getQueryData([ALARM_LOGIN_CONFIG_KEY]) ?? null,
+    enabled: false,
   });
 };
 

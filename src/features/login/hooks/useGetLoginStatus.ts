@@ -8,10 +8,23 @@ import { fotoGalleryOwner } from 'api/paths';
 import { LOGIN_STATUS_KEY, LoginData } from './usePostLogin';
 
 const useGetLoginStatus = (): UseQueryResult<LoginData, Error> => {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: [LOGIN_STATUS_KEY],
-    //queryFn:
-    //enabled: false,
+    queryFn: async (): Promise<LoginData> => {
+      const data = queryClient.getQueryData<LoginData>([LOGIN_STATUS_KEY]);
+      if (!data) {
+        throw new Error('No login data found');
+      }
+      return data;
+    },
+    enabled: false,
+    initialData: {
+      isLogged: false,
+      webAccess: 'error',
+      webToken: 'error',
+      webUser: 'error',
+    },
     select: (data: LoginData) => {
       const clientJSON = sessionStorage.getItem('client');
       if (!clientJSON) {
@@ -35,23 +48,17 @@ export const useLoginStatus = () => {
     isSuccess,
   } = useGetLoginStatus();
 
-  let loginSessionData = {
-    isLogged: false,
-    webAccess: 'error',
-    webToken: 'error',
-    webUser: 'error',
-  };
+  const clientJSON = sessionStorage.getItem('client') || '{}';
+  const sessionData: LoginData = JSON.parse(clientJSON);
 
-  const clientJSON = sessionStorage.getItem('client');
-  if (clientJSON) {
-    const clientObj = JSON.parse(clientJSON);
-
-    if (fotoGalleryOwner === clientObj.webAccess) {
-      loginSessionData = clientObj;
-    }
-  }
-
-  const loginData = loginSessionData || loginRQData;
+  const loginData = (fotoGalleryOwner === sessionData.webAccess &&
+    sessionData) ||
+    loginRQData || {
+      isLogged: false,
+      webAccess: 'error',
+      webToken: 'error',
+      webUser: 'error',
+    };
 
   return { data: loginData, error, isLoading, isSuccess };
 };
@@ -64,8 +71,11 @@ export const useLogout = () => {
   };
 
   const invalidateQuery = () => {
-    queryClient.invalidateQueries({
-      queryKey: [LOGIN_STATUS_KEY],
+    queryClient.setQueryData([LOGIN_STATUS_KEY], {
+      isLogged: false,
+      webAccess: 'error',
+      webToken: 'error',
+      webUser: 'error',
     });
   };
 

@@ -2,17 +2,17 @@ import { Modal } from 'components/Modal';
 import { Login, useLoginStatus, useLogout } from 'features/login';
 
 export const Bedrich = () => {
-  const { data: loginData } = useLoginStatus();
+  const { data: loginData, isSuccess } = useLoginStatus();
   const { invalidateQuery, removeSession } = useLogout();
 
   const executeLogout = () => {
-    invalidateQuery();
     removeSession();
+    invalidateQuery();
   };
 
   return (
     <div>
-      {loginData.isLogged ? (
+      {isSuccess && loginData.isLogged ? (
         <div
           style={{ color: 'lime', textAlign: 'center', margin: '50px auto' }}
         >

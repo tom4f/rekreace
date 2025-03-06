@@ -5,7 +5,6 @@ export enum Url {
   NEW_API = '/api',
   GRAPHS = '/rekreace/graphs',
   FOTOGALERIE = '/rekreace/fotogalerie_ubytovani',
-  GET_IP_KAMERA = '/rekreace/get_ip_kamera.php',
 }
 
 const urlParams = new URLSearchParams(new URL(document.URL).search);
