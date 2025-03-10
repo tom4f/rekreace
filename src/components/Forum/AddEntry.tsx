@@ -1,6 +1,7 @@
 import { Button, Input, Select, TextArea } from 'components/Atoms';
-import { useAddForum } from 'features/forum';
+// import { useAddForum } from 'features/forum';
 import { useState } from 'react';
+import { useAddForumGraphQl } from 'src/features/forum/hooks/useAddForumGrahQL';
 
 type AddEntryType = {
   categoryFromUrl: number;
@@ -13,7 +14,8 @@ export const AddEntry = ({
   addEntry,
   setAddEntry,
 }: AddEntryType) => {
-  const { mutate } = useAddForum();
+  // const { mutate } = useAddForum();
+  const { addForum: mutate } = useAddForumGraphQl();
 
   const [state, setState] = useState({
     jmeno: '',
@@ -34,21 +36,22 @@ export const AddEntry = ({
     setState((old) => ({ ...old, [event.target.name]: event.target.value }));
   };
 
-  const mySubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const mySubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.target as HTMLFormElement);
     if (state.antispam === Number(data.get('antispamForm'))) {
-      mutate(state, {
-        onSuccess: () => {
-          setAddEntry(false);
-          setAlert('ok');
+      try {
+        await mutate(state);
 
-          setTimeout(() => {
-            setAlert('off');
-          }, 5000);
-        },
-        onError: () => console.log('error'),
-      });
+        setAddEntry(false);
+        setAlert('ok');
+
+        setTimeout(() => {
+          setAlert('off');
+        }, 5000);
+      } catch (error) {
+        console.error('Error adding post:', error);
+      }
     } else {
       setAlert('antispamNotOk');
       setTimeout(() => setAlert('off'), 5000);

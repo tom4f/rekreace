@@ -17,7 +17,7 @@ type FormRequest = {
 
 export type ForumResponse = OneMessage[];
 
-const GET_FORUM_QUERY = gql`
+export const GET_FORUM_QUERY = gql`
   query GetForumMessages($start: Int, $limit: Int, $searchCriteria: String) {
     getForumMessages(
       start: $start

@@ -10,8 +10,6 @@ type AddForumRequest = {
   email: string;
   typ: string;
   text: string;
-  antispam: number;
-  antispamForm: string;
 };
 
 type AddForumResponse = {
