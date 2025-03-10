@@ -2,6 +2,11 @@ import 'components/Contact/css/contact.css';
 
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Header } from 'components/Atoms';
+//import {
+// MapLeaflet,
+// MapMapLibreGl,
+// MapArcGISMap,
+//} from 'components/Contact';
 import { Modal } from 'components/Modal';
 import { SendMessageRequest, useSendMessage } from 'features/contact';
 import { useEffect, useState } from 'react';
@@ -66,6 +71,7 @@ export const Contact = () => {
           }
         />
       )}
+      {/* <MapMapLibreGl /> */}
       <Header>Kontaktní informace</Header>
       <article className='address_and_formular'>
         <form
@@ -180,11 +186,9 @@ export const Contact = () => {
       </article>
 
       <Header>Kudy k nám?</Header>
-
       <iframe
-        title='Kaliště'
         style={{ border: 0, marginBottom: '-6px' }}
-        src='https://frame.mapy.cz/s/fehutedezu'
+        src='https://frame.mapy.cz/s/heburamepo'
         width='100%'
         height='400px'
       ></iframe>

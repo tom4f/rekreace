@@ -29,3 +29,5 @@ storybook-static
 
 # misc
 .env
+.env.development
+.env.production
