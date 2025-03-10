@@ -2,7 +2,8 @@ import 'components/Forum/css/forum.css';
 
 import { Button, Header, Input, Select } from 'components/Atoms';
 import { AddEntry, Messages, Paginations } from 'components/Forum';
-import { useGetForum } from 'features/forum';
+// import { useGetForum } from 'features/forum';
+import { useGetForumGraphQl } from 'features/forum/hooks/useGetForumGraphQl';
 import { useState } from 'react';
 
 export type ForumParams = {
@@ -28,7 +29,11 @@ export const Forum = () => {
   const searchCriteria =
     categoryFromUrl === 8 ? 'WHERE typ = 8' : 'WHERE (typ < 4) OR (typ = 8)';
 
-  const { data: allEntries, isSuccess } = useGetForum({
+  const {
+    data: allEntries,
+    loading,
+    error,
+  } = useGetForumGraphQl({
     searchCriteria,
     start: 0,
     limit: 999999,
@@ -37,6 +42,8 @@ export const Forum = () => {
   if (!Array.isArray(allEntries)) {
     return null;
   }
+
+  const isSuccess = !loading && !error;
 
   const postsPerPage = 5;
   const paginateSize = 10;

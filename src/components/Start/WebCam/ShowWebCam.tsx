@@ -19,22 +19,20 @@ export const ShowWebCam = () => {
   const imageTimestamp = data?.timestamp || Date.now();
 
   return (
-    <div className='archive_cam'>
-      <a href={`${Url.KAMERA}/archive/ip_kamera_full_hd_${imgDateText}.jpg`}>
-        {state === 'live' ? (
-          <img
-            src={`${Url.KAMERA}/archive/ip_kamera.jpg?id=${imageTimestamp}`}
-            alt='WebCam'
-            loading='lazy'
-          />
-        ) : (
-          <img
-            src={`${Url.KAMERA}/archive/ip_kamera_${imgDateText}.jpg`}
-            alt='WebCam'
-            loading='lazy'
-          />
-        )}
-      </a>
-    </div>
+    <a href={`${Url.WEBCAM}/archive/ip_kamera_full_hd_${imgDateText}.jpg`}>
+      {state === 'live' ? (
+        <img
+          src={`${Url.WEBCAM}/archive/ip_kamera.jpg?id=${imageTimestamp}`}
+          alt='WebCam'
+          loading='lazy'
+        />
+      ) : (
+        <img
+          src={`${Url.WEBCAM}/archive/ip_kamera_${imgDateText}.jpg`}
+          alt='WebCam'
+          loading='lazy'
+        />
+      )}
+    </a>
   );
 };

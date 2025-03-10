@@ -1,2 +1,2 @@
-export * from './useAddForum'
-export * from './useGetForum'
+export * from './useAddForum';
+export * from './useGetForum';

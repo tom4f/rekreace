@@ -1,7 +1,9 @@
 import './index.css';
 
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Url } from 'api/paths';
 import { MockResolver } from 'features/mocks';
 import { SetupWorker } from 'msw/browser';
 import React from 'react';
@@ -54,16 +56,23 @@ const queryClient = new QueryClient({
   },
 });
 
+const apolloClient = new ApolloClient({
+  uri: Url.GRAPH_QL_API,
+  cache: new InMemoryCache(),
+});
+
 enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <Router basename='/rekreace'>
-          {ENV_MODE !== 'production' && APP_MOCKS && <MockDevTools />}
-          <App />
-        </Router>
-      </QueryClientProvider>
+      <ApolloProvider client={apolloClient}>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <Router basename='/rekreace'>
+            {ENV_MODE !== 'production' && APP_MOCKS && <MockDevTools />}
+            <App />
+          </Router>
+        </QueryClientProvider>
+      </ApolloProvider>
     </React.StrictMode>
   );
 });
