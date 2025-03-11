@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { MeteoFiles, useGetTextFile } from 'features/meteo';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useWebCamStore } from 'store';
 
 export const MeteoBarSmall = () => {
@@ -16,11 +16,19 @@ export const MeteoBarSmall = () => {
     isLoading,
   } = useGetTextFile(MeteoFiles.LIPNONET_METEO, 10000);
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   useEffect(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
     if (meteoText) {
       setCssTransitionOut(true);
-      setTimeout(() => setCssTransitionOut(false), 2000);
+      timeoutRef.current = setTimeout(() => setCssTransitionOut(false), 2000);
     }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [meteoText]);
 
   if (isLoading) return <div>Loading...</div>;

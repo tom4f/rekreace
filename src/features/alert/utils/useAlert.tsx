@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 export type AlertType = {
   header: string;
@@ -11,12 +11,18 @@ export type SetAlertType = Dispatch<SetStateAction<AlertType>>;
 export const useAlert = (seconds = 5) => {
   const [alert, setAlert] = useState<AlertType>({ header: '', text: '' });
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const delay = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
     if (alert.header) {
-      const timeout = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setAlert({ header: '', text: '' });
       }, seconds * 1000);
-      return () => clearTimeout(timeout);
+      return () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      };
     }
   };
   useEffect(delay, [alert, setAlert, seconds]);

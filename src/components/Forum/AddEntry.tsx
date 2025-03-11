@@ -1,6 +1,6 @@
 import { Button, Input, Select, TextArea } from 'components/Atoms';
 // import { useAddForum } from 'features/forum';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useAddForumGraphQl } from 'src/features/forum/hooks/useAddForumGrahQL';
 
 type AddEntryType = {
@@ -8,6 +8,8 @@ type AddEntryType = {
   addEntry: boolean;
   setAddEntry: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+const TIMEOUT_DURATION = 5000;
 
 export const AddEntry = ({
   categoryFromUrl,
@@ -36,25 +38,34 @@ export const AddEntry = ({
     setState((old) => ({ ...old, [event.target.name]: event.target.value }));
   };
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showResult = (info: string) => {
+    setAlert(info);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setAlert('off');
+      if (info === 'ok') {
+        setAddEntry(false);
+      }
+    }, TIMEOUT_DURATION);
+  };
+
   const mySubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.target as HTMLFormElement);
+
     if (state.antispam === Number(data.get('antispamForm'))) {
       try {
         await mutate(state);
 
-        setAddEntry(false);
-        setAlert('ok');
-
-        setTimeout(() => {
-          setAlert('off');
-        }, 5000);
+        showResult('ok');
       } catch (error) {
+        showResult('error');
         console.error('Error adding post:', error);
       }
     } else {
-      setAlert('antispamNotOk');
-      setTimeout(() => setAlert('off'), 5000);
+      showResult('antispamNotOk');
     }
   };
 
@@ -137,7 +148,7 @@ export const AddEntry = ({
         )}
         {alert === 'ok' ? (
           <h1>Záznam byl přidán !!!</h1>
-        ) : alert === 'antispamNotOk' ? (
+        ) : alert === 'antispamNotOk' || alert === 'error' ? (
           <h1>Záznam se nepodařilo odeslat !!!</h1>
         ) : null}
       </form>

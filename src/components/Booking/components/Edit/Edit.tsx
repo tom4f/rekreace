@@ -7,7 +7,7 @@ import {
   useGetBooking,
 } from 'features/booking';
 import { StyledForm, StyledLogin, useLoginStatus } from 'features/login';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { weekStartAt } from 'utils/weekStartAt';
 
 type EditType = {
@@ -40,6 +40,8 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
     return `(${week}) ${start.date}.${start.month}-${end.date}.${end.month}.${end.year}`;
   }, [week]);
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleUpdateTermin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -53,16 +55,14 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
       g_week: week,
     };
 
-    const delay = () => {
-      const timeout = setTimeout(() => {
-        setIsEdit(false);
-      }, 2000);
-      return () => clearTimeout(timeout);
-    };
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      setIsEdit(false);
+    }, 2000);
 
     mutate(formObject, {
       onSuccess: (successResponse) => {
-        delay();
         setAlert({
           header: 'v pořádku',
           text: successResponse.result,
@@ -70,7 +70,6 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
         });
       },
       onError: (errorResponse) => {
-        delay();
         setAlert({
           header: 'změna se neprovedla',
           text: `${errorResponse.data.result} - ${errorResponse.status}`,
