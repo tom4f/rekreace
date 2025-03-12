@@ -32,3 +32,4 @@ storybook-static
 .env.development
 .env.production
 doc
+stats.html

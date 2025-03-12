@@ -1,27 +1,39 @@
 import './css/main.css';
 
 import { useLoginStatus } from 'features/login/hooks';
+import React, { Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
 import { Bottom } from './components/Bottom/Bottom';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { Top } from './components/Top/Top';
 import { TopBedrich } from './components/Top/TopBedrich';
-import {
-  Apartments,
-  Bedrich,
-  Booking,
-  Contact,
-  Forum,
-  Frymburk,
-  Kaliste,
-  Meteo,
-  MeteoAlarm,
-  PhotoGallery,
-  Prices,
-  Start,
-  Windsurfing,
-} from './pages';
+
+type PagesModule = {
+  [key: string]: React.FC;
+};
+
+const lazyImport = (componentName: string) => {
+  return React.lazy(() =>
+    import('pages').then((module) => ({
+      default: (module as PagesModule)[componentName],
+    }))
+  );
+};
+
+const Start = lazyImport('Start');
+const Apartments = lazyImport('Apartments');
+const Booking = lazyImport('Booking');
+const Contact = lazyImport('Contact');
+const Forum = lazyImport('Forum');
+const Frymburk = lazyImport('Frymburk');
+const Kaliste = lazyImport('Kaliste');
+const Meteo = lazyImport('Meteo');
+const MeteoAlarm = lazyImport('MeteoAlarm');
+const PhotoGallery = lazyImport('PhotoGallery');
+const Prices = lazyImport('Prices');
+const Windsurfing = lazyImport('Windsurfing');
+const Bedrich = lazyImport('Bedrich');
 
 export const App = () => {
   const { data: loginData } = useLoginStatus();
@@ -53,22 +65,23 @@ export const App = () => {
       <ErrorBoundary fallback={<div>Custom Error Message</div>}>
         {loginData?.isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
-
-        <Routes>
-          <Route path='/' element={<Start />} />
-          <Route path='/apartmany' element={<Apartments />} />
-          <Route path='/objednavka/*' element={<Booking />} />
-          <Route path='/ceny' element={<Prices />} />
-          <Route path='/kontakt' element={<Contact />} />
-          <Route path='/frymburk' element={<Frymburk />} />
-          <Route path='/meteostanice/*' element={<Meteo />} />
-          <Route path='/forum' element={<Forum />} />
-          <Route path='/fotogalerie/*' element={<PhotoGallery />} />
-          <Route path='/meteoalarm' element={<MeteoAlarm />} />
-          <Route path='/kaliste' element={<Kaliste />} />
-          <Route path='/windsurfing' element={<Windsurfing />} />
-          <Route path='/bedrich' element={<Bedrich />} />
-        </Routes>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path='/' element={<Start />} />
+            <Route path='/apartmany' element={<Apartments />} />
+            <Route path='/objednavka/*' element={<Booking />} />
+            <Route path='/ceny' element={<Prices />} />
+            <Route path='/kontakt' element={<Contact />} />
+            <Route path='/frymburk' element={<Frymburk />} />
+            <Route path='/meteostanice/*' element={<Meteo />} />
+            <Route path='/forum' element={<Forum />} />
+            <Route path='/fotogalerie/*' element={<PhotoGallery />} />
+            <Route path='/meteoalarm' element={<MeteoAlarm />} />
+            <Route path='/kaliste' element={<Kaliste />} />
+            <Route path='/windsurfing' element={<Windsurfing />} />
+            <Route path='/bedrich' element={<Bedrich />} />
+          </Routes>
+        </Suspense>
         {!hideTopBottom && <Bottom />}
       </ErrorBoundary>
     </div>

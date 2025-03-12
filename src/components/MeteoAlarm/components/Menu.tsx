@@ -1,5 +1,5 @@
 import { useAlarmConfig, useAlarmLogout } from 'features/meteoalarm';
-import { ActiveMenu } from 'pages';
+import { ActiveMenu } from 'pages/MeteoAlarm';
 import { Dispatch, SetStateAction } from 'react';
 import { NavLink } from 'react-router-dom';
 

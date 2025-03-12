@@ -2,7 +2,8 @@
 
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
-import type { UserConfig } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+import type { Plugin, UserConfig } from 'vite';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }: { mode: string }): UserConfig => {
@@ -41,6 +42,9 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
     },
     build: {
       outDir: 'dist/rekreace',
+      rollupOptions: {
+        plugins: [visualizer() as Plugin],
+      },
     },
     server: {
       host: true, // Allows access from outside the container
