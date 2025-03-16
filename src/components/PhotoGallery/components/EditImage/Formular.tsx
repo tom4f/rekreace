@@ -1,7 +1,6 @@
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input, Select, TextArea } from 'components/Atoms';
-import { PhotoType, SetStateType } from 'components/PhotoGallery';
 import { useAlert } from 'features/alert';
 import { LoginResponse } from 'features/login';
 import {
@@ -10,11 +9,13 @@ import {
   useGetCategory,
   useUpdatePhoto,
 } from 'features/photo';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import { usePhotoGalleryStore } from 'src/store';
 import styled from 'styled-components';
 
 import { EditCategory } from './EditCategory';
 import { ImageChange } from './ImageChange';
+
 type ChangeType = React.ChangeEvent<
   HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
 >;
@@ -30,18 +31,12 @@ export type EditCategoryToggleType = (
 ) => void;
 
 type FormularType = {
-  editPhoto: PhotoType;
-  setEditPhoto: Dispatch<SetStateAction<PhotoType>>;
-  setImgPosition: SetStateType;
   loginData: LoginResponse;
 };
 
-export const Formular = ({
-  editPhoto,
-  setEditPhoto,
-  setImgPosition,
-  loginData,
-}: FormularType) => {
+export const Formular = ({ loginData }: FormularType) => {
+  const { editPhoto, setEditPhoto } = usePhotoGalleryStore();
+  const { setImgPosition } = usePhotoGalleryStore();
   const { data: categoryNamesData, isSuccess: isSuccessCategoryNames } =
     useGetCategory({
       fotoGalleryOwner,
@@ -60,7 +55,7 @@ export const Formular = ({
   };
 
   const change = (e: ChangeType) =>
-    setEditPhoto((orig) => ({ ...orig, [e.target.name]: e.target.value }));
+    setEditPhoto({ [e.target.name]: e.target.value });
 
   const form = useRef<HTMLFormElement>(null);
 
@@ -93,7 +88,7 @@ export const Formular = ({
         FD.delete('id');
         addPhoto(FD, {
           onSuccess: () => {
-            setEditPhoto((orig) => ({ ...orig, rotate: '0' }));
+            setEditPhoto({ rotate: '0' });
             setAlert({ header: 'Foto přidáno', text: ':-)', color: 'lime' });
           },
         });
@@ -101,8 +96,10 @@ export const Formular = ({
       case 'update':
         updatePhoto(FD, {
           onSuccess: () => {
-            setImgPosition((old) => ({ ...old, reload: ++old.reload }));
-            setEditPhoto((orig) => ({ ...orig, rotate: '0' }));
+            setImgPosition({
+              reload: usePhotoGalleryStore.getState().imgPosition.reload + 1,
+            });
+            setEditPhoto({ rotate: '0' });
             setAlert({ header: 'Foto upraveno', text: ':-)', color: 'lime' });
           },
         });
@@ -202,7 +199,7 @@ export const Formular = ({
           step='90'
         />
 
-        <ImageChange imgId={editPhoto.id} setEditPhoto={setEditPhoto} />
+        <ImageChange imgId={editPhoto.id} />
       </StyledForm>
 
       <StyledForm>

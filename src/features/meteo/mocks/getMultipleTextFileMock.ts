@@ -2,33 +2,15 @@ import { HttpStatusCode } from 'enums';
 import { resolveMock } from 'features/mocks';
 import { http, HttpHandler, HttpResponse } from 'msw';
 
-import { MeteoFiles } from '../hooks';
-import downld02_0 from './mockFiles/archive/downld02-0.txt?raw';
-import downld02_1 from './mockFiles/archive/downld02-1.txt?raw';
-import downld02_2 from './mockFiles/archive/downld02-2.txt?raw';
-import downld02_3 from './mockFiles/archive/downld02-3.txt?raw';
-import downld02_4 from './mockFiles/archive/downld02-4.txt?raw';
-import downld02_5 from './mockFiles/archive/downld02-5.txt?raw';
-import downld02_6 from './mockFiles/archive/downld02-6.txt?raw';
-
-export const meteoFiles: { [key: string]: string } = {
-  downld02_0,
-  downld02_1,
-  downld02_2,
-  downld02_3,
-  downld02_4,
-  downld02_5,
-  downld02_6,
-};
-
-// multiple files
+import { MeteoFilesEnum } from '../hooks';
+import { meteoTextFiles } from './mockFiles/archive';
 
 const getmMteoFileUrl = (fileNr: number) =>
-  MeteoFiles.DOWNLD02_NR.replace(/{{meteoFileId}}/g, `${fileNr}`);
+  MeteoFilesEnum.DOWNLD02_NR.replace(/{{meteoFileId}}/g, `${fileNr}`);
 
 const getMultipleHandlers = (fileNr: number) => [
   http.get(getmMteoFileUrl(fileNr), async () => {
-    return new HttpResponse(meteoFiles[`downld02_${fileNr}`], {
+    return new HttpResponse(meteoTextFiles[`downld02_${fileNr}`], {
       status: HttpStatusCode.OK_200,
     });
   }),

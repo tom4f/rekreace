@@ -1,8 +1,13 @@
 import { Input } from 'components/Atoms';
-import { imageChangeType, PhotoType } from 'components/PhotoGallery';
 import { useEffect, useRef, useState } from 'react';
+import { usePhotoGalleryStore } from 'src/store';
 
-export const ImageChange = ({ setEditPhoto, imgId }: imageChangeType) => {
+export type ImageChangeType = {
+  imgId?: number;
+};
+
+export const ImageChange = ({ imgId }: ImageChangeType) => {
+  const { setEditPhoto } = usePhotoGalleryStore();
   const inputFile = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [imgParams, setImgParams] = useState({
@@ -50,11 +55,10 @@ export const ImageChange = ({ setEditPhoto, imgId }: imageChangeType) => {
     reader.onloadstart = () => setIsLoading(true);
     reader.onloadend = () => setIsLoading(false);
     reader.onload = () => {
-      return setEditPhoto((old: PhotoType) => ({
-        ...old,
+      return setEditPhoto({
         url: reader.result,
         imgType: imgExtensionFromType(imgType),
-      }));
+      });
     };
   };
 

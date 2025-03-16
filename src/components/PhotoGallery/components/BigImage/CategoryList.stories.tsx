@@ -1,6 +1,5 @@
 import './BigImages.css';
 
-import { useArgs } from '@storybook/preview-api';
 import { Meta, StoryFn } from '@storybook/react';
 import { withProviders } from 'stories/withProviders';
 
@@ -13,15 +12,7 @@ export default {
 } as Meta;
 
 const Template: StoryFn = (args) => {
-  const [, setArgs] = useArgs();
-  return (
-    <CategoryList
-      {...args}
-      setImgPosition={(newState) => {
-        setArgs({ imgPosition: newState });
-      }}
-    />
-  );
+  return <CategoryList {...args} />;
 };
 
 export const Default = Template.bind({});

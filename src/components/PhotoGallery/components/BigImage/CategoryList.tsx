@@ -1,61 +1,111 @@
-import './CategoryList.css';
-
 import { faAlignJustify } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SetStateType } from 'components/PhotoGallery';
 import { useCategoryCounter } from 'features/photo';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { usePhotoGalleryStore } from 'src/store';
+import styled from 'styled-components';
 
-type SetImgPosition = {
-  setImgPosition: SetStateType;
-};
+import { CommonIconWrapper } from './Presentation';
 
-export const CategoryList = ({ setImgPosition }: SetImgPosition) => {
+export const CategoryList = () => {
+  const { setImgPosition } = usePhotoGalleryStore();
   const { categoryCounter, categoryNames, isGetCategorySuccess } =
     useCategoryCounter();
 
   const [showCategory, setShowCategory] = useState(false);
 
+  const handleMouseOver = useCallback(() => setShowCategory(true), []);
+  const handleMouseLeave = useCallback(() => setShowCategory(false), []);
+
   if (!isGetCategorySuccess || !categoryNames) return null;
 
-  const category = [];
-
-  for (const [key, value] of Object.entries(categoryCounter)) {
-    const changeCategory = () =>
-      setImgPosition((prev) => ({
-        ...prev,
-        category: +key,
-        smallImgStart: 0,
-        current: 0,
-      }));
-    category.push(
-      <div className='oneCategory' key={key} onClick={changeCategory}>
-        <header>{categoryNames[+key] ?? 'loading'}</header>
-        <article>{value}</article>
-      </div>
-    );
-  }
+  const category = Object.entries(categoryCounter).map(([key, value]) => (
+    <StyledOneCategory
+      key={key}
+      onClick={() =>
+        setImgPosition({ category: +key, smallImgStart: 0, current: 0 })
+      }
+    >
+      <header>{categoryNames[+key] ?? 'loading'}</header>
+      <article>{value}</article>
+    </StyledOneCategory>
+  ));
 
   return (
     <>
-      <FontAwesomeIcon
+      <CommonIconWrapper
+        style={{ left: '45%' }}
         data-testid='category-icon'
-        className='category'
         icon={faAlignJustify}
-        onMouseOver={() => setShowCategory(true)}
+        onMouseOver={handleMouseOver}
       />
       {showCategory && (
-        <div
+        <StyledCategoryList
           data-testid='category-list'
-          className='categoryList'
-          onMouseLeave={() => setShowCategory(false)}
+          onMouseLeave={handleMouseLeave}
         >
           <fieldset>
             <legend>Kategorie / počet fotek</legend>
             <section>{category}</section>
           </fieldset>
-        </div>
+        </StyledCategoryList>
       )}
     </>
   );
 };
+
+const StyledCategoryList = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  width: 270px;
+
+  fieldset {
+    margin: 3px;
+    padding: 3px;
+    font-size: 1rem;
+    border: 2px solid green;
+    border-radius: 8px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    legend {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    section {
+      display: flex;
+      flex-direction: column;
+      width: auto;
+
+      header {
+        text-align: right;
+        white-space: nowrap;
+        padding-right: 10px;
+        width: 75%;
+      }
+
+      article {
+        border-left: 1px dotted #00b300;
+        text-align: right;
+        padding-left: 10px;
+        margin: 0px 5px;
+        width: 25%;
+      }
+    }
+  }
+`;
+
+const StyledOneCategory = styled.div`
+  display: flex;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: border 0.2s ease, background-color 0.5s ease;
+
+  &:hover {
+    border: 1px solid lime;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+`;

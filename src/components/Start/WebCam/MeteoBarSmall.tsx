@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { MeteoFiles, useGetTextFile } from 'features/meteo';
+import { MeteoFilesEnum, useGetTextFile } from 'features/meteo';
 import { useEffect, useRef, useState } from 'react';
 import { useWebCamStore } from 'store';
 
@@ -14,7 +14,7 @@ export const MeteoBarSmall = () => {
     data: meteoText,
     error,
     isLoading,
-  } = useGetTextFile(MeteoFiles.LIPNONET_METEO, 10000);
+  } = useGetTextFile(MeteoFilesEnum.LIPNONET_METEO, 10000);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 

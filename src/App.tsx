@@ -65,7 +65,9 @@ export const App = () => {
       <ErrorBoundary fallback={<div>Custom Error Message</div>}>
         {loginData?.isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={<div style={{ color: 'white' }}>Loading index...</div>}
+        >
           <Routes>
             <Route path='/' element={<Start />} />
             <Route path='/apartmany' element={<Apartments />} />

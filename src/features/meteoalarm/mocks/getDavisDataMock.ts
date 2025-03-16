@@ -1,12 +1,12 @@
 import { HttpStatusCode } from 'enums';
-import { MeteoFiles } from 'features/meteo/hooks';
+import { MeteoFilesEnum } from 'features/meteo/hooks';
 import { resolveMock } from 'features/mocks';
 import { http, HttpResponse } from 'msw';
 
 import data_davis from './mockFiles/data_davis.txt?raw';
 
 const handlers = [
-  http.get(MeteoFiles.DATA_DAVIS, async () => {
+  http.get(MeteoFilesEnum.DATA_DAVIS, async () => {
     return new HttpResponse(data_davis, {
       status: HttpStatusCode.OK_200,
     });
@@ -15,7 +15,7 @@ const handlers = [
 
 export const getDavisDataScenarios = {
   e500: [
-    http.get(MeteoFiles.DATA_DAVIS, async () => {
+    http.get(MeteoFilesEnum.DATA_DAVIS, async () => {
       return new HttpResponse(null, {
         status: HttpStatusCode.INTERNAL_SERVER_ERROR_500,
       });
@@ -24,4 +24,4 @@ export const getDavisDataScenarios = {
 };
 
 export const getDavisDataMock = () =>
-  resolveMock(handlers, getDavisDataScenarios, MeteoFiles.DATA_DAVIS);
+  resolveMock(handlers, getDavisDataScenarios, MeteoFilesEnum.DATA_DAVIS);

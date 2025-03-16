@@ -61,6 +61,7 @@ export const RangeSlider = () => {
 
 const SlidersWrapper = styled.div`
   margin-left: 60px;
+  padding-right: 10px;
   position: absolute;
   width: calc(100% - 60px);
   bottom: 0px;

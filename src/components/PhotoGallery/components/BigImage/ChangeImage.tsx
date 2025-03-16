@@ -5,66 +5,80 @@ import {
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ImgPositionType, SetStateType } from 'components/PhotoGallery';
+import { usePhoto } from 'src/features/photo';
+import { usePhotoGalleryStore } from 'src/store';
+import styled from 'styled-components';
 
-interface eightPhotoTypes {
-  imgPosition: ImgPositionType;
-  setImgPosition: SetStateType;
-  length: number;
-}
+import { CommonIconWrapper } from './Presentation';
 
-export const ChangeImage = ({
-  setImgPosition,
-  imgPosition,
-  length,
-}: eightPhotoTypes) => {
+const STEP_SMALL = 1;
+const STEP_LARGE = 8;
+
+export const ChangeImage = () => {
+  const { filteredPhoto } = usePhoto();
+  const { imgPosition, setImgPosition } = usePhotoGalleryStore();
   const { current, smallImgsSize } = imgPosition;
 
   const changePhoto = (newCurrent: number) => {
-    if (newCurrent >= 0 && newCurrent < length) {
-      setImgPosition((old) => {
-        const newSmallImgStart = newCurrent - (newCurrent % smallImgsSize);
-        return {
-          ...old,
-          smallImgStart: newSmallImgStart,
-          current: newCurrent,
-        };
+    if (newCurrent >= 0 && newCurrent < filteredPhoto.length) {
+      setImgPosition({
+        smallImgStart: newCurrent - (newCurrent % smallImgsSize),
+        current: newCurrent,
       });
     }
   };
 
   return (
     <>
-      <FontAwesomeIcon
-        className='prevPhoto'
+      <CommonIconWrapper
+        style={{ left: '1%' }}
         icon={faArrowLeft}
-        onClick={() => changePhoto(current - 1)}
+        onClick={() => changePhoto(current - STEP_SMALL)}
       />
-      <FontAwesomeIcon
-        className='nextPhoto'
+      <CommonIconWrapper
+        style={{ right: '1%' }}
         icon={faArrowRight}
-        onClick={() => changePhoto(current + 1)}
+        onClick={() => changePhoto(current + STEP_SMALL)}
       />
-      <FontAwesomeIcon
-        className='prevPhotoBig'
+      <BigIconWrapper
+        style={{ left: '1%' }}
         icon={faArrowLeft}
-        onClick={() => changePhoto(current - 1)}
+        onClick={() => changePhoto(current - STEP_SMALL)}
       />
-      <FontAwesomeIcon
-        className='nextPhotoBig'
+      <BigIconWrapper
+        style={{ right: '1%' }}
         icon={faArrowRight}
-        onClick={() => changePhoto(current + 1)}
+        onClick={() => changePhoto(current + STEP_SMALL)}
       />
-      <FontAwesomeIcon
-        className='prev8'
+      <CommonIconWrapper
+        style={{ left: '13%' }}
         icon={faAngleDoubleLeft}
-        onClick={() => changePhoto(current - 8)}
+        onClick={() => changePhoto(current - STEP_LARGE)}
       />
-      <FontAwesomeIcon
-        className='next8'
+      <CommonIconWrapper
+        style={{ right: '13%' }}
         icon={faAngleDoubleRight}
-        onClick={() => changePhoto(current + 8)}
+        onClick={() => changePhoto(current + STEP_LARGE)}
       />
     </>
   );
 };
+
+export const BigIconWrapper = styled(FontAwesomeIcon)`
+  padding: 10px;
+  position: absolute;
+  background-color: transparent;
+  outline: none;
+  color: transparent;
+  font-size: 3vw;
+  top: 20%;
+  width: 30%;
+  height: 40%;
+  z-index: 2;
+
+  &:hover {
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+  }
+`;

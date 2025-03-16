@@ -1,19 +1,9 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { Url } from 'api/paths';
 import { apiGet } from 'api/utils/get';
 import { useEffect, useState } from 'react';
 
+import { MeteoFilesEnum } from './enum/MeteoFilesEnum';
 import { MeteoGetKey } from './useLoadWeather';
-
-export enum MeteoFiles {
-  LIPNONET_METEO = `${Url.DAVIS}/lipnonet_meteo.txt`,
-  NOAAMO = `${Url.DAVIS}/archive/{{year}}/NOAAMO-{{year}}-{{month}}.TXT`,
-  NOAAYR = `${Url.DAVIS}/archive/{{year}}/NOAAYR-{{year}}.TXT`,
-  DOWNLD02_NR = `${Url.DAVIS}/archive/downld02-{{meteoFileId}}.txt`,
-  DOWNLD02 = `${Url.DAVIS}/downld02.txt`,
-  DATA_DAVIS = `${Url.DAVIS}/data_davis.txt`,
-  DATA_DAVIS_JSON = `${Url.DAVIS}/data_davis_json.txt`,
-}
 
 export const getTextFile = async (url: string): Promise<string> => {
   const response = await apiGet({
@@ -35,8 +25,8 @@ export const useGetTextFile = (url: string, refetchInterval?: number) => {
 export const useGetNOAA = (year: string, month: string) => {
   const [previousData, setPreviousData] = useState<string[]>([]);
 
-  const NOAAYR = MeteoFiles.NOAAYR.replace(/{{year}}/g, year.toString());
-  const NOAAMO = MeteoFiles.NOAAMO.replace(
+  const NOAAYR = MeteoFilesEnum.NOAAYR.replace(/{{year}}/g, year.toString());
+  const NOAAMO = MeteoFilesEnum.NOAAMO.replace(
     /{{year}}/g,
     year.toString()
   ).replace('{{month}}', month);
@@ -68,18 +58,18 @@ export const useGetNOAA = (year: string, month: string) => {
 export const useGetDownld02 = () => {
   const dayOfWeekNow = new Date().getUTCDay();
 
-  let meteoFiles = [0, 1, 2, 3, 4, 5].map((id) => {
-    const meteoFilesId =
+  let meteoTextFiles = [0, 1, 2, 3, 4, 5].map((id) => {
+    const meteoTextFilesId =
       dayOfWeekNow + id > 6 ? dayOfWeekNow + id - 7 : dayOfWeekNow + id;
-    return MeteoFiles.DOWNLD02_NR.replace(
+    return MeteoFilesEnum.DOWNLD02_NR.replace(
       '{{meteoFileId}}',
-      meteoFilesId.toString()
+      meteoTextFilesId.toString()
     );
   });
 
-  meteoFiles = [...meteoFiles, MeteoFiles.DOWNLD02];
+  meteoTextFiles = [...meteoTextFiles, MeteoFilesEnum.DOWNLD02];
 
-  const queries = meteoFiles.map((filePath) => ({
+  const queries = meteoTextFiles.map((filePath) => ({
     queryKey: [MeteoGetKey.DOWNLD02, filePath.split('/').pop()],
     queryFn: () => getTextFile(filePath),
   }));

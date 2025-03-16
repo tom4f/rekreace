@@ -1,10 +1,9 @@
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input } from 'components/Atoms';
-import { categoryChangeType, CategoryNamesType } from 'components/PhotoGallery';
 import { useAlert } from 'features/alert';
 import { useUpdateCategory } from 'features/photo';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 
 import { EditCategoryToggleType } from './Formular';
@@ -14,7 +13,13 @@ export type EditCategoryType = {
   categoryNames: { [key: string]: string } | null;
 };
 
+type categoryChangeType =
+  | ChangeEvent<HTMLInputElement>
+  | ChangeEvent<HTMLTextAreaElement>
+  | ChangeEvent<HTMLSelectElement>;
+
 type categoryLogicType = (event: React.MouseEvent<HTMLButtonElement>) => void;
+type CategoryNamesType = { [key: string]: string };
 
 export const EditCategory = ({
   categoryNames: initialCategoryNames,

@@ -6,6 +6,10 @@ export type PhotoRequest = {
   fotoGalleryOwner: string;
 };
 
+export interface PhotoType extends OnePhotoResponse {
+  url?: string | ArrayBuffer | null;
+}
+
 export type OnePhotoResponse = {
   id: number;
   text: string;

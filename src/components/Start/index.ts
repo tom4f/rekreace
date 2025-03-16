@@ -1,3 +1,3 @@
-export * from './Forum/Forum';
-export * from './MeteoBarBig/MeteoBarBig';
+export * from './Forum';
+export * from './MeteoBarBig';
 export * from './WebCam';

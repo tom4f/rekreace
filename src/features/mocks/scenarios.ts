@@ -27,10 +27,10 @@ import {
   GET_OLD_STATION_ENDPOINT,
   getDavisScenarios,
   getLipnoScenarios,
-  //getMultipleTextFileScenarios,
+  getMultipleTextFileScenarios,
   getOldStationScenarios,
   getTextFileScenarios,
-  MeteoFiles,
+  MeteoFilesEnum,
 } from '../meteo';
 
 export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
@@ -38,18 +38,18 @@ export const availableScenarios: [string, { [key: string]: HttpHandler[] }][] =
     [LOGIN_ENDPOINT, postLoginScenarios],
     [GET_FORUM_ENDPOINT, getForumScenarios],
     [GET_BOOKING_ENDPOINT, getBookingScenarios],
-    [MeteoFiles.DOWNLD02, getTextFileScenarios],
+    [MeteoFilesEnum.DOWNLD02, getTextFileScenarios],
     [GET_DAVIS_ENDPOINT, getDavisScenarios],
     [GET_LIPNO_ENDPOINT, getLipnoScenarios],
     [GET_OLD_STATION_ENDPOINT, getOldStationScenarios],
     [ALARM_LOGIN_ENDPOINT, alarmLoginScenarios],
     [GET_ALARM_COUNTER_ENDPOINT, alarmCounterScenarios],
-    [MeteoFiles.DATA_DAVIS, getDavisDataScenarios],
-    [MeteoFiles.DATA_DAVIS_JSON, getDavisDataJsonScenarios],
+    [MeteoFilesEnum.DATA_DAVIS, getDavisDataScenarios],
+    [MeteoFilesEnum.DATA_DAVIS_JSON, getDavisDataJsonScenarios],
     [UPDATE_ALARM_ENDPOINT, updateAlarmMock],
     [ALARM_PASSWORD_ENDPOINT, alarmPasswordMock],
     [GET_CATEGORY_ENDPOINT, getCategoryScenarios],
 
     [GET_PHOTO_ENDPOINT, getPhotoScenarios],
-    //...getMultipleTextFileScenarios,
+    ...getMultipleTextFileScenarios,
   ];

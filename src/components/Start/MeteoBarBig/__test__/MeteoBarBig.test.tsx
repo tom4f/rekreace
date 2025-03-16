@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
-import { MeteoBarBig } from 'components/Start/MeteoBarBig/MeteoBarBig';
+import { MeteoBarBig } from 'components/Start';
 import { renderWithProviders } from 'utils/test/testHelpers';
 
 describe('MeteoBarBig', () => {
@@ -13,7 +13,9 @@ describe('MeteoBarBig', () => {
 
     await waitFor(
       () => {
-        //expect(screen.getByText(/METEOSTANICE dnes/i)).toBeInTheDocument();
+        expect(
+          screen.getByText(/METEOSTANICE 22.01.2025/i)
+        ).toBeInTheDocument();
         expect(screen.getByText(/Tlak/i)).toBeInTheDocument();
         expect(screen.getByText(/1018.1 hPa/i)).toBeInTheDocument();
         expect(screen.getByText(/Voda na Lipně/i)).toBeInTheDocument();

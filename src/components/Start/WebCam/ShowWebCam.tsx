@@ -1,6 +1,7 @@
 import { Url } from 'api/paths';
 import { useSaveImage } from 'features/webcam';
 import { useMemo } from 'react';
+import { createSvgFallback } from 'src/utils';
 import { useWebCamStore } from 'store';
 
 export const ShowWebCam = () => {
@@ -31,6 +32,13 @@ export const ShowWebCam = () => {
           src={`${Url.WEBCAM}/archive/ip_kamera_${imgDateText}.jpg`}
           alt='WebCam'
           loading='lazy'
+          onError={(e) =>
+            (e.currentTarget.src = createSvgFallback({
+              fallbackText: `image ${imgDateText} not found`,
+              width: 724,
+              height: 407,
+            }))
+          }
         />
       )}
     </a>

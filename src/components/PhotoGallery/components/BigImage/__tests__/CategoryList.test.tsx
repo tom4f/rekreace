@@ -5,15 +5,13 @@ import { renderWithProviders } from 'utils/test/testHelpers';
 import { CategoryList } from '../CategoryList';
 
 describe('CategoryList component', () => {
-  const mockSetImgPosition = vi.fn();
-
   it('displays CategoryList icon in loading phase', () => {
-    renderWithProviders(<CategoryList setImgPosition={mockSetImgPosition} />);
+    renderWithProviders(<CategoryList />);
     expect(screen.queryByTestId('category-icon')).not.toBeInTheDocument();
   });
 
   it('displays CategoryList icon in loaded phase', async () => {
-    renderWithProviders(<CategoryList setImgPosition={mockSetImgPosition} />);
+    renderWithProviders(<CategoryList />);
 
     await waitFor(() => {
       expect(screen.getByTestId('category-icon')).toBeInTheDocument();
@@ -21,7 +19,7 @@ describe('CategoryList component', () => {
   });
 
   it('displays CategoryList when hovered over the icon and hide list when unhovered', async () => {
-    renderWithProviders(<CategoryList setImgPosition={mockSetImgPosition} />);
+    renderWithProviders(<CategoryList />);
 
     await waitFor(() => {
       expect(screen.queryByTestId('category-icon')).toBeInTheDocument();
