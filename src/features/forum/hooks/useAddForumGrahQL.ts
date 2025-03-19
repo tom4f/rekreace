@@ -1,10 +1,10 @@
 import { gql, useMutation } from '@apollo/client';
 
-import { GET_FORUM_QUERY } from './useGetForumGraphQl';
+import { GET_FORUM_QUERY } from './useGetForumGraphQL';
 
 type AddForumRequest = {
   jmeno: string;
-  email: string;
+  email?: string;
   typ: string;
   text: string;
 };
@@ -18,7 +18,7 @@ type AddForumResponse = {
 const ADD_FORUM_MUTATION = gql`
   mutation CreateForum(
     $jmeno: String!
-    $email: String!
+    $email: String
     $typ: String!
     $text: String!
   ) {

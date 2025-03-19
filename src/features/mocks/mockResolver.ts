@@ -1,4 +1,4 @@
-import { HttpHandler } from 'msw';
+import { GraphQLHandler, HttpHandler } from 'msw';
 
 export enum MockResolver {
   DEFAULT_STATE = 'default',
@@ -7,8 +7,8 @@ export enum MockResolver {
 }
 
 export const resolveMock = (
-  handler: HttpHandler[],
-  scenarios: { [key: string]: HttpHandler[] },
+  handler: HttpHandler[] | GraphQLHandler[],
+  scenarios: { [key: string]: HttpHandler[] | GraphQLHandler[] },
   endpoint: string
 ) => {
   const settings = JSON.parse(

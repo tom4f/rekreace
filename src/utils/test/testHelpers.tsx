@@ -1,9 +1,11 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, renderHook } from '@testing-library/react';
 import { resolveHandlers } from 'features/mocks';
 import { setupServer } from 'msw/node';
 import { FC, PropsWithChildren, ReactElement } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { Url } from 'src/api/paths';
 
 const server = setupServer(...resolveHandlers());
 
@@ -33,11 +35,24 @@ export const renderWithProviders = (
     },
   });
 
+  const apolloClient = new ApolloClient({
+    uri: Url.GRAPH_QL_API,
+    cache: new InMemoryCache({
+      addTypename: false,
+    }),
+    defaultOptions: {
+      watchQuery: { fetchPolicy: 'no-cache' },
+      query: { fetchPolicy: 'no-cache' },
+    },
+  });
+
   const wrapper: FC<PropsWithChildren<object>> = ({ children }) => {
     return (
-      <QueryClientProvider client={queryClient}>
-        {withRouter ? <BrowserRouter>{children}</BrowserRouter> : children}
-      </QueryClientProvider>
+      <ApolloProvider client={apolloClient}>
+        <QueryClientProvider client={queryClient}>
+          {withRouter ? <BrowserRouter>{children}</BrowserRouter> : children}
+        </QueryClientProvider>
+      </ApolloProvider>
     );
   };
   return { ...render(component, { wrapper }) };
@@ -62,11 +77,24 @@ export const renderHookWithProviders = <Props, Result>(
     },
   });
 
+  const apolloClient = new ApolloClient({
+    uri: Url.GRAPH_QL_API,
+    cache: new InMemoryCache({
+      addTypename: false,
+    }),
+    defaultOptions: {
+      watchQuery: { fetchPolicy: 'no-cache' },
+      query: { fetchPolicy: 'no-cache' },
+    },
+  });
+
   const wrapper: FC<PropsWithChildren<object>> = ({ children }) => {
     return (
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>{children}</BrowserRouter>
-      </QueryClientProvider>
+      <ApolloProvider client={apolloClient}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>{children}</BrowserRouter>
+        </QueryClientProvider>
+      </ApolloProvider>
     );
   };
 

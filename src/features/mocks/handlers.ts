@@ -11,6 +11,7 @@ import { delay, http } from 'msw';
 
 import { getBookingMock } from '../booking';
 import { getForumMock } from '../forum';
+import { getForumGraphQLMock } from '../forum/mock/getForumGraphQLMock';
 import { postLoginMock } from '../login';
 import {
   getDavisMock,
@@ -53,4 +54,5 @@ export const resolveHandlers = () => [
   ...postAlarmPasswordMock(),
   ...getPhotoMock(),
   ...getCategoryMock(),
+  ...getForumGraphQLMock(),
 ];

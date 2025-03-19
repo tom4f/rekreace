@@ -1,5 +1,3 @@
-import './BigImages.css';
-
 import { Meta, StoryFn } from '@storybook/react';
 import { withProviders } from 'stories/withProviders';
 

@@ -7,7 +7,7 @@ import { GET_FORUM_KEY } from './useGetForum';
 
 type AddForumRequest = {
   jmeno: string;
-  email: string;
+  email?: string;
   typ: string;
   text: string;
 };

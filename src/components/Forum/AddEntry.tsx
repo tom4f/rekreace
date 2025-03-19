@@ -1,7 +1,9 @@
 import { Button, Input, Select, TextArea } from 'components/Atoms';
-// import { useAddForum } from 'features/forum';
 import { useRef, useState } from 'react';
+// import { useAddForum } from 'features/forum';
 import { useAddForumGraphQl } from 'src/features/forum/hooks/useAddForumGrahQL';
+
+import { basicOptions } from './';
 
 type AddEntryType = {
   categoryFromUrl: number;
@@ -71,13 +73,7 @@ export const AddEntry = ({
 
   const optionList =
     categoryFromUrl !== 8
-      ? [
-          { value: '', label: '--- vyber ---' },
-          { value: '0', label: 'Fórum' },
-          { value: '1', label: 'Inzerce' },
-          { value: '2', label: 'Seznamka' },
-          { value: '3', label: ' K obsahu stránek' },
-        ]
+      ? [{ value: '', label: '--- vyber ---' }, ...basicOptions]
       : [];
 
   return (

@@ -3,8 +3,9 @@ import 'components/Forum/css/forum.css';
 import { Button, Header, Input, Select } from 'components/Atoms';
 import { AddEntry, Messages, Paginations } from 'components/Forum';
 // import { useGetForum } from 'features/forum';
-import { useGetForumGraphQl } from 'features/forum/hooks/useGetForumGraphQl';
+import { useGetForumGraphQL } from 'features/forum/hooks/useGetForumGraphQL';
 import { useState } from 'react';
+import { basicOptions } from 'src/components/Forum';
 
 export type ForumParams = {
   begin: number;
@@ -33,7 +34,7 @@ export const Forum = () => {
     data: allEntries,
     loading,
     error,
-  } = useGetForumGraphQl({
+  } = useGetForumGraphQL({
     searchCriteria,
     start: 0,
     limit: 999999,
@@ -72,13 +73,7 @@ export const Forum = () => {
 
   const optionList =
     categoryFromUrl !== 8
-      ? [
-          { value: '999999', label: 'všechny' },
-          { value: '0', label: 'Fórum' },
-          { value: '1', label: 'Inzerce' },
-          { value: '2', label: 'Seznamka' },
-          { value: '3', label: ' K obsahu stránek' },
-        ]
+      ? [{ value: '999999', label: 'všechny' }, ...basicOptions]
       : [];
 
   return (

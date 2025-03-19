@@ -9,7 +9,7 @@ export type OneMessage = {
   typ: number;
 };
 
-type FormRequest = {
+export type ForumRequest = {
   start?: number;
   limit?: number;
   searchCriteria?: string;
@@ -34,7 +34,7 @@ export const GET_FORUM_QUERY = gql`
   }
 `;
 
-export const useGetForumGraphQl = (request: FormRequest) => {
+export const useGetForumGraphQL = (request?: ForumRequest) => {
   const { data, ...rest } = useQuery<{ getForumMessages: ForumResponse }>(
     GET_FORUM_QUERY,
     {
