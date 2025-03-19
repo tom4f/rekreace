@@ -1,5 +1,6 @@
 /// <reference types="vitest/config" />
 
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -11,7 +12,14 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
   const target = env.VITE_API_BASE_URL;
 
   return {
-    plugins: [react()],
+    plugins: [
+      react(),
+      sentryVitePlugin({
+        authToken: env.SENTRY_AUTH_TOKEN,
+        org: 'frymburkcom',
+        project: 'javascript-react',
+      }),
+    ],
     resolve: {
       alias: {
         src: path.resolve(__dirname, './src'),
@@ -45,6 +53,7 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       rollupOptions: {
         plugins: [visualizer() as Plugin],
       },
+      sourcemap: true, // Source map generation must be turned on
     },
     server: {
       host: true, // Allows access from outside the container
