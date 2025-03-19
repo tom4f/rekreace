@@ -18,7 +18,11 @@ import { APP_MOCKS, ENV_MODE } from './env';
 Sentry.init({
   dsn: 'https://338f7ab170112283b02c4492f84febae@o4509005275267072.ingest.de.sentry.io/4509005278085200',
   integrations: [Sentry.browserTracingIntegration()],
-  tracePropagationTargets: ['localhost', /^https:\/\/olca\.cz\/api/],
+  tracePropagationTargets: [
+    'localhost',
+    /^https:\/\/(www\.)?olca\.cz/,
+    /^https:\/\/(www\.)?frymurk\.com/,
+  ],
 });
 
 let worker: SetupWorker | null;

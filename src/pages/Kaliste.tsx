@@ -22,14 +22,6 @@ export const Kaliste = () => {
       </div>
       <Forum showHeader={false} searchCriteria='WHERE typ = 8' />
       <PhotoGallery category={11} />
-      <button
-        onClick={() => {
-          throw new Error('This is your first error!');
-        }}
-      >
-        Break the world
-      </button>
-      ;
     </>
   );
 };
