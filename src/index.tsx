@@ -1,6 +1,13 @@
 import './index.css';
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  from,
+  InMemoryCache,
+} from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { HttpLink } from '@apollo/client/link/http';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -17,12 +24,17 @@ import { APP_MOCKS, ENV_MODE } from './env';
 
 Sentry.init({
   dsn: 'https://338f7ab170112283b02c4492f84febae@o4509005275267072.ingest.de.sentry.io/4509005278085200',
-  integrations: [Sentry.browserTracingIntegration()],
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration(),
+  ],
   tracePropagationTargets: [
     'localhost',
     /^https:\/\/(www\.)?olca\.cz/,
     /^https:\/\/(www\.)?frymurk\.com/,
   ],
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
 });
 
 let worker: SetupWorker | null;
@@ -67,8 +79,33 @@ const queryClient = new QueryClient({
   },
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      Sentry.captureException(
+        new Error(`[GraphQL error]: Message: ${message}, Path: ${path}`)
+      );
+      console.error(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      );
+    });
+  }
+
+  if (networkError) {
+    Sentry.captureException(
+      new Error(`[Network error]: ${networkError.message}`)
+    );
+    console.error(`[Network error]:`, networkError);
+  }
+});
+
+const httpLink = new HttpLink({
+  uri: 'https://your-graphql-endpoint.com/graphql',
+});
+
 const apolloClient = new ApolloClient({
   uri: Url.GRAPH_QL_API,
+  link: from([errorLink, httpLink]),
   cache: new InMemoryCache(),
 });
 

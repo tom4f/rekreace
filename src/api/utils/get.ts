@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import axios, { AxiosError, AxiosRequestConfig, isAxiosError } from 'axios';
 
 type PostErrorType = {
@@ -13,12 +14,20 @@ interface GetRequestConfig extends AxiosRequestConfig {
 
 export async function apiGet({ url, ...config }: GetRequestConfig) {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await axios.get<any>(url, config);
+    const response = await axios.get(url, config);
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
       const err: AxiosError<PostErrorType> = error;
+
+      Sentry.withScope((scope) => {
+        scope.setTag('http_method', 'GET');
+        scope.setExtra('url', url);
+        scope.setExtra('status', err.response?.status);
+        scope.setExtra('response', err.response?.data);
+        Sentry.captureException(err);
+      });
+
       throw err;
     }
   }

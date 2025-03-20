@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
 interface AxiosRequest {
@@ -37,20 +38,29 @@ export const apiPost = ({
       .catch((error: AxiosError<ApiErrorResponse>) => {
         if (error.response?.data) {
           const errorData = error.response.data;
+
+          Sentry.withScope((scope) => {
+            scope.setTag('http_method', 'POST');
+            scope.setExtra('url', url);
+            scope.setExtra('status', error.response?.status);
+            scope.setExtra('response', errorData);
+            Sentry.captureException(error);
+          });
+
           if (typeof errorData !== 'string' && 'result' in errorData) {
-            // normal error
             console.error(`error.response.data.result = ${errorData.result}`);
             reject(error);
           } else {
-            // It's a not found error
             console.error(`Not found error: ${errorData.message}`);
             reject(errorData.message);
           }
         } else if (error.request) {
           console.error('No response received:', error.request);
+          Sentry.captureException(error);
           reject(error);
         } else {
           console.error('Error setting up request:', error.message);
+          Sentry.captureException(error);
           reject(error);
         }
       });
