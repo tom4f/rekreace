@@ -100,7 +100,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = new HttpLink({
-  uri: 'https://your-graphql-endpoint.com/graphql',
+  uri: Url.GRAPH_QL_API,
 });
 
 const apolloClient = new ApolloClient({
