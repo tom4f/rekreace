@@ -16,8 +16,10 @@ export type SendBookingRequest = {
 };
 
 export type SendResponse = {
-  result: string;
-  message: string;
+  sendBooking: {
+    result: string;
+    message: string;
+  };
 };
 
 type SendBookingErrorResponse = {

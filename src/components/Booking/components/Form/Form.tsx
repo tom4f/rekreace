@@ -9,9 +9,6 @@ import { useSendBookingGraphQL } from 'src/features/booking/hooks/useSendBooking
 
 export const Form = () => {
   const [mutate, { data, error }] = useSendBookingGraphQL();
-
-  const [alert, setAlert] = useState({ header: '', text: '', color: 'red' });
-
   const [isModal, setIsModal] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -40,24 +37,21 @@ export const Form = () => {
         antispam_code_orig: new Date().getMilliseconds(),
       }));
       setIsModal(true);
-      setAlert({
-        header: 'V pořádku',
-        text: data?.result ?? 'ok',
-        color: 'lime',
-      });
     } catch (errorResponse) {
-      console.error('Error occurred during mutation:', errorResponse);
-      setAlert({
-        header: 'Chyba',
-        text: error?.message ?? 'Něco se pokazilo',
-        color: 'red',
-      });
+      console.error({ errorResponse });
+
       setFormData((old) => ({
         ...old,
         antispam_code_orig: new Date().getMilliseconds(),
       }));
       setIsModal(true);
     }
+  };
+
+  const alert = {
+    header: error ? 'Chyba' : 'V pořádku',
+    text: error instanceof Error ? error.message : data?.sendBooking.message,
+    color: error ? 'red' : 'lime',
   };
 
   return (
