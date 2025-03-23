@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 export const StyledInput = styled.div`
   text-align: left;
@@ -39,14 +39,29 @@ export const StyledInput = styled.div`
   }
 
   input:is(
-      :-webkit-autofill,
-      :-webkit-autofill:hover,
-      :-webkit-autofill:focus,
-      :-webkit-autofill:active,
       :autofill,
       :autofill:hover,
       :autofill:focus,
       :autofill:active,
+      :-webkit-autofill,
+      :-webkit-autofill:hover,
+      :-webkit-autofill:focus,
+      :-webkit-autofill:active,
+
+    ) {
+    -webkit-text-fill-color: #31b0dd;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  textarea:is(
+      :autofill,
+      :autofill:hover,
+      :autofill:focus,
+      :autofill:active,
+      :-webkit-autofill,
+      :-webkit-autofill:hover,
+      :-webkit-autofill:focus,
+      :-webkit-autofill:active,
 
     ) {
     -webkit-text-fill-color: #31b0dd;
@@ -55,5 +70,24 @@ export const StyledInput = styled.div`
 
   option {
     background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+
+  input::-webkit-calendar-picker-indicator {
+    background-color: aqua;
+    cursor: pointer;
+  }
+  input::-webkit-calendar-picker-indicator:hover {
+    background-color: orange;
   }
 `;

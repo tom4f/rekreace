@@ -1,20 +1,22 @@
-import './css/formular.css';
-
+import styled from '@emotion/styled';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Modal } from 'components/Modal/Modal';
-import { useSendBooking } from 'features/booking';
+// import { useSendBooking } from 'features/booking';
+import img604b from 'images/604b.jpg';
 import { useState } from 'react';
+import { Button, Header, Input, Select, TextArea } from 'src/components/Atoms';
+import { useSendBookingGraphQL } from 'src/features/booking/hooks/useSendBookingGraphQL';
 
 export const Form = () => {
-  const { mutateAsync } = useSendBooking();
+  const [mutate, { data, error }] = useSendBookingGraphQL();
 
   const [alert, setAlert] = useState({ header: '', text: '', color: 'red' });
 
   const [isModal, setIsModal] = useState(false);
 
   const [formData, setFormData] = useState({
-    apartment: '',
-    persons: '',
+    apartment: 0,
+    persons: 0,
     check_in: '',
     check_out: '',
     email: '',
@@ -27,34 +29,35 @@ export const Form = () => {
     antispam_code_orig: new Date().getMilliseconds(),
   });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutateAsync(formData, {
-      onSuccess: (succesResponse) => {
-        setFormData((old) => ({
-          ...old,
-          antispam_code_orig: new Date().getMilliseconds(),
-        }));
-        setIsModal(true);
-        setAlert({
-          header: 'V pořádku',
-          text: succesResponse.result,
-          color: 'lime',
-        });
-      },
-      onError: (errorResponse) => {
-        setIsModal(true);
-        setAlert({
-          header: 'Chyba',
-          text: errorResponse.response?.data.result,
-          color: 'red',
-        });
-        setFormData((old) => ({
-          ...old,
-          antispam_code_orig: new Date().getMilliseconds(),
-        }));
-      },
-    });
+
+    try {
+      await mutate({ variables: { input: formData } });
+
+      setFormData((old) => ({
+        ...old,
+        antispam_code_orig: new Date().getMilliseconds(),
+      }));
+      setIsModal(true);
+      setAlert({
+        header: 'V pořádku',
+        text: data?.result ?? 'ok',
+        color: 'lime',
+      });
+    } catch (errorResponse) {
+      console.error('Error occurred during mutation:', errorResponse);
+      setAlert({
+        header: 'Chyba',
+        text: error?.message ?? 'Něco se pokazilo',
+        color: 'red',
+      });
+      setFormData((old) => ({
+        ...old,
+        antispam_code_orig: new Date().getMilliseconds(),
+      }));
+      setIsModal(true);
+    }
   };
 
   return (
@@ -63,245 +66,233 @@ export const Form = () => {
         <Modal
           customStyle={{ width: '500px', height: '300px' }}
           setIsVisible={setIsModal}
-          children={
-            <>
-              <AlertBox alert={alert} />
-            </>
-          }
+          children={<AlertBox alert={alert} />}
         />
       )}
-      <form
+      <Header>Závazná objednávka ubytování</Header>
+      <FormWrapper
         autoComplete='off'
         onSubmit={(e) => onSubmit(e)}
-        id='form_booking'
         name='form_booking'
       >
-        <div className='header'>
-          <b>Závazná objednávka ubytování</b>
-        </div>
-        <div className='booking_form'>
-          <div className='input_booking'>
-            <label>Apartmán číslo :</label>
-            <select
-              value={formData.apartment}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  apartment: e.target.value,
-                }))
-              }
-              name='apartment'
-              required
-            >
-              <option value=''>vyberte zde</option>
-              <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3'>3</option>
-            </select>
-          </div>
+        <Select
+          name='apartment'
+          required
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              apartment: +e.target.value,
+            }))
+          }
+          value={formData.apartment}
+          label='Apartmán číslo:'
+          options={[
+            { value: '', label: 'vyberte zde', disabled: !!formData.apartment },
+            { value: 1, label: '1' },
+            { value: 2, label: '2' },
+            { value: 3, label: '3' },
+          ]}
+        />
 
-          <div className='input_booking'>
-            <label>Počet osob :</label>
-            <br />
-            <select
-              value={formData.persons}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  persons: e.target.value,
-                }))
-              }
-              name='persons'
-              required
-            >
-              <option value=''>vyberte zde</option>
-              <option value='1'>1</option>
-              <option value='2'>2</option>
-              <option value='3'>3</option>
-              <option value='4'>4</option>
-              <option value='5'>5</option>
-            </select>
-          </div>
+        <Select
+          name='persons'
+          required
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              persons: +e.target.value,
+            }))
+          }
+          value={formData.persons}
+          label='Počet osob:'
+          options={[
+            { value: '', label: 'vyberte zde', disabled: !!formData.persons },
+            { value: 1, label: '1' },
+            { value: 2, label: '2' },
+            { value: 3, label: '3' },
+            { value: 4, label: '4' },
+            { value: 5, label: '5' },
+          ]}
+        />
 
-          <div className='input_booking'>
-            <label>Datum příjezdu :</label>
-            <br />
-            <input
-              value={formData.check_in}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  check_in: e.target.value,
-                }))
-              }
-              type='date'
-              name='check_in'
-              required
-            />
-          </div>
+        <Input
+          label='Datum příjezdu:'
+          required
+          type='date'
+          name='check_in'
+          value={formData.check_in}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              check_in: e.target.value,
+            }))
+          }
+        />
 
-          <div className='input_booking'>
-            <label>Datum odjezdu :</label>
-            <br />
-            <input
-              value={formData.check_out}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  check_out: e.target.value,
-                }))
-              }
-              type='date'
-              name='check_out'
-              required
-            />
-          </div>
+        <Input
+          label='Datum odjezdu:'
+          required
+          type='date'
+          name='check_out'
+          value={formData.check_out}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              check_out: e.target.value,
+            }))
+          }
+        />
 
-          <div className='input_booking'>
-            <label>E-mail :</label>
-            <br />
-            <input
-              value={formData.email}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  email: e.target.value,
-                }))
-              }
-              type='email'
-              name='email'
-              placeholder='vyplňte zde'
-              required
-            />
-          </div>
+        <Input
+          label='E-mail:'
+          required
+          type='email'
+          name='email'
+          value={formData.email}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              email: e.target.value,
+            }))
+          }
+          placeholder='vyplňte zde'
+        />
 
-          <div className='input_booking'>
-            <label>Telefon :</label>
-            <br />
-            <input
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  phone: e.target.value,
-                }))
-              }
-              type='tel'
-              name='phone'
-              minLength={9}
-              placeholder='vyplňte zde'
-              required
-            />
-          </div>
+        <Input
+          label='Telefon:'
+          required
+          type='tel'
+          name='phone'
+          value={formData.phone}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              phone: e.target.value,
+            }))
+          }
+          placeholder='vyplňte zde'
+        />
 
-          <div className='input_booking'>
-            <label>Jméno a příjmení :</label>
-            <br />
-            <input
-              value={formData.name}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  name: e.target.value,
-                }))
-              }
-              type='text'
-              name='name'
-              placeholder='vyplňte zde'
-              required
-            />
-          </div>
+        <Input
+          label='Jméno a příjmení:'
+          required
+          type='text'
+          name='name'
+          value={formData.name}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              name: e.target.value,
+            }))
+          }
+          placeholder='vyplňte zde'
+        />
 
-          <div className='input_booking'>
-            <label>Odpovědět :</label>
-            <br />
-            <select
-              value={formData.confirm_via}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  confirm_via: e.target.value,
-                }))
-              }
-              name='confirm_via'
-              required
-            >
-              <option value=''>vyberte</option>
-              <option value='telefonem'>telefonem</option>
-              <option value='emailem'>emailem</option>
-            </select>
-          </div>
+        <Select
+          name='confirm_via'
+          required
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              confirm_via: e.target.value,
+            }))
+          }
+          value={formData.confirm_via}
+          label='Odpovědět:'
+          options={[
+            { value: '', label: 'vyberte zde' },
+            { value: 'phone', label: 'telefonem' },
+            { value: 'email', label: 'emailem' },
+          ]}
+        />
 
-          <div className='input_booking'>
-            <label>Adresa :</label>
-            <br />
-            <textarea
-              value={formData.address}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  address: e.target.value,
-                }))
-              }
-              name='address'
-              rows={4}
-              cols={68}
-              wrap='Yes'
-              placeholder='Váše adresa'
-              required
-            ></textarea>
-          </div>
+        <TextArea
+          label='Adresa:'
+          value={formData.address}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              address: e.target.value,
+            }))
+          }
+          placeholder='Váše adresa'
+          required
+          rows={4}
+          cols={68}
+          name='address'
+        />
 
-          <div className='input_booking'>
-            <label>Váš komentář</label>
-            <br />
-            <textarea
-              value={formData.info}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  info: e.target.value,
-                }))
-              }
-              name='info'
-              rows={4}
-              cols={68}
-              wrap='Yes'
-              placeholder='napište nám...'
-            ></textarea>
-          </div>
+        <TextArea
+          label='Váš komentář:'
+          value={formData.info}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              info: e.target.value,
+            }))
+          }
+          placeholder='vyplňte zde'
+          rows={4}
+          cols={68}
+          name='info'
+        />
 
-          <input
-            id='antispam_code_orig'
-            type='hidden'
-            name='antispam_code_orig'
-            value={formData.antispam_code_orig}
-          />
-          <div className='antispam_booking input_booking'>
-            <label id='antispam_code_label'>
-              Opište kód : {formData.antispam_code_orig}
-            </label>
-            <input
-              value={formData.antispam_code || ''}
-              onChange={(e) =>
-                setFormData((old) => ({
-                  ...old,
-                  antispam_code: +e.target.value,
-                }))
-              }
-              id='antispam_code_input'
-              type='number'
-              name='antispam_code'
-              size={5}
-              placeholder='sem kód'
-            />
-          </div>
+        <Input
+          label={`Opište kód : ${formData.antispam_code_orig}`}
+          required
+          type='number'
+          name='antispam_code'
+          value={formData.antispam_code || ''}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              antispam_code: +e.target.value,
+            }))
+          }
+          placeholder='sem kód'
+          size={5}
+        />
 
-          <div className='submit_booking'>
-            <input type='submit' name='odesli' value='Odeslat' />
-          </div>
-        </div>
-      </form>
+        <input
+          type='hidden'
+          name='antispam_code_orig'
+          value={formData.antispam_code_orig}
+        />
+        <Button name='odesli' label='Odeslat' />
+      </FormWrapper>
     </div>
   );
 };
+
+const FormWrapper = styled.form`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-image: url(${img604b});
+  width: 100%;
+  padding: 0px;
+  color: white;
+  text-align: left;
+  margin: auto;
+  border-radius: 5px;
+  border: 1px solid #555;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: relative;
+
+  & > * {
+    width: 45%;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: white;
+  }
+
+  input:placeholder-shown,
+  textarea:placeholder-shown {
+    font-style: italic;
+  }
+`;

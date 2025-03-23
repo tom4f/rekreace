@@ -4,8 +4,8 @@ import { api } from 'api/utils';
 import { AxiosError } from 'axios';
 
 export type SendBookingRequest = {
-  apartment: string;
-  persons: string;
+  apartment: number;
+  persons: number;
   check_in: string;
   check_out: string;
   email: string;
@@ -13,7 +13,7 @@ export type SendBookingRequest = {
   name: string;
   confirm_via: string;
   address: string;
-  info: string;
+  info?: string;
   antispam_code: number;
   antispam_code_orig: number;
 };

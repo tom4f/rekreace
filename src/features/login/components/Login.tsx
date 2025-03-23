@@ -115,7 +115,6 @@ export const StyledForm = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   border: 1px solid #555;
   padding: 1rem 0;
