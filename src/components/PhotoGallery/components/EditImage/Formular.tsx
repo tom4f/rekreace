@@ -67,10 +67,6 @@ export const Formular = () => {
     event.preventDefault();
     const action = (event.target as HTMLButtonElement).name;
 
-    const formCurrent = form.current;
-
-    if (!formCurrent) return;
-
     setAlert({
       header: 'Ukládám změny',
       text: 'malý moment...',

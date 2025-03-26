@@ -1,5 +1,5 @@
 import { Url } from 'api/paths';
-import { OnePhotoResponse, PhotoType } from 'features/photo';
+import { OnePhotoResponse, UpdatePhotoRequest } from 'features/photo';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { usePhoto } from 'src/features/photo';
@@ -7,7 +7,7 @@ import { ImgPositionType, usePhotoGalleryStore } from 'src/store';
 import styled, { css } from 'styled-components';
 
 type BigImgWrapperType = {
-  $editPhoto: PhotoType;
+  $editPhoto: UpdatePhotoRequest;
   $bigPhoto: OnePhotoResponse;
   $fadeIn: boolean;
   $imgPosition: ImgPositionType;

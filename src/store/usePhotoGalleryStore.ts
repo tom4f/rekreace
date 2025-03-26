@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { OnePhotoResponse, PhotoType } from 'src/features/photo';
+import { OnePhotoResponse, UpdatePhotoRequest } from 'src/features/photo';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -30,7 +30,7 @@ export const usePhotoGalleryStore = create<PhotoGalleryStoreType>()(
       ),
 
     editPhoto: { fotoGalleryOwner: '_ubytovani', rotate: 0 },
-    setEditPhoto: (updatedValues: Partial<PhotoType>) =>
+    setEditPhoto: (updatedValues: Partial<UpdatePhotoRequest>) =>
       set(
         produce((state) => {
           state.editPhoto = { ...state.editPhoto, ...updatedValues };
@@ -78,8 +78,8 @@ export type PhotoGalleryStoreType = {
   imgPosition: ImgPositionType;
   setImgPosition: (updatedValues: Partial<ImgPositionType>) => void;
 
-  editPhoto: PhotoType;
-  setEditPhoto: (updatedValues: Partial<PhotoType>) => void;
+  editPhoto: UpdatePhotoRequest;
+  setEditPhoto: (updatedValues: Partial<UpdatePhotoRequest>) => void;
 
   filteredPhoto: OnePhotoResponse[];
   arrIndexFromImgId: (clickedImgId: number) => number;

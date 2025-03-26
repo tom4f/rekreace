@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 
 import { GET_PHOTO_KEY } from './useGetPhoto';
 
-type UpdatePhotoRequest = {
+export type UpdatePhotoRequest = {
   id: number;
   text: string;
   autor: string;

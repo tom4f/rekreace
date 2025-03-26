@@ -20,9 +20,7 @@ export type OnePhotoResponse = {
   header: string;
   insertDate: string;
   date: string;
-  rotate: number;
   imgType: string;
-  fotoGalleryOwner: string;
 };
 
 export type PhotoResponse = OnePhotoResponse[];
