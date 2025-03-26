@@ -5,8 +5,7 @@ import { AxiosError } from 'axios';
 
 import { GET_PHOTO_KEY } from './useGetPhoto';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type UpdatePhotoRequestToDo = {
+type UpdatePhotoRequest = {
   id: number;
   text: string;
   autor: string;
@@ -16,13 +15,11 @@ type UpdatePhotoRequestToDo = {
   header: string;
   insertDate: string;
   date: string;
-  rotate: string;
+  rotate: number;
   imgType: string;
-  upfile: string;
+  url?: string;
   fotoGalleryOwner: string;
 };
-
-type UpdatePhotoRequest = FormData;
 
 type UpdateOnePhotoResponse = {
   result: string;

@@ -5,13 +5,10 @@ import { AxiosError } from 'axios';
 
 import { GET_PHOTO_KEY } from './useGetPhoto';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type DeletePhotoRequestToDo = {
-  id: string;
+type DeletePhotoRequest = {
+  id: number;
   fotoGalleryOwner: string;
 };
-
-type DeletePhotoRequest = FormData;
 
 type DeletePhotoOnePhotoResponse = {
   result: string;

@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input, Select, TextArea } from 'components/Atoms';
@@ -10,7 +11,6 @@ import {
 } from 'features/photo';
 import { useRef, useState } from 'react';
 import { usePhotoGalleryStore } from 'src/store';
-import styled from 'styled-components';
 
 import { EditCategory } from './EditCategory';
 import { ImageChange } from './ImageChange';
@@ -49,8 +49,13 @@ export const Formular = () => {
     setIsCategory((old) => !old);
   };
 
-  const change = (e: ChangeType) =>
-    setEditPhoto({ [e.target.name]: e.target.value });
+  const change = (e: ChangeType) => {
+    const value =
+      e.target.name === 'typ' || e.target.name === 'rotate'
+        ? Number(e.target.value)
+        : e.target.value;
+    return setEditPhoto({ [e.target.name]: value });
+  };
 
   const form = useRef<HTMLFormElement>(null);
 
@@ -72,37 +77,35 @@ export const Formular = () => {
       color: 'lime',
     });
 
-    const FD = new FormData(formCurrent);
-
-    FD.append('fotoGalleryOwner', '_ubytovani');
-
     switch (action) {
       case 'create':
-        FD.delete('id');
-        addPhoto(FD, {
+        addPhoto(editPhoto, {
           onSuccess: () => {
-            setEditPhoto({ rotate: '0' });
+            setEditPhoto({ rotate: 0 });
             setAlert({ header: 'Foto přidáno', text: ':-)', color: 'lime' });
           },
         });
         break;
       case 'update':
-        updatePhoto(FD, {
+        updatePhoto(editPhoto, {
           onSuccess: () => {
             setImgPosition({
               reload: usePhotoGalleryStore.getState().imgPosition.reload + 1,
             });
-            setEditPhoto({ rotate: '0' });
+            setEditPhoto({ rotate: 0 });
             setAlert({ header: 'Foto upraveno', text: ':-)', color: 'lime' });
           },
         });
         break;
       case 'delete':
-        deletePhoto(FD, {
-          onSuccess: () => {
-            setAlert({ header: 'Foto smazáno', text: ':-)', color: 'lime' });
-          },
-        });
+        deletePhoto(
+          { id: editPhoto.id, fotoGalleryOwner: '_ubytovani' },
+          {
+            onSuccess: () => {
+              setAlert({ header: 'Foto smazáno', text: ':-)', color: 'lime' });
+            },
+          }
+        );
         break;
       default:
         break;
@@ -112,6 +115,8 @@ export const Formular = () => {
   if (!isSuccessCategoryNames && !categoryNamesData) {
     return null;
   }
+
+  console.log(editPhoto);
 
   return isCategory ? (
     <EditCategory
@@ -143,7 +148,7 @@ export const Formular = () => {
         <Select
           label='Kategorie'
           options={category}
-          value={editPhoto.typ}
+          value={Number(editPhoto.typ)}
           onChange={change}
           name='typ'
         />
@@ -182,8 +187,9 @@ export const Formular = () => {
         />
 
         <Input
+          enableSpin={true}
           label='otoceni vlevo o kolik stupňů'
-          value={editPhoto.rotate}
+          value={Number(editPhoto.rotate)}
           onChange={change}
           type='number'
           name='rotate'
@@ -228,6 +234,7 @@ export const Formular = () => {
 };
 
 const StyledForm = styled.div`
+  margin: auto;
   max-width: 600px;
   padding: 20px;
   display: flex;

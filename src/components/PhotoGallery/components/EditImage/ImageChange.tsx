@@ -55,10 +55,12 @@ export const ImageChange = ({ imgId }: ImageChangeType) => {
     reader.onloadstart = () => setIsLoading(true);
     reader.onloadend = () => setIsLoading(false);
     reader.onload = () => {
-      return setEditPhoto({
-        url: reader.result,
-        imgType: imgExtensionFromType(imgType),
-      });
+      if (typeof reader.result === 'string') {
+        return setEditPhoto({
+          url: reader.result,
+          imgType: imgExtensionFromType(imgType),
+        });
+      }
     };
   };
 

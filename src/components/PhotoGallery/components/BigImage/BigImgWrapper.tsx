@@ -125,11 +125,10 @@ const StyledBigImg = styled.main<BigImgWrapperType>`
       &::after {
         background-image: url(${($editPhoto?.url as string) ||
         `${Url.FOTOGALERIE}/${$bigPhoto.id}b.${$bigPhoto.imgType}?${$imgPosition.reload}`});
-        background-position: ${($editPhoto?.rotate === '0' &&
-          'top    center') ||
-        ($editPhoto?.rotate === '90' && 'center center') ||
-        ($editPhoto?.rotate === '180' && 'bottom center') ||
-        ($editPhoto?.rotate === '270' && 'center center')};
+        background-position: ${($editPhoto?.rotate === 0 && 'top    center') ||
+        ($editPhoto?.rotate === 90 && 'center center') ||
+        ($editPhoto?.rotate === 180 && 'bottom center') ||
+        ($editPhoto?.rotate === 270 && 'center center')};
         transform: rotate(${-($editPhoto?.rotate ?? 0)}deg);
       }
 

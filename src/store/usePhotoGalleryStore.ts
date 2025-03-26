@@ -29,7 +29,7 @@ export const usePhotoGalleryStore = create<PhotoGalleryStoreType>()(
         })
       ),
 
-    editPhoto: null,
+    editPhoto: { fotoGalleryOwner: '_ubytovani', rotate: 0 },
     setEditPhoto: (updatedValues: Partial<PhotoType>) =>
       set(
         produce((state) => {
@@ -41,7 +41,7 @@ export const usePhotoGalleryStore = create<PhotoGalleryStoreType>()(
     bigPhoto: null,
     eightPhoto: [],
     arrIndexFromImgId: (clickedImgId: number) => {
-      const { filteredPhoto } = get(); // Get the latest filteredPhoto
+      const { filteredPhoto } = get();
       return filteredPhoto.findIndex((img) => +img['id'] === clickedImgId);
     },
 

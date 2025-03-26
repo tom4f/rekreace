@@ -7,7 +7,7 @@ export type PhotoRequest = {
 };
 
 export interface PhotoType extends OnePhotoResponse {
-  url?: string | ArrayBuffer | null;
+  url?: string;
 }
 
 export type OnePhotoResponse = {
@@ -20,8 +20,9 @@ export type OnePhotoResponse = {
   header: string;
   insertDate: string;
   date: string;
-  rotate?: string;
+  rotate: number;
   imgType: string;
+  fotoGalleryOwner: string;
 };
 
 export type PhotoResponse = OnePhotoResponse[];

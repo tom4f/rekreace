@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const StyledInput = styled.div`
+export const StyledInput = styled.div<{ enableSpin?: boolean }>`
   text-align: left;
   background-color: rgba(0, 0, 0, 0.4);
   border-radius: 5px;
@@ -72,16 +72,20 @@ export const StyledInput = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
   }
 
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+  ${({ enableSpin }) =>
+    !enableSpin &&
+    `
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
 
-  input[type='number'] {
-    appearance: textfield;
-    -moz-appearance: textfield;
-  }
+      input[type='number'] {
+        appearance: textfield;
+        -moz-appearance: textfield;
+      }
+    `}
 
   input::-webkit-calendar-picker-indicator {
     background-color: aqua;
