@@ -2,7 +2,6 @@ import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input, Select, TextArea } from 'components/Atoms';
 import { useAlert } from 'features/alert';
-import { LoginResponse } from 'features/login';
 import {
   useAddPhoto,
   useDeletePhoto,
@@ -30,11 +29,7 @@ export type EditCategoryToggleType = (
   event: React.MouseEvent<HTMLButtonElement>
 ) => void;
 
-type FormularType = {
-  loginData: LoginResponse;
-};
-
-export const Formular = ({ loginData }: FormularType) => {
+export const Formular = () => {
   const { editPhoto, setEditPhoto } = usePhotoGalleryStore();
   const { setImgPosition } = usePhotoGalleryStore();
   const { data: categoryNamesData, isSuccess: isSuccessCategoryNames } =
@@ -79,9 +74,7 @@ export const Formular = ({ loginData }: FormularType) => {
 
     const FD = new FormData(formCurrent);
 
-    FD.append('webToken', loginData.webToken);
-    FD.append('webAccess', loginData.webAccess);
-    FD.append('webUser', loginData.webUser);
+    FD.append('fotoGalleryOwner', '_ubytovani');
 
     switch (action) {
       case 'create':

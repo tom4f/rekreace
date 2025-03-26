@@ -1,8 +1,8 @@
 import { Button } from 'components/Atoms';
-import { useLoginStatus } from 'features/login';
 import { LipnoKeyType, useGetLipno } from 'features/meteo';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from 'src/store';
 
 import { LipnoGraph, LipnoTable } from './';
 import { AddLipno } from './AddLipno';
@@ -18,7 +18,7 @@ export type EditMeteoType = {
 };
 export const ModifyLipno = () => {
   const navigate = useNavigate();
-  const { data: loginData } = useLoginStatus();
+  const { isLogged } = useAuthStore();
 
   const { data: pocasi, isSuccess } = useGetLipno({
     start: 0,
@@ -37,12 +37,12 @@ export const ModifyLipno = () => {
   });
 
   useEffect(() => {
-    if (!loginData.isLogged) {
+    if (!isLogged) {
       navigate('/bedrich');
     }
-  }, [loginData.isLogged, navigate]);
+  }, [isLogged, navigate]);
 
-  if (!isSuccess || !pocasi?.length || !loginData) {
+  if (!isSuccess || !pocasi?.length || !isLogged) {
     return null;
   }
 

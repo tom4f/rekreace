@@ -17,9 +17,7 @@ type AddPhotoRequestToDo = {
   rotate: string;
   imgType: string;
   upfile: string;
-  webToken: string;
-  webAccess: string;
-  webUser: string;
+  fotoGalleryOwner: string;
 };
 
 type AddPhotoRequest = FormData;

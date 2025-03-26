@@ -7,9 +7,6 @@ import { MeteoGetKey } from './useLoadWeather';
 
 type DeleteLipnoRequest = {
   datum: string;
-  webToken: string;
-  webUser: string;
-  fotoGalleryOwner: string;
 };
 
 type DeleteLipnoResponse = {

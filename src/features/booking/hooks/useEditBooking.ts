@@ -6,9 +6,6 @@ import { AxiosError } from 'axios';
 import { GET_BOOKING_KEY } from './useGetBooking';
 
 type EditBookingRequest = {
-  fotoGalleryOwner: string;
-  webToken: string;
-  webUser: string;
   g_number: number;
   g_status: number;
   g_text: string;

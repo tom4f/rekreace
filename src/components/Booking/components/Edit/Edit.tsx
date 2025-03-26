@@ -6,7 +6,7 @@ import {
   useEditBooking,
   useGetBooking,
 } from 'features/booking';
-import { StyledForm, StyledLogin, useLoginStatus } from 'features/login';
+import { StyledForm, StyledLogin } from 'features/login';
 import { useMemo, useRef, useState } from 'react';
 import { weekStartAt } from 'utils/weekStartAt';
 
@@ -29,8 +29,6 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
     data[weekArrIndex][`g${apartmentNr}_status`]
   );
 
-  const { data: loginData } = useLoginStatus();
-
   const showTermin = useMemo(() => {
     const actualWeek = weekStartAt().actualWeek;
     const weekModified = week < actualWeek ? week + 52 : week;
@@ -46,9 +44,6 @@ export const Edit = ({ week, apartmentNr, setIsEdit }: EditType) => {
     event.preventDefault();
 
     const formObject = {
-      fotoGalleryOwner: loginData?.webAccess || '',
-      webToken: loginData?.webToken || '',
-      webUser: loginData?.webUser || '',
       g_number: apartmentNr,
       g_status: gStatus,
       g_text: gText,

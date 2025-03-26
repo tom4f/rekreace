@@ -1,5 +1,4 @@
 import { Button, Input } from 'components/Atoms';
-import { useLoginStatus } from 'features/login';
 import { AddLipnoRequest, useAddLipno, useGetLipno } from 'features/meteo';
 import { useRef } from 'react';
 import { MeteoDates, useDateStore } from 'store/useMeteoStore';
@@ -19,7 +18,6 @@ export const AddLipno = ({ editMeteo, setEditMeteo }: AddLipnoType) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const { mutate } = useAddLipno();
-  const { data: loginData } = useLoginStatus();
   const { data: pocasiData } = useGetLipno({
     start: 0,
     limit: 1,
@@ -57,9 +55,6 @@ export const AddLipno = ({ editMeteo, setEditMeteo }: AddLipnoType) => {
       voda: parseFloat(formData.get('voda') as string),
       vzduch: parseFloat(formData.get('vzduch') as string),
       pocasi: formData.get('pocasi') as string,
-      webToken: loginData.webToken,
-      webUser: loginData.webUser,
-      fotoGalleryOwner: loginData.webAccess,
     };
 
     mutate(payload, {

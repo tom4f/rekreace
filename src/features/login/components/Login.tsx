@@ -4,12 +4,16 @@ import { Button, Header, Input } from 'components/Atoms';
 import { useAlert } from 'features/alert';
 import { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuthStore } from 'src/store';
 import styled from 'styled-components';
 
-import { LoginRequest, usePostLogin } from '../hooks';
+import { LoginRequest } from '../hooks';
+import { useJWTLogin } from '../hooks/useJWTLogin';
 
 export const Login = () => {
-  const { mutate } = usePostLogin();
+  // const { mutate } = usePostLogin();
+  const { mutate } = useJWTLogin();
+  const { isLogged } = useAuthStore();
   const { alert, setAlert } = useAlert();
 
   const form = useRef<HTMLFormElement>(null);
@@ -51,8 +55,8 @@ export const Login = () => {
     }
 
     mutate(object, {
-      onSuccess: (data) => {
-        if (!data.isLogged) {
+      onSuccess: () => {
+        if (!isLogged) {
           setAlert({
             header: 'Přihlášení se nepovedlo !',
             text: 'zkuste později...',

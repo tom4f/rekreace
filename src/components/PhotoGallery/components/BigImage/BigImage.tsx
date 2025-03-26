@@ -1,7 +1,7 @@
 import { Modal } from 'components/Modal';
-import { EditImage } from 'components/PhotoGallery';
+import { Formular } from 'components/PhotoGallery';
 import { useLocation } from 'react-router-dom';
-import { usePhotoGalleryStore } from 'src/store';
+import { useAuthStore } from 'src/store';
 
 import {
   BigImgWrapper,
@@ -13,7 +13,7 @@ import {
 
 export const BigImage = () => {
   const { pathname } = useLocation();
-  const { editPhoto } = usePhotoGalleryStore();
+  const { isLogged } = useAuthStore();
 
   return (
     <BigImgWrapper>
@@ -21,7 +21,7 @@ export const BigImage = () => {
       <ChangeImage />
       <Presentation />
       <CategoryList />
-      {pathname === '/fotogalerie/edit' && editPhoto && (
+      {pathname === '/fotogalerie/edit' && isLogged && (
         <Modal
           customStyle={{
             position: 'fixed',
@@ -31,7 +31,7 @@ export const BigImage = () => {
             transform: 'none',
           }}
         >
-          <EditImage />
+          <Formular />
         </Modal>
       )}
     </BigImgWrapper>

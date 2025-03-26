@@ -2,9 +2,9 @@ import './css/showTable.css';
 
 import { Modal } from 'components/Modal/Modal';
 import { skeletonBookingData, useGetBooking } from 'features/booking';
-import { useLoginStatus } from 'features/login';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAuthStore } from 'store/useAuthStore';
 import { weekStartAt } from 'utils/weekStartAt';
 
 import { Edit } from '../Edit';
@@ -13,7 +13,7 @@ export const ShowTable = () => {
   const [apartmentNr, setApartmentNr] = useState<1 | 2 | 3>();
   const [dbWeek, setDbWeek] = useState<number>();
   const [isEdit, setIsEdit] = useState(false);
-  const { data: loginData } = useLoginStatus();
+  const { isLogged } = useAuthStore();
 
   const {
     data: apiData,
@@ -27,7 +27,7 @@ export const ShowTable = () => {
   const data = isSuccess ? apiData : skeletonBookingData;
 
   const editTermin = (event: React.MouseEvent<HTMLTableCellElement>) => {
-    if (!loginData?.isLogged) return null;
+    if (!isLogged) return null;
     if (!event) return null;
     const clickedTd = event.target as HTMLTableCellElement;
     const childsTd = clickedTd.parentNode?.children;

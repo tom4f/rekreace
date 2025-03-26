@@ -2,13 +2,13 @@ import './css/status.css';
 
 import { Header } from 'components/Atoms';
 import { useGetBooking } from 'features/booking';
-import { useLoginStatus } from 'features/login';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useAuthStore } from 'src/store';
 
 import { ShowTable } from './ShowTable';
 
 export const Status = () => {
-  const { data: loginData } = useLoginStatus();
+  const { isLogged, user } = useAuthStore();
   const { pathname } = useLocation();
   const { isSuccess, data: formResult } = useGetBooking();
 
@@ -28,9 +28,7 @@ export const Status = () => {
     <>
       <Header>
         Aktuální obsazenost
-        {pathname === '/objednavka/edit' &&
-          loginData?.isLogged &&
-          ` - Uživatel: ${loginData?.webUser}`}
+        {pathname === '/objednavka/edit' && isLogged && ` - Uživatel: ${user}`}
       </Header>
       <div className='booking_status'>
         <ShowTable />

@@ -1,13 +1,13 @@
 import './css/main.css';
 
-import { useLoginStatus } from 'features/login/hooks';
 import React, { Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
+import { ProtectedRoute } from './components/Atoms';
 import { Bottom } from './components/Bottom/Bottom';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-import { Top } from './components/Top/Top';
-import { TopBedrich } from './components/Top/TopBedrich';
+import { Top, TopBedrich } from './components/Top';
+import { useAuthStore } from './store';
 
 type PagesModule = {
   [key: string]: React.FC;
@@ -36,7 +36,7 @@ const Windsurfing = lazyImport('Windsurfing');
 const Bedrich = lazyImport('Bedrich');
 
 export const App = () => {
-  const { data: loginData } = useLoginStatus();
+  const { isLogged } = useAuthStore();
   const { pathname, search } = useLocation();
   const isFullscreen =
     new URLSearchParams(search).get('fullscreen') === 'true' || false;
@@ -63,7 +63,7 @@ export const App = () => {
       }}
     >
       <ErrorBoundary fallback={<div>Custom Error Message</div>}>
-        {loginData?.isLogged && <TopBedrich />}
+        {isLogged && <TopBedrich />}
         {!hideTopBottom && <Top />}
         <Suspense
           fallback={<div style={{ color: 'white' }}>Loading index...</div>}
@@ -71,17 +71,21 @@ export const App = () => {
           <Routes>
             <Route path='/' element={<Start />} />
             <Route path='/apartmany' element={<Apartments />} />
-            <Route path='/objednavka/*' element={<Booking />} />
+            <Route path='/objednavka' element={<Booking />} />
             <Route path='/ceny' element={<Prices />} />
             <Route path='/kontakt' element={<Contact />} />
             <Route path='/frymburk' element={<Frymburk />} />
             <Route path='/meteostanice/*' element={<Meteo />} />
             <Route path='/forum' element={<Forum />} />
-            <Route path='/fotogalerie/*' element={<PhotoGallery />} />
+            <Route path='/fotogalerie' element={<PhotoGallery />} />
             <Route path='/meteoalarm' element={<MeteoAlarm />} />
             <Route path='/kaliste' element={<Kaliste />} />
             <Route path='/windsurfing' element={<Windsurfing />} />
             <Route path='/bedrich' element={<Bedrich />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path='/fotogalerie/edit' element={<PhotoGallery />} />
+              <Route path='/objednavka/edit' element={<Booking />} />
+            </Route>
           </Routes>
         </Suspense>
         {!hideTopBottom && <Bottom />}

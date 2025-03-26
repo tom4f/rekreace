@@ -17,6 +17,7 @@ import {
   UniversalGraphs,
 } from 'components/Meteo';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { ProtectedRoute } from 'src/components/Atoms';
 
 export const Meteo = () => {
   return (
@@ -58,7 +59,9 @@ export const Meteo = () => {
               </>
             }
           />
-          <Route path='edit' element={<ModifyLipno />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path='edit' element={<ModifyLipno />} />
+          </Route>
         </Route>
 
         <Route path='oldStation' element={<NavBarOldStation />}>

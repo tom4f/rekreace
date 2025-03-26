@@ -13,9 +13,6 @@ export type AddLipnoRequest = {
   voda: number;
   vzduch: number;
   pocasi: string;
-  webToken: string;
-  webUser: string;
-  fotoGalleryOwner: string;
 };
 
 type AddLipnoResponse = {

@@ -8,8 +8,7 @@ import { GET_PHOTO_KEY } from './useGetPhoto';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type DeletePhotoRequestToDo = {
   id: string;
-  webAccess: string;
-  webUser: string;
+  fotoGalleryOwner: string;
 };
 
 type DeletePhotoRequest = FormData;

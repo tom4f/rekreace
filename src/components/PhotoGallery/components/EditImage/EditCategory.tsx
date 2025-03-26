@@ -1,4 +1,3 @@
-import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Input } from 'components/Atoms';
 import { useAlert } from 'features/alert';
@@ -51,7 +50,7 @@ export const EditCategory = ({
       color: 'lime',
     });
     updateCategory(
-      { categoryNames, fotoGalleryOwner },
+      { categoryNames, fotoGalleryOwner: '_ubytovani' },
       {
         onSuccess: () => setAlert({ header: 'OK', text: ':-)', color: 'lime' }),
         onError: (err) =>

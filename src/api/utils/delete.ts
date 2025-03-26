@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useAuthStore } from 'src/store';
 
 interface Props {
   url: string;
@@ -14,10 +15,15 @@ export const apiDelete = <IResponse = any>({
   body = {},
 }: Props): Promise<AxiosResponse<IResponse>> =>
   new Promise((resolve, reject) => {
+    const token = useAuthStore.getState().token;
+
     axios
       .delete(url, {
         params: query,
         data: body,
+        headers: {
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
       })
       .then((response) => {
         resolve(response);

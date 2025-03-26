@@ -20,9 +20,6 @@ export type EditLipnoRequest = {
   datum: string;
   key: LipnoKeyType;
   value: string | number;
-  webToken: string;
-  webUser: string;
-  fotoGalleryOwner: string;
 };
 
 type EditLipnoResponse = {

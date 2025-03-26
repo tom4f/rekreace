@@ -1,22 +1,21 @@
 import { Modal } from 'components/Modal';
-import { Login, useLoginStatus, useLogout } from 'features/login';
+import { Login } from 'features/login';
+import { useAuthStore } from 'src/store';
 
 export const Bedrich = () => {
-  const { data: loginData, isSuccess } = useLoginStatus();
-  const { invalidateQuery, removeSession } = useLogout();
+  const { isLogged, user } = useAuthStore();
 
   const executeLogout = () => {
-    removeSession();
-    invalidateQuery();
+    useAuthStore.getState().logout();
   };
 
   return (
     <div>
-      {isSuccess && loginData.isLogged ? (
+      {isLogged ? (
         <div
           style={{ color: 'lime', textAlign: 'center', margin: '50px auto' }}
         >
-          {loginData.webUser} je úspěšně přihlášen
+          {user} je úspěšně přihlášen
           <br />
           <br />
           <button className='text-red-500' onClick={executeLogout}>

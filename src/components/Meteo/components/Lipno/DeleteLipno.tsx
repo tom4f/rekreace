@@ -1,5 +1,4 @@
 import { Button } from 'components/Atoms';
-import { useLoginStatus } from 'features/login';
 import { useDeleteLipno } from 'features/meteo';
 import { MeteoDates, useDateStore } from 'store/useMeteoStore';
 
@@ -10,17 +9,13 @@ import { ModifyLipnoModal } from './ModifyLipnoModal';
 export const DeleteLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
   const { updateDate } = useDateStore();
   const { mutate } = useDeleteLipno();
-  const { data: loginData } = useLoginStatus();
-  const { webToken, webUser } = loginData;
   const { editDate } = editMeteo;
-
-  const fotoGalleryOwner = '_ubytovani';
 
   const deleteLipno = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
     mutate(
-      { datum: editDate, webToken, webUser, fotoGalleryOwner },
+      { datum: editDate },
       {
         onSuccess: () => {
           updateDate(MeteoDates.LIPNO_DAILY, new Date());

@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import { useAuthStore } from 'src/store';
 
 interface Props {
   url: string;
@@ -13,10 +14,12 @@ export const apiPut = <IResponse = any>({
   data = {},
 }: Props): Promise<AxiosResponse<IResponse>> =>
   new Promise((resolve, reject) => {
+    const token = useAuthStore.getState().token;
+
     axios
       .put(url, data, {
         headers: {
-          'X-Requested-With': 'XMLHttpRequest',
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
       })
       .then((response) => {

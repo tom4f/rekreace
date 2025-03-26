@@ -1,5 +1,4 @@
 import { Button, Input } from 'components/Atoms';
-import { useLoginStatus } from 'features/login';
 import { EditLipnoRequest, useEditLipno } from 'features/meteo';
 import { useRef } from 'react';
 import { MeteoDates, useDateStore } from 'store/useMeteoStore';
@@ -18,7 +17,6 @@ export const EditLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
 
   const formRef = useRef<HTMLFormElement>(null);
   const { mutate } = useEditLipno();
-  const { data: loginData } = useLoginStatus();
   const { editDate, editKey, editValue } = editMeteo;
 
   const editLipno = (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,9 +34,6 @@ export const EditLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
       datum: editDate,
       key: editKey,
       value: editKey === 'pocasi' ? `${value}` : +value,
-      webToken: loginData.webToken,
-      webUser: loginData.webUser,
-      fotoGalleryOwner: loginData.webAccess,
     };
 
     mutate(payload, {
