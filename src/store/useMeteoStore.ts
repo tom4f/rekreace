@@ -1,6 +1,11 @@
 import { produce } from 'immer';
 import { create } from 'zustand';
-import { createJSONStorage, persist, PersistOptions } from 'zustand/middleware';
+import {
+  createJSONStorage,
+  devtools,
+  persist,
+  PersistOptions,
+} from 'zustand/middleware';
 
 const defaultDate: DateType = {
   davisDaily: new Date(),
@@ -13,36 +18,39 @@ const defaultDate: DateType = {
 export const LOCAL_STORAGE_KEY = 'date-storage';
 
 export const useDateStore = create(
-  persist<DateStore>(
-    (set) => ({
-      dates: defaultDate,
-      updateDate: (key, newDate) =>
-        set(
-          produce((state: DateStore) => {
-            state.dates[key] = newDate;
-          })
-        ),
-      resetDate: (key) =>
-        set(
-          produce((state: DateStore) => {
-            state.dates[key] =
-              key === MeteoDates.OLD_STATION_DAILY
-                ? new Date(2012, 7, 22)
-                : new Date();
-          })
-        ),
-    }),
-    {
-      name: LOCAL_STORAGE_KEY,
-      storage: createJSONStorage(() => localStorage, {
-        reviver: (_key, value) => {
-          if (typeof value === 'string' && !isNaN(Date.parse(value))) {
-            return new Date(value);
-          }
-          return value;
-        },
+  devtools(
+    persist<DateStore>(
+      (set) => ({
+        dates: defaultDate,
+        updateDate: (key, newDate) =>
+          set(
+            produce((state: DateStore) => {
+              state.dates[key] = newDate;
+            })
+          ),
+        resetDate: (key) =>
+          set(
+            produce((state: DateStore) => {
+              state.dates[key] =
+                key === MeteoDates.OLD_STATION_DAILY
+                  ? new Date(2012, 7, 22)
+                  : new Date();
+            })
+          ),
       }),
-    } as PersistOptions<DateStore>
+      {
+        name: LOCAL_STORAGE_KEY,
+        storage: createJSONStorage(() => localStorage, {
+          reviver: (_key, value) => {
+            if (typeof value === 'string' && !isNaN(Date.parse(value))) {
+              return new Date(value);
+            }
+            return value;
+          },
+        }),
+      } as PersistOptions<DateStore>
+    ),
+    { enabled: process.env.NODE_ENV !== 'production' }
   )
 );
 

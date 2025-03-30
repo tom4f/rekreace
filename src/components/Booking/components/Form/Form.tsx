@@ -1,15 +1,16 @@
 import styled from '@emotion/styled';
 import { AlertBox } from 'components/AlertBox/AlertBox';
-import { Modal } from 'components/Modal/Modal';
 // import { useSendBooking } from 'features/booking';
 import img604b from 'images/604b.jpg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Header, Input, Select, TextArea } from 'src/components/Atoms';
 import { useSendBookingGraphQL } from 'src/features/booking/hooks/useSendBookingGraphQL';
+import { useModalStore } from 'src/store';
 
 export const Form = () => {
   const [mutate, { data, error }] = useSendBookingGraphQL();
-  const [isModal, setIsModal] = useState(false);
+
+  const openModal = useModalStore((state) => state.openModal);
 
   const [formData, setFormData] = useState({
     apartment: 0,
@@ -26,43 +27,41 @@ export const Form = () => {
     antispam_code_orig: new Date().getMilliseconds(),
   });
 
+  useEffect(() => {
+    if (error || data?.sendBooking.message) {
+      setFormData((old) => ({
+        ...old,
+        antispam_code_orig: new Date().getMilliseconds(),
+      }));
+      openModal({
+        content: (
+          <AlertBox
+            alert={{
+              header: error ? 'Chyba' : 'V pořádku',
+              text:
+                error instanceof Error
+                  ? error.message
+                  : data?.sendBooking.message,
+              color: error ? 'red' : 'lime',
+            }}
+          />
+        ),
+      });
+    }
+  }, [data?.sendBooking.message, error, openModal]);
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       await mutate({ variables: { input: formData } });
-
-      setFormData((old) => ({
-        ...old,
-        antispam_code_orig: new Date().getMilliseconds(),
-      }));
-      setIsModal(true);
     } catch (errorResponse) {
       console.error({ errorResponse });
-
-      setFormData((old) => ({
-        ...old,
-        antispam_code_orig: new Date().getMilliseconds(),
-      }));
-      setIsModal(true);
     }
-  };
-
-  const alert = {
-    header: error ? 'Chyba' : 'V pořádku',
-    text: error instanceof Error ? error.message : data?.sendBooking.message,
-    color: error ? 'red' : 'lime',
   };
 
   return (
     <div id='1'>
-      {isModal && (
-        <Modal
-          customStyle={{ width: '500px', height: '300px' }}
-          setIsVisible={setIsModal}
-          children={<AlertBox alert={alert} />}
-        />
-      )}
       <Header>Závazná objednávka ubytování</Header>
       <FormWrapper
         autoComplete='off'

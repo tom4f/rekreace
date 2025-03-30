@@ -1,5 +1,10 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import {
+  createJSONStorage,
+  devtools,
+  persist,
+  PersistOptions,
+} from 'zustand/middleware';
 
 type AuthState = {
   token: string | null;
@@ -10,19 +15,26 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>()(
-  devtools((set) => ({
-    token: sessionStorage.getItem('authToken') || null,
-    isLogged: !!sessionStorage.getItem('authToken'),
-    user: null,
+  devtools(
+    persist(
+      (set) => ({
+        token: null,
+        isLogged: false,
+        user: null,
 
-    login: (token, user) => {
-      sessionStorage.setItem('authToken', token);
-      set({ token, isLogged: true, user });
-    },
+        login: (token, user) => {
+          set({ token, isLogged: true, user });
+        },
 
-    logout: () => {
-      sessionStorage.removeItem('authToken');
-      set({ token: null, isLogged: false, user: null });
-    },
-  }))
+        logout: () => {
+          set({ token: null, isLogged: false, user: null });
+        },
+      }),
+      {
+        name: 'authToken',
+        storage: createJSONStorage(() => sessionStorage),
+      } as PersistOptions<AuthState>
+    ),
+    { enabled: process.env.NODE_ENV !== 'production' }
+  )
 );

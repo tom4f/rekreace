@@ -37,16 +37,19 @@ const initialWebCamState: WebCamType = {
 };
 
 export const useWebCamStore = create<WebCamStoreType>()(
-  devtools((set) => ({
-    webCam: initialWebCamState,
-    updateWebCam: (updatedValues: Partial<WebCamType>) =>
-      set(
-        produce((state) => {
-          state.webCam = { ...state.webCam, ...updatedValues };
-        })
-      ),
-    resetWebCam: () => set(() => ({ webCam: initialWebCamState })),
-  }))
+  devtools(
+    (set) => ({
+      webCam: initialWebCamState,
+      updateWebCam: (updatedValues: Partial<WebCamType>) =>
+        set(
+          produce((state: WebCamStoreType) => {
+            state.webCam = { ...state.webCam, ...updatedValues };
+          })
+        ),
+      resetWebCam: () => set(() => ({ webCam: initialWebCamState })),
+    }),
+    { enabled: process.env.NODE_ENV !== 'production' }
+  )
 );
 
 export type WebCamStoreType = {

@@ -20,58 +20,61 @@ const initialImgPosition: ImgPositionType = {
 };
 
 export const usePhotoGalleryStore = create<PhotoGalleryStoreType>()(
-  devtools((set, get) => ({
-    imgPosition: initialImgPosition,
-    setImgPosition: (updatedValues: Partial<ImgPositionType>) =>
-      set(
-        produce((state) => {
-          state.imgPosition = { ...state.imgPosition, ...updatedValues };
-        })
-      ),
+  devtools(
+    (set, get) => ({
+      imgPosition: initialImgPosition,
+      setImgPosition: (updatedValues: Partial<ImgPositionType>) =>
+        set(
+          produce((state) => {
+            state.imgPosition = { ...state.imgPosition, ...updatedValues };
+          })
+        ),
 
-    editPhoto: { fotoGalleryOwner: '_ubytovani', rotate: 0 },
-    setEditPhoto: (updatedValues: Partial<UpdatePhotoRequest>) =>
-      set(
-        produce((state) => {
-          state.editPhoto = { ...state.editPhoto, ...updatedValues };
-        })
-      ),
+      editPhoto: { fotoGalleryOwner: '_ubytovani', rotate: 0 },
+      setEditPhoto: (updatedValues: Partial<UpdatePhotoRequest>) =>
+        set(
+          produce((state) => {
+            state.editPhoto = { ...state.editPhoto, ...updatedValues };
+          })
+        ),
 
-    filteredPhoto: [],
-    bigPhoto: null,
-    eightPhoto: [],
-    arrIndexFromImgId: (clickedImgId: number) => {
-      const { filteredPhoto } = get();
-      return filteredPhoto.findIndex((img) => +img['id'] === clickedImgId);
-    },
+      filteredPhoto: [],
+      bigPhoto: null,
+      eightPhoto: [],
+      arrIndexFromImgId: (clickedImgId: number) => {
+        const { filteredPhoto } = get();
+        return filteredPhoto.findIndex((img) => +img['id'] === clickedImgId);
+      },
 
-    updatePhotos: (allPhoto) =>
-      set(
-        produce((state) => {
-          if (!Array.isArray(allPhoto)) {
-            state.filteredPhoto = [];
-            state.bigPhoto = null;
-            state.eightPhoto = [];
-            return;
-          }
+      updatePhotos: (allPhoto) =>
+        set(
+          produce((state) => {
+            if (!Array.isArray(allPhoto)) {
+              state.filteredPhoto = [];
+              state.bigPhoto = null;
+              state.eightPhoto = [];
+              return;
+            }
 
-          const { category, current, smallImgStart, smallImgsSize } =
-            state.imgPosition;
+            const { category, current, smallImgStart, smallImgsSize } =
+              state.imgPosition;
 
-          state.filteredPhoto =
-            category === 99999
-              ? allPhoto
-              : allPhoto.filter((one) => +one['typ'] === category);
+            state.filteredPhoto =
+              category === 99999
+                ? allPhoto
+                : allPhoto.filter((one) => +one['typ'] === category);
 
-          state.bigPhoto = state.filteredPhoto[current] ?? null;
+            state.bigPhoto = state.filteredPhoto[current] ?? null;
 
-          state.eightPhoto = state.filteredPhoto.slice(
-            smallImgStart,
-            smallImgStart + smallImgsSize
-          );
-        })
-      ),
-  }))
+            state.eightPhoto = state.filteredPhoto.slice(
+              smallImgStart,
+              smallImgStart + smallImgsSize
+            );
+          })
+        ),
+    }),
+    { enabled: process.env.NODE_ENV !== 'production' }
+  )
 );
 
 export type PhotoGalleryStoreType = {

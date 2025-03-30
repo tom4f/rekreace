@@ -1,22 +1,25 @@
 import { Button, Input } from 'components/Atoms';
+import { useAlert } from 'features/alert';
 import { EditLipnoRequest, useEditLipno } from 'features/meteo';
 import { useRef } from 'react';
-import { MeteoDates, useDateStore } from 'store/useMeteoStore';
+import { AlertBox } from 'src/components/AlertBox/AlertBox';
+import { MeteoDates, useDateStore, useModalStore } from 'store';
 
-import { SetEditMeteoType } from '../TypeDefinition';
 import { EditMeteoType } from './ModifyLipno';
-import { ModifyLipnoModal } from './ModifyLipnoModal';
 
 export type ModifyLipnoType = {
   editMeteo: EditMeteoType;
-  setEditMeteo: SetEditMeteoType;
 };
 
-export const EditLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
+export const EditLipno = ({ editMeteo }: ModifyLipnoType) => {
   const { updateDate } = useDateStore();
-
+  const { alert, setAlert } = useAlert();
+  const closeModal = useModalStore((state) => state.closeModal);
   const formRef = useRef<HTMLFormElement>(null);
   const { mutate } = useEditLipno();
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const { editDate, editKey, editValue } = editMeteo;
 
   const editLipno = (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,37 +39,45 @@ export const EditLipno = ({ editMeteo, setEditMeteo }: ModifyLipnoType) => {
       value: editKey === 'pocasi' ? `${value}` : +value,
     };
 
-    mutate(payload, {
-      onSuccess: () => {
-        updateDate(MeteoDates.LIPNO_DAILY, new Date());
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-        setEditMeteo((orig: EditMeteoType) => ({
-          ...orig,
-          method: null,
-          methodResult: 'ok',
-        }));
+    mutate(payload, {
+      onSuccess: (successResponse) => {
+        updateDate(MeteoDates.LIPNO_DAILY, new Date());
+        setAlert({
+          header: 'v pořádku',
+          text: successResponse.result,
+          color: 'lime',
+        });
+        timeoutRef.current = setTimeout(closeModal, 2000);
       },
-      onError: () => {
-        setEditMeteo((orig: EditMeteoType) => ({
-          ...orig,
-          methodResult: 'error',
-        }));
+      onError: (errorResponse) => {
+        setAlert({
+          header: 'změna se neprovedla',
+          text: `${errorResponse.data.result} - ${errorResponse.status}`,
+          color: 'red',
+        });
       },
     });
   };
 
   return (
-    <ModifyLipnoModal editMeteo={editMeteo} setEditMeteo={setEditMeteo}>
-      <h4>Upravujete datum {editDate} </h4>
+    <div className='p-4'>
+      <h4 className='flex text-white justify-center'>
+        Upravujete datum {editDate}{' '}
+      </h4>
       <form ref={formRef} onSubmit={editLipno} autoComplete='off'>
-        <Input
-          label={editKey}
-          type='text'
-          name='value'
-          defaultValue={editValue}
-        />
-        <Button label='Odeslat' />
+        <div className='flex flex-wrap justify-center'>
+          <Input
+            label={editKey}
+            type='text'
+            name='value'
+            defaultValue={editValue}
+          />
+          <Button label='Odeslat' />
+        </div>
       </form>
-    </ModifyLipnoModal>
+      <AlertBox alert={alert} />
+    </div>
   );
 };

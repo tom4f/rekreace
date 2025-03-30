@@ -11,18 +11,17 @@ import {
   PeriodType,
   StepType,
   useDateStore,
+  useModalStore,
 } from 'store';
 import { getDateParts } from 'utils';
 
-import { EditMeteoType } from './';
+import { DeleteLipno } from './DeleteLipno';
+import { EditLipno } from './EditLipno';
 
-export const LipnoTable = ({
-  setEditMeteo,
-}: {
-  setEditMeteo?: React.Dispatch<React.SetStateAction<EditMeteoType>>;
-}) => {
+export const LipnoTable = () => {
   const { updateDate, resetDate } = useDateStore();
   const lipnoDaily = useDateStore((state) => state.dates.lipnoDaily);
+  const openModal = useModalStore((state) => state.openModal);
 
   const { data: loginData } = useLoginStatus();
 
@@ -47,7 +46,7 @@ export const LipnoTable = ({
 
   const editTermin = useCallback(
     (event: React.MouseEvent) => {
-      if (!setEditMeteo || !pocasi?.length) {
+      if (!pocasi?.length) {
         return null;
       }
       const clickedTd = event.target as Element;
@@ -79,17 +78,21 @@ export const LipnoTable = ({
 
       const { datum: editDate, [editKey]: editValue } = pocasi[clickedRowNr];
 
-      setEditMeteo((orig: EditMeteoType) => ({
-        ...orig,
-        editDate,
-        editKey,
-        editValue,
-        dispEdit: !!clicedEditColumnNr,
-        dispDelete: !clicedEditColumnNr,
-        method: clicedEditColumnNr ? 'edit' : 'delete',
-      }));
+      if (clicedEditColumnNr === 0) {
+        openModal({
+          content: <DeleteLipno editDate={editDate} />,
+          customStyle: { height: 'auto' },
+        });
+      }
+
+      if (clicedEditColumnNr > 0) {
+        openModal({
+          content: <EditLipno editMeteo={{ editDate, editKey, editValue }} />,
+          customStyle: { height: 'auto' },
+        });
+      }
     },
-    [setEditMeteo, pocasi]
+    [pocasi, openModal]
   );
 
   const setDate = (period: PeriodType, step: StepType) => {

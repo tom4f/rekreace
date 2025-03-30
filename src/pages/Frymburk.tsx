@@ -1,4 +1,3 @@
-import { Modal } from 'components/Modal';
 import frymburk_old1 from 'images/frymburk_old1.jpg';
 import frymburk_old1_small from 'images/frymburk_old1_small.jpg';
 import frymburk_old2 from 'images/frymburk_old2.jpg';
@@ -9,25 +8,23 @@ import kovarov from 'images/kovarov.jpg';
 import kovarov_b from 'images/kovarov_b.jpg';
 import kovarov1 from 'images/kovarov1.jpg';
 import { StyledImage, StyledSmallImage } from 'pages/Apartments';
-import { useState } from 'react';
+import { useModalStore } from 'src/store';
 
 export const Frymburk = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [imgUrl, setImgUrl] = useState('');
+  const openModal = useModalStore((state) => state.openModal);
 
   const showImage = (url: string) => {
-    setIsVisible(true);
-    setImgUrl(url);
+    openModal({
+      content: <StyledImage $url={url} />,
+      customStyle: {
+        maxWidth: '100%',
+        maxHeight: '100%',
+      },
+    });
   };
 
   return (
     <>
-      {isVisible && (
-        <Modal
-          setIsVisible={setIsVisible}
-          children={<StyledImage url={imgUrl} />}
-        />
-      )}
       <div className='header'>
         <b>Historie</b>
       </div>

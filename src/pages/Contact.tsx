@@ -7,20 +7,18 @@ import { Header } from 'components/Atoms';
 // MapMapLibreGl,
 // MapArcGISMap,
 //} from 'components/Contact';
-import { Modal } from 'components/Modal';
 import { SendMessageRequest, useSendMessage } from 'features/contact';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useModalStore } from 'src/store';
 
 export const Contact = () => {
   const { mutateAsync, isPending } = useSendMessage();
 
-  const [isModal, setIsModal] = useState(false);
+  const openModal = useModalStore((state) => state.openModal);
   const [currentTimestamp, setCurrentTimestamp] = useState(
     new Date().getMilliseconds()
   );
-
-  const [alert, setAlert] = useState({ header: '', text: '', color: 'red' });
 
   const {
     register,
@@ -39,19 +37,29 @@ export const Contact = () => {
       onSuccess: (succesResponse) => {
         setCurrentTimestamp(new Date().getMilliseconds());
         setValue('antispam_code_orig', currentTimestamp);
-        setIsModal(true);
-        setAlert({
-          header: 'V pořádku',
-          text: succesResponse.result,
-          color: 'lime',
+        openModal({
+          content: (
+            <AlertBox
+              alert={{
+                header: 'V pořádku',
+                text: succesResponse.result,
+                color: 'lime',
+              }}
+            />
+          ),
         });
       },
       onError: (errorResponse) => {
-        setIsModal(true);
-        setAlert({
-          header: 'Chyba',
-          text: errorResponse.response?.data.result,
-          color: 'red',
+        openModal({
+          content: (
+            <AlertBox
+              alert={{
+                header: 'Chyba',
+                text: errorResponse.response?.data.result,
+                color: 'red',
+              }}
+            />
+          ),
         });
         setCurrentTimestamp(new Date().getMilliseconds());
       },
@@ -60,17 +68,6 @@ export const Contact = () => {
 
   return (
     <>
-      {isModal && (
-        <Modal
-          customStyle={{ width: '500px', height: '300px' }}
-          setIsVisible={setIsModal}
-          children={
-            <>
-              <AlertBox alert={alert} />
-            </>
-          }
-        />
-      )}
       {/* <MapMapLibreGl /> */}
       <Header>Kontaktní informace</Header>
       <article className='address_and_formular'>

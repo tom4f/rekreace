@@ -1,5 +1,4 @@
 import { Url } from 'api/paths';
-import { Modal } from 'components/Modal';
 import g1 from 'images/g1.jpg';
 import g1b from 'images/g1b.jpg';
 import g2 from 'images/g2.jpg';
@@ -50,12 +49,12 @@ import z3 from 'images/z3.jpg';
 import z3b from 'images/z3b.jpg';
 import z4 from 'images/z4.jpg';
 import z4b from 'images/z4b.jpg';
-import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useModalStore } from 'src/store';
 import styled from 'styled-components';
 
-export const StyledImage = styled.div<{ url: string }>`
-  background: url(${(props) => props.url});
+export const StyledImage = styled.div<{ $url: string }>`
+  background: url(${(props) => props.$url});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top center;
@@ -92,22 +91,17 @@ const StyledText = styled.div`
 `;
 
 export const Apartments = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [imgUrl, setImgUrl] = useState('');
+  const openModal = useModalStore((state) => state.openModal);
 
   const showImage = (url: string) => {
-    setIsVisible(true);
-    setImgUrl(url);
+    openModal({
+      content: <StyledImage $url={url} />,
+      customStyle: { maxWidth: '100%', maxHeight: '100%' },
+    });
   };
 
   return (
     <>
-      {isVisible && (
-        <Modal
-          setIsVisible={setIsVisible}
-          children={<StyledImage url={imgUrl} />}
-        />
-      )}
       <div className='header'>
         <b>Ve třech apartmánech</b>
       </div>

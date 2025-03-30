@@ -6,6 +6,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { ProtectedRoute } from './components/Atoms';
 import { Bottom } from './components/Bottom/Bottom';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import { GlobalModal } from './components/Modal';
 import { Top, TopBedrich } from './components/Top';
 import { useAuthStore } from './store';
 
@@ -87,6 +88,7 @@ export const App = () => {
               <Route path='/objednavka/edit' element={<Booking />} />
             </Route>
           </Routes>
+          <GlobalModal />
         </Suspense>
         {!hideTopBottom && <Bottom />}
       </ErrorBoundary>

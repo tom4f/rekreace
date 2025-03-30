@@ -112,8 +112,6 @@ export const Formular = () => {
     return null;
   }
 
-  console.log(editPhoto);
-
   return isCategory ? (
     <EditCategory
       categoryNames={categoryNamesData}

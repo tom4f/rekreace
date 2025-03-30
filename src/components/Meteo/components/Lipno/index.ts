@@ -4,4 +4,3 @@ export * from './EditLipno';
 export * from './LipnoGraph';
 export * from './LipnoTable';
 export * from './ModifyLipno';
-export * from './ModifyLipnoModal';
