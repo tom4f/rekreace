@@ -16,10 +16,7 @@ export const Frymburk = () => {
   const showImage = (url: string) => {
     openModal({
       content: <StyledImage $url={url} />,
-      customStyle: {
-        maxWidth: '100%',
-        maxHeight: '100%',
-      },
+      customStyle: { maxWidth: '100%', height: '100%' },
     });
   };
 
