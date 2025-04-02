@@ -1,5 +1,6 @@
 import './css/main.css';
 
+import styled from '@emotion/styled';
 import React, { Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
@@ -8,16 +9,13 @@ import { Bottom } from './components/Bottom/Bottom';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { GlobalModal } from './components/Modal';
 import { Top, TopBedrich } from './components/Top';
+import { useFullscreen } from './features/meteo';
 import { useAuthStore } from './store';
-
-type PagesModule = {
-  [key: string]: React.FC;
-};
 
 const lazyImport = (componentName: string) => {
   return React.lazy(() =>
     import('pages').then((module) => ({
-      default: (module as PagesModule)[componentName],
+      default: (module as { [key: string]: React.FC })[componentName],
     }))
   );
 };
@@ -35,37 +33,19 @@ const PhotoGallery = lazyImport('PhotoGallery');
 const Prices = lazyImport('Prices');
 const Windsurfing = lazyImport('Windsurfing');
 const Bedrich = lazyImport('Bedrich');
+const Orders = lazyImport('Orders');
+const Order = lazyImport('Order');
 
 export const App = () => {
-  const { isLogged } = useAuthStore();
-  const { pathname, search } = useLocation();
-  const isFullscreen =
-    new URLSearchParams(search).get('fullscreen') === 'true' || false;
-  const hideTopBottom =
-    pathname === '/fotogalerie' ||
-    pathname === '/fotogalerie/edit' ||
-    (pathname === '/meteostanice/lipno/graphs' && isFullscreen) ||
-    (pathname === '/meteostanice/frymburk/week' && isFullscreen) ||
-    (pathname === '/meteostanice/frymburk/year' && isFullscreen) ||
-    (pathname === '/meteostanice/frymburk/table' && isFullscreen) ||
-    (pathname === '/meteostanice/oldStation/graphs' && isFullscreen) ||
-    pathname === '/meteoalarm';
+  const isLogged = useAuthStore().isLogged;
+  const pathname = useLocation().pathname;
+  const isFullscreen = useFullscreen().isFullscreen;
 
   return (
-    <div
-      style={{
-        maxWidth: `${hideTopBottom ? '100%' : '724px'}`,
-        margin: '0 auto',
-        fontFamily: `${
-          pathname === '/meteoalarm'
-            ? 'BenchNine, Arial, Helvetica, sans-serif'
-            : 'Verdana, Helvetica, sans-serif'
-        }`,
-      }}
-    >
+    <AppContainer isFullscreen={isFullscreen} pathname={pathname}>
       <ErrorBoundary fallback={<div>Custom Error Message</div>}>
         {isLogged && <TopBedrich />}
-        {!hideTopBottom && <Top />}
+        {!isFullscreen && <Top />}
         <Suspense
           fallback={<div style={{ color: 'white' }}>Loading index...</div>}
         >
@@ -86,12 +66,24 @@ export const App = () => {
             <Route element={<ProtectedRoute />}>
               <Route path='/fotogalerie/edit' element={<PhotoGallery />} />
               <Route path='/objednavka/edit' element={<Booking />} />
+              <Route path='/orders' element={<Orders />}>
+                <Route path=':id' element={<Order />} />
+              </Route>
             </Route>
           </Routes>
           <GlobalModal />
         </Suspense>
-        {!hideTopBottom && <Bottom />}
+        {!isFullscreen && <Bottom />}
       </ErrorBoundary>
-    </div>
+    </AppContainer>
   );
 };
+
+const AppContainer = styled.div<{ isFullscreen: boolean; pathname: string }>`
+  max-width: ${(props) => (props.isFullscreen ? '100%' : '724px')};
+  margin: 0 auto;
+  font-family: ${(props) =>
+    props.pathname === '/meteoalarm'
+      ? 'BenchNine, Arial, Helvetica, sans-serif'
+      : 'Verdana, Helvetica, sans-serif'};
+`;

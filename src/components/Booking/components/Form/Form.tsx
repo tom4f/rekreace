@@ -2,67 +2,176 @@ import styled from '@emotion/styled';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 // import { useSendBooking } from 'features/booking';
 import img604b from 'images/604b.jpg';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Button, Header, Input, Select, TextArea } from 'src/components/Atoms';
+import {
+  Order,
+  SendBookingRequest,
+  useUpdateBookingGraphQL,
+} from 'src/features/booking';
 import { useSendBookingGraphQL } from 'src/features/booking/hooks/useSendBookingGraphQL';
 import { useModalStore } from 'src/store';
 
-export const Form = () => {
-  const [mutate, { data, error }] = useSendBookingGraphQL();
+const commonData = {
+  apartment: 0,
+  persons: 0,
+  check_in: '',
+  check_out: '',
+  email: '',
+  phone: '',
+  name: '',
+  confirm_via: '',
+  address: '',
+  info: '',
+};
+
+const createData: SendBookingRequest = {
+  ...commonData,
+  antispam_code: 0,
+  antispam_code_orig: new Date().getMilliseconds(),
+};
+
+const defaultUpdateData: Order = {
+  ...commonData,
+  id: 0,
+  order_status: 'new',
+  created_at: '',
+  __typename: '',
+};
+
+type FormType = {
+  updateData?: Order;
+};
+
+type FormMode = 'new' | 'update';
+
+export const Form = ({ updateData }: FormType) => {
+  const { pathname } = useLocation();
+  const [sendBooking, { data, error }] = useSendBookingGraphQL();
+  const [updateBooking, { data: updateDataResp, error: updateError }] =
+    useUpdateBookingGraphQL();
+  const isOrdersUrl = pathname.startsWith('/orders');
 
   const openModal = useModalStore((state) => state.openModal);
 
-  const [formData, setFormData] = useState({
-    apartment: 0,
-    persons: 0,
-    check_in: '',
-    check_out: '',
-    email: '',
-    phone: '',
-    name: '',
-    confirm_via: '',
-    address: '',
-    info: '',
-    antispam_code: 0,
-    antispam_code_orig: new Date().getMilliseconds(),
+  const [formMode, setFormMode] = useState<FormMode>(
+    isOrdersUrl ? 'update' : 'new'
+  );
+  const [formData, setFormData] = useState<SendBookingRequest | Order>(
+    isOrdersUrl ? defaultUpdateData : createData
+  );
+
+  const prevValues = useRef({
+    formMode,
   });
 
   useEffect(() => {
-    if (error || data?.sendBooking.message) {
-      setFormData((old) => ({
-        ...old,
-        antispam_code_orig: new Date().getMilliseconds(),
-      }));
-      openModal({
-        content: (
-          <AlertBox
-            alert={{
-              header: error ? 'Chyba' : 'V pořádku',
-              text:
-                error instanceof Error
-                  ? error.message
-                  : data?.sendBooking.message,
-              color: error ? 'red' : 'lime',
-            }}
-          />
-        ),
-      });
+    if (prevValues.current.formMode == formMode) {
+      if (formMode === 'new' && (error || data?.sendBooking.message)) {
+        openModal({
+          content: (
+            <AlertBox
+              alert={{
+                header: error ? 'Chyba' : 'V pořádku',
+                text:
+                  error instanceof Error
+                    ? error?.message
+                    : data?.sendBooking.message,
+                color: error ? 'red' : 'lime',
+              }}
+            />
+          ),
+        });
+        setFormData((old) => ({
+          ...old,
+          antispam_code_orig: new Date().getMilliseconds(),
+        }));
+      }
+
+      if (
+        formMode === 'update' &&
+        (updateError || updateDataResp?.updateBooking.message)
+      ) {
+        openModal({
+          content: (
+            <AlertBox
+              alert={{
+                header:
+                  (updateError && 'Chyba') ||
+                  (updateDataResp?.updateBooking.message && 'V pořádku'),
+                text:
+                  updateError instanceof Error
+                    ? updateError?.message
+                    : updateDataResp?.updateBooking.message,
+                color: updateError ? 'red' : 'lime',
+              }}
+            />
+          ),
+        });
+      }
     }
-  }, [data?.sendBooking.message, error, openModal]);
+    prevValues.current = {
+      formMode,
+    };
+  }, [data, updateDataResp, error, updateError, formMode, openModal]);
+
+  useEffect(() => {
+    if (formMode === 'update') {
+      if (isOrdersUrl && updateData && Object.keys(updateData).length > 0) {
+        setFormData(updateData);
+      }
+    } else {
+      setFormData(createData);
+    }
+  }, [updateData, isOrdersUrl, formMode]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      await mutate({ variables: { input: formData } });
+      if (formMode === 'update' && 'id' in formData) {
+        const updatedData = { ...formData };
+        delete updatedData.__typename;
+        await updateBooking({ variables: { input: updatedData } });
+      }
+
+      if (formMode === 'new' && 'antispam_code' in formData) {
+        await sendBooking({ variables: { input: formData } });
+      }
     } catch (errorResponse) {
       console.error({ errorResponse });
     }
   };
 
+  const toggleMode = () =>
+    setFormMode((prev) => (prev === 'new' ? 'update' : 'new'));
+
   return (
     <div id='1'>
-      <Header>Závazná objednávka ubytování</Header>
+      {isOrdersUrl && (
+        <>
+          {' '}
+          <Button
+            style={{ margin: '20px' }}
+            label={
+              formMode === 'new'
+                ? 'Přepnout na úpravu objednávky'
+                : 'Přepnout na vytvoření nové objednávky'
+            }
+            onClick={toggleMode}
+            variant={formMode === 'update' ? 'primary' : 'secondary'}
+          />
+        </>
+      )}
+      <Header>
+        {isOrdersUrl && formMode === 'update'
+          ? `Upravujete (${'id' in formData ? formData.id : 'N/A'}) ${
+              formData.name
+            }`
+          : 'Závazná objednávka ubytování'}
+      </Header>
+
       <FormWrapper
         autoComplete='off'
         onSubmit={(e) => onSubmit(e)}
@@ -217,7 +326,7 @@ export const Form = () => {
 
         <TextArea
           label='Váš komentář:'
-          value={formData.info}
+          value={formData?.info ?? ''}
           onChange={(e) =>
             setFormData((old) => ({
               ...old,
@@ -230,28 +339,55 @@ export const Form = () => {
           name='info'
         />
 
-        <Input
-          label={`Opište kód : ${formData.antispam_code_orig}`}
-          required
-          type='number'
-          name='antispam_code'
-          value={formData.antispam_code || ''}
-          onChange={(e) =>
-            setFormData((old) => ({
-              ...old,
-              antispam_code: +e.target.value,
-            }))
-          }
-          placeholder='sem kód'
-          size={5}
-        />
+        {formMode === 'new' && 'antispam_code_orig' in formData && (
+          <>
+            {' '}
+            <Input
+              label={`Opište kód : ${formData.antispam_code_orig}`}
+              required
+              type='number'
+              name='antispam_code'
+              value={formData.antispam_code || ''}
+              onChange={(e) =>
+                setFormData((old) => ({
+                  ...old,
+                  antispam_code: +e.target.value,
+                }))
+              }
+              placeholder='sem kód'
+              size={5}
+            />
+            <input
+              type='hidden'
+              name='antispam_code_orig'
+              value={formData.antispam_code_orig}
+            />
+          </>
+        )}
 
-        <input
-          type='hidden'
-          name='antispam_code_orig'
-          value={formData.antispam_code_orig}
+        {formMode === 'update' && 'order_status' in formData && (
+          <Select
+            name='order_status'
+            onChange={(e) =>
+              setFormData((old) => ({
+                ...old,
+                order_status: e.target.value as Order['order_status'],
+              }))
+            }
+            value={formData.order_status}
+            label='Stav:'
+            options={[
+              { value: 'new', label: 'nová' },
+              { value: 'confirmed', label: 'potvrzeno' },
+              { value: 'canceled', label: 'zrušeno' },
+              { value: 'completed', label: 'uskutečněno' },
+            ]}
+          />
+        )}
+        <Button
+          name={formMode === 'new' ? 'new' : 'update'}
+          label={formMode === 'new' ? 'Odeslat' : 'Upravit'}
         />
-        <Button name='odesli' label='Odeslat' />
       </FormWrapper>
     </div>
   );

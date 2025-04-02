@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/react';
 import axios, { AxiosError, AxiosRequestConfig, isAxiosError } from 'axios';
 
-type PostErrorType = {
+type GetErrorType = {
   status: string;
   message: string;
   type: string;
@@ -18,7 +18,7 @@ export async function apiGet({ url, ...config }: GetRequestConfig) {
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
-      const err: AxiosError<PostErrorType> = error;
+      const err: AxiosError<GetErrorType> = error;
 
       Sentry.withScope((scope) => {
         scope.setTag('http_method', 'GET');

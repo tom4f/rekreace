@@ -1,28 +1,13 @@
-import { NavLink } from 'react-router-dom';
+import { CustomNavLink, Header } from 'components/Atoms';
 
 export const TopBedrich = () => {
   return (
-    <div className='header' style={{ backgroundColor: 'red' }}>
-      Editace:{' '}
-      <NavLink className='menu' to='/fotogalerie/edit'>
-        {' '}
-        Fotogalerie
-      </NavLink>{' '}
-      |
-      <NavLink className='menu' to='/objednavka/edit'>
-        {' '}
-        Obsazenost
-      </NavLink>{' '}
-      |
-      <NavLink className='menu' to='/meteostanice/lipno/edit'>
-        {' '}
-        MeteoData
-      </NavLink>{' '}
-      |
-      <NavLink className='menu' to='/bedrich'>
-        {' '}
-        Bedřich
-      </NavLink>{' '}
-    </div>
+    <Header className='flex flex-wrap justify-center [&>*]:px-2 !bg-amber-600'>
+      <CustomNavLink to='/orders' header='Objednávky' />
+      <CustomNavLink to='/fotogalerie/edit' header='Fotogalerie' />
+      <CustomNavLink to='/objednavka/edit' header='Obsazenost' />
+      <CustomNavLink to='/meteostanice/lipno/edit' header='MeteoData' />
+      <CustomNavLink to='/bedrich' header='Bedřich' />{' '}
+    </Header>
   );
 };

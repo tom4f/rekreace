@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
+import { Header } from 'src/components/Atoms';
 
 export const FullscreenHeader = () => {
   const { search } = useLocation();
@@ -15,11 +16,11 @@ export const FullscreenHeader = () => {
     ? 'fas fa-compress-arrows-alt'
     : 'fas fa-expand-arrows-alt';
   return (
-    <header id='detail_graphs' className='header'>
+    <Header id='detail_graphs' className='header'>
       <NavLink className='menu' to={toggleFullscreen}>
         HISTORIE - dynamické grafy - {toggleText}&nbsp;
         <i className={toggleClassName}></i>
       </NavLink>
-    </header>
+    </Header>
   );
 };

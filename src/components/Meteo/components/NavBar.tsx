@@ -1,11 +1,11 @@
 import { Header } from 'components/Atoms';
 import { MeteoNavLink } from 'components/Atoms/CustomNavLink/CustomNavLink';
-import { useIsFullscreen } from 'features/meteo';
+import { useFullscreen } from 'features/meteo';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const NavBar = () => {
-  const isFullscreen = useIsFullscreen();
+  const { isFullscreen } = useFullscreen();
 
   if (isFullscreen) return null;
 
@@ -22,7 +22,7 @@ export const NavBar = () => {
 };
 
 export const NavBarDavis = () => {
-  const isFullscreen = useIsFullscreen();
+  const { isFullscreen } = useFullscreen();
 
   if (isFullscreen) return <Outlet />;
 
@@ -40,7 +40,7 @@ export const NavBarDavis = () => {
 };
 
 export const NavBarLipno = () => {
-  const isFullscreen = useIsFullscreen();
+  const { isFullscreen } = useFullscreen();
 
   if (isFullscreen) return <Outlet />;
 
@@ -56,7 +56,7 @@ export const NavBarLipno = () => {
 };
 
 export const NavBarOldStation = () => {
-  const isFullscreen = useIsFullscreen();
+  const isFullscreen = useFullscreen();
 
   if (isFullscreen) return <Outlet />;
 

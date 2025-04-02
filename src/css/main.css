@@ -10,34 +10,3 @@ body {
 * {
   box-sizing: border-box;
 }
-
-.header {
-  margin: 5px 0;
-  background: #555555;
-  text-align: center;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  clear: both;
-
-  a {
-    color: White;
-    text-decoration: none;
-
-    &:hover {
-      color: Lime;
-      text-decoration: none;
-    }
-  }
-}
-
-.text {
-  text-align: justify;
-  padding: 1vw 2vw 2vw 2vw;
-  background: #ff9933;
-  color: black;
-}
-
-.menu {
-  text-decoration: underline;
-}
