@@ -3,12 +3,16 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+import { Input } from 'components/Atoms';
+import { Order, useGetOrdersGraphQL } from 'features/booking';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Order, useGetOrdersGraphQL } from 'src/features/booking';
 
 export const OrdersTable = () => {
   const { data: orders, loading, error } = useGetOrdersGraphQL();
@@ -18,6 +22,9 @@ export const OrdersTable = () => {
     pageIndex: 0,
     pageSize: 5,
   });
+
+  const [globalFilter, setGlobalFilter] = useState('');
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const columns: ColumnDef<Order>[] = [
     { accessorKey: 'id', header: 'ID', size: 50 },
@@ -37,8 +44,14 @@ export const OrdersTable = () => {
     getPaginationRowModel: getPaginationRowModel(),
     state: {
       pagination,
+      globalFilter,
+      sorting,
     },
     onPaginationChange: setPagination,
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: 'includesString',
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
   });
 
   if (loading) return <p>Loading orders...</p>;
@@ -50,17 +63,32 @@ export const OrdersTable = () => {
   };
 
   return (
-    <div>
+    <div className='flex flex-wrap justify-center'>
+      <Input
+        style={{ width: '130px' }}
+        label='Hledej'
+        placeholder='hledaný text'
+        value={globalFilter ?? ''}
+        onChange={(e) => setGlobalFilter(e.target.value)}
+      />
       <StyledTable>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} style={{ width: header.getSize() }}>
+                <th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  style={{ cursor: 'pointer' }}
+                >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
                   )}
+                  {{
+                    asc: ' 🔼',
+                    desc: ' 🔽',
+                  }[header.column.getIsSorted() as string] ?? null}
                 </th>
               ))}
             </tr>
@@ -68,23 +96,20 @@ export const OrdersTable = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => {
-            const isSelected = location.pathname.includes(
-              `/orders/${row.original.id}`
-            );
+            const { id } = row.original;
+
             return (
-              <tr
-                key={row.original.id}
-                style={{
-                  backgroundColor: isSelected ? 'cadetblue' : 'transparent',
-                }}
-                onClick={() => showOrder(row.original.id)}
+              <StyledTr
+                key={id}
+                isSelected={location.pathname.includes(`/orders/${id}`)}
+                onClick={() => showOrder(id)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
-              </tr>
+              </StyledTr>
             );
           })}
         </tbody>
@@ -96,7 +121,7 @@ export const OrdersTable = () => {
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          {'<--'}předchozí
+          {'◀-- '}předchozí
         </button>
         <span>
           [stránka {pagination.pageIndex + 1} z {table.getPageCount()}]
@@ -106,7 +131,7 @@ export const OrdersTable = () => {
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          další{'-->'}
+          další{' --▶'}
         </button>
       </PaginationContainer>
     </div>
@@ -133,13 +158,6 @@ const StyledTable = styled.table`
     text-overflow: ellipsis;
   }
 
-  tr {
-    &:hover {
-      background-color: cadetblue;
-      cursor: pointer;
-    }
-  }
-
   th {
     background-color: green;
   }
@@ -150,4 +168,14 @@ const PaginationContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 10px;
+`;
+
+const StyledTr = styled.tr<{ isSelected?: boolean }>`
+  background-color: ${({ isSelected }) =>
+    isSelected ? 'cadetblue' : 'transparent'};
+
+  &:hover {
+    background-color: cadetblue;
+    cursor: pointer;
+  }
 `;

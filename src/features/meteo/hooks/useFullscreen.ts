@@ -28,7 +28,5 @@ export const useFullscreen = () => {
     isOrdersDetail ||
     (conditionalFullscreenPaths.includes(pathname) && isFullscreenSearch);
 
-  console.log(pathname);
-
   return { isFullscreen, isFullscreenSearch };
 };

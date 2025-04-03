@@ -234,9 +234,7 @@ export const Apartments = () => {
         v jednotlivých apartmánech umožňuje dlouhodobou rekreaci.
       </StyledText>
 
-      <div id='g1' className='header'>
-        <b>Apartmán č.1</b>
-      </div>
+      <Header id='g1'>Apartmán č.1</Header>
       <StyledText>
         <SyledApartmentPlanImage
           src={garsonka1_planek}
@@ -291,9 +289,7 @@ export const Apartments = () => {
         />
       </StyledText>
 
-      <div id='g2' className='header'>
-        <b>Apartmán č.2</b>
-      </div>
+      <Header id='g2'>Apartmán č.2</Header>
 
       <StyledText>
         <SyledApartmentPlanImage
@@ -352,9 +348,7 @@ export const Apartments = () => {
         />
       </StyledText>
 
-      <div id='g3' className='header'>
-        <b>Apartmán č.3</b>
-      </div>
+      <Header id='g3'>Apartmán č.3</Header>
 
       <StyledText>
         <SyledApartmentPlanImage
@@ -437,9 +431,7 @@ export const Apartments = () => {
         />
       </StyledText>
 
-      <div id='vybaveni' className='header'>
-        <b>Vybavení</b>
-      </div>
+      <Header id='vybaveni'>Vybavení</Header>
 
       <StyledText>
         <ul>
@@ -478,9 +470,7 @@ export const Apartments = () => {
         </ul>
       </StyledText>
 
-      <div id='zahrada' className='header'>
-        <b>Zahrada</b>
-      </div>
+      <Header id='zahrada'>Zahrada</Header>
 
       <StyledText>
         <div onClick={() => showImage(z2b)}>

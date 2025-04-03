@@ -16,7 +16,7 @@ export const FullscreenHeader = () => {
     ? 'fas fa-compress-arrows-alt'
     : 'fas fa-expand-arrows-alt';
   return (
-    <Header id='detail_graphs' className='header'>
+    <Header id='detail_graphs'>
       <NavLink className='menu' to={toggleFullscreen}>
         HISTORIE - dynamické grafy - {toggleText}&nbsp;
         <i className={toggleClassName}></i>

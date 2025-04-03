@@ -100,9 +100,9 @@ export const Frymburk = () => {
         motorová vozidla).
       </div>
 
-      <div id='lipno' className='header'>
+      <Header id='lipno'>
         <b>Vodní nádrž Lipno</b>
-      </div>
+      </Header>
       <div className='text'>
         <div onClick={() => showImage(kovarov_b)}>
           <StyledSmallImage

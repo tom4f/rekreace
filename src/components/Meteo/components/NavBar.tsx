@@ -56,7 +56,7 @@ export const NavBarLipno = () => {
 };
 
 export const NavBarOldStation = () => {
-  const isFullscreen = useFullscreen();
+  const { isFullscreen } = useFullscreen();
 
   if (isFullscreen) return <Outlet />;
 
