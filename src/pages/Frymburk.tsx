@@ -8,6 +8,7 @@ import kovarov from 'images/kovarov.jpg';
 import kovarov_b from 'images/kovarov_b.jpg';
 import kovarov1 from 'images/kovarov1.jpg';
 import { StyledImage, StyledSmallImage } from 'pages/Apartments';
+import { Header } from 'src/components/Atoms';
 import { useModalStore } from 'src/store';
 
 export const Frymburk = () => {
@@ -22,9 +23,7 @@ export const Frymburk = () => {
 
   return (
     <>
-      <div className='header'>
-        <b>Historie</b>
-      </div>
+      <Header>Historie</Header>
       <div className='text'>
         <div onClick={() => showImage(frymburk_old1)}>
           <StyledSmallImage
@@ -80,9 +79,7 @@ export const Frymburk = () => {
         nejstarší v Čechách.
       </div>
 
-      <div className='header'>
-        <b>Současnot</b>
-      </div>
+      <Header>Současnot</Header>
       <div className='text'>
         <b>FRYMBURK</b> - někdejší celkem neznámé městečko při dolní části
         Lipenského přehradního jezera se po výstavbě Lipna stalo vyhledávaným

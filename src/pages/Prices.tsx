@@ -1,13 +1,12 @@
 import parking from 'images/parking.gif';
 import pes from 'images/pes.jpg';
 import wiFi from 'images/wi-fi.gif';
+import { Header } from 'src/components/Atoms';
 
 export const Prices = () => {
   return (
     <>
-      <div className='header'>
-        <b>Ceny</b>
-      </div>
+      <Header>Ceny</Header>
       <div className='text'>
         <table className='max-w-4xl w-11/12 text-center [&_td]:border [&_td]:border-gray-500'>
           <thead>
@@ -66,9 +65,7 @@ export const Prices = () => {
         </table>
       </div>
 
-      <div className='header'>
-        <b>Storno poplatky</b>
-      </div>
+      <Header>Storno poplatky</Header>
       <div className='text'>
         <table className='max-w-4xl w-11/12 text-center [&_td]:border [&_td]:border-gray-500'>
           <tbody>
@@ -93,9 +90,7 @@ export const Prices = () => {
         </table>
       </div>
 
-      <div className='header'>
-        <b>Další informace</b>
-      </div>
+      <Header>Další informace</Header>
       <div className='text'>
         <div className='max-w-4xl w-11/12 text-center'>
           Z důvodu bezpečí našich hostů neumožňujeme pobyt domácích zvířat.

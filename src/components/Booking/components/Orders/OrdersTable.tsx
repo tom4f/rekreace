@@ -3,8 +3,10 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Order, useGetOrdersGraphQL } from 'src/features/booking';
 
@@ -12,27 +14,31 @@ export const OrdersTable = () => {
   const { data: orders, loading, error } = useGetOrdersGraphQL();
   const navigate = useNavigate();
 
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
   const columns: ColumnDef<Order>[] = [
     { accessorKey: 'id', header: 'ID', size: 50 },
     { accessorKey: 'apartment', header: 'Apartment', size: 50 },
     { accessorKey: 'persons', header: 'Persons', size: 50 },
     { accessorKey: 'check_in', header: 'Check-In', size: 100 },
     { accessorKey: 'check_out', header: 'Check-Out', size: 100 },
-    // { accessorKey: 'email', header: 'Email', size: 200 },
-    // { accessorKey: 'phone', header: 'Phone', size: 150 },
     { accessorKey: 'name', header: 'Name', size: 100 },
-    //{ accessorKey: 'confirm_via', header: 'Confirm', size: 100 },
-    // { accessorKey: 'address', header: 'Address', size: 300 },
-    //{ accessorKey: 'info', header: 'Info', size: 200 },
     { accessorKey: 'created_at', header: 'Created At', size: 150 },
     { accessorKey: 'order_status', header: 'Status', size: 70 },
   ];
 
   const table = useReactTable({
-    data: orders,
+    data: orders || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
-    columnResizeMode: 'onChange',
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
   });
 
   if (loading) return <p>Loading orders...</p>;
@@ -44,33 +50,66 @@ export const OrdersTable = () => {
   };
 
   return (
-    <StyledTable>
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th key={header.id} style={{ width: header.getSize() }}>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.original.id} onClick={() => showOrder(row.original.id)}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </StyledTable>
+    <div>
+      <StyledTable>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} style={{ width: header.getSize() }}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => {
+            const isSelected = location.pathname.includes(
+              `/orders/${row.original.id}`
+            );
+            return (
+              <tr
+                key={row.original.id}
+                style={{
+                  backgroundColor: isSelected ? 'cadetblue' : 'transparent',
+                }}
+                onClick={() => showOrder(row.original.id)}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </StyledTable>
+
+      <PaginationContainer>
+        <button
+          style={{ cursor: 'pointer' }}
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<--'}předchozí
+        </button>
+        <span>
+          [stránka {pagination.pageIndex + 1} z {table.getPageCount()}]
+        </span>
+        <button
+          style={{ cursor: 'pointer' }}
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          další{'-->'}
+        </button>
+      </PaginationContainer>
+    </div>
   );
 };
 
@@ -104,4 +143,11 @@ const StyledTable = styled.table`
   th {
     background-color: green;
   }
+`;
+
+const PaginationContainer = styled.div`
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 `;

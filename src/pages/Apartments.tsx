@@ -50,6 +50,7 @@ import z3b from 'images/z3b.jpg';
 import z4 from 'images/z4.jpg';
 import z4b from 'images/z4b.jpg';
 import { NavLink } from 'react-router-dom';
+import { Header } from 'src/components/Atoms';
 import { useModalStore } from 'src/store';
 import styled from 'styled-components';
 
@@ -102,9 +103,7 @@ export const Apartments = () => {
 
   return (
     <>
-      <div className='header'>
-        <b>Ve třech apartmánech</b>
-      </div>
+      <Header>Ve třech apartmánech</Header>
       <StyledText>
         <div onClick={() => showImage(`${Url.FOTOGALERIE}/484b.jpg`)}>
           <StyledSmallImage
@@ -161,9 +160,7 @@ export const Apartments = () => {
         </b>
       </StyledText>
 
-      <div className='header'>
-        <b>Po celý rok</b>
-      </div>
+      <Header>Po celý rok</Header>
       <StyledText>
         <div onClick={() => showImage(`${Url.FOTOGALERIE}/483b.jpg`)}>
           <StyledSmallImage
@@ -213,9 +210,7 @@ export const Apartments = () => {
         třech apartmánech pro celkem 10 osob.
       </StyledText>
 
-      <div className='header'>
-        <b>Vybavení</b>
-      </div>
+      <Header>Vybavení</Header>
       <StyledText>
         <div onClick={() => showImage(`${Url.FOTOGALERIE}/483b.jpg`)}>
           <StyledSmallImage
@@ -475,9 +470,7 @@ export const Apartments = () => {
         </ul>
       </StyledText>
 
-      <div className='header'>
-        <b>Služby za úplatu</b>
-      </div>
+      <Header>Služby za úplatu</Header>
 
       <StyledText>
         <ul>

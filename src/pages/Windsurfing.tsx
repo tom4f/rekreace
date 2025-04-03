@@ -8,13 +8,12 @@ import revir_7 from 'images/revir_7.jpg';
 import revir_8 from 'images/revir_8.jpg';
 import revir_lokality from 'images/revir_lokality.jpg';
 import revir_smery from 'images/revir_smery.jpg';
+import { Header } from 'src/components/Atoms';
 
 export const Windsurfing = () => {
   return (
     <>
-      <div className='header'>
-        <b>Windsurfing</b>
-      </div>
+      <Header>Windsurfing</Header>
       <div className='text'>
         Lipenská přehrada je součástí vltavské kaskády a jejím nejvýše položeným
         stupněm. Leží v horském terénu, na hranici Národního parku a Chráněné
@@ -71,9 +70,7 @@ export const Windsurfing = () => {
           alt='Windsurfing na Lipně, Černá v Pošumaví, fouká JZ vítr o síle přibližně 10 m/s, v popředí jede Martin Jelínek s plachtou 5.5 m2 a prknem Wave250'
         />
       </div>
-      <div className='header'>
-        <b>Vlnové ráje na Lipně</b>
-      </div>
+      <Header>Vlnové ráje na Lipně</Header>
       <div className='text'>
         Velikost vln závisí především na síle větru a délce vodní plochy. Mezi
         vlnové lokality patří SurfShop v Černé v Pošumaví na JZ vítr, Hruštice
@@ -151,9 +148,7 @@ export const Windsurfing = () => {
           />
         </div>
       </div>
-      <div className='header'>
-        <b>Vhodné lokality na Lipně a dostupnost k vodě</b>
-      </div>
+      <Header>Vhodné lokality na Lipně a dostupnost k vodě</Header>
       <div className='text'>
         <h4>
           <b>SURFSHOP</b>
@@ -216,9 +211,7 @@ export const Windsurfing = () => {
           />
         </div>
       </div>
-      <div className='header'>
-        <b>Vhodné lokality pro konkrétní směry větru</b>
-      </div>
+      <Header>Vhodné lokality pro konkrétní směry větru</Header>
       <div className='text'>
         <table width='90%' align='center'>
           <tbody>
@@ -334,9 +327,7 @@ export const Windsurfing = () => {
         Ideální a nejčastější směry jsou <b>J</b>,<b>JZ</b>,<b>Z</b>,<b>SZ</b>,
         <b>S</b>; méně časté a méně vhodné jsou JV,V,SV.
       </div>
-      <div className='header'>
-        <b>Rady a doporučení</b>
-      </div>
+      <Header>Rady a doporučení</Header>
       <div className='text'>
         <ul>
           <li>

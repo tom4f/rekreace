@@ -67,53 +67,43 @@ export const Form = ({ updateData }: FormType) => {
   });
 
   useEffect(() => {
-    if (prevValues.current.formMode == formMode) {
-      if (formMode === 'new' && (error || data?.sendBooking.message)) {
-        openModal({
-          content: (
-            <AlertBox
-              alert={{
-                header: error ? 'Chyba' : 'V pořádku',
-                text:
-                  error instanceof Error
-                    ? error?.message
-                    : data?.sendBooking.message,
-                color: error ? 'red' : 'lime',
-              }}
-            />
-          ),
-        });
-        setFormData((old) => ({
-          ...old,
-          antispam_code_orig: new Date().getMilliseconds(),
-        }));
-      }
+    if (prevValues.current.formMode !== formMode) return;
 
-      if (
-        formMode === 'update' &&
-        (updateError || updateDataResp?.updateBooking.message)
-      ) {
-        openModal({
-          content: (
-            <AlertBox
-              alert={{
-                header:
-                  (updateError && 'Chyba') ||
-                  (updateDataResp?.updateBooking.message && 'V pořádku'),
-                text:
-                  updateError instanceof Error
-                    ? updateError?.message
-                    : updateDataResp?.updateBooking.message,
-                color: updateError ? 'red' : 'lime',
-              }}
-            />
-          ),
-        });
-      }
-    }
-    prevValues.current = {
-      formMode,
+    const showAlertModal = (header: string, text: string, color: string) => {
+      openModal({
+        content: <AlertBox alert={{ header, text, color }} />,
+      });
     };
+
+    if (formMode === 'new' && (error || data?.sendBooking.message)) {
+      showAlertModal(
+        error ? 'Chyba' : 'V pořádku',
+        error instanceof Error
+          ? error.message
+          : data?.sendBooking.message ?? '',
+        error ? 'red' : 'lime'
+      );
+
+      setFormData((old) => ({
+        ...old,
+        antispam_code_orig: new Date().getMilliseconds(),
+      }));
+    }
+
+    if (
+      formMode === 'update' &&
+      (updateError || updateDataResp?.updateBooking.message)
+    ) {
+      showAlertModal(
+        updateError ? 'Chyba' : 'V pořádku',
+        updateError instanceof Error
+          ? updateError.message
+          : updateDataResp?.updateBooking.message ?? '',
+        updateError ? 'red' : 'lime'
+      );
+    }
+
+    prevValues.current = { formMode };
   }, [data, updateDataResp, error, updateError, formMode, openModal]);
 
   useEffect(() => {
