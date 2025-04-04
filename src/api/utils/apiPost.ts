@@ -43,6 +43,12 @@ export const apiPost = ({
         resolve(response);
       })
       .catch((error: AxiosError<ApiErrorResponse>) => {
+        const status = error.response?.status;
+
+        if (status === 401) {
+          useAuthStore.getState().logout();
+        }
+
         if (error.response?.data) {
           const errorData = error.response.data;
 

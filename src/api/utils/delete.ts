@@ -29,6 +29,11 @@ export const apiDelete = <IResponse = any>({
         resolve(response);
       })
       .catch((error: AxiosError) => {
+        const status = error.response?.status;
+
+        if (status === 401) {
+          useAuthStore.getState().logout();
+        }
         Sentry.withScope((scope) => {
           scope.setTag('http_method', 'DELETE');
           scope.setExtra('url', url);
