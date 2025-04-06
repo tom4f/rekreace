@@ -2,13 +2,14 @@ import parking from 'images/parking.gif';
 import pes from 'images/pes.jpg';
 import wiFi from 'images/wi-fi.gif';
 import { Header } from 'src/components/Atoms';
+import { prices } from 'src/components/Prices';
 
 export const Prices = () => {
   return (
     <>
       <Header>Ceny</Header>
       <div className='text'>
-        <table className='max-w-4xl w-11/12 text-center [&_td]:border [&_td]:border-gray-500'>
+        <table className='max-w-4xl w-full text-center [&_td]:border [&_td]:border-gray-500'>
           <thead>
             <tr>
               <th colSpan={5}>
@@ -28,35 +29,35 @@ export const Prices = () => {
               <td>
                 Apartmá <b>č.1</b> - přízemí 35m<sup>2</sup>
               </td>
-              <td>600</td>
-              <td>1000</td>
-              <td>1300</td>
+              <td>{prices.appartement1[1]}</td>
+              <td>{prices.appartement1[2]}</td>
+              <td>{prices.appartement1[3]}</td>
               <td>-</td>
             </tr>
             <tr>
               <td>
                 Apartmá <b>č.2</b> - přízemí 30m<sup>2</sup>
               </td>
-              <td>600</td>
-              <td>1000</td>
-              <td>1200</td>
+              <td>{prices.appartement2[1]}</td>
+              <td>{prices.appartement2[2]}</td>
+              <td>{prices.appartement2[3]}</td>
               <td>-</td>
             </tr>
             <tr>
               <td>
                 Apartmá <b>č.3</b> - podkroví 60m<sup>2</sup>
               </td>
-              <td>600</td>
-              <td>1100</td>
-              <td>1400</td>
-              <td>1700</td>
+              <td>{prices.appartement3[1]}</td>
+              <td>{prices.appartement3[2]}</td>
+              <td>{prices.appartement3[3]}</td>
+              <td>{prices.appartement3[4]}</td>
             </tr>
             <tr>
               <td colSpan={5}>
                 např. pro 3 osoby v apartmá č.2 je cena na osobu{' '}
                 <u>
                   <em>
-                    <b>400,-Kč / den</b>
+                    <b>{prices.appartement2[3] / 3},-Kč / den</b>
                   </em>
                 </u>
               </td>
@@ -67,7 +68,7 @@ export const Prices = () => {
 
       <Header>Storno poplatky</Header>
       <div className='text'>
-        <table className='max-w-4xl w-11/12 text-center [&_td]:border [&_td]:border-gray-500'>
+        <table className='max-w-4xl w-full text-center [&_td]:border [&_td]:border-gray-500'>
           <tbody>
             <tr>
               <th colSpan={5}>při zrušení zaplacené rekreace :</th>
@@ -92,7 +93,7 @@ export const Prices = () => {
 
       <Header>Další informace</Header>
       <div className='text'>
-        <div className='max-w-4xl w-11/12 text-center'>
+        <div className='max-w-4xl w-full text-center'>
           Z důvodu bezpečí našich hostů neumožňujeme pobyt domácích zvířat.
           <br />V apartmá č. 2 je třetí lůžko formou rozkládacího křesla.
           <br />

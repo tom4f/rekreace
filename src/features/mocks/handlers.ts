@@ -12,7 +12,7 @@ import { delay, http } from 'msw';
 import { getBookingMock } from '../booking';
 import { getForumMock } from '../forum';
 import { getForumGraphQLMock } from '../forum/mock/getForumGraphQLMock';
-import { postLoginMock } from '../login';
+import { jwtLoginMock, postLoginMock } from '../login';
 import {
   getDavisMock,
   getLipnoMock,
@@ -33,6 +33,7 @@ const globalDelay = http.all('/api/*', async () => {
 export const resolveHandlers = () => [
   globalDelay,
   ...postLoginMock(),
+  ...jwtLoginMock(),
   ...getForumMock(),
   ...getBookingMock(),
   ...getTextFileMock(),

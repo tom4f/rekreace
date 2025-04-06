@@ -6,10 +6,12 @@ type ModalState = {
   content: React.ReactNode;
   customStyle?: React.CSSProperties;
   isCloseButton?: boolean;
+  onCloseFn?: () => void;
   openModal: (params: {
     content: React.ReactNode;
     customStyle?: React.CSSProperties;
     isCloseButton?: boolean;
+    onCloseFn?: () => void;
   }) => void;
   closeModal: () => void;
 };
@@ -22,16 +24,28 @@ export const useModalStore = create<ModalState>()(
       content: null,
       customStyle: undefined,
       isCloseButton: true,
+      onCloseFn: null,
 
-      openModal: ({ content, customStyle, isCloseButton = true }) =>
-        set({ isOpen: true, content, customStyle, isCloseButton }),
+      openModal: ({ content, customStyle, isCloseButton = true, onCloseFn }) =>
+        set({
+          isOpen: true,
+          content,
+          customStyle,
+          isCloseButton,
+          onCloseFn,
+        }),
 
       closeModal: () =>
-        set({
-          isOpen: false,
-          content: null,
-          customStyle: undefined,
-          isCloseButton: true,
+        set((state) => {
+          state.onCloseFn?.();
+
+          return {
+            isOpen: false,
+            content: null,
+            customStyle: undefined,
+            isCloseButton: true,
+            onCloseFn: undefined,
+          };
         }),
     }),
     { enabled: process.env.NODE_ENV !== 'production' }

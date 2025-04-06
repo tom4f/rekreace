@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { api } from 'api/utils';
 
 export type GetQRResponse = Blob;
@@ -8,11 +8,11 @@ export type QRRequest = {
   accountNumber: string;
   bankCode: string;
   amount: number;
-  currency: 'CZ';
-  date: string;
+  currency?: 'CZ';
+  date?: string;
   vs: number;
   message: string;
-  size: number;
+  size?: number;
 };
 
 const GET_QR_ENDPOINT = `https://api.paylibo.com/paylibo/generator/czech/image`;
@@ -42,8 +42,9 @@ const getQR = async (request: QRRequest): Promise<GetQRResponse> => {
 
 export const useGetQRUrl = (request: QRRequest) => {
   return useQuery({
-    queryKey: [GET_QR_KEY],
+    queryKey: [GET_QR_KEY, request],
     queryFn: () => getQR(request),
+    placeholderData: keepPreviousData,
     select: (imageBlob) => URL.createObjectURL(imageBlob),
   });
 };

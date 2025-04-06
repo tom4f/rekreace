@@ -18,6 +18,7 @@ export type JWTLoginErrorResponse = AxiosError & {
 };
 
 export const JWT_LOGIN_ENDPOINT = '/api/login/jwt-login.php';
+export const JWT_LOGIN_KEY = 'jwtLogin';
 
 const postJWTLogin = async (
   request: JWTLoginRequest
@@ -37,7 +38,7 @@ const postJWTLogin = async (
 export const useJWTLogin = () => {
   return useMutation<JWTLoginResponse, JWTLoginErrorResponse, JWTLoginRequest>({
     mutationFn: postJWTLogin,
-    mutationKey: ['jwtLogin'],
+    mutationKey: [JWT_LOGIN_KEY],
     onSuccess: (data) => {
       useAuthStore.getState().login(data.token, data.user);
     },

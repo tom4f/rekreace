@@ -22,7 +22,12 @@ import { Url } from 'src/api/paths';
 import { GET_BOOKING_ENDPOINT, getBookingScenarios } from '../booking';
 import { GET_FORUM_ENDPOINT, getForumScenarios } from '../forum';
 import { getForumGraphQLScenarios } from '../forum/mock/getForumGraphQLMock';
-import { LOGIN_ENDPOINT, postLoginScenarios } from '../login';
+import {
+  JWT_LOGIN_ENDPOINT,
+  jwtLoginScenarios,
+  LOGIN_ENDPOINT,
+  postLoginScenarios,
+} from '../login';
 import {
   GET_DAVIS_ENDPOINT,
   GET_LIPNO_ENDPOINT,
@@ -39,6 +44,7 @@ export const availableScenarios: [
   string,
   { [key: string]: HttpHandler[] | GraphQLHandler[] }
 ][] = [
+  [JWT_LOGIN_ENDPOINT, jwtLoginScenarios],
   [LOGIN_ENDPOINT, postLoginScenarios],
   [GET_FORUM_ENDPOINT, getForumScenarios],
   [GET_BOOKING_ENDPOINT, getBookingScenarios],

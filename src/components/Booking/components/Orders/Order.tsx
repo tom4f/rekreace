@@ -1,21 +1,20 @@
-import { useParams } from 'react-router-dom';
-import { useGetOrdersGraphQL } from 'src/features/booking';
+import styled from '@emotion/styled';
 
 import { Form } from '../Form';
 import { QRCode } from './QRCode';
 
 export const Order = () => {
-  const { id } = useParams();
-  const { data: orders } = useGetOrdersGraphQL();
-
-  if (!id) return null;
-
-  const order = orders.find((order) => order.id === Number(id));
-
   return (
-    <div>
-      <Form updateData={order} />
+    <OrderWrapper>
+      <Form />
       <QRCode />
-    </div>
+    </OrderWrapper>
   );
 };
+
+const OrderWrapper = styled.div`
+  width: 100%;
+  max-width: 750px;
+  display: 'flex';
+  gap: '1rem';
+`;
