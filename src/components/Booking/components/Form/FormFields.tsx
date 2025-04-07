@@ -4,6 +4,7 @@ import { Button, Input, Select, TextArea } from 'src/components/Atoms';
 import { Order, SendBookingRequest } from 'src/features/booking';
 
 import { FormMode } from './Form';
+import { orderStatusOptions } from './formConfig';
 
 type FormFieldsType = {
   formMode: FormMode;
@@ -223,12 +224,7 @@ export const FormFields = ({
           }
           value={formData.order_status}
           label='Stav:'
-          options={[
-            { value: 'new', label: 'nová' },
-            { value: 'confirmed', label: 'potvrzeno' },
-            { value: 'canceled', label: 'zrušeno' },
-            { value: 'completed', label: 'uskutečněno' },
-          ]}
+          options={orderStatusOptions}
         />
       )}
       <Button

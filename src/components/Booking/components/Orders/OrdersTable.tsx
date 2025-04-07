@@ -14,6 +14,8 @@ import { Order, useGetOrdersGraphQL } from 'features/booking';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { orderStatusMap } from '../Form';
+
 export const OrdersTable = () => {
   const { data: orders, loading, error } = useGetOrdersGraphQL();
   const navigate = useNavigate();
@@ -27,14 +29,24 @@ export const OrdersTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const columns: ColumnDef<Order>[] = [
-    { accessorKey: 'id', header: 'ID', size: 50 },
-    { accessorKey: 'apartment', header: 'Apartment', size: 50 },
-    { accessorKey: 'persons', header: 'Persons', size: 50 },
-    { accessorKey: 'check_in', header: 'Check-In', size: 100 },
-    { accessorKey: 'check_out', header: 'Check-Out', size: 100 },
-    { accessorKey: 'name', header: 'Name', size: 100 },
-    { accessorKey: 'created_at', header: 'Created At', size: 150 },
-    { accessorKey: 'order_status', header: 'Status', size: 70 },
+    { accessorKey: 'id', header: 'ID', size: 40 },
+    { accessorKey: 'apartment', header: 'Apa.', size: 40 },
+    { accessorKey: 'persons', header: 'Osob', size: 40 },
+    { accessorKey: 'check_in', header: 'Příjezd', size: 200 },
+    { accessorKey: 'check_out', header: 'Odjezd', size: 100 },
+    { accessorKey: 'name', header: 'Jméno', size: 100 },
+    { accessorKey: 'created_at', header: 'Vytvořeno', size: 130 },
+    {
+      accessorFn: (row) => orderStatusMap[row.order_status] ?? row.order_status,
+      header: 'Stav',
+      size: 70,
+      cell: ({ getValue }) => {
+        const status = getValue() as keyof typeof orderStatusMap;
+        const label = orderStatusMap[status] ?? status;
+
+        return <OrderStatusBadge status={status}>{label}</OrderStatusBadge>;
+      },
+    },
   ];
 
   const table = useReactTable({
@@ -63,14 +75,16 @@ export const OrdersTable = () => {
   };
 
   return (
-    <div className='flex flex-wrap justify-center'>
-      <Input
-        style={{ width: '130px' }}
-        label='Hledej'
-        placeholder='hledaný text'
-        value={globalFilter ?? ''}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-      />
+    <StyledOrderTable>
+      <StyledSearch>
+        <Input
+          style={{ display: 'flex', width: '130px' }}
+          label='Hledej'
+          placeholder='hledaný text'
+          value={globalFilter ?? ''}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+        />
+      </StyledSearch>
       <StyledTable>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -134,9 +148,22 @@ export const OrdersTable = () => {
           další{' --▶'}
         </button>
       </PaginationContainer>
-    </div>
+    </StyledOrderTable>
   );
 };
+
+const StyledOrderTable = styled.div`
+  width: 100%;
+  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const StyledSearch = styled.div`
+  width: 300px;
+  margin: 0 auto;
+`;
 
 const StyledTable = styled.table`
   margin: 0 auto;
@@ -145,7 +172,6 @@ const StyledTable = styled.table`
   color: white;
   font-size: smaller;
   border-collapse: collapse;
-  table-layout: fixed;
   margin-top: 20px;
 
   th,
@@ -178,4 +204,28 @@ const StyledTr = styled.tr<{ isSelected?: boolean }>`
     background-color: cadetblue;
     cursor: pointer;
   }
+`;
+
+const OrderStatusBadge = styled.span<{ status: string }>`
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: white;
+  display: inline-block;
+
+  background-color: ${({ status }) => {
+    switch (status) {
+      case 'nová':
+        return '#f0ad4e'; // orange
+      case 'potvrzeno':
+        return '#5bc0de'; // blue
+      case 'zrušeno':
+        return '#d9534f'; // red
+      case 'uskutečněno':
+        return '#5cb85c'; // green
+      default:
+        return '#6c757d'; // gray fallback
+    }
+  }};
 `;

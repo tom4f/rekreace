@@ -5,17 +5,7 @@ import { Button, Header, Input } from 'src/components/Atoms';
 import { orderPrice } from 'src/components/Prices';
 import { QRRequest, useGetQRUrl, useOrder } from 'src/features/booking';
 
-const defaultQRData: QRRequest = {
-  accountPrefix: '000000',
-  accountNumber: '0124976013',
-  bankCode: '0800',
-  amount: 10,
-  currency: 'CZ',
-  date: '2025-04-30',
-  vs: 123,
-  message: 'testovaci platba',
-  size: 10,
-};
+import { defaultQRData } from '../Form';
 
 export const QRCode = () => {
   const {
@@ -39,9 +29,11 @@ export const QRCode = () => {
   useEffect(() => {
     if (!orderDataForUpdate) return;
     const orderPriceValue = orderPrice(orderDataForUpdate);
+    const variableSymbol = orderDataForUpdate.id ?? 0;
 
     const updatedQRData = {
       ...defaultQRData,
+      vs: variableSymbol,
       amount: orderPriceValue,
     };
 

@@ -21,7 +21,7 @@ export type GetOrdersResponse = {
   getOrders: Order[];
 };
 
-const GET_ORDERS_QUERY = gql`
+export const GET_ORDERS_QUERY = gql`
   query GetOrders {
     getOrders {
       id

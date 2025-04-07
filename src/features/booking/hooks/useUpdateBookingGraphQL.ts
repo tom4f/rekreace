@@ -1,5 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 
+import { GET_ORDERS_QUERY } from './useGetOrdersGraphQL';
+
 export type UpdateBookingRequest = {
   id: number;
   apartment?: number;
@@ -42,5 +44,11 @@ export const useUpdateBookingGraphQL = () => {
     UpdateResponse,
     { input: UpdateBookingRequest },
     UpdateBookingErrorResponse
-  >(UPDATE_BOOKING_MUTATION);
+  >(UPDATE_BOOKING_MUTATION, {
+    refetchQueries: [
+      {
+        query: GET_ORDERS_QUERY,
+      },
+    ],
+  });
 };

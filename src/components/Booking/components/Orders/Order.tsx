@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 
-import { Form } from '../Form';
-import { QRCode } from './QRCode';
+import { Form, PdfOrderDownload, QRCode } from '../';
 
 export const Order = () => {
   return (
     <OrderWrapper>
       <Form />
       <QRCode />
+      <PdfOrderDownload />
     </OrderWrapper>
   );
 };
