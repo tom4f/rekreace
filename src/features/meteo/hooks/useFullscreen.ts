@@ -9,7 +9,6 @@ export const useFullscreen = () => {
   const alwaysFullscreenPaths = [
     '/fotogalerie',
     '/fotogalerie/edit',
-    '/orders',
     '/meteoalarm',
   ];
 
@@ -21,7 +20,7 @@ export const useFullscreen = () => {
     '/meteostanice/oldStation/graphs',
   ];
 
-  const isOrdersDetail = pathname.startsWith('/orders/');
+  const isOrdersDetail = pathname.startsWith('/objednavka/edit-orders');
 
   const isFullscreen =
     alwaysFullscreenPaths.includes(pathname) ||

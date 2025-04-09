@@ -66,7 +66,7 @@ export const App = () => {
             <Route element={<ProtectedRoute />}>
               <Route path='/fotogalerie/edit' element={<PhotoGallery />} />
               <Route path='/objednavka/edit' element={<Booking />} />
-              <Route path='/orders' element={<Orders />}>
+              <Route path='/objednavka/edit-orders' element={<Orders />}>
                 <Route path=':id' element={<Order />} />
               </Route>
             </Route>

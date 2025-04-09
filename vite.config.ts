@@ -1,13 +1,14 @@
-/// <reference types="vitest/config" />
-
+// 👇 Add this import at the top
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
 import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
-import type { Plugin, UserConfig } from 'vite';
+import type { Plugin } from 'vite';
 import { defineConfig, loadEnv } from 'vite';
 
-export default defineConfig(({ mode }: { mode: string }): UserConfig => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const target = env.VITE_API_BASE_URL;
 
@@ -33,6 +34,32 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
         stories: path.resolve(__dirname, './src/stories'),
         css: path.resolve(__dirname, './src/css'),
         store: path.resolve(__dirname, './src/store'),
+
+        // 👇 Buffer & Process polyfills
+        buffer: 'buffer',
+        process: 'process/browser',
+      },
+    },
+
+    define: {
+      // 👇 Define global variables
+      'process.env': {},
+      global: 'window',
+    },
+
+    optimizeDeps: {
+      esbuildOptions: {
+        // Node.js global to browser globalThis
+        define: {
+          global: 'globalThis',
+        },
+        // Enable esbuild polyfill plugins
+        plugins: [
+          NodeGlobalsPolyfillPlugin({
+            buffer: true,
+          }),
+          NodeModulesPolyfillPlugin(),
+        ],
       },
     },
 
@@ -53,43 +80,22 @@ export default defineConfig(({ mode }: { mode: string }): UserConfig => {
       rollupOptions: {
         plugins: [visualizer() as Plugin],
       },
-      sourcemap: true, // Source map generation must be turned on
+      sourcemap: true,
     },
     server: {
-      host: true, // Allows access from outside the container
+      host: true,
       watch: {
-        usePolling: true, // Ensures file changes are detected inside Docker
-        interval: 100, // Faster file change detection
+        usePolling: true,
+        interval: 100,
       },
       proxy: {
-        '/davis': {
-          target,
-          changeOrigin: true,
-        },
-        '/kamera': {
-          target,
-          changeOrigin: true,
-        },
-        '/rekreace/api': {
-          target,
-          changeOrigin: true,
-        },
-        '/api': {
-          target,
-          changeOrigin: true,
-        },
-        '/rekreace/graphs': {
-          target,
-          changeOrigin: true,
-        },
-        '/rekreace/fotogalerie_ubytovani': {
-          target,
-          changeOrigin: true,
-        },
-        '/rekreace/get_ip_kamera.php': {
-          target,
-          changeOrigin: true,
-        },
+        '/davis': { target, changeOrigin: true },
+        '/kamera': { target, changeOrigin: true },
+        '/rekreace/api': { target, changeOrigin: true },
+        '/api': { target, changeOrigin: true },
+        '/rekreace/graphs': { target, changeOrigin: true },
+        '/rekreace/fotogalerie_ubytovani': { target, changeOrigin: true },
+        '/rekreace/get_ip_kamera.php': { target, changeOrigin: true },
       },
     },
   };

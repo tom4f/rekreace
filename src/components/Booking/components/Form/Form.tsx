@@ -1,7 +1,7 @@
 import { AlertBox } from 'components/AlertBox/AlertBox';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Button, Header } from 'src/components/Atoms';
+import { Header } from 'src/components/Atoms';
 import {
   Order,
   SendBookingRequest,
@@ -25,29 +25,16 @@ export const Form = () => {
 
   const [updateBooking, { data: updateDataResp, error: updateError }] =
     useUpdateBookingGraphQL();
-  const isOrdersUrl = pathname.startsWith('/orders');
+  const isOrdersUrl = pathname.startsWith('/objednavka/edit-orders');
 
   const openModal = useModalStore((state) => state.openModal);
 
-  const [formMode, setFormMode] = useState<FormMode>(
-    isOrdersUrl ? 'update' : 'new'
-  );
   const [formData, setFormData] = useState<SendBookingRequest | Order>(
     isOrdersUrl ? updateOrderDefaultData : newOrderDefaultData
   );
 
-  const prevFormMode = useRef(formMode);
-
   useEffect(() => {
-    if (prevFormMode.current !== formMode) {
-      prevFormMode.current = formMode;
-      return;
-    }
-
-    if (
-      formMode === 'update' &&
-      (updateError || updateDataResp?.updateBooking.message)
-    ) {
+    if (isOrdersUrl && (updateError || updateDataResp?.updateBooking.message)) {
       openModal({
         content: (
           <AlertBox
@@ -63,10 +50,10 @@ export const Form = () => {
         ),
       });
     }
-  }, [updateDataResp, updateError, formMode, openModal]);
+  }, [updateDataResp, updateError, openModal, isOrdersUrl]);
 
   useEffect(() => {
-    if (formMode === 'update') {
+    if (isOrdersUrl) {
       if (
         isOrdersUrl &&
         orderDataForUpdate &&
@@ -77,18 +64,16 @@ export const Form = () => {
     } else {
       setFormData(newOrderDefaultData);
     }
-  }, [orderDataForUpdate, isOrdersUrl, formMode]);
+  }, [orderDataForUpdate, isOrdersUrl]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (formMode === 'update' && 'id' in formData) {
+    if (isOrdersUrl && 'id' in formData) {
       const updatedData = { ...formData };
       delete updatedData.__typename;
       updateBooking({ variables: { input: updatedData } });
-    }
-
-    if (formMode === 'new' && 'antispam_code' in formData) {
+    } else if ('antispam_code' in formData) {
       const refreshAntispamCode = () =>
         setFormData((old) => ({
           ...old,
@@ -136,23 +121,8 @@ export const Form = () => {
 
   return (
     <div id='1'>
-      {isOrdersUrl && (
-        <>
-          {' '}
-          <Button
-            style={{ margin: '20px' }}
-            label={
-              formMode === 'new'
-                ? 'Přepnout na úpravu objednávky'
-                : 'Přepnout na vytvoření nové objednávky'
-            }
-            onClick={() => setFormMode(formMode === 'new' ? 'update' : 'new')}
-            variant={formMode === 'update' ? 'primary' : 'secondary'}
-          />
-        </>
-      )}
       <Header>
-        {isOrdersUrl && formMode === 'update'
+        {isOrdersUrl
           ? `Upravujete (${'id' in formData ? formData.id : 'N/A'}) ${
               formData.name
             }`
@@ -163,7 +133,7 @@ export const Form = () => {
         onSubmit={onSubmit}
         formData={formData}
         setFormData={setFormData}
-        formMode={formMode}
+        formMode={isOrdersUrl ? 'update' : 'new'}
       />
     </div>
   );

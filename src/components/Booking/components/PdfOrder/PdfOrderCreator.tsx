@@ -2,22 +2,162 @@ import {
   Document,
   Font,
   Image,
+  Link,
   Page,
   StyleSheet,
   Text,
   View,
 } from '@react-pdf/renderer';
 import { Order } from 'features/booking';
+import houseForPdfSmall from 'images/house-for-pdf-small.jpg';
+import { orderPrice } from 'src/components/Prices';
+import { formatedDate } from 'src/utils';
+
+import { defaultQRData } from '../Form';
+import RobotoBold from './fonts/Roboto-Bold.ttf';
+import RobotoRegular from './fonts/Roboto-Regular.ttf';
+
+export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
+  const currentYear = new Date().getFullYear();
+
+  const { dayPrice, price, days } = orderPrice(order);
+
+  const checkInDate = formatedDate(new Date(order.check_in));
+  const checkOutDate = formatedDate(new Date(order.check_out));
+  const today = formatedDate(new Date());
+
+  const dueDate = new Date(order.check_in);
+  dueDate.setMonth(dueDate.getMonth() - 1);
+
+  const paymentDueDate = formatedDate(dueDate);
+
+  return (
+    <Document>
+      <Page style={styles.page}>
+        <View
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          <Text style={styles.header}>
+            Ubytovací smlouva č.{order.id}/{currentYear}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            gap: 50,
+            justifyContent: 'center',
+            marginBottom: 50,
+          }}
+        >
+          <Image src={houseForPdfSmall} style={styles.imageMain} />
+          <View style={styles.sectionAddress}>
+            <Text>Ubytování u Kučerů</Text>
+            <Text>38279 Frymburk 73</Text>
+
+            <Text>Tel.: +420 602496115, +420 724870561</Text>
+            <Text>
+              Web:{' '}
+              <Link src='http://www.frymburk.com/rekreace'>
+                www.frymburk.com/rekreace
+              </Link>
+            </Text>
+            <Text>
+              E-mail:{' '}
+              <Link src='mailto: ubytovani@LIPNOnet.cz'>
+                ubytovani@LIPNOnet.cz
+              </Link>
+            </Text>
+          </View>
+        </View>
+        <View>
+          <Text style={styles.sectionToday}>{today}</Text>
+        </View>
+        <View style={styles.sectionCustomer}>
+          <Text>{order.name}</Text>
+          <Text>{order.address}</Text>
+          <Text>
+            {'\n'}tel.: {order.phone}
+          </Text>
+          <Text>e-mail: {order.email}</Text>
+          <Text>
+            {'\n'}Potvrzujeme tímto, že na základě Vaší žádosti Vás ubytujeme ve
+            Vámi požadovaném termínu:
+          </Text>
+          <Text>- v apartmánu č. {order.apartment}</Text>
+          <Text>
+            - termín od {checkInDate} do {checkOutDate} (počet dní{' '}
+            {orderPrice(order).days})
+          </Text>
+          <Text>- počet osob {order.persons}</Text>
+          <Text>- cena pro apartmán č.3 je {dayPrice},-Kč/den</Text>
+          <Text>
+            {'\n'}Cena ubytování za celý pobyt je {days} x {dayPrice} = {price}
+            ,- Kč
+          </Text>
+        </View>
+        <View style={styles.sectionPayment}>
+          <View>
+            <Text>
+              <Text style={{ color: 'red' }}>
+                Zaplaťte převodem na účet č.:
+              </Text>
+              {'\n'}
+              {defaultQRData.accountPrefix}-{defaultQRData.accountNumber}/
+              {defaultQRData.bankCode}
+              {'\n'}
+              variabilní symbol: {order.id}
+              {'\n'}
+              částka: {price},- Kč
+              {'\n'}
+              splatnost: {paymentDueDate}
+            </Text>
+
+            <Text style={{ fontSize: 12 }}>
+              {'\n'}Storno poplatky při pozdějším zrušení rekreace
+              {'\n'}jsou uvedeny na adrese{' '}
+              <Link src='http://www.frymburk.com/rekreace/ceny'>
+                www.frymburk.com/rekreace/ceny
+              </Link>
+            </Text>
+          </View>
+          <Image src={qrCodeUrl} style={styles.image} />
+        </View>
+        <View>
+          <Text style={styles.sectionToday}>
+            {' '}
+            S pozdravem ……………………………
+            {'\n'}Marie Kučerová
+          </Text>
+        </View>
+
+        <View style={styles.sectionCustomer}>
+          <Text>
+            {'\n'}
+            {'\n'}Pozn.: ubytovat se můžete v den příjezdu po 15.00 hod a
+            rekreace končí v den odjezdu v 10.00 hod. Uložení kol je zajištěno v
+            „kolárně“ a parkování je na parkovišti v objektu. Cestu k nám
+            najdete na adrese{' '}
+            <Link src='http://www.frymburk.com/rekreace/kontakt#map'>
+              www.frymburk.com/rekreace/kontakt
+            </Link>
+          </Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 Font.register({
   family: 'Roboto',
   fonts: [
     {
-      src: '/rekreace/public/fonts/Roboto-Regular.ttf',
+      src: RobotoRegular,
       fontWeight: 'normal',
     },
     {
-      src: '/rekreace/public/fonts/Roboto-Bold.ttf',
+      src: RobotoBold,
       fontWeight: 'bold',
     },
   ],
@@ -25,42 +165,55 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: { padding: 30, fontFamily: 'Roboto' },
-  section: { marginBottom: 10 },
+  header: {
+    fontWeight: 'bold',
+    fontSize: 25,
+    marginVertical: 25,
+  },
+  address: {
+    fontWeight: 'normal',
+    fontSize: 12,
+  },
+
+  sectionAddress: {
+    marginBottom: 10,
+    textAlign: 'center',
+    alignItems: 'center',
+    fontWeight: 'normal',
+    fontSize: 12,
+  },
+
+  sectionCustomer: {
+    marginBottom: 10,
+    textAlign: 'left',
+    fontWeight: 'normal',
+    fontSize: 12,
+  },
+
+  sectionToday: {
+    textAlign: 'right',
+    fontWeight: 'normal',
+    fontSize: 12,
+  },
+
+  sectionPayment: {
+    flexDirection: 'row',
+    marginTop: 30,
+    justifyContent: 'space-between',
+    marginBottom: 50,
+    fontSize: 16,
+  },
+
   textBold: {
-    fontFamily: 'Roboto',
     fontWeight: 'bold',
     fontSize: 30,
   },
   text: {
-    fontFamily: 'Roboto',
     fontWeight: 'normal',
     fontSize: 12,
   },
-  image: { width: 290, height: 290 },
+  image: { width: 145, height: 145 },
+  imageMain: { width: 100 },
 });
 
 type OrderPDFType = { order: Order; qrCodeUrl: string };
-
-export const OrderPDF = ({ order, qrCodeUrl }: OrderPDFType) => {
-  const currentYear = new Date().getFullYear();
-
-  return (
-    <Document>
-      <Page style={styles.page}>
-        <View style={styles.section}>
-          <Text style={styles.textBold}>
-            Ubytovací smlouva č.{order.id}/{currentYear}
-          </Text>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.text}>Order ID: {order.id}</Text>
-          <Text style={styles.text}>Customer: {order.name}</Text>
-        </View>
-        <View style={styles.section}>
-          <Text>Thank you for your purchase!</Text>
-        </View>
-        <Image src={qrCodeUrl} style={styles.image} />
-      </Page>
-    </Document>
-  );
-};

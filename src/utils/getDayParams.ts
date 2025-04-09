@@ -6,3 +6,14 @@ export const getDateParts = (date: Date) => {
 
   return { year, month, day, ms };
 };
+
+export const formatedDate = (dateInput: string | Date) => {
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+  if (isNaN(date.getTime())) return '';
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  };
+  return new Intl.DateTimeFormat('cs-CZ', options).format(date);
+};

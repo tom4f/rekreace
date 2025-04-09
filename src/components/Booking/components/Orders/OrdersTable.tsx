@@ -71,7 +71,7 @@ export const OrdersTable = () => {
   if (!orders || orders.length === 0) return <p>No orders found.</p>;
 
   const showOrder = (id: number) => {
-    navigate(`/orders/${id}`);
+    navigate(`/objednavka/edit-orders/${id}`);
   };
 
   return (

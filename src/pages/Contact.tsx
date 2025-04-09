@@ -8,11 +8,15 @@ import { Header } from 'components/Atoms';
 // MapArcGISMap,
 //} from 'components/Contact';
 import { SendMessageRequest, useSendMessage } from 'features/contact';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 import { useModalStore } from 'src/store';
 
 export const Contact = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
   const { mutateAsync, isPending } = useSendMessage();
 
   const openModal = useModalStore((state) => state.openModal);
@@ -31,6 +35,12 @@ export const Contact = () => {
     () => setValue('antispam_code_orig', currentTimestamp),
     [currentTimestamp, setValue]
   );
+
+  useEffect(() => {
+    if (location.hash === '#map' && mapRef.current) {
+      mapRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   const onSubmit: SubmitHandler<SendMessageRequest> = (formObject) => {
     mutateAsync(formObject, {
@@ -182,6 +192,7 @@ export const Contact = () => {
         </form>
       </article>
 
+      <div ref={mapRef}></div>
       <Header>Kudy k nám?</Header>
       <iframe
         style={{ border: 0, marginBottom: '-6px' }}

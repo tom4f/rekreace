@@ -28,7 +28,7 @@ export const QRCode = () => {
 
   useEffect(() => {
     if (!orderDataForUpdate) return;
-    const orderPriceValue = orderPrice(orderDataForUpdate);
+    const orderPriceValue = orderPrice(orderDataForUpdate).price;
     const variableSymbol = orderDataForUpdate.id ?? 0;
 
     const updatedQRData = {

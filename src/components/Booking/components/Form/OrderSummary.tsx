@@ -54,7 +54,7 @@ export const OrderSummary: React.FC<Props> = ({
           </b>
         </li>
         <li>
-          Cena: <b>{orderPrice(formData) || '?'} Kč</b>
+          Cena: <b>{orderPrice(formData).price || '?'} Kč</b>
         </li>
         <li>
           Jméno: <b>{formData.name}</b>

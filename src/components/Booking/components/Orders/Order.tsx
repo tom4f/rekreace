@@ -5,16 +5,16 @@ import { Form, PdfOrderDownload, QRCode } from '../';
 export const Order = () => {
   return (
     <OrderWrapper>
+      <PdfOrderDownload />
       <Form />
       <QRCode />
-      <PdfOrderDownload />
     </OrderWrapper>
   );
 };
 
 const OrderWrapper = styled.div`
   width: 100%;
-  max-width: 750px;
+  max-width: 850px;
   display: 'flex';
   gap: '1rem';
 `;
