@@ -5,8 +5,8 @@ import { Form, PdfOrderDownload, QRCode } from '../';
 export const Order = () => {
   return (
     <OrderWrapper>
-      <PdfOrderDownload />
       <Form />
+      <PdfOrderDownload />
       <QRCode />
     </OrderWrapper>
   );

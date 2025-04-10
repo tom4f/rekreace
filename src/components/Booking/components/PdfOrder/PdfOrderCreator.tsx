@@ -8,12 +8,12 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { defaultQRData } from 'components/Booking';
+import { orderPrice } from 'components/Prices';
 import { Order } from 'features/booking';
 import houseForPdfSmall from 'images/house-for-pdf-small.jpg';
-import { orderPrice } from 'src/components/Prices';
-import { formatedDate } from 'src/utils';
+import { formatedDate } from 'utils';
 
-import { defaultQRData } from '../Form';
 import RobotoBold from './fonts/Roboto-Bold.ttf';
 import RobotoRegular from './fonts/Roboto-Regular.ttf';
 
@@ -34,23 +34,12 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
   return (
     <Document>
       <Page style={styles.page}>
-        <View
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          <Text style={styles.header}>
+        <View style={styles.header}>
+          <Text>
             Ubytovací smlouva č.{order.id}/{currentYear}
           </Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            gap: 50,
-            justifyContent: 'center',
-            marginBottom: 50,
-          }}
-        >
+        <View style={styles.addressWithImage}>
           <Image src={houseForPdfSmall} style={styles.imageMain} />
           <View style={styles.sectionAddress}>
             <Text>Ubytování u Kučerů</Text>
@@ -71,10 +60,11 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
             </Text>
           </View>
         </View>
-        <View>
-          <Text style={styles.sectionToday}>{today}</Text>
+        <View style={styles.textRight}>
+          <Text>{today}</Text>
         </View>
-        <View style={styles.sectionCustomer}>
+        <View>
+          {order?.title_prefix && <Text>{order.title_prefix}</Text>}
           <Text>{order.name}</Text>
           <Text>{order.address}</Text>
           <Text>
@@ -87,8 +77,7 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
           </Text>
           <Text>- v apartmánu č. {order.apartment}</Text>
           <Text>
-            - termín od {checkInDate} do {checkOutDate} (počet dní{' '}
-            {orderPrice(order).days})
+            - termín od {checkInDate} do {checkOutDate} (počet dní {days})
           </Text>
           <Text>- počet osob {order.persons}</Text>
           <Text>- cena pro apartmán č.3 je {dayPrice},-Kč/den</Text>
@@ -97,7 +86,7 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
             ,- Kč
           </Text>
         </View>
-        <View style={styles.sectionPayment}>
+        <View style={styles.paymentWithQRCode}>
           <View>
             <Text>
               <Text style={{ color: 'red' }}>
@@ -111,9 +100,8 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
               {'\n'}
               částka: {price},- Kč
               {'\n'}
-              splatnost: {paymentDueDate}
+              {`splatnost: ${order?.due_date_info || paymentDueDate}`}
             </Text>
-
             <Text style={{ fontSize: 12 }}>
               {'\n'}Storno poplatky při pozdějším zrušení rekreace
               {'\n'}jsou uvedeny na adrese{' '}
@@ -122,17 +110,16 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
               </Link>
             </Text>
           </View>
-          <Image src={qrCodeUrl} style={styles.image} />
+          <Image src={qrCodeUrl} style={styles.imageQRCode} />
         </View>
-        <View>
-          <Text style={styles.sectionToday}>
+        <View style={styles.textRight}>
+          <Text>
             {' '}
             S pozdravem ……………………………
             {'\n'}Marie Kučerová
           </Text>
         </View>
-
-        <View style={styles.sectionCustomer}>
+        <View>
           <Text>
             {'\n'}
             {'\n'}Pozn.: ubytovat se můžete v den příjezdu po 15.00 hod a
@@ -142,6 +129,9 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
             <Link src='http://www.frymburk.com/rekreace/kontakt#map'>
               www.frymburk.com/rekreace/kontakt
             </Link>
+            {'\n'}
+            {'\n'}
+            {order?.order_info ?? ''}
           </Text>
         </View>
       </Page>
@@ -164,56 +154,45 @@ Font.register({
 });
 
 const styles = StyleSheet.create({
-  page: { padding: 30, fontFamily: 'Roboto' },
+  page: {
+    paddingHorizontal: 50,
+    paddingVertical: 30,
+    fontFamily: 'Roboto',
+    fontSize: 12,
+    fontWeight: 'normal',
+  },
   header: {
     fontWeight: 'bold',
     fontSize: 25,
-    marginVertical: 25,
+    marginBottom: 25,
+    textAlign: 'center',
   },
-  address: {
-    fontWeight: 'normal',
-    fontSize: 12,
+  addressWithImage: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 30,
   },
-
+  imageMain: { width: 100, marginRight: 50 },
   sectionAddress: {
     marginBottom: 10,
     textAlign: 'center',
     alignItems: 'center',
-    fontWeight: 'normal',
-    fontSize: 12,
   },
-
-  sectionCustomer: {
-    marginBottom: 10,
-    textAlign: 'left',
-    fontWeight: 'normal',
-    fontSize: 12,
-  },
-
-  sectionToday: {
+  textRight: {
     textAlign: 'right',
-    fontWeight: 'normal',
-    fontSize: 12,
   },
-
-  sectionPayment: {
+  paymentWithQRCode: {
     flexDirection: 'row',
     marginTop: 30,
     justifyContent: 'space-between',
     marginBottom: 50,
     fontSize: 16,
   },
-
+  imageQRCode: { width: 145, height: 145 },
   textBold: {
     fontWeight: 'bold',
     fontSize: 30,
   },
-  text: {
-    fontWeight: 'normal',
-    fontSize: 12,
-  },
-  image: { width: 145, height: 145 },
-  imageMain: { width: 100 },
 });
 
 type OrderPDFType = { order: Order; qrCodeUrl: string };

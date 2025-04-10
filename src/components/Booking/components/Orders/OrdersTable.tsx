@@ -115,7 +115,9 @@ export const OrdersTable = () => {
             return (
               <StyledTr
                 key={id}
-                isSelected={location.pathname.includes(`/orders/${id}`)}
+                isSelected={location.pathname.includes(
+                  `/objednavka/edit-orders/${id}`
+                )}
                 onClick={() => showOrder(id)}
               >
                 {row.getVisibleCells().map((cell) => (

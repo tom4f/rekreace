@@ -14,6 +14,9 @@ export type Order = {
   info?: string;
   created_at: string;
   order_status: 'new' | 'confirmed' | 'canceled' | 'completed';
+  due_date_info?: string;
+  order_info?: string;
+  title_prefix?: string;
   __typename?: string;
 };
 
@@ -37,6 +40,9 @@ export const GET_ORDERS_QUERY = gql`
       info
       created_at
       order_status
+      due_date_info
+      order_info
+      title_prefix
     }
   }
 `;

@@ -25,7 +25,7 @@ export const PdfOrderDownload = () => {
 
   return (
     <>
-      <Header>Ubytovací smlouva</Header>
+      <Header>Ubytovací smlouva {`(${orderData.id}) ${orderData.name}`}</Header>
       <PDFViewer width='100%' height='600'>
         <PdfOrderCreator order={orderData} qrCodeUrl={qrCodeUrl} />
       </PDFViewer>

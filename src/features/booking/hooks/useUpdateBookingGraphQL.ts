@@ -15,6 +15,9 @@ export type UpdateBookingRequest = {
   address?: string;
   info?: string;
   order_status?: string;
+  due_date_info?: string;
+  order_info?: string;
+  title_prefix?: string;
 };
 
 export type UpdateResponse = {

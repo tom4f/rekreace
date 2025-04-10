@@ -7,7 +7,7 @@ export const getDateParts = (date: Date) => {
   return { year, month, day, ms };
 };
 
-export const formatedDate = (dateInput: string | Date) => {
+export const formatedDate = (dateInput: string | Date, keepSpaces = false) => {
   const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
   if (isNaN(date.getTime())) return '';
   const options: Intl.DateTimeFormatOptions = {
@@ -15,5 +15,7 @@ export const formatedDate = (dateInput: string | Date) => {
     month: '2-digit',
     day: '2-digit',
   };
-  return new Intl.DateTimeFormat('cs-CZ', options).format(date);
+  const result = new Intl.DateTimeFormat('cs-CZ', options).format(date);
+
+  return keepSpaces ? result : result.replace(/\s/g, '');
 };

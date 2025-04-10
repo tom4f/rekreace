@@ -19,6 +19,9 @@ export const FormFields = ({
   formData,
   setFormData,
 }: FormFieldsType) => {
+  const isUpdateForm = formMode === 'update' && 'order_status' in formData;
+  const isNewForm = formMode === 'new' && 'antispam_code_orig' in formData;
+
   return (
     <FormWrapper autoComplete='off' onSubmit={onSubmit} name='form_booking'>
       <Select
@@ -123,6 +126,22 @@ export const FormFields = ({
         placeholder='vyplňte zde'
       />
 
+      {isUpdateForm && (
+        <Input
+          label='⭐Oslovení:'
+          type='text'
+          name='title_prefix'
+          value={formData.title_prefix ?? ''}
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              title_prefix: e.target.value,
+            }))
+          }
+          placeholder='vyplňte zde'
+        />
+      )}
+
       <Input
         label='Jméno a příjmení:'
         required
@@ -156,6 +175,21 @@ export const FormFields = ({
         ]}
       />
 
+      {isUpdateForm && (
+        <Select
+          name='order_status'
+          onChange={(e) =>
+            setFormData((old) => ({
+              ...old,
+              order_status: e.target.value as Order['order_status'],
+            }))
+          }
+          value={formData.order_status}
+          label='⭐Stav:'
+          options={orderStatusOptions}
+        />
+      )}
+
       <TextArea
         label='Adresa:'
         value={formData.address}
@@ -187,7 +221,40 @@ export const FormFields = ({
         name='info'
       />
 
-      {formMode === 'new' && 'antispam_code_orig' in formData && (
+      {isUpdateForm && (
+        <>
+          <TextArea
+            label='⭐Splatnost:'
+            value={formData?.due_date_info ?? ''}
+            onChange={(e) =>
+              setFormData((old) => ({
+                ...old,
+                due_date_info: e.target.value,
+              }))
+            }
+            placeholder='vyplňte zde'
+            rows={4}
+            cols={68}
+            name='due_date_info'
+          />
+          <TextArea
+            label='⭐Další info:'
+            value={formData?.order_info ?? ''}
+            onChange={(e) =>
+              setFormData((old) => ({
+                ...old,
+                order_info: e.target.value,
+              }))
+            }
+            placeholder='vyplňte zde'
+            rows={4}
+            cols={68}
+            name='order_info'
+          />
+        </>
+      )}
+
+      {isNewForm && (
         <>
           {' '}
           <Input
@@ -213,23 +280,9 @@ export const FormFields = ({
         </>
       )}
 
-      {formMode === 'update' && 'order_status' in formData && (
-        <Select
-          name='order_status'
-          onChange={(e) =>
-            setFormData((old) => ({
-              ...old,
-              order_status: e.target.value as Order['order_status'],
-            }))
-          }
-          value={formData.order_status}
-          label='Stav:'
-          options={orderStatusOptions}
-        />
-      )}
       <Button
-        name={formMode === 'new' ? 'new' : 'update'}
-        label={formMode === 'new' ? 'Zkontrolovat' : 'Upravit'}
+        name={isNewForm ? 'new' : 'update'}
+        label={isNewForm ? 'Zkontrolovat' : 'Upravit'}
       />
     </FormWrapper>
   );

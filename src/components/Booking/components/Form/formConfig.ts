@@ -24,6 +24,9 @@ export const updateOrderDefaultData: Order = {
   id: 0,
   order_status: 'new',
   created_at: '',
+  due_date_info: '',
+  order_info: '',
+  title_prefix: '',
   __typename: '',
 };
 

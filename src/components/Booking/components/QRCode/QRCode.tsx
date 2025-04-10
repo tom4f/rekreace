@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Button, Header, Input } from 'src/components/Atoms';
 import { orderPrice } from 'src/components/Prices';
 import { QRRequest, useGetQRUrl, useOrder } from 'src/features/booking';
+import { formatedDate } from 'src/utils';
 
 import { defaultQRData } from '../Form';
 
@@ -17,7 +18,7 @@ export const QRCode = () => {
   } = useForm<QRRequest>({
     defaultValues: defaultQRData,
   });
-  const orderDataForUpdate = useOrder();
+  const orderData = useOrder();
   const [qRData, setQRData] = useState<QRRequest>(defaultQRData);
 
   const { data: imageUrl, isSuccess, isError, isLoading } = useGetQRUrl(qRData);
@@ -27,19 +28,22 @@ export const QRCode = () => {
   };
 
   useEffect(() => {
-    if (!orderDataForUpdate) return;
-    const orderPriceValue = orderPrice(orderDataForUpdate).price;
-    const variableSymbol = orderDataForUpdate.id ?? 0;
+    if (!orderData) return;
 
     const updatedQRData = {
       ...defaultQRData,
-      vs: variableSymbol,
-      amount: orderPriceValue,
+      ...(orderData?.id && { vs: orderData.id }),
+      ...(orderData && { amount: orderPrice(orderData).price }),
+      ...(orderData && {
+        message: `${defaultQRData.message} ${formatedDate(
+          new Date(orderData.check_in)
+        )}-${formatedDate(new Date(orderData.check_out))}`,
+      }),
     };
 
     setQRData(updatedQRData);
-    reset(updatedQRData); // 👈 update form values too
-  }, [orderDataForUpdate, reset]);
+    reset(updatedQRData);
+  }, [orderData, reset]);
 
   return (
     <>
