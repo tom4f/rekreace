@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { fotoGalleryOwner } from 'api/paths';
 import { AlertBox } from 'components/AlertBox/AlertBox';
 import { Button, Header, Input } from 'components/Atoms';
@@ -5,7 +6,6 @@ import { useAlert } from 'features/alert';
 import { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuthStore } from 'src/store';
-import styled from 'styled-components';
 
 import { LoginRequest } from '../hooks';
 import { useJWTLogin } from '../hooks/useJWTLogin';
@@ -106,20 +106,15 @@ export const Login = () => {
 };
 
 export const StyledLogin = styled.div`
-  max-width: 500px;
-  width: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const StyledForm = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  border-radius: 5px;
-  border: 1px solid #555;
   padding: 1rem 0;
 `;

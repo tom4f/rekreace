@@ -9,9 +9,9 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { Input } from 'components/Atoms';
+import { Button, Input } from 'components/Atoms';
 import { Order, useGetOrdersGraphQL } from 'features/booking';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { orderStatusMap } from '../Form';
@@ -27,15 +27,16 @@ export const OrdersTable = () => {
 
   const [globalFilter, setGlobalFilter] = useState('');
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [hideCanceled, setHideCanceled] = useState(false);
 
   const columns: ColumnDef<Order>[] = [
-    { accessorKey: 'id', header: 'ID', size: 40 },
-    { accessorKey: 'apartment', header: 'Apa.', size: 40 },
-    { accessorKey: 'persons', header: 'Osob', size: 40 },
-    { accessorKey: 'check_in', header: 'Příjezd', size: 200 },
-    { accessorKey: 'check_out', header: 'Odjezd', size: 100 },
-    { accessorKey: 'name', header: 'Jméno', size: 100 },
-    { accessorKey: 'created_at', header: 'Vytvořeno', size: 130 },
+    { accessorKey: 'id', header: 'ID' },
+    { accessorKey: 'apartment', header: 'Apa.' },
+    { accessorKey: 'persons', header: 'Osob' },
+    { accessorKey: 'check_in', header: 'Příjezd' },
+    { accessorKey: 'check_out', header: 'Odjezd' },
+    { accessorKey: 'name', header: 'Jméno' },
+    { accessorKey: 'created_at', header: 'Vytvořeno' },
     {
       accessorFn: (row) => orderStatusMap[row.order_status] ?? row.order_status,
       header: 'Stav',
@@ -49,8 +50,15 @@ export const OrdersTable = () => {
     },
   ];
 
+  const filteredOrders = useMemo(() => {
+    if (!orders) return [];
+    return hideCanceled
+      ? orders.filter((order) => order.order_status !== 'canceled')
+      : orders;
+  }, [orders, hideCanceled]);
+
   const table = useReactTable({
-    data: orders || [],
+    data: filteredOrders ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -83,6 +91,10 @@ export const OrdersTable = () => {
           placeholder='hledaný text'
           value={globalFilter ?? ''}
           onChange={(e) => setGlobalFilter(e.target.value)}
+        />
+        <Button
+          label={hideCanceled ? 'Zobrazit zrušené' : 'Skrýt zrušené'}
+          onClick={() => setHideCanceled((prev) => !prev)}
         />
       </StyledSearch>
       <StyledTable>

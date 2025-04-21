@@ -1,5 +1,7 @@
+import styled from '@emotion/styled';
 import { Login } from 'features/login';
 import { useEffect } from 'react';
+import { Button } from 'src/components/Atoms';
 import { useAuthStore, useModalStore } from 'src/store';
 
 export const Bedrich = () => {
@@ -10,6 +12,7 @@ export const Bedrich = () => {
     if (!isLogged && !isOpen) {
       openModal({
         content: <Login />,
+        customStyle: { height: 'auto' },
       });
     }
 
@@ -29,13 +32,17 @@ export const Bedrich = () => {
   }
 
   return (
-    <div style={{ color: 'lime', textAlign: 'center', margin: '50px auto' }}>
+    <Wrapper>
       {user} je úspěšně přihlášen
       <br />
       <br />
-      <button className='text-red-500' onClick={logout}>
-        odhlásit...
-      </button>
-    </div>
+      <Button label='odhlásit' onClick={logout} />
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  color: lime;
+  text-align: center;
+  margin: 50px auto;
+`;
