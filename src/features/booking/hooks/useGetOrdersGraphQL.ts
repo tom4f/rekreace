@@ -1,4 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
+import { useLocation } from 'react-router-dom';
 
 export type Order = {
   id: number;
@@ -48,7 +49,12 @@ export const GET_ORDERS_QUERY = gql`
 `;
 
 export const useGetOrdersGraphQL = () => {
-  const { data, ...rest } = useQuery<GetOrdersResponse>(GET_ORDERS_QUERY);
+  const { pathname } = useLocation();
+  const isAdminRoute = pathname.startsWith('/objednavka/edit-orders');
+
+  const { data, ...rest } = useQuery<GetOrdersResponse>(GET_ORDERS_QUERY, {
+    skip: !isAdminRoute,
+  });
 
   return { data: data?.getOrders ?? [], ...rest };
 };

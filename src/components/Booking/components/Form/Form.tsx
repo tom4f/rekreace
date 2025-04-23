@@ -21,11 +21,11 @@ export type FormMode = 'new' | 'update';
 
 export const Form = () => {
   const { pathname } = useLocation();
-  const orderDataForUpdate = useOrder();
 
   const [updateBooking, { data: updateDataResp, error: updateError }] =
     useUpdateBookingGraphQL();
   const isOrdersUrl = pathname.startsWith('/objednavka/edit-orders');
+  const orderDataForUpdate = useOrder();
 
   const openModal = useModalStore((state) => state.openModal);
 

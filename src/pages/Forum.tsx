@@ -1,154 +1,177 @@
-import 'components/Forum/css/forum.css';
-
 import { Button, Header, Input, Select } from 'components/Atoms';
-import { AddEntry, Messages, Paginations } from 'components/Forum';
+import { AddEntry, Messages } from 'components/Forum';
 // import { useGetForum } from 'features/forum';
-import { useGetForumGraphQL } from 'features/forum/hooks/useGetForumGraphQL';
-import { useState } from 'react';
+import {
+  ForumResponse,
+  useGetForumGraphQL,
+} from 'features/forum/hooks/useGetForumGraphQL';
+import { useEffect, useRef, useState } from 'react';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  fromEvent,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
+// import { ajax } from 'rxjs/ajax';
+// import { Url } from 'src/api/paths';
 import { basicOptions } from 'src/components/Forum';
 
 export type ForumParams = {
-  begin: number;
-  next: number;
   searchText: string;
   selectedCategory: number;
 };
 
 export const Forum = () => {
-  const [forum, setForum] = useState<ForumParams>({
-    begin: 0,
-    next: 0,
-    searchText: '',
-    // filter based on url
-    selectedCategory: window.location.search === '?category=8' ? 8 : 999999,
-  });
+  const isKalisteType = window.location.search === '?typ=4';
 
+  const [type, setType] = useState(isKalisteType ? [4] : [0, 1, 2, 3, 4]);
+  const [searchText, setSearchText] = useState('');
   const [addEntry, setAddEntry] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  const categoryFromUrl = window.location.search === '?category=8' ? 8 : 999999;
-
-  const searchCriteria =
-    categoryFromUrl === 8 ? 'WHERE typ = 8' : 'WHERE (typ < 4) OR (typ = 8)';
+  const [offset, setOffset] = useState(0);
+  const limit = 10;
 
   const {
-    data: allEntries,
+    data: entries,
     loading,
-    error,
+    previousData,
   } = useGetForumGraphQL({
-    searchCriteria,
-    start: 0,
-    limit: 999999,
+    searchText,
+    typ: type,
+    start: offset,
+    limit,
   });
 
-  if (!Array.isArray(allEntries)) {
-    return null;
-  }
+  const [forumEntries, setForumEntries] = useState<ForumResponse>([]);
 
-  const isSuccess = !loading && !error;
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const hasFetchedInitially = useRef(false);
 
-  const postsPerPage = 5;
-  const paginateSize = 10;
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  let filteredEntries = allEntries;
+  const onSetType = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const type = event.target.value;
+    setOffset(0);
+    setType(type.length ? [+type] : [0, 1, 2, 3, 4]);
+  };
 
-  const { begin, next, searchText, selectedCategory } = forum;
+  const onAddEntry = () => {
+    setOffset(0);
+    setSearchText('');
+    setType([0, 1, 2, 3, 4]);
+    setAddEntry(true);
+  };
 
-  const filteredEntriesByCategory =
-    selectedCategory === 999999
-      ? allEntries
-      : allEntries.filter((one) => +one.typ === selectedCategory);
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    const subscription = fromEvent(input, 'input')
+      .pipe(
+        map((e) => (e.target as HTMLInputElement).value),
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((text) => {
+          // RxJS ajax() operator handles cancellation automatically
+          // ajax.getJSON(`${Url.NEW_API}/forum/search_forum.php?q=${text}`)
+          setOffset(0);
+          setSearchText(text);
 
-  const filteredForum = filteredEntriesByCategory.filter((entry) => {
-    const regex = new RegExp(`${searchText}`, 'gi');
-    return entry.text.match(regex) || entry.jmeno.match(regex);
-  });
+          return of(null); // dummy return to keep the stream
+        })
+      )
+      .subscribe();
 
-  if (!searchText.length) {
-    filteredEntries = filteredEntriesByCategory;
-  } else if (filteredForum.length === 0) {
-    filteredEntries = [];
-  } else {
-    filteredEntries = filteredForum;
-  }
+    return () => subscription.unsubscribe();
+  }, []);
 
-  const optionList =
-    categoryFromUrl !== 8
-      ? [{ value: '999999', label: 'všechny' }, ...basicOptions]
-      : [];
+  useEffect(() => {
+    if (entries && !loading) {
+      const isInitialLoad = offset === 0;
+      setForumEntries((prev) =>
+        isInitialLoad ? entries : [...prev, ...entries]
+      );
+      setHasMore(entries.length === limit);
+    }
+  }, [entries, loading, offset]);
+
+  useEffect(() => {
+    const observerInstance = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries.length === 1 &&
+          entries[0].isIntersecting &&
+          !loading &&
+          hasMore
+        ) {
+          if (hasFetchedInitially.current) {
+            setOffset((prev) => prev + limit);
+          } else {
+            hasFetchedInitially.current = true;
+          }
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const current = loadMoreRef.current;
+    if (current) observerInstance.observe(current);
+
+    return () => {
+      if (current) observerInstance.unobserve(current);
+    };
+  }, [loading, hasMore]);
+
+  const optionList = isKalisteType
+    ? [{ value: '4', label: 'Kaliště 993m n.m.' }]
+    : [{ value: '', label: 'všechny' }, ...basicOptions];
 
   return (
     <>
       <Header>Lipenské fórum</Header>
-      <div className='center'>
-        <div>
-          {addEntry && (
-            <AddEntry
-              addEntry={addEntry}
-              setAddEntry={setAddEntry}
-              categoryFromUrl={categoryFromUrl}
-            />
-          )}
+
+      {addEntry && (
+        <div className='bg-amber-500'>
+          <AddEntry addEntry={addEntry} setAddEntry={setAddEntry} />
         </div>
-      </div>
+      )}
 
       {addEntry && <Header>&nbsp;</Header>}
 
-      <div className='center'>
+      <div className='bg-amber-500 pt-1'>
         {!addEntry && (
           <div className='flex flex-wrap justify-center pt-4'>
             <Input
               style={{ width: '130px' }}
               label='Hledej'
               placeholder='hledaný text'
-              onChange={(event) =>
-                setForum((orig) => ({
-                  ...orig,
-                  searchText: event.target.value,
-                  begin: 0,
-                  next: 0,
-                }))
-              }
+              ref={inputRef}
             />
             <Select
               label='Kategorie'
-              options={[
-                ...optionList,
-                { value: '8', label: 'Kaliště 993m n.m.' },
-              ]}
-              onChange={(event) =>
-                setForum((orig) => ({
-                  ...orig,
-                  selectedCategory: +event.target.value,
-                  begin: 0,
-                  next: 0,
-                }))
-              }
+              options={optionList}
+              onChange={onSetType}
             />
 
-            <Button label='Přidej komentář' onClick={() => setAddEntry(true)} />
+            <Button label='Přidej komentář' onClick={onAddEntry} />
           </div>
         )}
-        <div className='pt-5'>{filteredEntries?.length} komentářů.</div>
-        {isSuccess && filteredEntries ? (
-          <>
-            <Messages
-              entries={filteredEntries.slice(begin, begin + postsPerPage)}
-            />
+        <Messages
+          entries={
+            loading && offset === 0 && previousData
+              ? previousData.getForumMessages
+              : forumEntries
+          }
+        />
 
-            <br />
-            {filteredEntries.length > postsPerPage && (
-              <Paginations
-                setForum={setForum}
-                postsPerPage={postsPerPage}
-                filteredEntries={filteredEntries}
-                begin={begin}
-                paginateSize={paginateSize}
-                next={next}
-              />
-            )}
-          </>
-        ) : (
-          <></>
+        {!loading && <div ref={loadMoreRef} style={{ height: '50px' }} />}
+
+        {loading && (
+          <div className='text-center p-2 text-gray-400'>
+            Načítám další zprávy...
+          </div>
         )}
       </div>
     </>

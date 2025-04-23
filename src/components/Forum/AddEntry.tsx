@@ -6,25 +6,21 @@ import { useAddForumGraphQl } from 'src/features/forum/hooks/useAddForumGrahQL';
 import { basicOptions } from './';
 
 type AddEntryType = {
-  categoryFromUrl: number;
   addEntry: boolean;
   setAddEntry: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const TIMEOUT_DURATION = 5000;
 
-export const AddEntry = ({
-  categoryFromUrl,
-  addEntry,
-  setAddEntry,
-}: AddEntryType) => {
+export const AddEntry = ({ addEntry, setAddEntry }: AddEntryType) => {
   // const { mutate } = useAddForum();
+  const isKalisteType = window.location.search === '?typ=4';
   const { addForum: mutate } = useAddForumGraphQl();
 
   const [state, setState] = useState({
     jmeno: '',
     email: '',
-    typ: categoryFromUrl !== 8 ? '' : '8',
+    typ: isKalisteType ? '4' : '',
     text: '',
     antispam: new Date().getMilliseconds(),
     antispamForm: '',
@@ -71,10 +67,9 @@ export const AddEntry = ({
     }
   };
 
-  const optionList =
-    categoryFromUrl !== 8
-      ? [{ value: '', label: '--- vyber ---' }, ...basicOptions]
-      : [];
+  const optionList = isKalisteType
+    ? [{ value: '4', label: 'Kaliště 993m n.m.' }]
+    : [{ value: '', label: '--- vyber ---' }, ...basicOptions];
 
   return (
     <>
@@ -84,7 +79,7 @@ export const AddEntry = ({
         encType='multipart/form-data'
       >
         {addEntry && (
-          <div className=''>
+          <div>
             <div className='flex flex-wrap justify-center *:w-52 pt-4 '>
               <Input
                 label='Jméno'
@@ -105,10 +100,7 @@ export const AddEntry = ({
                 required
                 name='typ'
                 label='Kategorie'
-                options={[
-                  ...optionList,
-                  { value: '8', label: 'Kaliště 993m n.m.' },
-                ]}
+                options={optionList}
                 onChange={myChangeHandler}
               />
             </div>

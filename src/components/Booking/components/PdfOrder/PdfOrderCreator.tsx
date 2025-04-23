@@ -81,7 +81,7 @@ export const PdfOrderCreator = ({ order, qrCodeUrl }: OrderPDFType) => {
           </Text>
           <Text>- počet osob {order.persons}</Text>
           <Text>
-            - cena pro apartmán {order.apartment} je {dayPrice},-Kč/den
+            - cena pro apartmán č.{order.apartment} je {dayPrice},-Kč/den
           </Text>
           <Text>
             {'\n'}Cena ubytování za celý pobyt je {days} x {dayPrice} = {price}

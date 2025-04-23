@@ -12,17 +12,24 @@ export type OneMessage = {
 export type ForumRequest = {
   start?: number;
   limit?: number;
-  searchCriteria?: string;
+  searchText?: string;
+  typ?: number[];
 };
 
 export type ForumResponse = OneMessage[];
 
 export const GET_FORUM_QUERY = gql`
-  query GetForumMessages($start: Int, $limit: Int, $searchCriteria: String) {
+  query GetForumMessages(
+    $start: Int
+    $limit: Int
+    $searchText: String
+    $typ: [Int]
+  ) {
     getForumMessages(
       start: $start
       limit: $limit
-      searchCriteria: $searchCriteria
+      searchText: $searchText
+      typ: $typ
     ) {
       id
       datum
@@ -39,6 +46,8 @@ export const useGetForumGraphQL = (request?: ForumRequest) => {
     GET_FORUM_QUERY,
     {
       variables: request,
+      fetchPolicy: 'cache-and-network',
+      nextFetchPolicy: 'cache-first',
     }
   );
 

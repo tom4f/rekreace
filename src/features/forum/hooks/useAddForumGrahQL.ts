@@ -45,9 +45,10 @@ export const useAddForumGraphQl = () => {
       {
         query: GET_FORUM_QUERY,
         variables: {
-          searchCriteria: 'WHERE (typ < 4) OR (typ = 8)',
+          typ: [0, 1, 2, 3, 4],
+          searchText: '',
           start: 0,
-          limit: 999999,
+          limit: 10,
         },
       },
     ],

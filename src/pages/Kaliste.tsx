@@ -15,11 +15,11 @@ export const Kaliste = () => {
         height='400px'
       ></iframe>
       <Header>
-        <NavLink className='menu' to='/forum?category=8'>
+        <NavLink className='menu' to='/forum?typ=4'>
           FÓRUM + vložit nový příspěvek...
         </NavLink>
       </Header>
-      <Forum showHeader={false} searchCriteria='WHERE typ = 8' />
+      <Forum showHeader={false} searchCriteria='WHERE typ = 4' />
       <PhotoGallery category={11} />
     </>
   );
