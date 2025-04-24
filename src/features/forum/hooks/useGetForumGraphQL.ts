@@ -46,8 +46,8 @@ export const useGetForumGraphQL = (request?: ForumRequest) => {
     GET_FORUM_QUERY,
     {
       variables: request,
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-first',
+      // fetchPolicy: 'cache-and-network',
+      // nextFetchPolicy: 'cache-first',
     }
   );
 

@@ -8,22 +8,31 @@ import { graphql, HttpResponse } from 'msw';
 import { Url } from 'src/api/paths';
 import { HttpStatusCode } from 'src/enums';
 
-import { forumResponseMock } from './mockData/forumResponseMock';
+import { forumResponseFirstPageMock } from './mockData/forumResponseFirstPageMock';
+import { forumResponseSecondPageMock } from './mockData/forumResponseSecondPageMock';
+import { forumResponseThirddPageMock } from './mockData/forumResponseThirdPageMock';
 
 type GraphQLResponse = {
   getForumMessages: ForumResponse;
 };
 
+const mockFileMap = {
+  0: forumResponseFirstPageMock,
+  10: forumResponseSecondPageMock,
+  20: forumResponseThirddPageMock,
+};
+
 const handlers = [
-  graphql.query<GraphQLResponse, ForumRequest>(GET_FORUM_QUERY, async () =>
-    //    { variables }
-    {
-      return HttpResponse.json({
+  graphql.query<GraphQLResponse, ForumRequest>(
+    GET_FORUM_QUERY,
+    async ({ variables }) =>
+      HttpResponse.json({
         data: {
-          getForumMessages: forumResponseMock,
+          getForumMessages:
+            mockFileMap[variables.start as keyof typeof mockFileMap] ??
+            forumResponseFirstPageMock,
         },
-      });
-    }
+      })
   ),
 ];
 

@@ -1,8 +1,42 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import { Forum } from 'pages/Forum';
 import { renderWithProviders } from 'utils/test/testHelpers';
 
+const defaultData = {
+  isIntersecting: true,
+  target: document.createElement('div'),
+  intersectionRatio: 0.5,
+  time: 0,
+  boundingClientRect: {} as DOMRectReadOnly,
+  intersectionRect: {} as DOMRectReadOnly,
+  rootBounds: null,
+};
+
 describe('Forum page', () => {
+  let observerCallback: IntersectionObserverCallback;
+
+  beforeEach(() => {
+    vi.stubGlobal(
+      'IntersectionObserver',
+      vi.fn((cb) => {
+        observerCallback = cb;
+        return {
+          root: null,
+          rootMargin: '',
+          thresholds: [0],
+          observe: vi.fn(),
+          unobserve: vi.fn(),
+          disconnect: vi.fn(),
+          takeRecords: vi.fn(),
+        };
+      })
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it('render <Forum> page in loading phase', () => {
     renderWithProviders(<Forum />);
     expect(screen.getByText(/Lipenské fórum/)).toBeInTheDocument();
@@ -12,10 +46,9 @@ describe('Forum page', () => {
     await renderWithProviders(<Forum />);
 
     await waitFor(() => {
-      expect(screen.getByText(/11 komentářů./)).toBeInTheDocument();
       expect(screen.getByText(/Tomáš/)).toBeInTheDocument();
-      expect(screen.getAllByText(/Bedřich/)).toHaveLength(4);
-      expect(screen.getAllByText(/Fórum/)).toHaveLength(5);
+      expect(screen.getAllByText(/Bedřich/)).toHaveLength(8);
+      expect(screen.getAllByText(/Fórum/)).toHaveLength(7);
       expect(
         screen.getByText(/K obsahu stránek - 2024-11-22/)
       ).toBeInTheDocument();
@@ -27,28 +60,34 @@ describe('Forum page', () => {
     });
   });
 
-  it('render <Forum> and click on second page', async () => {
-    await renderWithProviders(<Forum />);
+  it('loads more data when scrolled to the bottom', async () => {
+    renderWithProviders(<Forum />);
 
     await waitFor(() => {
-      expect(screen.getByText(/11 komentářů./)).toBeInTheDocument();
+      expect(screen.getByText(/OnlyFirstPageName/)).toBeInTheDocument();
+      expect(screen.queryByText(/OnlySecondPageName/)).not.toBeInTheDocument();
+      expect(screen.queryByText(/OnlyThirdPageName/)).not.toBeInTheDocument();
     });
-    const submitButton = screen.getByRole('button', { name: /1/ });
-    fireEvent.click(submitButton);
 
+    // Simulate 1st intersection
+    act(() => observerCallback([defaultData], {} as IntersectionObserver));
+    act(() => observerCallback([defaultData], {} as IntersectionObserver));
+
+    // Wait for new data to appear
     await waitFor(() => {
-      expect(
-        screen.getByText(/K obsahu stránek - 2024-06-08/)
-      ).toBeInTheDocument();
-      expect(screen.getByText(/Seznamka - 2024-06-19/)).toBeInTheDocument();
-      expect(screen.getByText(/Inzerce - 2024-06-25/)).toBeInTheDocument();
-      expect(screen.getByText(/Fórum - 2024-07-11/)).toBeInTheDocument();
-      expect(screen.getAllByText(/Bedřich/)).toHaveLength(5);
-      expect(
-        screen.getByText(
-          /teplota vody ve Frymburku v hloubce cca 40 cm je 20.2 st.C/
-        )
-      ).toBeInTheDocument();
+      expect(screen.getByText(/OnlyFirstPageName/)).toBeInTheDocument();
+      expect(screen.getByText(/OnlySecondPageName/)).toBeInTheDocument();
+      expect(screen.queryByText(/OnlyThirdPageName/)).not.toBeInTheDocument();
+    });
+
+    // Simulate 2nd intersection
+    act(() => observerCallback([defaultData], {} as IntersectionObserver));
+
+    // Wait for new data to appear
+    await waitFor(() => {
+      expect(screen.getByText(/OnlyFirstPageName/)).toBeInTheDocument();
+      expect(screen.getByText(/OnlySecondPageName/)).toBeInTheDocument();
+      expect(screen.getByText(/OnlyThirdPageName/)).toBeInTheDocument();
     });
   });
 });

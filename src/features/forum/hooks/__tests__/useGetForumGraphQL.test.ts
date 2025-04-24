@@ -3,7 +3,7 @@ import { Url } from 'src/api/paths';
 import { PhotoScenarios } from 'src/features/mocks/enums/scenariosEnums';
 import { renderHookWithProviders } from 'utils/test/testHelpers';
 
-import { forumResponseMock } from '../../mock/mockData/forumResponseMock';
+import { forumResponseFirstPageMock } from '../../mock/mockData/forumResponseFirstPageMock';
 import { useGetForumGraphQL } from '../useGetForumGraphQL';
 
 describe('useGetForumGraphQL hook', () => {
@@ -21,7 +21,7 @@ describe('useGetForumGraphQL hook', () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.error).toBe(undefined);
-    expect(result.current.data).toEqual(forumResponseMock);
+    expect(result.current.data).toEqual(forumResponseFirstPageMock);
   });
 
   test('test error500 mock', async () => {

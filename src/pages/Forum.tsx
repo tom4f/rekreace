@@ -101,8 +101,8 @@ export const Forum = () => {
     const observerInstance = new IntersectionObserver(
       (entries) => {
         if (
-          entries.length === 1 &&
-          entries[0].isIntersecting &&
+          entries.some((entry) => entry.isIntersecting === true) &&
+          hasMore &&
           !loading &&
           hasMore
         ) {
@@ -166,7 +166,7 @@ export const Forum = () => {
           }
         />
 
-        {!loading && <div ref={loadMoreRef} style={{ height: '50px' }} />}
+        {!loading && <div ref={loadMoreRef} style={{ height: '1px' }} />}
 
         {loading && (
           <div className='text-center p-2 text-gray-400'>
