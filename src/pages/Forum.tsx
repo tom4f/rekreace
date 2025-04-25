@@ -29,7 +29,7 @@ export const Forum = () => {
   const [type, setType] = useState(isKalisteType ? [4] : [0, 1, 2, 3, 4]);
   const [searchText, setSearchText] = useState('');
   const [addEntry, setAddEntry] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
 
   const [offset, setOffset] = useState(0);
   const limit = 10;
@@ -48,7 +48,6 @@ export const Forum = () => {
   const [forumEntries, setForumEntries] = useState<ForumResponse>([]);
 
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  const hasFetchedInitially = useRef(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -89,39 +88,30 @@ export const Forum = () => {
 
   useEffect(() => {
     if (entries && !loading) {
-      const isInitialLoad = offset === 0;
       setForumEntries((prev) =>
-        isInitialLoad ? entries : [...prev, ...entries]
+        offset === 0 ? entries : [...prev, ...entries]
       );
       setHasMore(entries.length === limit);
     }
   }, [entries, loading, offset]);
 
   useEffect(() => {
-    const observerInstance = new IntersectionObserver(
-      (entries) => {
-        if (
-          entries.some((entry) => entry.isIntersecting === true) &&
-          hasMore &&
-          !loading &&
-          hasMore
-        ) {
-          if (hasFetchedInitially.current) {
-            setOffset((prev) => prev + limit);
-          } else {
-            hasFetchedInitially.current = true;
-          }
-        }
-      },
-      { threshold: 1 }
-    );
+    const target = loadMoreRef.current;
+    if (!target) return;
 
-    const current = loadMoreRef.current;
-    if (current) observerInstance.observe(current);
+    const observer = new IntersectionObserver((observerEntries) => {
+      if (
+        observerEntries.some((entry) => entry.isIntersecting) &&
+        hasMore &&
+        !loading
+      ) {
+        setOffset((prev) => prev + limit);
+      }
+    });
 
-    return () => {
-      if (current) observerInstance.unobserve(current);
-    };
+    observer.observe(target);
+
+    return () => observer.unobserve(target);
   }, [loading, hasMore]);
 
   const optionList = isKalisteType
@@ -140,7 +130,7 @@ export const Forum = () => {
 
       {addEntry && <Header>&nbsp;</Header>}
 
-      <div className='bg-amber-500 pt-1'>
+      <div className='bg-amber-500 pt-1 pb-6'>
         {!addEntry && (
           <div className='flex flex-wrap justify-center pt-4'>
             <Input
@@ -166,13 +156,7 @@ export const Forum = () => {
           }
         />
 
-        {!loading && <div ref={loadMoreRef} style={{ height: '1px' }} />}
-
-        {loading && (
-          <div className='text-center p-2 text-gray-400'>
-            Načítám další zprávy...
-          </div>
-        )}
+        <div ref={loadMoreRef} style={{ height: '50px' }} />
       </div>
     </>
   );
