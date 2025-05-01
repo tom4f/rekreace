@@ -3,7 +3,7 @@ import React, { TextareaHTMLAttributes, useId } from 'react';
 import { StyledInput } from './StyledInput';
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
+  label?: string | React.JSX.Element;
   id?: string;
 }
 
@@ -16,7 +16,7 @@ export const TextArea: React.FC<TextareaProps> = ({ label, id, ...props }) => {
       {label && <label htmlFor={textareaId}>{label}</label>}
       <textarea
         id={textareaId}
-        aria-label={label ?? props.placeholder}
+        aria-label={typeof label === 'string' ? label : undefined}
         {...props}
       />
     </StyledInput>

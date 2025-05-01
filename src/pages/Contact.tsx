@@ -1,23 +1,26 @@
-import 'components/Contact/css/contact.css';
-
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertBox } from 'components/AlertBox/AlertBox';
-import { Header } from 'components/Atoms';
-//import {
-// MapLeaflet,
-// MapMapLibreGl,
-// MapArcGISMap,
-//} from 'components/Contact';
+import { Button, Header, Input, TextArea } from 'components/Atoms';
 import { SendMessageRequest, useSendMessage } from 'features/contact';
+import {
+  ContactFormSchema,
+  contactSchema,
+} from 'features/contact/contact.schema';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
+import { ContactInfo } from 'src/components/Contact';
+import {
+  ContactWrapper,
+  SubmitWrapper,
+} from 'src/components/Contact/css/Contact.style';
 import { useModalStore } from 'src/store';
 
 export const Contact = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  const { mutateAsync, isPending } = useSendMessage();
+  const { mutate, isPending } = useSendMessage();
 
   const openModal = useModalStore((state) => state.openModal);
   const [currentTimestamp, setCurrentTimestamp] = useState(
@@ -29,7 +32,9 @@ export const Contact = () => {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<SendMessageRequest>();
+  } = useForm<ContactFormSchema>({
+    resolver: zodResolver(contactSchema),
+  });
 
   useEffect(
     () => setValue('antispam_code_orig', currentTimestamp),
@@ -42,11 +47,16 @@ export const Contact = () => {
     }
   }, [location]);
 
+  const refreshTimestamp = () => {
+    const newTimestamp = new Date().getMilliseconds();
+    setCurrentTimestamp(newTimestamp);
+    setValue('antispam_code_orig', newTimestamp);
+  };
+
   const onSubmit: SubmitHandler<SendMessageRequest> = (formObject) => {
-    mutateAsync(formObject, {
+    mutate(formObject, {
       onSuccess: (succesResponse) => {
-        setCurrentTimestamp(new Date().getMilliseconds());
-        setValue('antispam_code_orig', currentTimestamp);
+        refreshTimestamp();
         openModal({
           content: (
             <AlertBox
@@ -60,6 +70,7 @@ export const Contact = () => {
         });
       },
       onError: (errorResponse) => {
+        refreshTimestamp();
         openModal({
           content: (
             <AlertBox
@@ -71,126 +82,70 @@ export const Contact = () => {
             />
           ),
         });
-        setCurrentTimestamp(new Date().getMilliseconds());
       },
     });
   };
 
   return (
     <>
-      {/* <MapMapLibreGl /> */}
       <Header>Kontaktní informace</Header>
-      <article className='address_and_formular'>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          id='form_kontakt'
-          name='form_kontakt'
-          autoComplete='off'
-        >
-          <section className='formular'>
-            <div className='adresa'>
-              <div>
-                Adresa :
-                <br />
-                <b>Ubytování U Kučerů</b>
-                <br />
-                <b>Frymburk 73</b>
-                <br />
-                <b>382 79</b>
-              </div>
-              <div>
-                Internet :
-                <br />
-                <b>
-                  <a href='https://www.frymburk.com'>www.frymburk.com</a>
-                </b>
-                <br />
-                E-mail :
-                <br />
-                <b>
-                  <a href='mailto:ubytovani@lipnonet.cz'>
-                    ubytovani@lipnonet.cz
-                  </a>
-                </b>
-              </div>
-              <div>
-                Telefon :
-                <br />
-                <b>+420-602496115</b>
-                <br />
-                Mobil :
-                <br />
-                <b>+420-724870561</b>
-              </div>
-            </div>
-
-            <div className='input_booking'>
-              <label htmlFor='emailova_adresa'>
+      <ContactWrapper>
+        <ContactInfo />
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            placeholder='vyplňte svojí e-mailovou adresu'
+            label={
+              <>
                 E-mail:{' '}
-                <span style={{ color: 'red' }}>
+                <span style={{ color: 'lime' }}>
                   {errors.emailova_adresa && errors.emailova_adresa.message}
                 </span>
-              </label>
-              <input
-                placeholder='vyplňte svojí e-mailovou adresu'
-                id='emailova_adresa'
-                type='email'
-                {...register('emailova_adresa', {
-                  required: 'je nutné vyplnit',
-                })}
-              />
-            </div>
+              </>
+            }
+            type='text'
+            inputMode='email'
+            autoComplete='email'
+            {...register('emailova_adresa')}
+          />
 
-            <div className='input_booking'>
-              <label htmlFor='text'>
+          <TextArea
+            placeholder='Pokud nám chcete cokoliv sdělit, sem múžete napsat zprávu...'
+            label={
+              <>
                 Text:{' '}
-                <span style={{ color: 'red' }}>
+                <span style={{ color: 'lime' }}>
                   {errors.text && errors.text.message}
                 </span>
-              </label>
-              <textarea
-                rows={5}
-                cols={68}
-                placeholder='Pokud nám chcete cokoliv sdělit, sem múžete napsat zprávu...'
-                id='text'
-                {...register('text', { required: 'je nutné vyplnit' })}
-              />
-            </div>
-
-            <div className='antispam_booking input_booking'>
-              <label htmlFor='antispam_code'>
-                Opište kód: {currentTimestamp.toString()}{' '}
-                <span style={{ color: 'red' }}>
-                  {errors.antispam_code && errors.antispam_code.message}
-                </span>
-              </label>
-              <input
-                // required
-                id='antispam_code'
-                type='text'
-                placeholder='sem kód' // Set the placeholder to the current milliseconds
-                {...register('antispam_code', {
-                  required: 'je nutné vyplnit',
-                  valueAsNumber: true,
-                })}
-              />
-            </div>
-
-            <input
-              type='hidden'
-              {...register('antispam_code_orig', { valueAsNumber: true })}
+              </>
+            }
+            rows={5}
+            {...register('text')}
+          />
+          <SubmitWrapper>
+            <Input
+              style={{ width: '100px' }}
+              placeholder='sem kód'
+              label={
+                <>
+                  Opište kód: {currentTimestamp.toString()}{' '}
+                  <span style={{ color: 'lime' }}>
+                    {errors.antispam_code && errors.antispam_code.message}
+                  </span>
+                </>
+              }
+              type='text'
+              {...register('antispam_code', {
+                valueAsNumber: true,
+              })}
+              autoComplete='off'
             />
-
-            <div className='submit_booking'>
-              <input
-                type='submit'
-                disabled={isPending}
-                value={isPending ? 'Odesílám...' : 'Odešli'}
-              />
-            </div>
-          </section>
+            <Button
+              disabled={isPending}
+              label={isPending ? 'Odesílám...' : 'Odešli'}
+            />
+          </SubmitWrapper>
         </form>
-      </article>
+      </ContactWrapper>
 
       <div ref={mapRef}></div>
       <Header>Kudy k nám?</Header>
