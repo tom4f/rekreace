@@ -94,7 +94,7 @@ export const LipnoTable = () => {
         });
       }
     },
-    [pocasi, openModal]
+    [pocasi, openModal, isLogged]
   );
 
   const setDate = (period: PeriodType, step: StepType) => {

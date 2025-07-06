@@ -10,9 +10,9 @@ import {
   AlarmResponse,
 } from './useAlarmLogin';
 
-const useGetAlarmConfig = (): UseQueryResult<AlarmResponse, Error> => {
+const useGetAlarmConfig = (): UseQueryResult<AlarmResponse | null, Error> => {
   const queryClient = useQueryClient();
-  return useQuery({
+  return useQuery<AlarmResponse | null, Error>({
     queryKey: [ALARM_LOGIN_CONFIG_KEY],
     queryFn: async () =>
       queryClient.getQueryData([ALARM_LOGIN_CONFIG_KEY]) ?? null,
