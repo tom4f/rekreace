@@ -10,6 +10,7 @@ import {
   MeteoDates,
   PeriodType,
   StepType,
+  useAuthStore,
   useDateStore,
   useModalStore,
 } from 'store';
@@ -22,6 +23,7 @@ export const LipnoTable = () => {
   const { updateDate, resetDate } = useDateStore();
   const lipnoDaily = useDateStore((state) => state.dates.lipnoDaily);
   const openModal = useModalStore((state) => state.openModal);
+  const isLogged = useAuthStore().isLogged;
 
   const { data: loginData } = useLoginStatus();
 
@@ -46,7 +48,7 @@ export const LipnoTable = () => {
 
   const editTermin = useCallback(
     (event: React.MouseEvent) => {
-      if (!pocasi?.length) {
+      if (!pocasi?.length || !isLogged) {
         return null;
       }
       const clickedTd = event.target as Element;
