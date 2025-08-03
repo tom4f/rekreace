@@ -17,7 +17,7 @@ import {
   updateOrderDefaultData,
 } from './';
 
-export type FormMode = 'new' | 'update';
+export type FormMode = 'new' | 'update' | 'copy';
 
 export const Form = () => {
   const { pathname } = useLocation();
@@ -29,12 +29,21 @@ export const Form = () => {
 
   const openModal = useModalStore((state) => state.openModal);
 
+  const [formMode, setFormMode] = useState<FormMode>(
+    isOrdersUrl ? 'update' : 'new'
+  );
+
   const [formData, setFormData] = useState<SendBookingRequest | Order>(
     isOrdersUrl ? updateOrderDefaultData : newOrderDefaultData
   );
 
+  console.log(formData);
+
   useEffect(() => {
-    if (isOrdersUrl && (updateError || updateDataResp?.updateBooking.message)) {
+    if (
+      formMode === 'update' &&
+      (updateError || updateDataResp?.updateBooking.message)
+    ) {
       openModal({
         content: (
           <AlertBox
@@ -50,26 +59,34 @@ export const Form = () => {
         ),
       });
     }
-  }, [updateDataResp, updateError, openModal, isOrdersUrl]);
+  }, [updateDataResp, updateError, openModal, formMode]);
 
   useEffect(() => {
-    if (isOrdersUrl) {
-      if (
-        isOrdersUrl &&
-        orderDataForUpdate &&
-        Object.keys(orderDataForUpdate).length > 0
-      ) {
-        setFormData(orderDataForUpdate);
-      }
-    } else {
+    if (
+      formMode === 'update' &&
+      orderDataForUpdate &&
+      Object.keys(orderDataForUpdate).length > 0
+    ) {
+      setFormData(orderDataForUpdate);
+    }
+
+    if (formMode === 'new') {
       setFormData(newOrderDefaultData);
     }
-  }, [orderDataForUpdate, isOrdersUrl]);
+
+    if (
+      formMode === 'copy' &&
+      orderDataForUpdate &&
+      Object.keys(orderDataForUpdate).length > 0
+    ) {
+      setFormData({ ...orderDataForUpdate, antispam_code: 0, antispam_code_orig: new Date().getMilliseconds() });
+    }
+  }, [orderDataForUpdate, formMode]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isOrdersUrl && 'id' in formData) {
+    if (formMode === 'update' && 'id' in formData) {
       const updatedData = { ...formData };
       delete updatedData.__typename;
       updateBooking({ variables: { input: updatedData } });
@@ -122,7 +139,7 @@ export const Form = () => {
   return (
     <div id='1'>
       <Header>
-        {isOrdersUrl
+        {formMode === 'update'
           ? `Upravujete (${'id' in formData ? formData.id : 'N/A'}) ${
               formData.name
             }`
@@ -133,7 +150,8 @@ export const Form = () => {
         onSubmit={onSubmit}
         formData={formData}
         setFormData={setFormData}
-        formMode={isOrdersUrl ? 'update' : 'new'}
+        formMode={formMode}
+        setFormMode={setFormMode}
       />
     </div>
   );

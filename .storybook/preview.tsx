@@ -1,6 +1,6 @@
 import 'css/main.css';
 
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 import React from 'react';
 const preview: Preview = {
   parameters: {
@@ -11,6 +11,7 @@ const preview: Preview = {
       },
     },
   },
+
   decorators: [
     (Story) => (
       <div style={{ fontFamily: 'BenchNine, Arial, Helvetica, sans-serif' }}>
@@ -18,6 +19,8 @@ const preview: Preview = {
       </div>
     ),
   ],
+
+  tags: ['autodocs']
 };
 
 export default preview;

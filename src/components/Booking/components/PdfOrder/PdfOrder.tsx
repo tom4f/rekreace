@@ -26,12 +26,13 @@ export const PdfOrderDownload = () => {
   return (
     <>
       <Header>Ubytovací smlouva {`(${orderData.id}) ${orderData.name}`}</Header>
-      <PDFViewer width='100%' height='600'>
+      <PDFViewer width='100%' height='600' key={orderData.id}>
         <PdfOrderCreator order={orderData} qrCodeUrl={qrCodeUrl} />
       </PDFViewer>
 
       <PDFDownloadLink
-        document={<PdfOrderCreator order={orderData} qrCodeUrl={qrCodeUrl} />}
+        key={`download-${orderData.id}`}
+        document={<PdfOrderCreator order={orderData} qrCodeUrl={qrCodeUrl}  />}
         fileName='order-summary.pdf'
       >
         {({ loading }) => (loading ? 'Připravuju...' : 'Uložit PDF')}

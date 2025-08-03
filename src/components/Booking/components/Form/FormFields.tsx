@@ -8,6 +8,7 @@ import { orderStatusOptions } from './formConfig';
 
 type FormFieldsType = {
   formMode: FormMode;
+  setFormMode: React.Dispatch<React.SetStateAction<FormMode>>; // <-- add this
   formData: SendBookingRequest | Order;
   setFormData: React.Dispatch<React.SetStateAction<SendBookingRequest | Order>>;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -15,12 +16,19 @@ type FormFieldsType = {
 
 export const FormFields = ({
   formMode,
+  setFormMode, // <-- add this
   onSubmit,
   formData,
   setFormData,
 }: FormFieldsType) => {
   const isUpdateForm = formMode === 'update' && 'order_status' in formData;
-  const isNewForm = formMode === 'new' && 'antispam_code_orig' in formData;
+  const isNewForm = (formMode === 'new' || formMode === 'copy') && 'antispam_code_orig' in formData;
+
+  const handleToggleFormMode = () => {
+    setFormMode((prev) => (prev === 'copy' ? 'update' : 'copy'));
+  };
+
+console.log(formData, formMode, isNewForm, isUpdateForm);
 
   return (
     <FormWrapper autoComplete='off' onSubmit={onSubmit} name='form_booking'>
@@ -254,7 +262,7 @@ export const FormFields = ({
         </>
       )}
 
-      {isNewForm && (
+      {isNewForm && formData.antispam_code_orig && (
         <>
           {' '}
           <Input
@@ -283,6 +291,18 @@ export const FormFields = ({
       <Button
         name={isNewForm ? 'new' : 'update'}
         label={isNewForm ? 'Zkontrolovat' : 'Upravit'}
+      />
+
+      <Button
+        variant='blue'
+        name='toggleFormMode'
+        label={`Přepnout na ${
+          formMode === 'copy' ? 'editaci' : 'zkopírovat objednávku'
+        }`}
+        onClick={(e) => {
+          e.preventDefault();
+          handleToggleFormMode();
+        }}
       />
     </FormWrapper>
   );
