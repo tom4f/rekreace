@@ -8,7 +8,7 @@ import { orderStatusOptions } from './formConfig';
 
 type FormFieldsType = {
   formMode: FormMode;
-  setFormMode: React.Dispatch<React.SetStateAction<FormMode>>; // <-- add this
+  setFormMode: React.Dispatch<React.SetStateAction<FormMode>>;
   formData: SendBookingRequest | Order;
   setFormData: React.Dispatch<React.SetStateAction<SendBookingRequest | Order>>;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -16,19 +16,18 @@ type FormFieldsType = {
 
 export const FormFields = ({
   formMode,
-  setFormMode, // <-- add this
+  setFormMode,
   onSubmit,
   formData,
   setFormData,
 }: FormFieldsType) => {
   const isUpdateForm = formMode === 'update' && 'order_status' in formData;
-  const isNewForm = (formMode === 'new' || formMode === 'copy') && 'antispam_code_orig' in formData;
+  const isNewForm = formMode === 'new' && 'antispam_code_orig' in formData;
+  const isCopyForm = formMode === 'copy' && 'antispam_code_orig' in formData;
 
   const handleToggleFormMode = () => {
     setFormMode((prev) => (prev === 'copy' ? 'update' : 'copy'));
   };
-
-console.log(formData, formMode, isNewForm, isUpdateForm);
 
   return (
     <FormWrapper autoComplete='off' onSubmit={onSubmit} name='form_booking'>
@@ -262,7 +261,7 @@ console.log(formData, formMode, isNewForm, isUpdateForm);
         </>
       )}
 
-      {isNewForm && formData.antispam_code_orig && (
+      {(isNewForm || isCopyForm) && formData.antispam_code_orig && (
         <>
           {' '}
           <Input
@@ -290,9 +289,10 @@ console.log(formData, formMode, isNewForm, isUpdateForm);
 
       <Button
         name={isNewForm ? 'new' : 'update'}
-        label={isNewForm ? 'Zkontrolovat' : 'Upravit'}
+        label={isNewForm ? 'Zkontrolovat' : isUpdateForm ? 'Upravit' : 'Zkontrolovat a zkopírovat'}
       />
 
+      {!isNewForm && (
       <Button
         variant='blue'
         name='toggleFormMode'
@@ -304,6 +304,7 @@ console.log(formData, formMode, isNewForm, isUpdateForm);
           handleToggleFormMode();
         }}
       />
+            )}
     </FormWrapper>
   );
 };
