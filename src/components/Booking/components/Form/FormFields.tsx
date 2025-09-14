@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import img604b from 'images/604b.jpg';
 import { Button, Input, Select, TextArea } from 'src/components/Atoms';
-import { Order, SendBookingRequest } from 'src/features/booking';
+import { SendBookingRequest, UpdateBookingRequest } from 'src/features/booking';
 
 import { FormMode } from './Form';
 import { orderStatusOptions } from './formConfig';
@@ -9,8 +9,10 @@ import { orderStatusOptions } from './formConfig';
 type FormFieldsType = {
   formMode: FormMode;
   setFormMode: React.Dispatch<React.SetStateAction<FormMode>>;
-  formData: SendBookingRequest | Order;
-  setFormData: React.Dispatch<React.SetStateAction<SendBookingRequest | Order>>;
+  formData: SendBookingRequest | UpdateBookingRequest;
+  setFormData: React.Dispatch<
+    React.SetStateAction<SendBookingRequest | UpdateBookingRequest>
+  >;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
@@ -188,7 +190,8 @@ export const FormFields = ({
           onChange={(e) =>
             setFormData((old) => ({
               ...old,
-              order_status: e.target.value as Order['order_status'],
+              order_status: e.target
+                .value as UpdateBookingRequest['order_status'],
             }))
           }
           value={formData.order_status}
@@ -289,22 +292,28 @@ export const FormFields = ({
 
       <Button
         name={isNewForm ? 'new' : 'update'}
-        label={isNewForm ? 'Zkontrolovat' : isUpdateForm ? 'Upravit' : 'Zkontrolovat a zkopírovat'}
+        label={
+          isNewForm
+            ? 'Zkontrolovat'
+            : isUpdateForm
+            ? 'Upravit'
+            : 'Zkontrolovat a zkopírovat'
+        }
       />
 
       {!isNewForm && (
-      <Button
-        variant='blue'
-        name='toggleFormMode'
-        label={`Přepnout na ${
-          formMode === 'copy' ? 'editaci' : 'zkopírovat objednávku'
-        }`}
-        onClick={(e) => {
-          e.preventDefault();
-          handleToggleFormMode();
-        }}
-      />
-            )}
+        <Button
+          variant='blue'
+          name='toggleFormMode'
+          label={`Přepnout na ${
+            formMode === 'copy' ? 'editaci' : 'zkopírovat objednávku'
+          }`}
+          onClick={(e) => {
+            e.preventDefault();
+            handleToggleFormMode();
+          }}
+        />
+      )}
     </FormWrapper>
   );
 };

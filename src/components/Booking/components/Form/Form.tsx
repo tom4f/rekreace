@@ -1,10 +1,10 @@
 import { AlertBox } from 'components/AlertBox/AlertBox';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Header } from 'src/components/Atoms';
 import {
-  Order,
   SendBookingRequest,
+  UpdateBookingRequest,
   useOrder,
   useUpdateBookingGraphQL,
 } from 'src/features/booking';
@@ -25,7 +25,13 @@ export const Form = () => {
   const [updateBooking, { data: updateDataResp, error: updateError }] =
     useUpdateBookingGraphQL();
   const isOrdersUrl = pathname.startsWith('/objednavka/edit-orders');
-  const orderDataForUpdate = useOrder();
+  const orderData = useOrder();
+
+  const orderDataForUpdate = useMemo(
+    () =>
+      orderData ? (({ __typename, ...rest }) => rest)(orderData) : undefined,
+    [orderData]
+  );
 
   const openModal = useModalStore((state) => state.openModal);
 
@@ -33,11 +39,9 @@ export const Form = () => {
     isOrdersUrl ? 'update' : 'new'
   );
 
-  const [formData, setFormData] = useState<SendBookingRequest | Order>(
-    isOrdersUrl ? updateOrderDefaultData : newOrderDefaultData
-  );
-
-  console.log(formData);
+  const [formData, setFormData] = useState<
+    SendBookingRequest | UpdateBookingRequest
+  >(isOrdersUrl ? updateOrderDefaultData : newOrderDefaultData);
 
   useEffect(() => {
     if (
@@ -79,7 +83,12 @@ export const Form = () => {
       orderDataForUpdate &&
       Object.keys(orderDataForUpdate).length > 0
     ) {
-      setFormData({ ...orderDataForUpdate, antispam_code: 0, antispam_code_orig: new Date().getMilliseconds() });
+      setFormData({
+        ...orderDataForUpdate,
+        antispam_code: 0,
+        antispam_code_orig: new Date().getMilliseconds(),
+        id: undefined,
+      });
     }
   }, [orderDataForUpdate, formMode]);
 
@@ -88,7 +97,6 @@ export const Form = () => {
 
     if (formMode === 'update' && 'id' in formData) {
       const updatedData = { ...formData };
-      delete updatedData.__typename;
       updateBooking({ variables: { input: updatedData } });
     } else if ('antispam_code' in formData) {
       const refreshAntispamCode = () =>

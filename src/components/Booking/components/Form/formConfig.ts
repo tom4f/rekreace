@@ -19,7 +19,9 @@ export const newOrderDefaultData: SendBookingRequest = {
   antispam_code_orig: new Date().getMilliseconds(),
 };
 
-export const updateOrderDefaultData: Order = {
+export type UpdateBookingRequest = Omit<Order, '__typename'>;
+
+export const updateOrderDefaultData: UpdateBookingRequest = {
   ...commonData,
   id: 0,
   order_status: 'new',
@@ -27,7 +29,6 @@ export const updateOrderDefaultData: Order = {
   due_date_info: '',
   order_info: '',
   title_prefix: '',
-  __typename: '',
 };
 
 export const orderStatusMap = {
