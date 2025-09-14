@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 
 import { GET_ORDERS_QUERY } from './useGetOrdersGraphQL';
 
@@ -27,12 +28,6 @@ export type UpdateResponse = {
   };
 };
 
-type UpdateBookingErrorResponse = {
-  message: string;
-  graphQLErrors?: Array<{ message: string }>;
-  networkError?: Error;
-};
-
 const UPDATE_BOOKING_MUTATION = gql`
   mutation UpdateBooking($input: UpdateBookingInput!) {
     updateBooking(input: $input) {
@@ -45,8 +40,7 @@ const UPDATE_BOOKING_MUTATION = gql`
 export const useUpdateBookingGraphQL = () => {
   return useMutation<
     UpdateResponse,
-    { input: UpdateBookingRequest },
-    UpdateBookingErrorResponse
+    { input: UpdateBookingRequest }
   >(UPDATE_BOOKING_MUTATION, {
     refetchQueries: [
       {

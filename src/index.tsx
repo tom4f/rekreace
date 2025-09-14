@@ -1,7 +1,7 @@
 import './index.css';
 import 'features/sentry/init';
 
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { MockDevTools } from 'components/MockDevTools';

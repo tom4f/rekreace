@@ -1,4 +1,5 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
+import { useMutation } from '@apollo/client/react';
 
 export type SendBookingRequest = {
   apartment: number;
@@ -22,12 +23,6 @@ export type SendResponse = {
   };
 };
 
-type SendBookingErrorResponse = {
-  message: string;
-  graphQLErrors?: Array<{ message: string }>;
-  networkError?: Error;
-};
-
 const SEND_BOOKING_MUTATION = gql`
   mutation SendBooking($input: SendBookingInput!) {
     sendBooking(input: $input) {
@@ -40,7 +35,6 @@ const SEND_BOOKING_MUTATION = gql`
 export const useSendBookingGraphQL = () => {
   return useMutation<
     SendResponse,
-    { input: SendBookingRequest },
-    SendBookingErrorResponse
+    { input: SendBookingRequest }
   >(SEND_BOOKING_MUTATION);
 };

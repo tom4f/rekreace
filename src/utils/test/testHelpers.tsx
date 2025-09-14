@@ -1,4 +1,5 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, HttpLink,InMemoryCache } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, renderHook } from '@testing-library/react';
 import { resolveHandlers } from 'features/mocks';
@@ -36,10 +37,8 @@ export const renderWithProviders = (
   });
 
   const apolloClient = new ApolloClient({
-    uri: Url.GRAPH_QL_API,
-    cache: new InMemoryCache({
-      addTypename: false,
-    }),
+    link: new HttpLink({ uri: Url.GRAPH_QL_API }),
+    cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: { fetchPolicy: 'no-cache' },
       query: { fetchPolicy: 'no-cache' },
@@ -78,10 +77,8 @@ export const renderHookWithProviders = <Props, Result>(
   });
 
   const apolloClient = new ApolloClient({
-    uri: Url.GRAPH_QL_API,
-    cache: new InMemoryCache({
-      addTypename: false,
-    }),
+    link: new HttpLink({ uri: Url.GRAPH_QL_API }),
+    cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: { fetchPolicy: 'no-cache' },
       query: { fetchPolicy: 'no-cache' },
