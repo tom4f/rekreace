@@ -1,12 +1,22 @@
 import styled from '@emotion/styled';
+import { lazy, Suspense } from 'react';
 
-import { Form, PdfOrderDownload, QRCode } from '../';
+import { Form, QRCode } from '../';
+
+// Lazy load the heavy PDF component
+const PdfOrderDownload = lazy(() =>
+  import('../PdfOrder/PdfOrder').then((module) => ({
+    default: module.PdfOrderDownload,
+  }))
+);
 
 export const Order = () => {
   return (
     <OrderWrapper>
       <Form />
-      <PdfOrderDownload />
+      <Suspense fallback={<div style={{ padding: '1rem' }}>Loading PDF...</div>}>
+        <PdfOrderDownload />
+      </Suspense>
       <QRCode />
     </OrderWrapper>
   );
