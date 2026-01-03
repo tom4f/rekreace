@@ -13,7 +13,7 @@ export const Prices = () => {
           <thead>
             <tr>
               <th colSpan={5}>
-                cena v Kč / den pro celé apartmá pro rok 2024 :
+                cena v Kč / den pro celé apartmá pro rok 2026 :
               </th>
             </tr>
           </thead>
