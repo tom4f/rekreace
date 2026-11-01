@@ -10,7 +10,7 @@ export const Top = () => {
 
   useEffect(
     () => setCounter((orig) => (pathname !== '/' ? orig + 1 : orig)),
-    [pathname]
+    [pathname],
   );
 
   return (
@@ -43,7 +43,7 @@ export const Top = () => {
         <CustomNavLink to='/windsurfing' header='Windsurfing' />{' '}
       </Header>
 
-      <GoogleAd key={counter} counter={counter} />
+      {/*  <GoogleAd key={counter} counter={counter} /> */}
     </>
   );
 };
